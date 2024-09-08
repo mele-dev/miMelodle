@@ -1,34 +1,59 @@
-# Historias de Usuario - Popdle
+# Historias de Usuario - Melodle
+
+## Notas generales
+- La funcionalidad general del sitio tiene que ser accesible a personas con
+  discapacidad visual.
+- En el documento usamos checkboxes:
+  - [ ] -> unchecked
+  - [~] -> unchecked, opcional.
+  - [x] -> checked.
+  - [nombre] -> `nombre` está trabajando en esto.
+    Ej: [cristian], [juana], [juan], [cristian & juana].
+
 
 ## 1. Registro de nuevo usuario
 
-### Descripción
-Como nuevo usuario, quiero poder registrarme en Popdle para poder hacer uso de sus funcionalidades.
+# Historia de Usuario - Registro de nuevo usuario en Melodle
 
-### Criterios de aceptación
-- Debe existir un botón para registrarse en la pantalla de login.
-- Ese botón debe dar la opción de crear cuenta con nombre de usuario y contraseña a elección, o vincular cuenta de Spotify.
-- Una vez válidos el nombre de usuario y contraseña, debe permitir cambiar foto de perfil y nombre.
+## Descripción
+Como nuevo usuario, quiero poder registrarme en Melodle para poder hacer uso de sus funcionalidades.
 
-### Prioridad
+## Criterios de aceptación [ ]
+- [ ] Debe existir un botón para registrarse en la pantalla de login.
+- [ ] La pantalla de registro debe permitir crear la cuenta mediante:
+  - [ ] Correo electrónico y contraseña
+  - [ ] Autenticación por Spotify
+- [ ] Se debe solicitar un nombre de usuario que puede ser repetido.
+- [ ] Se debe asignar una ID expuesta que diferencie al usuario de otros con el mismo nombre.
+- [ ] El sistema debe validar que el correo electrónico tenga un formato válido.
+- [ ] El sistema debe validar que la contraseña cumpla con requisitos mínimos de seguridad.
+- [ ] El sistema debe validar que el correo electrónico no esté en uso.
+- [ ]
+- [ ] Se deben mostrar mensajes de error claros en caso de datos inválidos o problemas en el registro.
+- [~]  Permitir al usuario seleccionar una foto de perfil de su galería.
+
+## Prioridad
 Alta
 
-### Estimación
-13 puntos
+## Estimación
+5 puntos
 
-### Notas adicionales
-- El uso debe ser accesible.
+## Definition of Ready [ ]
+- [ ] El diseño de la interfaz de usuario para el registro está aprobado.
+- [ ] Los requisitos de seguridad para contraseñas están definidos.
+- [ ] La integración con la autenticación de Spotify está configurada.
+- [ ] Las pruebas de accesibilidad están definidas.
 
-### Definition of Ready
-- El usuario puede ingresar a su cuenta sin problemas una vez creada.
-- Se notifican los errores y campos inválidos, como contraseñas diferentes o nombres de usuario ya en uso.
-- El usuario puede elegir una foto de su galería para su foto de perfil.
+## Definition of Done [ ]
+- [ ] Todos los criterios de aceptación han sido implementados y probados.
+- [ ] La funcionalidad ha sido probada en todos los dispositivos compatibles.
+- [ ] Se ha verificado la accesibilidad del flujo para personas con discapacidad visual.
+- [ ] El código ha pasado la revisión de pares.
+- [ ] La documentación del usuario ha sido actualizada.
+- [ ] Las pruebas de integración y unitarias están implementadas y pasando.
 
-### Definition of Done
-- La funcionalidad ha sido aprobada en todos los dispositivos compatibles.
-- Se ha verificado la accesibilidad del flujo.
-
----
+## Notas adicionales
+- La funcionalidad general del sitio, incluyendo este flujo de registro, debe ser accesible a personas con discapacidad visual.
 
 ## 2. Elección de inicio de sesión
 
@@ -37,7 +62,7 @@ Como usuario, quiero poder elegir la manera en la que inicio sesión para sincro
 
 ### Criterios de aceptación
 - Debe existir un botón para iniciar sesión con Spotify.
-- Ese botón debe poder vincular a la cuenta de Spotify si la cuenta de Popdle fue previamente registrada.
+- Ese botón debe poder vincular a la cuenta de Spotify si la cuenta de Melodle fue previamente registrada.
 - Debe haber un botón para iniciar sesión con nombre de usuario y contraseña, sin necesidad de una cuenta de Spotify.
 
 ### Prioridad
@@ -62,7 +87,7 @@ Alta
 ## 3. Jugar Wordle diario
 
 ### Descripción
-Como usuario de Popdle, quiero poder jugar un Wordle por dia, para competir con mis amigos.
+Como usuario de Melodle, quiero poder jugar un Wordle por dia, para competir con mis amigos.
 
 ### Criterios de aceptación
 - El usuario debe haber seleccionado los artistas que desea en su pantalla, o cargados desde su cuenta de Spotify.
@@ -92,7 +117,7 @@ Alta
 ## 4. Wordle
 
 ### Descripción
-Como usuario de Popdle, quiero poder jugar Wordle con la opción de adivinar una canción o un verso de una canción, para elegir la manera en que más me divierto.
+Como usuario de Melodle, quiero poder jugar Wordle con la opción de adivinar una canción o un verso de una canción, para elegir la manera en que más me divierto.
 
 ### Criterios de aceptación
 - Debe existir un botón para cambiar de modo.
@@ -130,7 +155,7 @@ Alta
 ## 5. Página de inicio
 
 ### Descripción
-Como usuario de Popdle, quiero ver en mi página de inicio una lista de mis artistas favoritos con información relevante sobre ellos, para mantenerme al tanto de sus novedades.
+Como usuario de Melodle, quiero ver en mi página de inicio una lista de mis artistas favoritos con información relevante sobre ellos, para mantenerme al tanto de sus novedades.
 
 ### Criterios de aceptación
 - Debe existir un botón para añadir nuevos artistas a la página.
@@ -157,7 +182,7 @@ Alta
 ## 6. Agregar amigos
 
 ### Descripción
-Como usuario de Popdle, quiero poder agregar amigos para competir en el Wordle y comparar nuestras puntuaciones.
+Como usuario de Melodle, quiero poder agregar amigos para competir en el Wordle y comparar nuestras puntuaciones.
 
 ### Criterios de aceptación
 - Debe existir un botón para añadir amigos por nombre de usuario.
@@ -187,7 +212,7 @@ Media
 ## 7. Leaderboard
 
 ### Descripción
-Como usuario de Popdle, quiero ver una tabla de clasificación que muestre las puntuaciones de mis amigos y la mía para poder competir.
+Como usuario de Melodle, quiero ver una tabla de clasificación que muestre las puntuaciones de mis amigos y la mía para poder competir.
 
 ### Criterios de aceptación
 - Debe existir una sección de Leaderboard.
@@ -216,7 +241,7 @@ Media
 ## 8. Editar perfil
 
 ### Descripción
-Como usuario de Popdle, quiero poder editar mi perfil para personalizarlo a mi gusto.
+Como usuario de Melodle, quiero poder editar mi perfil para personalizarlo a mi gusto.
 
 ### Criterios de aceptación
 - Debe haber un botón para acceder al perfil del usuario.
@@ -247,7 +272,7 @@ Alta
 ## 9. Puntuación
 
 ### Descripción
-Como usuario de Popdle, quiero poder visualizar mi puntuación y la de mis amigos en el leaderboard para competir y mejorar mi rendimiento.
+Como usuario de Melodle, quiero poder visualizar mi puntuación y la de mis amigos en el leaderboard para competir y mejorar mi rendimiento.
 
 ### Criterios de aceptación
 - Debe existir un contador de días consecutivos jugando (racha).
