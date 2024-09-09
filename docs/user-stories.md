@@ -348,8 +348,8 @@ mejor control sobre mi red social en el juego.
 - [ ] Todos los cambios deben ser [validados](./validaciones.md).
 - [ ] El usuario debe poder agregar hasta 4 artistas favoritos a su perfil, que
       se mostrarán públicamente.
-- [ ] El perfil debe mostrar una lista de seguidores y usuarios seguidos, con
-      la opción de eliminar a cualquier usuario de esas listas.
+- [ ] El perfil debe mostrar una lista de seguidores, usuarios seguidos y artistas guardados, con
+      la opción de eliminar algun elemento de esas listas.
 
 ## Prioridad
 Alta
