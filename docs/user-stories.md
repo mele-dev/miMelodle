@@ -28,9 +28,8 @@ de sus funcionalidades.
 - [ ] La pantalla de registro debe permitir crear la cuenta mediante:
   - [ ] Correo electrónico y contraseña
   - [ ] Autenticación por Spotify
-- [ ] Se debe solicitar un nombre de usuario que puede ser repetido.
-- [ ] Se debe asignar una ID expuesta que diferencie al usuario de otros con el
-      mismo nombre.
+- [ ] Se debe solicitar un alias de usuario que puede ser repetido.
+- [ ] Se debe solicitar un nombre de usuario que diferencie al usuario de otros con el mismo alias.
 - [ ] El sistema debe validar que:
     - [ ] ...el email [ ], la contraseña [ ] y el nombre de usuario [ ] cumplen
              con el [formato](./validations.md).
@@ -95,7 +94,7 @@ mis datos y utilizar las funcionalidades de la aplicación.
 Vital
 
 ### Estimación
-4 puntos
+8 puntos
 
 ### Definition of Ready [ ]
 
@@ -124,8 +123,7 @@ Vital
 
 ### Descripción
 Como usuario de Melodle, quiero poder jugar una vez al día para intentar
-adivinar una línea de una canción, de manera similar a Wordle, para poner a
-prueba mi conocimiento musicales y disfrutar de un desafío diario.
+adivinar una línea de una canción, o canción, de manera similar a Wordle, para poner a prueba mi conocimiento musicales y disfrutar de un desafío diario.
 
 ### Criterios de aceptación [ ]
 
@@ -168,7 +166,6 @@ Alta
   - El método específico para proporcionar pistas o feedback.
   - Los criterios precisos para determinar respuestas parcialmente correctas.
   - La posible inclusión de categorías musicales o niveles de dificultad.
-- Considerar la implementación de un sistema de puntuación o logros para aumentar la rejugabilidad.
 - Explorar la posibilidad de compartir resultados en redes sociales para aumentar la viralidad del juego.
 
 --------------------------------------------------------------------------------
@@ -177,16 +174,15 @@ Alta
 
 ### Descripción
 Como usuario de Melodle, quiero poder personalizar la configuración del juego
-diario para seleccionar diferentes modos y filtros, como elegir ciertos artistas
-o adivinar el nombre del artista en base a una línea de su canción, para tener
+diario para seleccionar diferentes modos y filtros, como elegir canciones de ciertos artistas o adivinar el nombre de las mismas en base a pistas, para tener
 una experiencia más adaptada a mis gustos musicales.
 
 ### Criterios de aceptación [ ]
 
-- [ ] El usuario debe poder filtrar las canciones por artista o género antes de comenzar el juego.
-- [ ] Debe haber un modo alternativo donde el usuario adivine el nombre del artista basado en una línea de una canción.
-- [ ] En el modo por artista, las canciones deben pertenecer únicamente al
-      artista seleccionado o al género filtrado.
+- [ ] El usuario debe poder filtrar las canciones por artista antes de comenzar el juego.
+- [ ] Debe haber un modo donde el usuario adivine el nombre de la canción basado 3 pistas sobre la misma.
+- [ ] Debe haber un modo donde a partir de una canción dada, el usuario adivine el verso.
+- [ ] Las canciones deben pertenecer únicamente al artista seleccionado.
 - [ ] El usuario debe poder guardar su configuración preferida para futuros juegos.
 - [ ] La configuración debe ser accesible desde la pantalla de inicio del juego
       y fácil de modificar.
@@ -220,6 +216,7 @@ Media
     compartida, por lo que se debe limitar la personalización a ciertos aspectos
     que no comprometan la competencia justa entre usuarios.
 - Considerar la posibilidad de desbloquear ciertos modos o filtros como logros dentro del juego.
+- Será una canción por día por artista.
 
 --------------------------------------------------------------------------------
 
@@ -239,7 +236,7 @@ mantenerme informado de sus novedades y participar más activamente en el juego.
     - [ ] Nombre del artista.
     - [ ] Imagen del artista.
     - [~] Información relevante sobre sus próximos proyectos, como giras, álbumes y canciones.
-    - [ ] Un botón para jugar al modo de Melodle relacionado con ese artista (si está disponible).
+    - [ ] Un botón para jugar Melodle relacionado con ese artista (si está disponible).
 - [ ] La información debe actualizarse automáticamente para reflejar las novedades de cada artista.
 
 ### Prioridad
@@ -267,22 +264,17 @@ Media
 
 - Considerar la posibilidad de enviar notificaciones al usuario cuando haya
     actualizaciones sobre sus artistas favoritos (nuevas giras, lanzamientos, etc.).
-- La funcionalidad debe ser diseñada de manera que el usuario pueda personalizar
-    fácilmente su lista de favoritos y recibir actualizaciones en tiempo real.
+- La funcionalidad debe ser diseñada de manera que el usuario pueda personalizar fácilmente su lista de favoritos y recibir actualizaciones en tiempo real.
 
 --------------------------------------------------------------------------------
 
 ## Historia de Usuario - Agregar Amigos en Melodle
 
 ### Descripción
-Como usuario de Melodle, quiero poder agregar amigos para competir en el juego
-de Melodle (Wordle musical) y comparar nuestras puntuaciones, para disfrutar de
-una experiencia más social y motivadora a través de la competencia amistosa.
+Como usuario de Melodle, quiero poder agregar amigos para competir en el juego de Melodle (Wordle musical) y comparar nuestras puntuaciones, para disfrutar de una experiencia más social y motivadora a través de la competencia amistosa.
 
 ### Criterios de aceptación [ ]
-- [ ] El usuario debe poder agregar amigos mediante búsqueda por:
-    - [ ] nombre de usuario
-    - [ ] id
+- [ ] El usuario debe poder agregar amigos mediante búsqueda por nombre de usuario.
 - [ ] El sistema debe permitir la sincronización de amigos desde plataformas
       externas, como Spotify, si el usuario lo desea y la plataforma lo permite.
 - [ ] Debe haber una sección dedicada donde se muestre una lista de amigos
@@ -319,12 +311,10 @@ Media
       verificado el funcionamiento del leaderboard.
 
 ### Notas adicionales
-- Considerar implementar notificaciones cuando un amigo ha sido agregado o
-    cuando un amigo mejora rebasa al usuario en el leaderboard.
+- Considerar implementar notificaciones cuando un amigo ha sido agregado o cuando un amigo mejora rebasa al usuario en el leaderboard.
 - Explorar la posibilidad de compartir resultados o logros en redes sociales
     para fomentar la interacción y viralidad del juego.
-- Evaluar la opción de añadir chats o mensajes directos entre amigos en futuras
-    versiones, para aumentar la interacción social dentro de la plataforma.
+- Evaluar la opción de añadir chats o mensajes directos entre amigos en futuras versiones, para aumentar la interacción social dentro de la plataforma.
 
 --------------------------------------------------------------------------------
 
@@ -390,9 +380,7 @@ Alta
 # Historia de Usuario - Sistema de Puntuación en Melodle
 
 ## Descripción
-Como usuario de Melodle, quiero poder visualizar mi puntuación y compararla con
-la de mis amigos en un leaderboard, para fomentar la competencia amistosa y
-motivarme a mejorar mi rendimiento en el juego.
+Como usuario de Melodle, quiero poder visualizar mi puntuación y compararla con la de mis amigos en un leaderboard, para fomentar la competencia amistosa y motivarme a mejorar mi rendimiento en el juego.
 
 ## Criterios de aceptación [ ]
 - [ ] El usuario debe poder ver un contador de días consecutivos ganando ("racha").
@@ -411,7 +399,7 @@ motivarme a mejorar mi rendimiento en el juego.
 Media
 
 ## Estimación
-3 puntos
+5 puntos
 
 ## Definition of Ready [ ]
 - [ ] El diseño del leaderboard y los criterios de cálculo de puntuación han
