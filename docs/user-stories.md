@@ -1,4 +1,5 @@
 # Historias de Usuario - Melodle
+info
 
 ## Notas generales
 
@@ -32,7 +33,7 @@ de sus funcionalidades.
       mismo nombre.
 - [ ] El sistema debe validar que:
     - [ ] ...el email [ ], la contraseña [ ] y el nombre de usuario [ ] cumplen
-             con el [formato](./validaciones.md).
+             con el [formato](./validations.md).
     - [~] ...el nombre de usuario no tiene significado demasiado inapropiado.
         - [ ] En caso de ser implausible, los usuarios deben poder reportar
               nombres de usuario inapropiados.
@@ -83,7 +84,7 @@ mis datos y utilizar las funcionalidades de la aplicación.
     - [ ] Correo electrónico y contraseña
     - [ ] Autenticación por Spotify
 - [ ] El sistema debe validar que:
-    - [ ] El correo electrónico y la contraseña cumplen con el [formato](./validaciones.md) establecido.
+    - [ ] El correo electrónico y la contraseña cumplen con el [formato](./validations.md) establecido.
     - [ ] Las credenciales ingresadas corresponden a un usuario registrado.
 - [ ] Se deben mostrar mensajes de error claros en caso de credenciales inválidas o problemas en el inicio de sesión.
 - [ ] Debe existir una opción para recuperar la contraseña en caso de olvido.
@@ -345,7 +346,7 @@ mejor control sobre mi red social en el juego.
   - [ ] Cambiar su foto de perfil.
 - [ ] Si el usuario está vinculado con Spotify, solo debe poder cambiar su
       nombre de usuario.
-- [ ] Todos los cambios deben ser [validados](./validaciones.md).
+- [ ] Todos los cambios deben ser [validados](./validations.md).
 - [ ] El usuario debe poder agregar hasta 4 artistas favoritos a su perfil, que
       se mostrarán públicamente.
 - [ ] El perfil debe mostrar una lista de seguidores, usuarios seguidos y artistas guardados, con
@@ -477,7 +478,8 @@ Media
 - [ ] La accesibilidad de la funcionalidad de selección de idioma ha sido
       probada y verificada.
 - [ ] El código ha pasado la revisión de pares.
-- [ ] Las traducciones han sido revisadas por Cristian Rodríguez y/o Juan Tanca.
+- [ ] Las traducciones han sido revisadas por
+      [los traductores aprobados](./translators.md)
 - [ ] La documentación de usuario, que explica cómo cambiar el idioma de la
       plataforma, ha sido creada y revisada.
 - [ ] Las pruebas unitarias e integrales han sido implementadas y están pasando
