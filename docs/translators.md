@@ -2,3 +2,4 @@
 
 - Cristian Rodríguez
 - Juan Tanca
+- Juana López
