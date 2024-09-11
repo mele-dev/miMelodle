@@ -437,3 +437,65 @@ Media
     puntuación del usuario a lo largo del tiempo.
 - Implementar notificaciones para avisar al usuario cuando haya subido
     posiciones en el leaderboard o cuando un amigo lo supere.
+
+# Historia de Usuario - Soporte de Idiomas (Inglés y Español) en Melodle
+
+## Descripción
+Como usuario de Melodle, quiero poder seleccionar entre los idiomas inglés y
+español para utilizar la plataforma en mi idioma preferido, mejorando mi
+experiencia de uso y la comprensión de las funcionalidades la plataforma.
+
+## Criterios de aceptación [ ]
+- [ ] El usuario puede seleccionar su idioma preferido (inglés o español) desde
+      una opción visible en la interfaz principal o la configuración del perfil.
+- [ ] La selección de idioma se aplica a todas las secciones de la plataforma,
+      incluidas las páginas del juego, configuraciones, notificaciones, y
+      mensajes de error.
+- [ ] El sistema recuerda la preferencia de idioma del usuario para futuras
+      sesiones.
+- [ ] Si no se selecciona un idioma, la plataforma determina automáticamente el
+      idioma predeterminado basado en la configuración del navegador.
+- [ ] La interfaz de cambio de idioma es accesible para personas con
+      discapacidades visuales o motoras.
+
+## Prioridad
+Media
+
+## Estimación
+- 3 puntos para el desarrollo de la infraestructura de traducciones.
+- La estimación para las traducciones se irá determinando a medida que se 
+  desarrollen nuevas funcionalidades.
+
+## Definition of Ready [ ]
+- [ ] El diseño de la interfaz para la selección de idiomas está aprobado.
+- [ ] El método para organizar y gestionar las traducciones ha sido definido.
+- [ ] Las herramientas o bibliotecas de internacionalización han sido
+      seleccionadas e implementadas.
+
+## Definition of Done [ ]
+- [ ] Todos los criterios de aceptación han sido implementados y verificados.
+- [ ] La accesibilidad de la funcionalidad de selección de idioma ha sido
+      probada y verificada.
+- [ ] El código ha pasado la revisión de pares.
+- [ ] Las traducciones han sido revisadas por Cristian Rodríguez y/o Juan Tanca.
+- [ ] La documentación de usuario, que explica cómo cambiar el idioma de la
+      plataforma, ha sido creada y revisada.
+- [ ] Las pruebas unitarias e integrales han sido implementadas y están pasando
+      correctamente.
+
+> [!NOTE]
+> Esta historia se considera "hecha" cuando la infraestructura de soporte de
+> idiomas está implementada y probada. Sin embargo, las traducciones en sí se
+> realizarán y verificarán en paralelo al desarrollo de otras funcionalidades
+> de la plataforma.
+
+## Notas adicionales
+- Considerar agregar otros idiomas en el futuro, dependiendo de la expansión
+  del público de Melodle.
+- Evaluar la posibilidad de incluir un tutorial breve en el idioma seleccionado
+  tras el cambio de idioma.
+- Verificar que las traducciones mantengan coherencia y claridad en ambos
+  idiomas.
+- Dado que todo el equipo de desarrollo domina ambos idiomas, las traducciones
+  se realizarán durante el desarrollo, sin necesidad de un proceso de
+  traducción separado.
