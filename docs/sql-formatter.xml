@@ -1,0 +1,37 @@
+<code_scheme name="Default" version="173">
+  <option name="SOFT_MARGINS" value="80,100,120" />
+  <SqlCodeStyleSettings version="7">
+    <option name="KEYWORD_CASE" value="2" />
+    <option name="IDENTIFIER_CASE" value="1" />
+    <option name="TYPE_CASE" value="3" />
+    <option name="ALIAS_CASE" value="1" />
+    <option name="QUERY_SECTION_1ST_WORD_ALIGN" value="8" />
+    <option name="QUERY_EL_COMMA" value="1" />
+    <option name="INSERT_INTO_NL" value="1" />
+    <option name="WITH_ALIGN_AS" value="true" />
+    <option name="SELECT_USE_AS_WORD" value="1" />
+    <option name="TABLE_OPENING" value="1" />
+    <option name="TABLE_CONTENT" value="2" />
+    <option name="TABLE_CLOSING" value="2" />
+    <option name="ROUTINE_ARG_CONTENT" value="2" />
+    <option name="ROUTINE_ARG_CLOSING" value="2" />
+    <option name="ROUTINE_ARG_WRAP" value="1" />
+    <option name="ROUTINE_ARG_ALIGN_TYPES" value="true" />
+    <option name="ROUTINE_PG_L_QUOTE_WRAP_BEFORE" value="false" />
+    <option name="SCRIPT_STMT_SEMICOLON_WRAP" value="2" />
+    <option name="SCRIPT_STMT_FOLLOWS_BLANK_LINE" value="1" />
+    <option name="IMP_COMMON_WRAP_EVERY_STATEMENT" value="true" />
+    <option name="IMP_IF_THEN_COLLAPSE" value="false" />
+    <option name="IMP_LOOP_LOOP_WRAP" value="false" />
+    <option name="IMP_LOOP_LOOP_INDENT" value="false" />
+    <option name="EXPR_CASE_THEN_ALIGN" value="true" />
+    <option name="EXPR_CASE_END" value="1" />
+  </SqlCodeStyleSettings>
+  <codeStyleSettings language="SQL">
+    <option name="KEEP_LINE_BREAKS" value="false" />
+    <option name="KEEP_FIRST_COLUMN_COMMENT" value="false" />
+    <indentOptions>
+      <option name="CONTINUATION_INDENT_SIZE" value="4" />
+    </indentOptions>
+  </codeStyleSettings>
+</code_scheme>
