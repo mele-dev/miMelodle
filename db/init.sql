@@ -13,13 +13,13 @@ CREATE DOMAIN username_domain AS VARCHAR(20) CHECK ( LENGTH(value) >= 3 );
 
 CREATE TABLE users (
     id                 SERIAL PRIMARY KEY,
-    username           username_domain                                   NOT NULL,
+    username           username_domain UNIQUE                            NOT NULL,
     -- https://stackoverflow.com/questions/386294/what-is-the-maximum-length-of-a-valid-email-address
     email              email_domain UNIQUE                               NOT NULL,
     password_hash      TEXT                                              NULL,
     spotify_id         TEXT UNIQUE                                       NULL,
     profile_picture_id BIGINT REFERENCES profile_pictures (id) DEFAULT 0 NOT NULL,
-    exposed_id         VARCHAR(50) UNIQUE                                NOT NULL,
+    name               VARCHAR(25)                                       NOT NULL,
     CHECK ( password_hash IS NOT NULL OR spotify_id IS NOT NULL )
 );
 
@@ -55,7 +55,7 @@ CREATE TABLE streaks (
     max_streak   INTEGER     DEFAULT 0        NOT NULL
 );
 
-CREATE OR REPLACE FUNCTION update_max_streak() RETURNS TRIGGER AS $$
+/* CREATE OR REPLACE FUNCTION update_max_streak() RETURNS TRIGGER AS $$
 BEGIN
     new := CAST(new AS streaks);
     IF new.streak_count > new.max_streak THEN
@@ -69,12 +69,14 @@ CREATE OR REPLACE TRIGGER update_max_streak_trigger
     BEFORE UPDATE
     ON streaks
     FOR EACH ROW
-EXECUTE FUNCTION update_max_streak();
+EXECUTE FUNCTION update_max_streak(); */
+
+-- nos parece mejor poner la lógica en el front e ir actualizando desde ahí el max_streak
 
 CREATE TABLE songs (
     id            SERIAL PRIMARY KEY,
     musixmatch_id TEXT NOT NULL UNIQUE
-);
+); 
 
 CREATE TABLE games (
     id        SERIAL PRIMARY KEY,
@@ -90,7 +92,7 @@ CREATE TABLE attempts (
     guessed_at      timestamptz                  NOT NULL
 );
 
-CREATE OR REPLACE FUNCTION update_streak() RETURNS TRIGGER AS $$
+/* CREATE OR REPLACE FUNCTION update_streak() RETURNS TRIGGER AS $$
 DECLARE
     casted_new attempts;
     game       games;
@@ -108,7 +110,9 @@ CREATE OR REPLACE TRIGGER update_max_streak_trigger
     BEFORE UPDATE
     ON attempts
     FOR EACH ROW
-EXECUTE FUNCTION update_streak();
+EXECUTE FUNCTION update_streak(); */
+
+-- la lógica la discutimos luego
 
 -- TODO: Discuss whether we should implement game modes like in the line below.
 -- CREATE TYPE game_mode AS ENUM ('guess_line', 'guess_title', 'guess_artist');
@@ -121,7 +125,6 @@ CREATE TABLE game_modes (
 INSERT
   INTO game_modes(name)
 VALUES ('guess_line')
-     , ('guess_artist')
      , ('guess_song');
 
 SELECT *
@@ -130,28 +133,19 @@ SELECT *
 CREATE TABLE game_config (
     id        SERIAL PRIMARY KEY,
     user_id   BIGINT REFERENCES users (id)      NOT NULL,
-    game_mode BIGINT REFERENCES game_modes (id) NOT NULL
+    game_mode BIGINT DEFAULT 1 REFERENCES game_modes (id) NOT NULL,
 );
+-- hablamos lo de game modes y nos parece mejor tener uno como predeterminado en general, y en caso de que el usuario 
+-- desee algo diferente simplemente lo cambie
 
 COMMENT ON TABLE game_config IS 'Configs are a work in progress.';
-
-CREATE TABLE genre (
-    id                  SERIAL PRIMARY KEY,
-    musixmatch_genre_id BIGINT
-);
-
-CREATE TABLE genre_game_config (
-    game_config_id BIGINT REFERENCES game_config (id) NOT NULL,
-    genre_id       BIGINT REFERENCES genre (id)       NOT NULL,
-    PRIMARY KEY (game_config_id, genre_id)
-);
 
 CREATE TABLE artist_game_config (
     game_config_id BIGINT REFERENCES game_config (id) NOT NULL,
     artist_id      BIGINT REFERENCES artists (id)     NOT NULL,
     PRIMARY KEY (game_config_id, artist_id)
 );
-
+    
 CREATE TABLE artist_song (
     song_id   BIGINT REFERENCES songs (id)   NOT NULL,
     artist_id BIGINT REFERENCES artists (id) NOT NULL
