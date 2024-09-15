@@ -11,3 +11,6 @@
 
 - Nombre de usuario:
     - Debe contener únicamente caracteres utf8, y tener entre 3 y 20 caracteres.
+
+- Id de usuario:
+    - TODO
