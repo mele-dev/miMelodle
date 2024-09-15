@@ -133,7 +133,7 @@ SELECT *
 CREATE TABLE game_config (
     id        SERIAL PRIMARY KEY,
     user_id   BIGINT REFERENCES users (id)      NOT NULL,
-    game_mode BIGINT DEFAULT 1 REFERENCES game_modes (id) NOT NULL,
+    game_mode BIGINT DEFAULT 1 REFERENCES game_modes (id) NOT NULL
 );
 -- hablamos lo de game modes y nos parece mejor tener uno como predeterminado en general, y en caso de que el usuario 
 -- desee algo diferente simplemente lo cambie
