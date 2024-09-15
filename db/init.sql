@@ -55,28 +55,10 @@ CREATE TABLE streaks (
     max_streak   INTEGER     DEFAULT 0        NOT NULL
 );
 
-/* CREATE OR REPLACE FUNCTION update_max_streak() RETURNS TRIGGER AS $$
-BEGIN
-    new := CAST(new AS streaks);
-    IF new.streak_count > new.max_streak THEN
-        new.max_streak := new.streak_count;
-    END IF;
-    RETURN new;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE OR REPLACE TRIGGER update_max_streak_trigger
-    BEFORE UPDATE
-    ON streaks
-    FOR EACH ROW
-EXECUTE FUNCTION update_max_streak(); */
-
--- nos parece mejor poner la lógica en el front e ir actualizando desde ahí el max_streak
-
 CREATE TABLE songs (
     id            SERIAL PRIMARY KEY,
     musixmatch_id TEXT NOT NULL UNIQUE
-); 
+);
 
 CREATE TABLE games (
     id        SERIAL PRIMARY KEY,
@@ -91,31 +73,6 @@ CREATE TABLE attempts (
     guessed_song_id BIGINT REFERENCES songs (id) NOT NULL,
     guessed_at      timestamptz                  NOT NULL
 );
-
-/* CREATE OR REPLACE FUNCTION update_streak() RETURNS TRIGGER AS $$
-DECLARE
-    casted_new attempts;
-    game       games;
-BEGIN
-    casted_new := CAST(new AS attempts);
-    SELECT * INTO game FROM games WHERE game_date = casted_new.game_id;
-    IF (casted_new.guessed_song_id = game.song_id) THEN
-        UPDATE streaks SET streak_count = streaks.streak_count + 1 WHERE streaks.user_id = game.user_id;
-    END IF;
-    RETURN casted_new;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE OR REPLACE TRIGGER update_max_streak_trigger
-    BEFORE UPDATE
-    ON attempts
-    FOR EACH ROW
-EXECUTE FUNCTION update_streak(); */
-
--- la lógica la discutimos luego
-
--- TODO: Discuss whether we should implement game modes like in the line below.
--- CREATE TYPE game_mode AS ENUM ('guess_line', 'guess_title', 'guess_artist');
 
 CREATE TABLE game_modes (
     id   SERIAL PRIMARY KEY,
@@ -132,11 +89,9 @@ SELECT *
 
 CREATE TABLE game_config (
     id        SERIAL PRIMARY KEY,
-    user_id   BIGINT REFERENCES users (id)      NOT NULL,
+    user_id   BIGINT REFERENCES users (id)                NOT NULL,
     game_mode BIGINT DEFAULT 1 REFERENCES game_modes (id) NOT NULL
 );
--- hablamos lo de game modes y nos parece mejor tener uno como predeterminado en general, y en caso de que el usuario 
--- desee algo diferente simplemente lo cambie
 
 COMMENT ON TABLE game_config IS 'Configs are a work in progress.';
 
@@ -145,7 +100,7 @@ CREATE TABLE artist_game_config (
     artist_id      BIGINT REFERENCES artists (id)     NOT NULL,
     PRIMARY KEY (game_config_id, artist_id)
 );
-    
+
 CREATE TABLE artist_song (
     song_id   BIGINT REFERENCES songs (id)   NOT NULL,
     artist_id BIGINT REFERENCES artists (id) NOT NULL
