@@ -32,7 +32,7 @@ const auth: FastifyPluginAsyncTypebox = async (fastify, opts) => {
                 [
                     body.username,
                     body.email,
-                    body.password_hash,
+                    body.password,
                     body.spotify_id,
                     body.profile_picture_id,
                     body.name,

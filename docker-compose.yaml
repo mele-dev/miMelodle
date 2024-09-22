@@ -1,4 +1,4 @@
-name: caso2
+name: Melodle
 services:
   backend:
     image: backend
@@ -9,10 +9,10 @@ services:
     volumes:
       - ./backend:/backend
     environment:
-      - PGDATABASE=${PGDATABASE}
-      - PGUSER=${PGUSER}
-      - PGPASSWORD=${PGPASSWORD}
-      - PGHOST=${PGHOST}
+      - PG_DATABASE=${PGDATABASE}
+      - PG_USER=${PGUSER}
+      - PG_PASSWORD=${PGPASSWORD}
+      - PG_HOST=${PGHOST}
   frontend:
     image: nginx:alpine
     container_name: frontend
@@ -28,7 +28,9 @@ services:
       - POSTGRES_USER=${PGUSER}
       - POSTGRES_PASSWORD=${PGPASSWORD}
     ports:
-      - 5432:5432
+      - 5434:5432
+    volumes:
+      - db_data:/var/lib/postgresql/data
   proxy:
     image: proxy
     container_name: proxy
@@ -38,3 +40,6 @@ services:
     depends_on:
       - frontend
       - backend
+
+volumes:
+  db_data:
