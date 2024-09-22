@@ -9,10 +9,10 @@ services:
     volumes:
       - ./backend:/backend
     environment:
-      - PGDATABASE=${PGDATABASE}
-      - PGUSER=${PGUSER}
-      - PGPASSWORD=${PGPASSWORD}
-      - PGHOST=${PGHOST}
+      - PGDATABASE=${DB_DATABASE}
+      - PGUSER=${DB_USER}
+      - PGPASSWORD=${DB_PASSWORD}
+      - PGHOST=${DB_HOST}
   frontend:
     image: nginx:alpine
     container_name: frontend
@@ -24,11 +24,11 @@ services:
     build:
       context: ./database
     environment:
-      - POSTGRES_DB=${PGDATABASE}
-      - POSTGRES_USER=${PGUSER}
-      - POSTGRES_PASSWORD=${PGPASSWORD}
+      - POSTGRES_DB=${DB_DATABASE}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
     ports:
-      - 5432:5432
+      - 5434:5432
   proxy:
     image: proxy
     container_name: proxy

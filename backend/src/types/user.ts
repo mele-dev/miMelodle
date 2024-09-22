@@ -12,6 +12,9 @@ export const UserSchema = Type.Object(
         spotify_id: Type.Number({}),
         profile_picture_id: Type.Number({}),
         name: Type.String({ maxLength: 25 }),
+    }, {
+        title: "The user with all their fields.",
+        $id: "loginUser",
     }
 );
 

@@ -1,7 +1,7 @@
 import { Type } from "@sinclair/typebox";
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
-import { UserSchema } from '../../types/user.js';
-import { query } from "../../services/database.js";
+import { ErrorMessageSchema, UserSchema } from "../../../types/user.js";
+import { query } from "../../../services/database.js";
 
 const tokenSchema = Type.Object({
     jwtToken: Type.String(),
@@ -16,7 +16,7 @@ const auth: FastifyPluginAsyncTypebox = async (fastify, opts) => {
             }),
             response: {
                 200: tokenSchema,
-                //404: Type.Ref(ErrorMessageSchema),
+                404: Type.Ref(ErrorMessageSchema),
             },
             security: [],
         },
