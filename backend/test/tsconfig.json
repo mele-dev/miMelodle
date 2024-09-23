@@ -1,8 +1,13 @@
 {
-  "extends": "../tsconfig.json",
-  "compilerOptions": {
-    "baseUrl": ".",
-    "noEmit": false
-  },
-  "include": ["../src/**/*.ts", "**/*.ts"]
+    "$schema": "https://json.schemastore.org/tsconfig.json",
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "baseUrl": ".",
+        "noEmit": false,
+        "noUnusedLocals": false
+    },
+    "include": [
+        "../src/**/*.ts",
+        "**/*.ts"
+    ]
 }

@@ -1,8 +1,9 @@
 import { Type } from "@sinclair/typebox";
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { ErrorMessageSchema, UserSchema } from "../../../types/user.js";
-import { query } from "../../../services/database.js";
+import { runPreparedQuery } from "../../../services/database.js";
 import { SafeType } from "../../../utils/typebox.js";
+import { loginUser } from "../../../queries/dml.queries.js";
 
 const tokenSchema = Type.Object({
     jwtToken: Type.String(),
@@ -18,7 +19,7 @@ const auth: FastifyPluginAsyncTypebox = async (fastify, opts) => {
                         email: "ezponjares@gmail.com",
                         password: "Cris123!",
                     },
-                ],
+                ]
             ),
             response: {
                 200: tokenSchema,
@@ -27,22 +28,16 @@ const auth: FastifyPluginAsyncTypebox = async (fastify, opts) => {
             security: [],
         },
 
-        handler: async function(request, reply) {
-            const result = await query(
-                `
-                SELECT id
-                FROM users
-                WHERE email = $1
-                AND password = crypt($2, password);
-            `,
-                //[request.body.email, request.body.password],
-            );
-            if (result.rowCount !== 1) {
+        handler: async function (request, reply) {
+            // FIXME
+            // (The error from the line below also happens with just a raw query.)
+            const result = await runPreparedQuery(loginUser, request.body);
+            if (result.length !== 1) {
                 return reply
                     .code(404)
                     .send({ errorMessage: "Wrong email or password" });
             }
-            const token = fastify.jwt.sign({ id: result.rows[0].id });
+            const token = fastify.jwt.sign({ id: result[0].id });
             return reply.code(200).send({ jwtToken: token });
         },
     });
