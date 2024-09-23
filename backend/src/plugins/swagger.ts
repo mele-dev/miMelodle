@@ -8,8 +8,8 @@ export default fp<FastifySwaggerOptions>(async (fastify, opts) => {
         openapi: {
             openapi: "3.0.0",
             info: {
-                title: "People API",
-                description: "For people who do stuff.",
+                title: "Melodle API",
+                description: "Documentation for Melodle's devs.",
                 version: "0.1.0",
             },
             components: {
