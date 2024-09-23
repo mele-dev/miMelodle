@@ -9,10 +9,10 @@ services:
     volumes:
       - ./backend:/backend
     environment:
-      - PG_DATABASE=${PGDATABASE}
-      - PG_USER=${PGUSER}
-      - PG_PASSWORD=${PGPASSWORD}
-      - PG_HOST=${PGHOST}
+      - PG_DATABASE=${DB_DATABASE}
+      - PG_USER=${DB_USER}
+      - PG_PASSWORD=${DB_PASSWORD}
+      - PG_HOST=${DB_HOST}
   frontend:
     image: nginx:alpine
     container_name: frontend

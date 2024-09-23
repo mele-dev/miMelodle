@@ -2,6 +2,8 @@ DROP SCHEMA IF EXISTS public CASCADE;
 
 CREATE SCHEMA public;
 
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
 CREATE TABLE profile_pictures (
     id        SERIAL PRIMARY KEY,
     image_url TEXT NOT NULL
@@ -105,3 +107,20 @@ CREATE TABLE artist_song (
     song_id   BIGINT REFERENCES songs (id)   NOT NULL,
     artist_id BIGINT REFERENCES artists (id) NOT NULL
 );
+
+CREATE OR REPLACE FUNCTION encrypt_password(
+    password TEXT
+) RETURNS TEXT AS $$
+BEGIN
+    RETURN crypt(password, gen_salt('bf'));
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION check_password(
+    encrypted_password   TEXT,
+    unencrypted_password TEXT
+) RETURNS BOOLEAN AS $$
+BEGIN
+    RETURN encrypted_password = crypt(unencrypted_password, encrypted_password);
+END;
+$$ LANGUAGE plpgsql;
