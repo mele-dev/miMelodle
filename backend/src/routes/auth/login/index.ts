@@ -1,37 +1,25 @@
-import { Static, Type } from "@sinclair/typebox";
+import { Type } from "@sinclair/typebox";
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { ErrorMessageSchema, UserSchema } from "../../../types/user.js";
 import { query } from "../../../services/database.js";
-import { Value } from "@sinclair/typebox/value";
+import { SafeType } from "../../../utils/typebox.js";
 
 const tokenSchema = Type.Object({
     jwtToken: Type.String(),
 });
 
 const auth: FastifyPluginAsyncTypebox = async (fastify, opts) => {
-    const baseLoginSchema = Type.Object({
-        email: UserSchema.properties.email,
-        password: UserSchema.properties.password,
-    });
-
-    type LoginBodyType = Static<typeof baseLoginSchema>;
-
-    const loginSchemaExamples = [
-        {
-            email: "ezponjares@gmail.com",
-            password: "Cris123!",
-        },
-    ] satisfies LoginBodyType[];
-
-    for (const example of loginSchemaExamples) {
-        Value.Assert(baseLoginSchema, example);
-    }
-    
     fastify.post("/", {
         schema: {
-            body: Type.Composite([baseLoginSchema], {
-                examples: loginSchemaExamples,
-            }),
+            body: SafeType.WithExamples(
+                SafeType.Pick(UserSchema, ["email", "password"]),
+                [
+                    {
+                        email: "ezponjares@gmail.com",
+                        password: "Cris123!",
+                    },
+                ],
+            ),
             response: {
                 200: tokenSchema,
                 404: Type.Ref(ErrorMessageSchema),
