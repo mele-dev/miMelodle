@@ -1,6 +1,8 @@
 /** Types generated for queries found in "src/queries/dml.sql" */
 import { PreparedQuery } from '@pgtyped/runtime';
 
+export type friendship_status = 'accepted' | 'blocked' | 'pending';
+
 /** 'SelectUsers' parameters type */
 export type ISelectUsersParams = void;
 
@@ -62,5 +64,35 @@ const loginUserIR: any = {"usedParamSet":{"email":true,"password":true},"params"
  * ```
  */
 export const loginUser = new PreparedQuery<ILoginUserParams,ILoginUserResult>(loginUserIR);
+
+
+/** 'GetFriendships' parameters type */
+export interface IGetFriendshipsParams {
+  id: number;
+}
+
+/** 'GetFriendships' return type */
+export interface IGetFriendshipsResult {
+  status: friendship_status;
+}
+
+/** 'GetFriendships' query type */
+export interface IGetFriendshipsQuery {
+  params: IGetFriendshipsParams;
+  result: IGetFriendshipsResult;
+}
+
+const getFriendshipsIR: any = {"usedParamSet":{"id":true},"params":[{"name":"id","required":true,"transform":{"type":"scalar"},"locs":[{"a":107,"b":110}]}],"statement":"SELECT f.status\n  FROM friendships f\n           LEFT JOIN public.users u ON u.id = f.user_id\n WHERE u.id = :id!"};
+
+/**
+ * Query generated from SQL:
+ * ```
+ * SELECT f.status
+ *   FROM friendships f
+ *            LEFT JOIN public.users u ON u.id = f.user_id
+ *  WHERE u.id = :id!
+ * ```
+ */
+export const getFriendships = new PreparedQuery<IGetFriendshipsParams,IGetFriendshipsResult>(getFriendshipsIR);
 
 

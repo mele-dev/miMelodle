@@ -2,13 +2,7 @@ import { PreparedQuery } from "@pgtyped/runtime";
 import pg from "pg";
 const { Pool } = pg;
 
-const pool = new Pool({
-    host: "database",
-    database: "melodle",
-    user: "admin",
-    password: "admin",
-    port: 5432,
-});
+const pool = new Pool();
 
 export const query = async (
     text: string,
