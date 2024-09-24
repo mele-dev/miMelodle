@@ -1,17 +1,18 @@
-import { Static, Type } from "@sinclair/typebox";
+import { Static } from "@sinclair/typebox";
+import { SafeType } from "../utils/typebox.js";
 
-export const UserSchema = Type.Object(
+export const UserSchema = SafeType.Object(
     {
-        id: Type.Number({}),
-        username: Type.String({ minLength: 3, maxLength: 20 }),
-        email: Type.String({
+        id: SafeType.Number({}),
+        username: SafeType.String({ minLength: 3, maxLength: 20 }),
+        email: SafeType.String({
             pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.source,
             maxLength: 254
         }),
-        password: Type.String({ minLength: 3, maxLength: 20 }),
-        spotify_id: Type.Number({}),
-        profile_picture_id: Type.Number({}),
-        name: Type.String({ maxLength: 25 }),
+        password: SafeType.String({ minLength: 3, maxLength: 20 }),
+        spotify_id: SafeType.Number({}),
+        profile_picture_id: SafeType.Number({}),
+        name: SafeType.String({ maxLength: 25 }),
     },
     {
         $id: "UserSchema",
@@ -19,9 +20,9 @@ export const UserSchema = Type.Object(
     }
 );
 
-export const ErrorMessageSchema = Type.Object(
+export const ErrorMessageSchema = SafeType.Object(
     {
-        errorMessage: Type.String(),
+        errorMessage: SafeType.String(),
     },
     {
         title: "An error message",

@@ -6,12 +6,5 @@
     }],
     "srcDir": "./src/queries/",
     "failOnError": true,
-    "camelCaseColumnNames": true,
-    "db": {
-        "host": "localhost",
-        "user": "admin",
-        "dbName": "melodle",
-        "password": "admin",
-        "port": 5434
-    }
+    "camelCaseColumnNames": true
 }
