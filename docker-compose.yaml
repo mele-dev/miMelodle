@@ -5,7 +5,7 @@ services:
     container_name: backend
     build:
       context: ./backend
-    command: sh -c "npm install && npx pgtyped -w -c pgtyped-config.json & npm run dev"
+    command: sh init.sh
     volumes:
       - ./backend:/backend
     environment:
