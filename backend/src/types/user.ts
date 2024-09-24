@@ -10,8 +10,8 @@ export const UserSchema = SafeType.Object(
             maxLength: 254
         }),
         password: SafeType.String({ minLength: 3, maxLength: 20 }),
-        spotify_id: SafeType.Number({}),
-        profile_picture_id: SafeType.Number({}),
+        spotifyId: SafeType.Number({}),
+        profilePictureId: SafeType.Number({}),
         name: SafeType.String({ maxLength: 25 }),
     },
     {
