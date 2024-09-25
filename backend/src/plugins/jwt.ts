@@ -1,5 +1,5 @@
 import jwt, { FastifyJWTOptions } from "@fastify/jwt";
-import { FastifyReply, FastifyRequest } from "fastify";
+import { FastifyPluginCallback, FastifyReply, FastifyRequest } from "fastify";
 import fp from "fastify-plugin";
 
 const jwtOptions: FastifyJWTOptions = {
