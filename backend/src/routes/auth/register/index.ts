@@ -1,10 +1,11 @@
-import { FastifyPluginAsyncTypebox, Type } from "@fastify/type-provider-typebox";
 import {
-    ErrorMessageSchema,
-    UserSchema
-} from "../../../types/user.js";
-import { query } from "../../../services/database.js";
+    FastifyPluginAsyncTypebox,
+    Type,
+} from "@fastify/type-provider-typebox";
+import { ErrorMessageSchema, UserSchema } from "../../../types/user.js";
+import { query, runPreparedQuery } from "../../../services/database.js";
 import { SafeType } from "../../../utils/typebox.js";
+import { insertUser } from "../../../queries/dml.queries.js";
 
 const tokenSchema = SafeType.Object({
     jwtToken: SafeType.String(),
@@ -13,7 +14,18 @@ const tokenSchema = SafeType.Object({
 const auth: FastifyPluginAsyncTypebox = async (fastify, opts) => {
     fastify.post("/", {
         schema: {
-            body: SafeType.Ref(UserSchema),
+            body: SafeType.WithExamples(
+                SafeType.Omit(UserSchema, ["spotifyId", "id"]),
+                [
+                    {
+                        username: "juanalopez1",
+                        email: "juanaxlopez1@gmail.com",
+                        name: "juana",
+                        password: "Juana123!",
+                        profilePictureId: 1,
+                    },
+                ]
+            ),
             response: {
                 200: tokenSchema,
                 400: SafeType.Ref(ErrorMessageSchema),
@@ -21,27 +33,15 @@ const auth: FastifyPluginAsyncTypebox = async (fastify, opts) => {
             security: [],
         },
 
-        handler: async function(request, reply) {
+        handler: async function (request, reply) {
             const body = request.body;
-            const result = await query(
-                String.raw`
-                INSERT
-                    INTO users (username, email, password_hash, spotify_id, profile_picture_id, name)
-                    VALUES ($1, $2, encrypt_password($3), $4, $5, $6)
-                        RETURNING id;`,
-                [
-                    body.username,
-                    body.email,
-                    body.password,
-                    body.spotify_id,
-                    body.profile_picture_id,
-                    body.name,
-                ],
-            );
-            if (result.rowCount !== 1) {
-                return reply.code(400).send({ errorMessage: "Id already exists." });
+            const result = await runPreparedQuery(insertUser, body);
+            if (result.length !== 1) {
+                return reply
+                    .code(400)
+                    .send({ errorMessage: "Id already exists." });
             }
-            const token = fastify.jwt.sign({ id: result.rows[0].id });
+            const token = fastify.jwt.sign({ id: result[0].id });
             return reply.code(200).send({ jwtToken: token });
         },
     });

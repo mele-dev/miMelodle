@@ -1,5 +1,8 @@
 #!/usr/bin/env sh
 
+# delete dist
+rm -rf ./dist
+
 # Install dependencies
 npm install
 
