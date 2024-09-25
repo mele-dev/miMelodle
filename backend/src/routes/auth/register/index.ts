@@ -5,6 +5,7 @@ import { UserSchema } from "../../../types/user.js";
 import { runPreparedQuery } from "../../../services/database.js";
 import { SafeType } from "../../../utils/typebox.js";
 import { insertUser } from "../../../queries/dml.queries.js";
+import { sendError } from "../../../utils/errors.js";
 
 const tokenSchema = SafeType.Object({
     jwtToken: SafeType.String(),
@@ -36,7 +37,7 @@ const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
             const body = request.body;
             const result = await runPreparedQuery(insertUser, body);
             if (result.length !== 1) {
-                return reply.unauthorized("Wrong email or password.");
+                return sendError(reply, "badRequest");
             }
             const token = fastify.jwt.sign({ id: result[0].id });
             return reply.code(200).send({ jwtToken: token });
