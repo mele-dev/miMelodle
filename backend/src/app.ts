@@ -1,50 +1,40 @@
-import * as path from 'path';
-import AutoLoad, {AutoloadPluginOptions} from '@fastify/autoload';
-import { FastifyPluginAsync } from 'fastify';
-import { fileURLToPath } from 'url'
-import schemaReferences from './types/schemaReferences.js';
+import * as path from "path";
+import AutoLoad, { AutoloadPluginOptions } from "@fastify/autoload";
+import { FastifyPluginAsync, FastifyPluginCallback } from "fastify";
+import { fileURLToPath } from "url";
+import schemaReferences from "./types/schemaReferences.js";
+import plugins from "./plugins/plugins.js";
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export type AppOptions = {
-  // Place your custom options for app below here.
+    // Place your custom options for app below here.
 } & Partial<AutoloadPluginOptions>;
 
-
 // Pass --options via CLI arguments in command to enable these options.
-const options: AppOptions = {
-}
+const options: AppOptions = {};
 
 const app: FastifyPluginAsync<AppOptions> = async (
     fastify,
     opts
 ): Promise<void> => {
-  // Place here your custom code!
+    // Manually load almost everything
     for (const schema of schemaReferences) {
         fastify.addSchema(schema);
     }
 
-  // Do not touch the following lines
+    for (const plugin of plugins) {
+        fastify.register(plugin);
+    }
 
-  // This loads all plugins defined in plugins
-  // those should be support plugins that are reused
-  // through your application
-  void fastify.register(AutoLoad, {
-    dir: path.join(__dirname, 'plugins'),
-    options: opts,
-    forceESM: true
-  })
-
-  // This loads all plugins defined in routes
-  // define your routes in one of these
-  void fastify.register(AutoLoad, {
-    dir: path.join(__dirname, 'routes'),
-    options: opts,
-    forceESM: true
-  })
-
+    // Autoload routes.
+    void fastify.register(AutoLoad, {
+        dir: path.join(__dirname, "routes"),
+        options: opts,
+        forceESM: true,
+    });
 };
 
 export default app;
-export { app, options }
+export { app, options };
