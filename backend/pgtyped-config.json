@@ -6,5 +6,9 @@
     }],
     "srcDir": "./src/queries/",
     "failOnError": true,
-    "camelCaseColumnNames": true
+    "camelCaseColumnNames": true,
+    "typesOverrides": {
+        "username_domain": "string",
+        "email_domain": "string"
+    }
 }
