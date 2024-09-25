@@ -23,7 +23,7 @@ const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
             ),
             response: {
                 200: tokenSchema,
-                ...SafeType.CreateErrors(["notFound", "badRequest"]),
+                ...SafeType.CreateErrors(["notFound"]),
             },
             security: [],
         },

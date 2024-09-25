@@ -7,6 +7,7 @@ import {
     TSchema,
     TString,
     Type,
+    SchemaOptions,
 } from "@sinclair/typebox";
 import { Value } from "@sinclair/typebox/value";
 import schemaReferences from "../types/schemaReferences.js";
@@ -26,8 +27,12 @@ const safeTypeOverrides = {
     Pick<
         TTSchema extends TSchema,
         TProperties extends (keyof TTSchema["properties"])[] & string[],
-    >(value: TTSchema, keys: TProperties): TPick<TTSchema, TProperties> {
-        return Type.Pick(value, keys);
+    >(
+        value: TTSchema,
+        keys: TProperties,
+        options?: SchemaOptions
+    ): TPick<TTSchema, TProperties> {
+        return Type.Pick(value, keys, options);
     },
     /**
      * [Json] Constructs a type whose keys are omitted from the given type
@@ -36,8 +41,12 @@ const safeTypeOverrides = {
     Omit<
         TTSchema extends TSchema,
         TProperties extends (keyof TTSchema["properties"])[] & string[],
-    >(value: TTSchema, keys: TProperties): TOmit<TTSchema, TProperties> {
-        return Type.Omit(value, keys);
+    >(
+        value: TTSchema,
+        keys: TProperties,
+        options?: SchemaOptions
+    ): TOmit<TTSchema, TProperties> {
+        return Type.Omit(value, keys, options);
     },
 } as const satisfies { [_ in keyof typeof Type]?: unknown };
 
@@ -62,7 +71,7 @@ const helpers = {
     /**
      * @summary
      * Returns an object mapping the code of every error name (or code) passed,
-     * to an appropriate error message schema, followin the standards of
+     * to an appropriate error message schema, following the standards of
      * fastifySensible.
      * @example
      * ; // ... In a route schema.
