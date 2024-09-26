@@ -1,4 +1,6 @@
 import fastifySensible from "@fastify/sensible";
+import { FastifyReply } from "fastify";
+import { reverseMap, ReverseMap } from "./utils.js";
 
 /**
  * Map from every error in fastify sensible to their status code.
@@ -57,16 +59,40 @@ export const commonErrors = {
     [K in fastifySensible.HttpErrorNames]: fastifySensible.HttpErrorCodes;
 };
 
+export const codeToCommonErrors = reverseMap(commonErrors);
+
 export type CommonErrors = typeof commonErrors;
 export type CommonErrorName = keyof CommonErrors;
 export type CommonErrorCode = CommonErrors[CommonErrorName];
+export type CodeToErrors = ReverseMap<CommonErrors>;
 
 export type CommonErrorToCode<
     TError extends CommonErrorName | CommonErrorCode,
 > = TError extends CommonErrorName ? CommonErrors[TError] : TError;
+
+export type CodeToCommonError<
+    TError extends CommonErrorName | CommonErrorCode,
+> = TError extends CommonErrorCode
+    ? (typeof codeToCommonErrors)[TError]
+    : TError;
 
 export type FastifyError<TNumber extends number> = {
     statusCode: TNumber;
     error: string;
     message: string;
 };
+
+export function sendError<
+    TCode extends keyof TResponses & CommonErrorCode,
+    TReply extends FastifyReply,
+    TResponses extends Record<number, any> = NonNullable<
+        NonNullable<TReply["routeOptions"]["schema"]>["response"]
+    >,
+>(
+    reply: TReply,
+    code: TCode | CodeToCommonError<TCode>,
+    message?: string
+): any {
+    const index = typeof code === "number" ? codeToCommonErrors[code] : code;
+    return reply[index](message);
+}

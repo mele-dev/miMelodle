@@ -13,6 +13,7 @@ services:
       - PGUSER=${DB_USER}
       - PGPASSWORD=${DB_PASSWORD}
       - PGHOST=${DB_HOST}
+      - NODE_ENV=${NODE_ENV}
     depends_on:
       - database
   frontend:

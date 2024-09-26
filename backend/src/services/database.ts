@@ -4,6 +4,9 @@ const { Pool } = pg;
 
 const pool = new Pool();
 
+// Return bigints as number instead string.
+pg.types.setTypeParser(pg.types.builtins.INT8, (str) => parseInt(str));
+
 export const query = async (
     text: string,
     params?: (string | number | string[] | number[])[]
