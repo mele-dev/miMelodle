@@ -29,3 +29,17 @@ RETURNING username;
      FROM users
     WHERE id = :id!
 RETURNING *;
+
+/* @name getUser */
+with friends as (select CASE
+                            when f.friend_id = :id! then f.user_id
+                            else f.friend_id
+                            end as friendId
+                 from friendships f
+                 where f.friend_id = :id!
+                    or f.user_id = :id!)
+SELECT u.username, pp.image_url as "imageUrl", friends
+FROM users u
+         inner join public.profile_pictures pp on pp.id = u.profile_picture_id
+WHERE username = :username!
+  and id = :id!;
