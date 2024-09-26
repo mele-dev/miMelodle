@@ -19,9 +19,12 @@ UPDATE users
   SET username = :username!
   , email = :email!
   , password_hash = encrypt_password(:password!)
-  , profile_picture_id = :profile_picture_id!
+  , profile_picture_id = :profilePictureId!
   , name = :name!
-WHERE username = :oldUsername!;
+WHERE username = :oldUsername!
+returning 1;
 
 /* @name deleteUser */
-delete from users where username = :username! returning 1;
+delete from users where id = :id! returning *;
+
+select * from profile_pictures;
