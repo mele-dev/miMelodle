@@ -1,6 +1,6 @@
 # Listado de rutas
 
-- auth/registro: post
+- auth/registro: post 
 
 - auth/login: post
 
