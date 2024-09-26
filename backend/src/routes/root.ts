@@ -9,7 +9,7 @@ const root: FastifyPluginAsync = async (fastify, _opts): Promise<void> => {
                 200: SafeType.Object({ root: SafeType.Literal(true) }),
             },
             description: "Route to check whether the service is working.",
-            tags: ["Melodle"] satisfies MelodleTagNames[]
+            tags: ["Other"] satisfies MelodleTagNames[]
         },
         handler: async function (_request, _reply) {
             return { root: true };

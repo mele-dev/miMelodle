@@ -28,7 +28,7 @@ export const userSchema = SafeType.Object(
         spotifyId: SafeType.String({
             description:
                 "The user's id to use to connect with spotify services. " +
-                "It is not stored within the database, but some request " +
+                "It is not stored within the database, but some requests " +
                 "need it to function.",
         }),
         profilePictureId: SafeType.Integer({

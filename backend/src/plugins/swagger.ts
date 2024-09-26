@@ -6,7 +6,11 @@ import fp from "fastify-plugin";
 export const tags = [
     {
         name: "Debug",
-        description: "Endpoints only enabled on debug mode.",
+        description:
+            "Endpoints only enabled on debug mode. " +
+            "If you see endpoints inside here while in production " +
+            "(so, if you are our client), please notify us. " +
+            "That would be a security vulnerability.",
     },
     {
         name: "Auth",
@@ -18,9 +22,9 @@ export const tags = [
             "Main application endpoints. These must all require authentication.",
     },
     {
-        "name": "Other",
-        "description": "Endpoints which serve odd purposes."
-    }
+        name: "Other",
+        description: "Endpoints which serve odd purposes.",
+    },
 ] as const satisfies {
     name: string;
     description: string;
