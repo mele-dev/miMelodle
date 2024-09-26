@@ -1,6 +1,6 @@
-import { ErrorMessageSchema, UserSchema } from "./user.js";
+import { jwtTokenSchema, userSchema } from "./user.js";
 
 export default [
-    UserSchema,
-    ErrorMessageSchema
+    userSchema,
+    jwtTokenSchema
 ];
