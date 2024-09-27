@@ -4,9 +4,7 @@
 
 - [x] auth/login: post 
 
-- auth/login/spotify: post
-
-- auth/login/spotify/callback: get
+- [x] auth/login/spotify/callback: get
 
 - public/usericons/:id: get
 

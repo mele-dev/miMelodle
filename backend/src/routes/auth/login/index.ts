@@ -40,6 +40,20 @@ const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
             return { jwtToken: token };
         },
     });
+
+    fastify.get('/verify', {
+        onRequest: fastify.authenticate,
+        schema: {
+            response: {
+                200: SafeType.Ref(jwtTokenSchema),
+                ...SafeType.CreateErrors(["unauthorized"]),
+            },
+            tags: ["Auth"] satisfies MelodleTagNames[],
+        },
+        handler: async function (request,reply) {
+            return reply.notImplemented();
+        }
+    })
 };
 
 export default auth;
