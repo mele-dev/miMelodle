@@ -2,6 +2,7 @@ import { FastifySwaggerOptions } from "@fastify/swagger";
 import swagger from "@fastify/swagger";
 import swaggerUi from "@fastify/swagger-ui";
 import fp from "fastify-plugin";
+import { SwaggerTheme, SwaggerThemeNameEnum } from "swagger-themes";
 
 export const tags = [
     {
@@ -75,6 +76,15 @@ export default fp<FastifySwaggerOptions>(async (fastify, opts) => {
             preHandler: function (request, reply, next) {
                 next();
             },
+        },
+        theme: {
+            "title": "Melodle API documentation",
+            "css": [
+                {
+                    "filename": "theme.css",
+                    content: new SwaggerTheme().getBuffer(SwaggerThemeNameEnum.DARK)
+                }
+            ]
         },
         staticCSP: true,
         transformStaticCSP: (header) => header,
