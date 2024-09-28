@@ -1,11 +1,14 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
-import { JwtTokenContent, jwtTokenSchema, userSchema } from "../../../types/user.js";
+import {
+    JwtTokenContent,
+    jwtTokenSchema,
+    userSchema,
+} from "../../../types/user.js";
 import { runPreparedQuery } from "../../../services/database.js";
 import { SafeType } from "../../../utils/typebox.js";
 import { insertUser } from "../../../queries/dml.queries.js";
 import { sendError } from "../../../utils/errors.js";
 import { MelodleTagNames } from "../../../plugins/swagger.js";
-
 
 const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
     fastify.post("/", {
@@ -23,7 +26,12 @@ const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 ]
             ),
             response: {
-                200: SafeType.Ref(jwtTokenSchema),
+                200: SafeType.WithExamples(SafeType.Ref(jwtTokenSchema), [
+                    {
+                        jwtToken:
+                            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNzI3NDExODc4fQ.lCYmZF_REl8rYYj1UjJzacXrPCTyjVdA-KsR71xHwQw",
+                    },
+                ]),
                 ...SafeType.CreateErrors(["badRequest"]),
             },
             security: [],
