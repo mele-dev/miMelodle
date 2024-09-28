@@ -121,10 +121,9 @@ const helpers = {
 
 /**
  * Safer variations of typebox types, and some helper functions.
- * If more flexibility is required, you can still call the original `Type`
- * (which is also a property of SafeType). Many of these are just copied from
- * Type, and the behaviour of all of them is the same, only their typescript
- * signatures are changed.
+ * If more flexibility is required, you can still call the original `Type`.
+ * Many of these are just copied from Type, and the behaviour of all of them
+ * is the same, only their typescript signatures are changed.
  */
 export const SafeType = {
     ...Type,
