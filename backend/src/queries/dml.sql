@@ -15,16 +15,17 @@ SELECT id
 RETURNING id;
 
 /* @name updateUser */
-UPDATE users
-  SET username = :username!
-  , email = :email!
-  , password_hash = encrypt_password(:password!)
-  , profile_picture_id = :profilePictureId!
-  , name = :name!
-WHERE username = :oldUsername!
-returning 1;
+   UPDATE users
+      SET username           = :username!
+        , email              = :email!
+        , password_hash      = encrypt_password(:password!)
+        , profile_picture_id = :profilePictureId!
+        , name               = :name!
+    WHERE username = :oldUsername!
+RETURNING username;
 
 /* @name deleteUser */
-delete from users where id = :id! returning *;
-
-select * from profile_pictures;
+   DELETE
+     FROM users
+    WHERE id = :id!
+RETURNING *;

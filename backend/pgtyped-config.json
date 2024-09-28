@@ -9,6 +9,7 @@
     "camelCaseColumnNames": true,
     "typesOverrides": {
         "username_domain": "string",
-        "email_domain": "string"
+        "email_domain": "string",
+        "int8": "number"
     }
 }

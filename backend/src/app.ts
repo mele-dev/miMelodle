@@ -4,6 +4,7 @@ import { FastifyPluginAsync, FastifyPluginCallback } from "fastify";
 import { fileURLToPath } from "url";
 import schemaReferences from "./types/schemaReferences.js";
 import plugins from "./plugins/plugins.js";
+import { TypeBoxValidatorCompiler } from "@fastify/type-provider-typebox";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -19,6 +20,8 @@ const app: FastifyPluginAsync<AppOptions> = async (
     fastify,
     opts
 ): Promise<void> => {
+    fastify.setValidatorCompiler(TypeBoxValidatorCompiler);
+
     // Manually load almost everything
     for (const schema of schemaReferences) {
         fastify.addSchema(schema);

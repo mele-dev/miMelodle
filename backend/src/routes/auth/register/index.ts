@@ -1,20 +1,20 @@
+import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import {
-    FastifyPluginAsyncTypebox,
-} from "@fastify/type-provider-typebox";
-import { UserSchema } from "../../../types/user.js";
+    JwtTokenContent,
+    jwtTokenSchema,
+    userSchema,
+} from "../../../types/user.js";
 import { runPreparedQuery } from "../../../services/database.js";
 import { SafeType } from "../../../utils/typebox.js";
 import { insertUser } from "../../../queries/dml.queries.js";
-
-const tokenSchema = SafeType.Object({
-    jwtToken: SafeType.String(),
-});
+import { sendError } from "../../../utils/errors.js";
+import { MelodleTagNames } from "../../../plugins/swagger.js";
 
 const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
     fastify.post("/", {
         schema: {
             body: SafeType.WithExamples(
-                SafeType.Omit(UserSchema, ["spotifyId", "id"]),
+                SafeType.Omit(userSchema, ["spotifyId", "id"]),
                 [
                     {
                         username: "juanalopez1",
@@ -26,19 +26,36 @@ const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 ]
             ),
             response: {
-                200: tokenSchema,
+                200: SafeType.WithExamples(SafeType.Ref(jwtTokenSchema), [
+                    {
+                        jwtToken:
+                            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNzI3NDExODc4fQ.lCYmZF_REl8rYYj1UjJzacXrPCTyjVdA-KsR71xHwQw",
+                    },
+                ]),
                 ...SafeType.CreateErrors(["badRequest"]),
             },
             security: [],
+            tags: ["Auth"] satisfies MelodleTagNames[],
+            summary: "Route to register a user.",
+            description:
+                "Creates a new user with the given credentials if possible.",
         },
 
         handler: async function (request, reply) {
-            const body = request.body;
-            const result = await runPreparedQuery(insertUser, body);
+            const result = await runPreparedQuery(insertUser, request.body);
+
             if (result.length !== 1) {
-                return reply.unauthorized("Wrong email or password.");
+                return sendError(
+                    reply,
+                    "badRequest",
+                    "No se pudo crear el usuario."
+                );
             }
-            const token = fastify.jwt.sign({ id: result[0].id });
+
+            const token = fastify.jwt.sign({
+                id: result[0].id,
+            } satisfies JwtTokenContent);
+
             return reply.code(200).send({ jwtToken: token });
         },
     });
