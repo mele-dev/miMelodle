@@ -48,7 +48,10 @@ const pub: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
             summary: "Get information about all user icons.",
             tags: ["Static"] satisfies MelodleTagNames[],
             response: {
-                200: SafeType.Array(profilePictureSchema),
+                200: SafeType.WithExamples(
+                    SafeType.Array(profilePictureSchema),
+                    [await runPreparedQuery(selectAllIcons, {})]
+                ),
             },
         },
         async handler(_request, reply) {

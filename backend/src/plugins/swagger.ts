@@ -27,6 +27,10 @@ export const tags = [
         description: "Endpoints about information that never changes through user interaction."
     },
     {
+        name: "User CRUD",
+        description: "Endpoints of the user's CRUD.",
+    },
+    {
         name: "Other",
         description: "Endpoints which serve odd purposes.",
     },

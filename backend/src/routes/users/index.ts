@@ -10,6 +10,7 @@ const users: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
     if (typedEnv.NODE_ENV === "development") {
         fastify.get("/", {
             schema: {
+                summary: "Route to get all users",
                 response: {
                     200: SafeType.Array(SafeType.Partial(userSchema)),
                 },

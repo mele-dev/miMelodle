@@ -1,7 +1,10 @@
 import fs from "fs";
 import { join } from "path";
 import { runPreparedQuery } from "./database.js";
-import { deleteIcons, insertIcons } from "../queries/dml.queries.js";
+import {
+    insertIcon,
+    selectAllIcons,
+} from "../queries/dml.queries.js";
 
 const iconsDir = join(process.cwd(), "public", "profile-icons");
 
@@ -39,15 +42,16 @@ export function getIconFromFile(filename: string): string | undefined {
 }
 
 async function updateDB() {
-    await runPreparedQuery(deleteIcons, {});
-    await runPreparedQuery(insertIcons, {
-        input: userIconFileNames.map((filename, index) => {
-            return {
-                id: index,
-                filename,
-            };
-        }),
-    });
+    const allIcons = (await runPreparedQuery(selectAllIcons, {})).map(
+        (i) => i.filename
+    );
+    for (const icon of userIconFileNames) {
+        if (allIcons.some((i) => i === icon)) {
+            continue;
+        }
+
+        await runPreparedQuery(insertIcon, { file: icon });
+    }
 }
 
 updateDB();
