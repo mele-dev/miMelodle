@@ -6,13 +6,17 @@ const root: FastifyPluginAsync = async (fastify, _opts): Promise<void> => {
     fastify.get("/", {
         schema: {
             response: {
-                200: SafeType.Object({ root: SafeType.Literal(true) }),
+                200: SafeType.Object({
+                    root: SafeType.Literal(true),
+                    message: SafeType.Literal("Pong!"),
+                }),
             },
             description: "Route to check whether the service is working.",
-            tags: ["Other"] satisfies MelodleTagNames[]
+            summary: "Ping!",
+            tags: ["Other"] satisfies MelodleTagNames[],
         },
         handler: async function (_request, _reply) {
-            return { root: true };
+            return { root: true, message: "Pong!" };
         },
     });
 };
