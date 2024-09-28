@@ -1,5 +1,9 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
-import { JwtTokenContent, jwtTokenSchema, userSchema } from "../../../types/user.js";
+import {
+    JwtTokenContent,
+    jwtTokenSchema,
+    userSchema,
+} from "../../../types/user.js";
 import { runPreparedQuery } from "../../../services/database.js";
 import { SafeType } from "../../../utils/typebox.js";
 import { loginUser } from "../../../queries/dml.queries.js";
@@ -20,9 +24,13 @@ const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
             ),
             tags: ["Auth"] satisfies MelodleTagNames[],
             response: {
-                200: SafeType.Ref(jwtTokenSchema),
+                200: SafeType.Intersect([
+                    jwtTokenSchema,
+                    SafeType.Pick(userSchema, ["id"]),
+                ]),
                 ...SafeType.CreateErrors(["notFound"]),
             },
+            summary: "Fetch a user's jwt token.",
             security: [],
         },
 
@@ -37,7 +45,7 @@ const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 id: result[0].id,
             } satisfies JwtTokenContent);
 
-            return { jwtToken: token };
+            return { jwtToken: token, id: result[0].id };
         },
     });
 

@@ -50,17 +50,27 @@ export const userSchema = SafeType.Object(
     }
 );
 
+// I do this because I can't use SafeType.WithExamples, since WithExamples
+// depends on the this schema.
+const jwtTokenSchemaSchematic = SafeType.Object({
+    jwtToken: SafeType.String({
+        description:
+            "The 'encrypted' jwt token. It is easily decryptable, " +
+            "so no sensitive information is stored there.",
+    }),
+});
+
 export const jwtTokenSchema = SafeType.Object(
-    {
-        jwtToken: SafeType.String({
-            description:
-                "The 'encrypted' jwt token. It is easily decryptable, " +
-                "so no sensitive information is stored there.",
-        }),
-    },
+    jwtTokenSchemaSchematic.properties,
     {
         description: "A token which will serve to authenticate a user.",
-        $id: "jwtToken"
+        examples: [
+            {
+                jwtToken:
+                    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNzI3NDExODc4fQ.lCYmZF_REl8rYYj1UjJzacXrPCTyjVdA-KsR71xHwQw",
+            },
+        ] satisfies Static<typeof jwtTokenSchemaSchematic>[],
+        $id: "jwtToken",
     }
 );
 
@@ -78,6 +88,7 @@ export const friendSchema = SafeType.Object({
 export const jwtTokenContentSchema = SafeType.Pick(userSchema, ["id"]);
 
 export type JwtTokenContent = Static<typeof jwtTokenContentSchema>;
+export type jwtTokenReturn = Static<typeof jwtTokenSchema>;
 
 export type User = Static<typeof userSchema>;
 
