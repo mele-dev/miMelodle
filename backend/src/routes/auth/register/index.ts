@@ -48,7 +48,7 @@ const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 ...SafeType.CreateErrors(["badRequest"]),
             },
             security: [],
-            tags: ["Auth", "User CRUD"] satisfies MelodleTagNames[],
+            tags: ["Auth", "User CRUD", "User"] satisfies MelodleTagNames[],
             summary: "Create a user.",
             description:
                 "Creates a new user with the given credentials if possible.",

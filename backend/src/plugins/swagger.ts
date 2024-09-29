@@ -24,7 +24,7 @@ const asciiArt = String.raw`(
 export const tags = [
     {
         name: "User CRUD",
-        description: "Endpoints of the user's CRUD.",
+        description: "Endpoints of the user's CRUD. (This is the one we implemented.)",
     },
     {
         name: "Debug",
