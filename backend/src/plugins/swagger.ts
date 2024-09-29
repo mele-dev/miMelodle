@@ -63,7 +63,7 @@ export const tags = [
 
 export type MelodleTagNames = (typeof tags)[number]["name"];
 
-export default fp<FastifySwaggerOptions>(async (fastify, opts) => {
+export default fp<FastifySwaggerOptions>(async (fastify, _opts) => {
     await fastify.register(swagger, {
         openapi: {
             openapi: "3.0.0",
@@ -112,10 +112,10 @@ export default fp<FastifySwaggerOptions>(async (fastify, opts) => {
             showExtensions: true,
         },
         uiHooks: {
-            onRequest: function (request, reply, next) {
+            onRequest: function (_request, _reply, next) {
                 next();
             },
-            preHandler: function (request, reply, next) {
+            preHandler: function (_request, _reply, next) {
                 next();
             },
         },
@@ -132,7 +132,7 @@ export default fp<FastifySwaggerOptions>(async (fastify, opts) => {
         },
         staticCSP: true,
         transformStaticCSP: (header) => header,
-        transformSpecification: (swaggerObject, request, reply) => {
+        transformSpecification: (swaggerObject, _request, _reply) => {
             return swaggerObject;
         },
         transformSpecificationClone: true,

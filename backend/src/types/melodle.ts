@@ -3,11 +3,15 @@ import { SafeType } from "../utils/typebox.js";
 import { userSchema } from "./user.js";
 
 export const musixmatchIdSchema = SafeType.Object({
-    musixmatchId: SafeType.String(),
+    musixmatchId: SafeType.String({
+        description:
+            "Identifier which can be used to fetch artist data from musicmatch.",
+    }),
 });
 
 export const MelodleAttemptSchema = SafeType.Object({
     guessedSongId: musixmatchIdSchema.properties.musixmatchId,
+    guessedAt: SafeType.String({ format: "date-time" }),
 });
 
 export const MelodleGameSchema = SafeType.Object({
