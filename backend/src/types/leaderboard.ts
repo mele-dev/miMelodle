@@ -25,19 +25,4 @@ export const leaderboardSchema = SafeType.Array(
     )
 )
 
-
-export const jwtTokenSchema = SafeType.Object(
-    {
-        jwtToken: SafeType.String({
-            description:
-                "The 'encrypted' jwt token. It is easily decryptable, " +
-                "so no sensitive information is stored there.",
-        }),
-    },
-    {
-        description: "A token which will serve to authenticate a user.",
-        $id: "jwtToken"
-    }
-);
-
 export type Leaderboard = Static<typeof leaderboardSchema>;
