@@ -22,6 +22,10 @@ export const tags = [
             "Main application endpoints. These must all require authentication.",
     },
     {
+        name: "Leaderboards",
+        description: "Ranking lists showing best players depending on every gamemode.",
+    },
+    {
         name: "Other",
         description: "Endpoints which serve odd purposes.",
     },
