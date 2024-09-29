@@ -1,7 +1,6 @@
-import { Static } from "@sinclair/typebox";
 import { SafeType } from "../utils/typebox.js";
 
-export const artisSchema = SafeType.Object(
+export const artistSchema = SafeType.Object(
     {
         id: SafeType.Integer({
             description:
@@ -10,17 +9,18 @@ export const artisSchema = SafeType.Object(
         }),
         musixmatchArtistId: SafeType.String({
             description:
-                "Numeric identifier for an artist given by MusixMatch"
+                "Identifier for an artist given by MusixMatch"
         }),
         name: SafeType.String({
             description:
-                "Numeric identifier for an artist given by MusixMatch"
+                "Name of the artist, does not have to be unique."
         }),
+        imageUrl: SafeType.Optional(SafeType.String({
+            description: "Url to download the artist's portrait image, if available."
+        })),
     },
     {
         $id: "ArtistSchema",
         title: "artistSchema",
     }
 );
-
-export type User = Static<typeof artisSchema>;

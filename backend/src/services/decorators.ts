@@ -33,6 +33,9 @@ export const decorators = {
             }
         };
     },
+    /** Required that the schema has a 401 error and a selfId in params,
+     * and check the selfId against the user's token.
+     */
     authenticateSelf(message?: string) {
         return async function (
             request: FastifyRequest & { params: { selfId: User["id"] } },

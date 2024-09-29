@@ -16,6 +16,9 @@ export const MelodleAttemptSchema = SafeType.Object({
 
 export const MelodleGameSchema = SafeType.Object({
     userId: userSchema.properties.id,
+    gameId: SafeType.Integer({
+        description: "A unique identifier for a melodle game."
+    }),
     attempts: SafeType.Array(MelodleAttemptSchema, {}),
     ...SafeType.Partial(
         SafeType.Object({

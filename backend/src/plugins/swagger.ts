@@ -24,7 +24,12 @@ const asciiArt = String.raw`(
 export const tags = [
     {
         name: "User CRUD",
-        description: "Endpoints of the user's CRUD. (This is the one we implemented.)",
+        description:
+            "Endpoints of the user's CRUD. (This is the one we implemented.)",
+    },
+    {
+        name: "Melodle",
+        description: "Endpoints specifically to play the melodle game.",
     },
     {
         name: "Debug",
@@ -49,7 +54,11 @@ export const tags = [
     },
     {
         name: "User",
-        description: "Endpoints to deal with users on their own."
+        description: "Endpoints to deal with users on their own.",
+    },
+    {
+        name: "TODO Schema",
+        description: "Endpoints whose schema we have yet to do."
     },
     {
         name: "Other",
@@ -69,7 +78,8 @@ export default fp<FastifySwaggerOptions>(async (fastify, _opts) => {
             openapi: "3.0.0",
             info: {
                 title: "Melodle API",
-                description: "---\n## Documentation for Melodle's devs.\n" +
+                description:
+                    "---\n## Documentation for Melodle's devs.\n" +
                     `\`\`\`${asciiArt}\`\`\``,
                 version: "0.1.0",
             },
