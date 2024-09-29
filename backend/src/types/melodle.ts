@@ -2,6 +2,10 @@ import { Static } from "@sinclair/typebox";
 import { SafeType } from "../utils/typebox.js";
 import { userSchema } from "./user.js";
 
+export const gameModes = ["Guess Line", "Guess Song"] as const;
+
+export type GameMode = (typeof gameModes)[number];
+
 export const musixmatchIdSchema = SafeType.Object({
     musixmatchId: SafeType.String({
         description:
@@ -28,7 +32,7 @@ export const MelodleGameSchema = SafeType.Object({
     ).properties,
     won: SafeType.Optional(SafeType.Boolean()),
     endingTime: SafeType.Optional(SafeType.String({ format: "date-time" })),
-    gameMode: SafeType.StringEnum(["Guess Line", "Guess Song"]),
+    gameMode: SafeType.StringEnum([...gameModes]),
 });
 
 export type MelodleGame = Static<typeof MelodleGameSchema>;

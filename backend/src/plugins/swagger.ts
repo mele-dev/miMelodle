@@ -61,6 +61,10 @@ export const tags = [
         description: "Endpoints to deal with users on their own.",
     },
     {
+        name: "Game configs",
+        "description": "Enspoints to manipulate your game configurations.",
+    },
+    {
         name: "Other",
         description: "Endpoints which serve odd purposes.",
     },
