@@ -22,6 +22,7 @@ export const friendSchema = SafeType.Object(
             format: "date-time",
             description: "Last update of the leaderboard.",
         }),
+        gameMode: SafeType.StringEnum(["Guess Line", "Guess Song"]),
     },
     {
         $id: "friendSchema",
