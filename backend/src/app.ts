@@ -20,7 +20,6 @@ const app: FastifyPluginAsync<AppOptions> = async (
     fastify,
     opts
 ): Promise<void> => {
-    fastify.setValidatorCompiler(TypeBoxValidatorCompiler);
 
     // Manually load almost everything
     for (const schema of schemaReferences) {

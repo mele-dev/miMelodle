@@ -23,6 +23,10 @@ export const tags = [
             "Main application endpoints. These must all require authentication.",
     },
     {
+        name: "Static",
+        description: "Endpoints about information that never changes through user interaction."
+    },
+    {
         name: "Other",
         description: "Endpoints which serve odd purposes.",
     },
