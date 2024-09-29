@@ -1,38 +1,22 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
-import { SafeType } from "../../utils/typebox.js";
-import { MelodleTagNames } from "../../plugins/swagger.js";
+import { SafeType } from "../../../../../../utils/typebox.js";
+import { MelodleTagNames } from "../../../../../../plugins/swagger.js";
 
 export default (async (fastify) => {
-    fastify.get("/global", {
+    fastify.get("/all", {
         onRequest: [],
         schema: {
             response: {
                 200: SafeType.Literal("TODO!"),
                 ...SafeType.CreateErrors([]),
             },
-            summary: "Fetches information about the global leaderboard.",
+            summary: "Gets information about the your friend's leaderboard on the gamemode.",
             description: undefined,
             tags: ["TODO Schema"] satisfies MelodleTagNames[],
         },
         async handler(_request, reply) {
             return reply.notImplemented();
-        },
-    });
-    fastify.get("/GuessLine", {
-        onRequest: [],
-        schema: {
-            response: {
-                200: SafeType.Literal("TODO!"),
-                ...SafeType.CreateErrors([]),
-            },
-            summary:
-                "Fetches information about the game mode's global leaderboard.",
-            description: undefined,
-            tags: ["TODO Schema"] satisfies MelodleTagNames[],
-        },
-        async handler(_request, reply) {
-            return reply.notImplemented();
-        },
+        }
     });
     fastify.get("/GuessSong", {
         onRequest: [],
@@ -41,13 +25,27 @@ export default (async (fastify) => {
                 200: SafeType.Literal("TODO!"),
                 ...SafeType.CreateErrors([]),
             },
-            summary:
-                "Fetches information about the game mode's global leaderboard.",
+            summary: "Gets information about the your friend's leaderboard on the gamemode.",
             description: undefined,
             tags: ["TODO Schema"] satisfies MelodleTagNames[],
         },
         async handler(_request, reply) {
             return reply.notImplemented();
+        }
+    });
+    fastify.get("/GuessLine", {
+        onRequest: [],
+        schema: {
+            response: {
+                200: SafeType.Literal("TODO!"),
+                ...SafeType.CreateErrors([]),
+            },
+            summary: "Gets information about the your friend leaderboard.",
+            description: undefined,
+            tags: ["TODO Schema"] satisfies MelodleTagNames[],
         },
+        async handler(_request, reply) {
+            return reply.notImplemented();
+        }
     });
 }) satisfies FastifyPluginAsyncTypebox;
