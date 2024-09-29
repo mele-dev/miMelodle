@@ -18,4 +18,49 @@ export default (async (fastify) => {
             return reply.notImplemented();
         }
     });
+    fastify.post("", {
+        onRequest: [],
+        schema: {
+            response: {
+                200: SafeType.Literal("TODO!"),
+                ...SafeType.CreateErrors([]),
+            },
+            summary: "Add a new configuration preset.",
+            description: undefined,
+            tags: ["TODO Schema"] satisfies MelodleTagNames[],
+        },
+        async handler(_request, reply) {
+            return reply.notImplemented();
+        }
+    });
+    fastify.delete("", {
+        onRequest: [],
+        schema: {
+            response: {
+                200: SafeType.Literal("TODO!"),
+                ...SafeType.CreateErrors([]),
+            },
+            summary: "Delete a configuration preset.",
+            description: undefined,
+            tags: ["TODO Schema"] satisfies MelodleTagNames[],
+        },
+        async handler(_request, reply) {
+            return reply.notImplemented();
+        }
+    });
+    fastify.put("", {
+        onRequest: [],
+        schema: {
+            response: {
+                200: SafeType.Literal("TODO!"),
+                ...SafeType.CreateErrors([]),
+            },
+            summary: "Update a configuration preset.",
+            description: undefined,
+            tags: ["TODO Schema"] satisfies MelodleTagNames[],
+        },
+        async handler(_request, reply) {
+            return reply.notImplemented();
+        }
+    });
 }) satisfies FastifyPluginAsyncTypebox;
