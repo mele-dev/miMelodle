@@ -13,7 +13,7 @@ const friendsRoutes: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 200: SafeType.Pick(userSchema, ["username"]),
                 ...SafeType.CreateErrors(["badRequest", "notFound", "unauthorized"]),
             },
-            tags: ["Friends", "Melodle"] satisfies MelodleTagNames[],
+            tags: ["Friends"] satisfies MelodleTagNames[],
             summary: "Removes a friend.",
             description:
                 "This does not block them, and if they are blocked " +
@@ -29,7 +29,7 @@ const friendsRoutes: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
         onRequest: [decorators.authenticateSelf()],
         schema: {
             params: friendRelationShipSchema,
-            tags: ["Friends", "Melodle"] satisfies MelodleTagNames[],
+            tags: ["Friends"] satisfies MelodleTagNames[],
             response: {
                 200: SafeType.Pick(userSchema, ["username"]),
                 ...SafeType.CreateErrors(["badRequest", "notFound", "unauthorized"]),
@@ -48,7 +48,7 @@ const friendsRoutes: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
             body: SafeType.Object({
                 status: SafeType.StringEnum(["blocked", "accepted"]),
             }),
-            tags: ["Friends", "Melodle"] satisfies MelodleTagNames[],
+            tags: ["Friends"] satisfies MelodleTagNames[],
             response: {
                 200: SafeType.Pick(friendSchema, ["status"]),
                 ...SafeType.CreateErrors([

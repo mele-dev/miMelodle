@@ -13,7 +13,7 @@ import { decorators } from "../../../services/decorators.js";
 import { profilePictureSchema } from "../../../types/public.js";
 
 const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
-    fastify.get("/:userId", {
+    fastify.get("/:selfId", {
         onRequest: [
             decorators.authenticateSelf(
                 "You must use a different route to get information from someone else."
@@ -34,7 +34,7 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 }),
                 ...SafeType.CreateErrors(["unauthorized"]),
             },
-            tags: ["Melodle", "User CRUD"] satisfies MelodleTagNames[],
+            tags: ["User CRUD", "User"] satisfies MelodleTagNames[],
             summary: "Get your own user's information.",
             description:
                 "This is the route that exposes the most information about a user.",
@@ -49,21 +49,24 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
         },
     });
 
-    fastify.put("/:userId", {
+    fastify.put("/:selfId", {
         onRequest: [
             decorators.authenticateSelf("You cannot modify someone else."),
         ],
         schema: {
-            params: SafeType.WithExamples(
-                selfIdSchema,
-                [
-                    {
-                        selfId: 1,
-                    },
-                ]
-            ),
+            params: SafeType.WithExamples(selfIdSchema, [
+                {
+                    selfId: 1,
+                },
+            ]),
             body: SafeType.WithExamples(
-                SafeType.Omit(userSchema, ["id", "spotifyId"]),
+                SafeType.Pick(userSchema, [
+                    "username",
+                    "email",
+                    "name",
+                    "password",
+                    "profilePictureId",
+                ]),
                 [
                     {
                         username: "juanchoTanca",
@@ -75,14 +78,20 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 ]
             ),
             response: {
-                200: SafeType.Omit(userSchema, ["id", "spotifyId"]),
+                200: SafeType.Pick(userSchema, [
+                    "username",
+                    "email",
+                    "name",
+                    "password",
+                    "profilePictureId",
+                ]),
                 ...SafeType.CreateErrors(["unauthorized"]),
             },
-            tags: ["Melodle", "User CRUD"] satisfies MelodleTagNames[],
+            tags: ["User CRUD", "User"] satisfies MelodleTagNames[],
             summary: "Update your own user's information.",
         },
         handler: async function (request, reply) {
-            const queryResult = await runPreparedQuery(updateUser, {
+            await runPreparedQuery(updateUser, {
                 ...request.body,
                 ...request.params,
             });
@@ -91,7 +100,7 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
         },
     });
 
-    fastify.delete("/:userId", {
+    fastify.delete("/:selfId", {
         onRequest: [decorators.authenticateSelf()],
         schema: {
             params: selfIdSchema,
@@ -99,7 +108,7 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 200: SafeType.Pick(userSchema, ["username"]),
                 ...SafeType.CreateErrors(["unauthorized", "notFound"]),
             },
-            tags: ["Melodle", "User CRUD"] satisfies MelodleTagNames[],
+            tags: ["User CRUD"] satisfies MelodleTagNames[],
             summary:
                 "Delete your own user and all their associated information.",
             description:

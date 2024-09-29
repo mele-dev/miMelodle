@@ -14,7 +14,13 @@ const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
     fastify.post("", {
         schema: {
             body: SafeType.WithExamples(
-                SafeType.Omit(userSchema, ["spotifyId", "id"]),
+                SafeType.Pick(userSchema, [
+                    "username",
+                    "profilePictureId",
+                    "email",
+                    "password",
+                    "name",
+                ]),
                 [
                     {
                         username: "juanalopez1",

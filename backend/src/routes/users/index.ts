@@ -29,11 +29,24 @@ const users: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
         });
     }
 
-    fastify.get("/:id", {
-        async handler(request, reply) {
-
-        }
-    })
+    fastify.get("/:userId", {
+        schema: {
+            security: [],
+            params: SafeType.Object({
+                userId: userSchema.properties.id,
+            }),
+            response: {
+                200: SafeType.Pick(userSchema, ["name", "username", "profilePictureFilename"]),
+            },
+            summary: "Get public information from some user.",
+            description:
+                "Authentication is not needed to see public user information.",
+            tags: ["User"] satisfies MelodleTagNames[],
+        },
+        async handler(_request, reply) {
+            return reply.notImplemented();
+        },
+    });
 };
 
 export default users;

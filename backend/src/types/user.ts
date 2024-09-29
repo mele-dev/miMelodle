@@ -1,5 +1,6 @@
 import { Static } from "@sinclair/typebox";
 import { SafeType } from "../utils/typebox.js";
+import { profilePictureSchema } from "./public.js";
 
 export const userSchema = SafeType.Object(
     {
@@ -37,6 +38,7 @@ export const userSchema = SafeType.Object(
                 "These pictures cannot be uploaded, we store the " +
                 "options manually.",
         }),
+        profilePictureFilename: profilePictureSchema.properties.filename,
         name: SafeType.String({
             maxLength: 25,
             minLength: 3,

@@ -12,7 +12,7 @@ const friendsRoutes: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
         onRequest: [decorators.authenticateSelf()],
         schema: {
             params: selfIdSchema,
-            tags: ["Melodle", "Friends"] satisfies MelodleTagNames[],
+            tags: ["Friends"] satisfies MelodleTagNames[],
             summary: "Get all friends from a user.",
             response: {
                 200: SafeType.Array(

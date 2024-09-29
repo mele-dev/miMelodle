@@ -22,6 +22,7 @@ const pub: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 }),
             }),
             tags: ["Static"] satisfies MelodleTagNames[],
+            security: [],
             response: {
                 200: svgSchema,
                 ...SafeType.CreateErrors(["notFound"]),
@@ -47,6 +48,7 @@ const pub: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
         schema: {
             summary: "Get information about all user icons.",
             tags: ["Static"] satisfies MelodleTagNames[],
+            security: [],
             response: {
                 200: SafeType.WithExamples(
                     SafeType.Array(profilePictureSchema),

@@ -39,22 +39,21 @@ export const tags = [
         description: "Authentication-related endpoints.",
     },
     {
-        name: "Melodle",
-        description:
-            "Main application endpoints. These must all require authentication.",
-    },
-    {
         name: "Static",
         description:
             "Endpoints about information that never changes through user interaction.",
     },
     {
-        name: "Other",
-        description: "Endpoints which serve odd purposes.",
+        name: "Friends",
+        description: "Friends related endpoints.",
     },
     {
-        name: "Friends",
-        description: "Friends-related endpoints.",
+        name: "User",
+        description: "Endpoints to deal with users on their own."
+    },
+    {
+        name: "Other",
+        description: "Endpoints which serve odd purposes.",
     },
 ] as const satisfies {
     name: string;

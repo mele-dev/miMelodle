@@ -6,7 +6,7 @@ const spotifyRoute: FastifyPluginAsyncTypebox = async (fastify, opts) => {
     fastify.get("/callback", {
         schema: {
             security: [],
-            tags: ["Melodle", "Auth"] satisfies MelodleTagNames[],
+            tags: ["Auth"] satisfies MelodleTagNames[],
         },
         async handler(request, reply) {
             return reply.notImplemented();
