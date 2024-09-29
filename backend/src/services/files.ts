@@ -6,7 +6,7 @@ import {
     selectAllIcons,
 } from "../queries/dml.queries.js";
 
-const iconsDir = join(process.cwd(), "public", "profile-icons");
+const iconsDir = join(process.cwd(), "assets", "profile-icons");
 
 const userIconFileNames = fs.readdirSync(iconsDir);
 
