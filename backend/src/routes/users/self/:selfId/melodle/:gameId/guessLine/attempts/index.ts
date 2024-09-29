@@ -12,7 +12,7 @@ export default (async (fastify) => {
             },
             summary: "Submit a guess for a melodle game.",
             description: undefined,
-            tags: ["TODO Schema"] satisfies MelodleTagNames[],
+            tags: ["Juana"] satisfies MelodleTagNames[],
         },
         async handler(_request, reply) {
             return reply.notImplemented();
