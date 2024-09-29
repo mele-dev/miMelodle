@@ -23,7 +23,7 @@ const leaderboard: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
             tags: ["Leaderboards"] satisfies MelodleTagNames[],
             summary: "Route to get global leaderboard.",
             description:
-                "Brings the global leaderboard, no matter gamemode.",
+                "Returns the global leaderboard across all game modes.",
         },
 
         handler: async function (request, reply) {
