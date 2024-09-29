@@ -23,6 +23,10 @@ const asciiArt = String.raw`(
 
 export const tags = [
     {
+        name: "TODO Schema",
+        description: "Endpoints whose schema we have yet to do."
+    },
+    {
         name: "User CRUD",
         description:
             "Endpoints of the user's CRUD. (This is the one we implemented.)",
@@ -55,10 +59,6 @@ export const tags = [
     {
         name: "User",
         description: "Endpoints to deal with users on their own.",
-    },
-    {
-        name: "TODO Schema",
-        description: "Endpoints whose schema we have yet to do."
     },
     {
         name: "Other",

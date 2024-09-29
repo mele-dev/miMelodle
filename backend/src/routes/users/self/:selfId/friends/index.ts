@@ -1,11 +1,11 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
-import { MelodleTagNames } from "../../../../plugins/swagger.js";
-import { SafeType } from "../../../../utils/typebox.js";
+import { MelodleTagNames } from "../../../../../plugins/swagger.js";
+import { SafeType } from "../../../../../utils/typebox.js";
 import {
     selfIdSchema,
     userSchema,
-} from "../../../../types/user.js";
-import { decorators } from "../../../../services/decorators.js";
+} from "../../../../../types/user.js";
+import { decorators } from "../../../../../services/decorators.js";
 
 const friendsRoutes: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
     fastify.get("", {

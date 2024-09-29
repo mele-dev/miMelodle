@@ -1,8 +1,8 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
-import { SafeType } from "../../../../../utils/typebox.js";
-import { friendRelationShipSchema, friendSchema, userSchema } from "../../../../../types/user.js";
-import { MelodleTagNames } from "../../../../../plugins/swagger.js";
-import { decorators } from "../../../../../services/decorators.js";
+import { SafeType } from "../../../../../../utils/typebox.js";
+import { friendRelationShipSchema, friendSchema, userSchema } from "../../../../../../types/user.js";
+import { MelodleTagNames } from "../../../../../../plugins/swagger.js";
+import { decorators } from "../../../../../../services/decorators.js";
 
 const friendsRoutes: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
     fastify.delete("", {

@@ -2,6 +2,7 @@ import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { SafeType } from "../../utils/typebox.js";
 import { ParamsSchema } from "../../types/params.js";
 import { artistSchema } from "../../types/artist.js";
+import { MelodleTagNames } from "../../plugins/swagger.js";
 
 const artist: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
     fastify.get("/:artistMusixMatchId", {
@@ -17,10 +18,27 @@ const artist: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 ]),
                 ...SafeType.CreateErrors(["notFound"]),
             },
+            tags: ["TODO Schema"] satisfies MelodleTagNames[],
         },
         async handler(_request, reply) {
             return reply.notImplemented();
         },
+    });
+
+    fastify.get("/search", {
+        onRequest: [],
+        schema: {
+            response: {
+                200: SafeType.Literal("TODO!"),
+                ...SafeType.CreateErrors([]),
+            },
+            summary: "Search for available artists.",
+            description: undefined,
+            tags: ["TODO Schema"] satisfies MelodleTagNames[],
+        },
+        async handler(_request, reply) {
+            return reply.notImplemented();
+        }
     });
 };
 

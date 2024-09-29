@@ -1,19 +1,19 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
-import { SafeType } from "../../../utils/typebox.js";
-import { selfIdSchema, userSchema } from "../../../types/user.js";
-import { MelodleTagNames } from "../../../plugins/swagger.js";
-import { runPreparedQuery } from "../../../services/database.js";
+import { SafeType } from "../../../../utils/typebox.js";
+import { selfIdSchema, userSchema } from "../../../../types/user.js";
+import { MelodleTagNames } from "../../../../plugins/swagger.js";
+import { runPreparedQuery } from "../../../../services/database.js";
 import {
     deleteUser,
     getSelfuser,
     updateUser,
-} from "../../../queries/dml.queries.js";
-import { sendError } from "../../../utils/errors.js";
-import { decorators } from "../../../services/decorators.js";
-import { profilePictureSchema } from "../../../types/public.js";
+} from "../../../../queries/dml.queries.js";
+import { sendError } from "../../../../utils/errors.js";
+import { decorators } from "../../../../services/decorators.js";
+import { profilePictureSchema } from "../../../../types/public.js";
 
 const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
-    fastify.get("/:selfId", {
+    fastify.get("", {
         onRequest: [
             decorators.authenticateSelf(
                 "You must use a different route to get information from someone else."
@@ -49,7 +49,7 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
         },
     });
 
-    fastify.put("/:selfId", {
+    fastify.put("", {
         onRequest: [
             decorators.authenticateSelf("You cannot modify someone else."),
         ],
@@ -100,7 +100,7 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
         },
     });
 
-    fastify.delete("/:selfId", {
+    fastify.delete("", {
         onRequest: [decorators.authenticateSelf()],
         schema: {
             params: selfIdSchema,
