@@ -1,10 +1,17 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import fastify from "fastify";
+import { MelodleTagNames } from "../../../../plugins/swagger.js";
 
-const spotifyRoute : FastifyPluginAsyncTypebox = async(fastify,opts) => {
-    fastify.get('/callback', async function (request,reply) {
-        return reply.notImplemented();
-    })
-}
+const spotifyRoute: FastifyPluginAsyncTypebox = async (fastify, opts) => {
+    fastify.get("/callback", {
+        schema: {
+            security: [],
+            tags: ["Melodle", "Auth"] satisfies MelodleTagNames[],
+        },
+        async handler(request, reply) {
+            return reply.notImplemented();
+        },
+    });
+};
 
 export default spotifyRoute;

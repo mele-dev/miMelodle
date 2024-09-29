@@ -11,7 +11,7 @@ import { sendError } from "../../../utils/errors.js";
 import { MelodleTagNames } from "../../../plugins/swagger.js";
 
 const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
-    fastify.post("/", {
+    fastify.post("", {
         schema: {
             body: SafeType.WithExamples(
                 SafeType.Pick(userSchema, ["email", "password"]),
@@ -48,20 +48,6 @@ const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
             return { jwtToken: token, id: result[0].id };
         },
     });
-
-    fastify.get('/verify', {
-        onRequest: fastify.authenticate,
-        schema: {
-            response: {
-                200: SafeType.Ref(jwtTokenSchema),
-                ...SafeType.CreateErrors(["unauthorized"]),
-            },
-            tags: ["Auth"] satisfies MelodleTagNames[],
-        },
-        handler: async function (request,reply) {
-            return reply.notImplemented();
-        }
-    })
 };
 
 export default auth;

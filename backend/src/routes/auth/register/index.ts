@@ -11,7 +11,7 @@ import { sendError } from "../../../utils/errors.js";
 import { MelodleTagNames } from "../../../plugins/swagger.js";
 
 const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
-    fastify.post("/", {
+    fastify.post("", {
         schema: {
             body: SafeType.WithExamples(
                 SafeType.Omit(userSchema, ["spotifyId", "id"]),

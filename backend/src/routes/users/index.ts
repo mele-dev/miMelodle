@@ -8,8 +8,9 @@ import { MelodleTagNames } from "../../plugins/swagger.js";
 
 const users: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
     if (typedEnv.NODE_ENV === "development") {
-        fastify.get("/", {
+        fastify.get("", {
             schema: {
+                security: [],
                 summary: "Route to get all users",
                 response: {
                     200: SafeType.Array(SafeType.Partial(userSchema)),

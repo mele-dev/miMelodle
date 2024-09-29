@@ -27,7 +27,7 @@ RETURNING username;
 /* @name deleteUser */
    DELETE
      FROM users
-    WHERE id = :id!
+    WHERE id = :userId!
 RETURNING *;
 
 /* @name selectAllIcons */

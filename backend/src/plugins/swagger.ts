@@ -4,7 +4,28 @@ import swaggerUi from "@fastify/swagger-ui";
 import fp from "fastify-plugin";
 import { SwaggerTheme, SwaggerThemeNameEnum } from "swagger-themes";
 
+const asciiArt = String.raw`(
+ AAAAAaaaaaaaa!
+              (   ()   )
+    ) ________    //  )
+ ()  |\       \  //
+( \\__ \ ______\//
+   \__) |       |
+     |  |       |
+      \ |       |
+       \|_______|
+       //    \\
+      ((     ||
+       \\    ||
+     ( ()    ||
+      (      () ) )
+`;
+
 export const tags = [
+    {
+        name: "User CRUD",
+        description: "Endpoints of the user's CRUD.",
+    },
     {
         name: "Debug",
         description:
@@ -24,11 +45,8 @@ export const tags = [
     },
     {
         name: "Static",
-        description: "Endpoints about information that never changes through user interaction."
-    },
-    {
-        name: "User CRUD",
-        description: "Endpoints of the user's CRUD.",
+        description:
+            "Endpoints about information that never changes through user interaction.",
     },
     {
         name: "Other",
@@ -52,7 +70,8 @@ export default fp<FastifySwaggerOptions>(async (fastify, opts) => {
             openapi: "3.0.0",
             info: {
                 title: "Melodle API",
-                description: "Documentation for Melodle's devs.",
+                description: "---\n## Documentation for Melodle's devs.\n" +
+                    `\`\`\`${asciiArt}\`\`\``,
                 version: "0.1.0",
             },
             components: {
@@ -64,7 +83,7 @@ export default fp<FastifySwaggerOptions>(async (fastify, opts) => {
                     },
                 },
             },
-            
+
             tags,
             servers: [
                 {
@@ -81,34 +100,36 @@ export default fp<FastifySwaggerOptions>(async (fastify, opts) => {
         uiConfig: {
             docExpansion: "list",
             deepLinking: true,
-            "filter": true,
-            "defaultModelExpandDepth": 10,
-            "defaultModelsExpandDepth": 10,
-            "defaultModelRendering": "example",
-            "syntaxHighlight": {
-                "theme": "arta"
+            filter: true,
+            defaultModelExpandDepth: 10,
+            defaultModelsExpandDepth: 10,
+            defaultModelRendering: "example",
+            syntaxHighlight: {
+                theme: "arta",
             },
-            "showCommonExtensions": true,
-            "persistAuthorization": true,
+            showCommonExtensions: true,
+            persistAuthorization: true,
             displayRequestDuration: true,
             showExtensions: true,
         },
         uiHooks: {
-            onRequest: function(request, reply, next) {
+            onRequest: function (request, reply, next) {
                 next();
             },
-            preHandler: function(request, reply, next) {
+            preHandler: function (request, reply, next) {
                 next();
             },
         },
         theme: {
-            "title": "Melodle API documentation",
-            "css": [
+            title: "Melodle API documentation",
+            css: [
                 {
-                    "filename": "theme.css",
-                    content: new SwaggerTheme().getBuffer(SwaggerThemeNameEnum.DARK)
-                }
-            ]
+                    filename: "theme.css",
+                    content: new SwaggerTheme().getBuffer(
+                        SwaggerThemeNameEnum.DARK
+                    ),
+                },
+            ],
         },
         staticCSP: true,
         transformStaticCSP: (header) => header,

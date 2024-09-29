@@ -76,12 +76,13 @@ export const jwtTokenSchema = SafeType.Object(
 
 export const friendSchema = SafeType.Object({
     username: userSchema.properties.username,
-    status: SafeType.Union([
-        SafeType.Literal('pending'),
-        SafeType.Literal('blocked'),
-        SafeType.Literal('accepted'),
-    ])
+    status: SafeType.StringEnum(["pending", "blocked", "accepted"])
 })
+
+export const friendRelationShipSchema = SafeType.Object({
+    userId: userSchema.properties.id,
+    friendId: userSchema.properties.id,
+});
 
 
 /** Use this schema to assert the contents of the jwt token. */
