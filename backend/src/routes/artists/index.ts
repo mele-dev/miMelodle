@@ -2,17 +2,13 @@ import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import {
     artistSchema,
 } from "../../../types/artists.js";
-import { runPreparedQuery } from "../../../services/database.js";
 import { SafeType } from "../../utils/typebox.js";
-import { insertUser } from "../../queries/dml.queries.js";
-import { sendError } from "../../../utils/errors.js";
-import { MelodleTagNames } from "../../../plugins/swagger.js";
 
-const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
+const artist: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
     fastify.post("", {
         schema: {
             body: SafeType.WithExamples(
-                SafeType.Pick(userSchema, [
+                SafeType.Pick(artistSchema, [
                     "username",
                     "profilePictureId",
                     "email",
@@ -72,4 +68,4 @@ const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
     });
 };
 
-export default auth;
+export default artist;

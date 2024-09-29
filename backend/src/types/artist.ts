@@ -12,6 +12,10 @@ export const artisSchema = SafeType.Object(
             description:
                 "Numeric identifier for an artist given by MusixMatch"
         }),
+        name: SafeType.String({
+            description:
+                "Numeric identifier for an artist given by MusixMatch"
+        }),
     },
     {
         $id: "ArtistSchema",
