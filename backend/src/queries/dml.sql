@@ -6,11 +6,11 @@ SELECT *
 SELECT id
   FROM users
  WHERE email = :email!
-   AND check_password(password_hash, :password!);
+   AND check_password("passwordHash", :password!);
 
 /* @name insertUser */
    INSERT
-     INTO users (username, email, password_hash, spotify_id, profile_picture_id, name)
+     INTO users (username, email, "passwordHash", "spotifyId", "profilePictureId", name)
    VALUES (:username!, :email!, encrypt_password(:password!), default, :profilePictureId!, :name!)
 RETURNING id;
 
@@ -18,8 +18,8 @@ RETURNING id;
    UPDATE users
       SET username           = :username!
         , email              = :email!
-        , password_hash      = encrypt_password(:password!)
-        , profile_picture_id = :profilePictureId!
+        , "passwordHash"     = encrypt_password(:password!)
+        , "profilePictureId" = :profilePictureId!
         , name               = :name!
     WHERE username = :oldUsername!
 RETURNING username;
@@ -29,3 +29,20 @@ RETURNING username;
      FROM users
     WHERE id = :id!
 RETURNING *;
+
+/* @name selectAllIcons */
+SELECT *
+  FROM "profilePictures";
+
+/* @name deleteIcons */
+   DELETE
+     FROM "profilePictures"
+RETURNING 1 as output;
+
+/*
+  @name insertIcons
+  @param input -> ((id!, filename!)...)
+*/
+INSERT
+  INTO "profilePictures" (id, filename)
+VALUES :input;

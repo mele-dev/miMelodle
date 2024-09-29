@@ -92,7 +92,7 @@ export function sendError<
     reply: TReply,
     code: TCode | CodeToCommonError<TCode>,
     message?: string
-): any {
+) {
     const index = typeof code === "number" ? codeToCommonErrors[code] : code;
     return reply[index](message);
 }

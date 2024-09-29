@@ -2,6 +2,7 @@ import { FastifySwaggerOptions } from "@fastify/swagger";
 import swagger from "@fastify/swagger";
 import swaggerUi from "@fastify/swagger-ui";
 import fp from "fastify-plugin";
+import { SwaggerTheme, SwaggerThemeNameEnum } from "swagger-themes";
 
 export const tags = [
     {
@@ -55,6 +56,7 @@ export default fp<FastifySwaggerOptions>(async (fastify, opts) => {
                     },
                 },
             },
+            
             tags,
             servers: [
                 {
@@ -69,16 +71,36 @@ export default fp<FastifySwaggerOptions>(async (fastify, opts) => {
     await fastify.register(swaggerUi, {
         routePrefix: "docs",
         uiConfig: {
-            docExpansion: "full",
-            deepLinking: false,
+            docExpansion: "list",
+            deepLinking: true,
+            "filter": true,
+            "defaultModelExpandDepth": 10,
+            "defaultModelsExpandDepth": 10,
+            "defaultModelRendering": "example",
+            "syntaxHighlight": {
+                "theme": "arta"
+            },
+            "showCommonExtensions": true,
+            "persistAuthorization": true,
+            displayRequestDuration: true,
+            showExtensions: true,
         },
         uiHooks: {
-            onRequest: function (request, reply, next) {
+            onRequest: function(request, reply, next) {
                 next();
             },
-            preHandler: function (request, reply, next) {
+            preHandler: function(request, reply, next) {
                 next();
             },
+        },
+        theme: {
+            "title": "Melodle API documentation",
+            "css": [
+                {
+                    "filename": "theme.css",
+                    content: new SwaggerTheme().getBuffer(SwaggerThemeNameEnum.DARK)
+                }
+            ]
         },
         staticCSP: true,
         transformStaticCSP: (header) => header,

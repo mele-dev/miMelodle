@@ -8,6 +8,7 @@ import {
     TString,
     Type,
     SchemaOptions,
+    UnsafeOptions,
 } from "@sinclair/typebox";
 import { Value } from "@sinclair/typebox/value";
 import schemaReferences from "../types/schemaReferences.js";
@@ -51,7 +52,14 @@ const safeTypeOverrides = {
 } as const satisfies { [_ in keyof typeof Type]?: unknown };
 
 // Added functionality
-const helpers = {
+const extensions = {
+    StringEnum<T extends string[]>(values: [...T], options?: UnsafeOptions) {
+        return Type.Unsafe<T[number]>({
+            type: "string",
+            enum: values,
+            ...options
+        });
+    },
     /**
      * Adds example values to the schema, and checks if they are valid. If not,
      * throws an exception.
@@ -121,15 +129,14 @@ const helpers = {
 
 /**
  * Safer variations of typebox types, and some helper functions.
- * If more flexibility is required, you can still call the original `Type`
- * (which is also a property of SafeType). Many of these are just copied from
- * Type, and the behaviour of all of them is the same, only their typescript
- * signatures are changed.
+ * If more flexibility is required, you can still call the original `Type`.
+ * Many of these are just copied from Type, and the behaviour of all of them
+ * is the same, only their typescript signatures are changed.
  */
 export const SafeType = {
     ...Type,
     ...safeTypeOverrides,
-    ...helpers,
+    ...extensions,
 } as Omit<typeof Type, keyof typeof safeTypeOverrides> &
     typeof safeTypeOverrides &
-    typeof helpers;
+    typeof extensions;

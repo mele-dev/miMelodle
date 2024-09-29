@@ -4,9 +4,9 @@ CREATE SCHEMA public;
 
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
-CREATE TABLE profile_pictures (
+CREATE TABLE "profilePictures" (
     id        SERIAL PRIMARY KEY,
-    image_url TEXT NOT NULL
+    "filename" TEXT NOT NULL
 );
 
 CREATE DOMAIN email_domain AS VARCHAR(254) CHECK ( value ~ '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$' );
@@ -18,94 +18,92 @@ CREATE TABLE users (
     username           username_domain UNIQUE                            NOT NULL,
     -- https://stackoverflow.com/questions/386294/what-is-the-maximum-length-of-a-valid-email-address
     email              email_domain UNIQUE                               NOT NULL,
-    password_hash      TEXT                                              NULL,
-    spotify_id         TEXT UNIQUE                                       NULL,
-    profile_picture_id BIGINT REFERENCES profile_pictures (id) DEFAULT 0 NOT NULL,
+    "passwordHash"      TEXT                                              NULL,
+    "spotifyId"         TEXT UNIQUE                                       NULL,
+    "profilePictureId" BIGINT REFERENCES "profilePictures" (id) DEFAULT 0 NOT NULL,
     name               VARCHAR(25)                                       NOT NULL,
-    CHECK ( password_hash IS NOT NULL OR spotify_id IS NOT NULL )
+    CHECK ( "passwordHash" IS NOT NULL OR "spotifyId" IS NOT NULL )
 );
 
-CREATE TYPE friendship_status AS ENUM ('pending', 'accepted', 'blocked');
+CREATE TYPE "friendshipStatus" AS ENUM ('pending', 'accepted', 'blocked');
 
 CREATE TABLE friendships (
     id         SERIAL PRIMARY KEY,
-    user_id    BIGINT REFERENCES users (id)        NOT NULL,
-    friend_id  BIGINT REFERENCES users (id)        NOT NULL,
-    created_at timestamptz       DEFAULT NOW()     NOT NULL,
-    status     friendship_status DEFAULT 'pending' NOT NULL,
-    CHECK ( user_id <> friendships.friend_id )
+    "userId"    BIGINT REFERENCES users (id)        NOT NULL,
+    "friendId"  BIGINT REFERENCES users (id)        NOT NULL,
+    "createdAt" timestamptz       DEFAULT NOW()     NOT NULL,
+    status     "friendshipStatus" DEFAULT 'pending' NOT NULL,
+    CHECK ( "userId" <> friendships."friendId" )
 );
 
 CREATE TABLE artists (
     id                   SERIAL PRIMARY KEY,
-    musixmatch_artist_id TEXT UNIQUE NOT NULL
+    "musixmatchArtistId" TEXT UNIQUE NOT NULL
 );
 
 CREATE TABLE saved_artists (
     id          SERIAL PRIMARY KEY,
-    user_id     BIGINT REFERENCES users (id)   NOT NULL,
-    artist_id   BIGINT REFERENCES artists (id) NOT NULL,
-    saved_at    timestamptz DEFAULT NOW()      NOT NULL,
-    is_favorite bool        DEFAULT FALSE      NOT NULL
+    "userId"     BIGINT REFERENCES users (id)   NOT NULL,
+    "artistId"   BIGINT REFERENCES artists (id) NOT NULL,
+    "savedAt"    timestamptz DEFAULT NOW()      NOT NULL,
+    "isFavorite" bool        DEFAULT FALSE      NOT NULL
 );
 
 CREATE TABLE streaks (
     id           SERIAL PRIMARY KEY,
-    user_id      BIGINT REFERENCES users (id) NOT NULL,
-    streak_count BIGINT      DEFAULT 0        NOT NULL,
-    last_updated timestamptz DEFAULT NOW()    NOT NULL,
-    max_streak   INTEGER     DEFAULT 0        NOT NULL
+    "userId"      BIGINT REFERENCES users (id) NOT NULL,
+    "streakCount" BIGINT      DEFAULT 0        NOT NULL,
+    "lastUpdated" timestamptz DEFAULT NOW()    NOT NULL,
+    "maxStreak"   INTEGER     DEFAULT 0        NOT NULL
 );
 
 CREATE TABLE songs (
     id            SERIAL PRIMARY KEY,
-    musixmatch_id TEXT NOT NULL UNIQUE
+    "musixmatchId" TEXT NOT NULL UNIQUE
 );
 
 CREATE TABLE games (
     id        SERIAL PRIMARY KEY,
-    user_id   BIGINT REFERENCES users (id) NOT NULL,
-    song_id   BIGINT REFERENCES songs (id) NOT NULL,
-    game_date DATE DEFAULT NOW()::DATE     NOT NULL
+    "userId"   BIGINT REFERENCES users (id) NOT NULL,
+    "songId"   BIGINT REFERENCES songs (id) NOT NULL,
+    "gameId" DATE DEFAULT NOW()::DATE     NOT NULL
 );
 
 CREATE TABLE attempts (
     id              SERIAL PRIMARY KEY,
-    game_id         BIGINT REFERENCES games (id) NOT NULL,
-    guessed_song_id BIGINT REFERENCES songs (id) NOT NULL,
-    guessed_at      timestamptz                  NOT NULL
+    "gameId"         BIGINT REFERENCES games (id) NOT NULL,
+    "guessedSongId" BIGINT REFERENCES songs (id) NOT NULL,
+    "guessedAt"      timestamptz                  NOT NULL
 );
 
-CREATE TABLE game_modes (
+CREATE TABLE "gameModes" (
     id   SERIAL PRIMARY KEY,
     name TEXT UNIQUE NOT NULL
 );
 
 INSERT
-  INTO game_modes(name)
-VALUES ('guess_line')
-     , ('guess_song');
+  INTO "gameModes"(name)
+VALUES ('Guess Line')
+     , ('Guess Song');
 
 SELECT *
-  FROM game_modes;
+  FROM "gameModes";
 
-CREATE TABLE game_config (
+CREATE TABLE "gameConfig" (
     id        SERIAL PRIMARY KEY,
-    user_id   BIGINT REFERENCES users (id)                NOT NULL,
-    game_mode BIGINT DEFAULT 1 REFERENCES game_modes (id) NOT NULL
+    "userId"   BIGINT REFERENCES users (id)                NOT NULL,
+    "gameMode" BIGINT DEFAULT 1 REFERENCES "gameModes" (id) NOT NULL
 );
 
-COMMENT ON TABLE game_config IS 'Configs are a work in progress.';
-
-CREATE TABLE artist_game_config (
-    game_config_id BIGINT REFERENCES game_config (id) NOT NULL,
-    artist_id      BIGINT REFERENCES artists (id)     NOT NULL,
-    PRIMARY KEY (game_config_id, artist_id)
+CREATE TABLE "artistGameConfig" (
+    "gameConfigId" BIGINT REFERENCES "gameConfig" (id) NOT NULL,
+    "artistId"      BIGINT REFERENCES artists (id)     NOT NULL,
+    PRIMARY KEY ("gameConfigId", "artistId")
 );
 
-CREATE TABLE artist_song (
-    song_id   BIGINT REFERENCES songs (id)   NOT NULL,
-    artist_id BIGINT REFERENCES artists (id) NOT NULL
+CREATE TABLE "artistSong" (
+    "songId"   BIGINT REFERENCES songs (id)   NOT NULL,
+    "artistId" BIGINT REFERENCES artists (id) NOT NULL
 );
 
 CREATE OR REPLACE FUNCTION encrypt_password(
