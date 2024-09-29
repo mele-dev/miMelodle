@@ -64,6 +64,10 @@ export const tags = [
         name: "Other",
         description: "Endpoints which serve odd purposes.",
     },
+    {
+        name: "Juana",
+        description: "Cris must check"
+    }
 ] as const satisfies {
     name: string;
     description: string;

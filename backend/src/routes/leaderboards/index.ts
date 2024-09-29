@@ -12,7 +12,7 @@ export default (async (fastify) => {
             },
             summary: "Fetches information about the global leaderboard.",
             description: undefined,
-            tags: ["TODO Schema"] satisfies MelodleTagNames[],
+            tags: ["Juana"] satisfies MelodleTagNames[],
         },
         async handler(_request, reply) {
             return reply.notImplemented();
@@ -27,7 +27,7 @@ export default (async (fastify) => {
             },
             summary: "Fetches information about the global leaderboard for.",
             description: undefined,
-            tags: ["TODO Schema"] satisfies MelodleTagNames[],
+            tags: ["Juana"] satisfies MelodleTagNames[],
         },
         async handler(_request, reply) {
             return reply.notImplemented();
@@ -42,7 +42,7 @@ export default (async (fastify) => {
             },
             summary: "Fetches information about the global leaderboard.",
             description: undefined,
-            tags: ["TODO Schema"] satisfies MelodleTagNames[],
+            tags: ["Juana"] satisfies MelodleTagNames[],
         },
         async handler(_request, reply) {
             return reply.notImplemented();
