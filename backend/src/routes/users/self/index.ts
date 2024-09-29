@@ -1,6 +1,6 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { SafeType } from "../../../utils/typebox.js";
-import { userSchema } from "../../../types/user.js";
+import { selfIdSchema, userSchema } from "../../../types/user.js";
 import { MelodleTagNames } from "../../../plugins/swagger.js";
 import { runPreparedQuery } from "../../../services/database.js";
 import {
@@ -12,7 +12,7 @@ import { sendError } from "../../../utils/errors.js";
 import { decorators } from "../../../services/decorators.js";
 import { profilePictureSchema } from "../../../types/public.js";
 
-const profile: FastifyPluginAsyncTypebox = async (fastify, opts) => {
+const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
     fastify.get("/:userId", {
         onRequest: [
             decorators.authenticateSelf(
@@ -20,9 +20,7 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, opts) => {
             ),
         ],
         schema: {
-            params: SafeType.Object({
-                userId: userSchema.properties.id,
-            }),
+            params: selfIdSchema,
             response: {
                 200: SafeType.Object({
                     ...SafeType.Pick(userSchema, [
@@ -34,6 +32,7 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, opts) => {
                     profilePictureFile:
                         profilePictureSchema.properties.filename,
                 }),
+                ...SafeType.CreateErrors(["unauthorized"]),
             },
             tags: ["Melodle", "User CRUD"] satisfies MelodleTagNames[],
             summary: "Get your own user's information.",
@@ -56,12 +55,10 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, opts) => {
         ],
         schema: {
             params: SafeType.WithExamples(
-                SafeType.Object({
-                    userId: userSchema.properties.id,
-                }),
+                selfIdSchema,
                 [
                     {
-                        userId: 1,
+                        selfId: 1,
                     },
                 ]
             ),
@@ -97,9 +94,7 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, opts) => {
     fastify.delete("/:userId", {
         onRequest: [decorators.authenticateSelf()],
         schema: {
-            params: SafeType.Object({
-                userId: userSchema.properties.id,
-            }),
+            params: selfIdSchema,
             response: {
                 200: SafeType.Pick(userSchema, ["username"]),
                 ...SafeType.CreateErrors(["unauthorized", "notFound"]),

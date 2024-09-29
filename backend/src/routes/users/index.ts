@@ -28,6 +28,12 @@ const users: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
             },
         });
     }
+
+    fastify.get("/:id", {
+        async handler(request, reply) {
+
+        }
+    })
 };
 
 export default users;

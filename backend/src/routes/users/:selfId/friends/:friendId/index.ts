@@ -11,7 +11,7 @@ const friendsRoutes: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
             params: friendRelationShipSchema,
             response: {
                 200: SafeType.Pick(userSchema, ["username"]),
-                ...SafeType.CreateErrors(["badRequest", "notFound"]),
+                ...SafeType.CreateErrors(["badRequest", "notFound", "unauthorized"]),
             },
             tags: ["Friends", "Melodle"] satisfies MelodleTagNames[],
             summary: "Removes a friend.",
@@ -32,7 +32,7 @@ const friendsRoutes: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
             tags: ["Friends", "Melodle"] satisfies MelodleTagNames[],
             response: {
                 200: SafeType.Pick(userSchema, ["username"]),
-                ...SafeType.CreateErrors(["badRequest", "notFound"]),
+                ...SafeType.CreateErrors(["badRequest", "notFound", "unauthorized"]),
             },
             summary: "Sends a friend request",
         },
@@ -55,6 +55,7 @@ const friendsRoutes: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                     "badRequest",
                     "notFound",
                     "preconditionRequired",
+                    "unauthorized"
                 ]),
             },
             summary: "Modifies an existing relationship with another user.",

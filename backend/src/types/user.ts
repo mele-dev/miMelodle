@@ -79,8 +79,12 @@ export const friendSchema = SafeType.Object({
     status: SafeType.StringEnum(["pending", "blocked", "accepted"])
 })
 
+export const selfIdSchema = SafeType.Object({
+    selfId: userSchema.properties.id,
+})
+
 export const friendRelationShipSchema = SafeType.Object({
-    userId: userSchema.properties.id,
+    ...selfIdSchema.properties,
     friendId: userSchema.properties.id,
 });
 
