@@ -4,7 +4,7 @@ import { MelodleTagNames } from "../../plugins/swagger.js";
 
 export default (async (fastify) => {
     fastify.get("/global", {
-        onRequest: [],
+        onRequest: undefined,
         schema: {
             response: {
                 200: SafeType.Literal("TODO!"),
@@ -18,7 +18,7 @@ export default (async (fastify) => {
             return reply.notImplemented();
         },
     });
-    fastify.get("/GuessLine", {
+    fastify.get("/:gameMode", {
         onRequest: [],
         schema: {
             response: {

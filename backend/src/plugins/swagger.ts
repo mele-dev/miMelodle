@@ -63,6 +63,10 @@ export const tags = [
     {
         name: "Game configs",
         "description": "Enspoints to manipulate your game configurations.",
+        },
+    {
+        name: "Leaderboards",
+        description: "Ranking lists showing best players depending on every gamemode.",
     },
     {
         name: "Other",
