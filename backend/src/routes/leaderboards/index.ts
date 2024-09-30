@@ -1,6 +1,6 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { SafeType } from "../../utils/typebox.js";
-import { MelodleTagNames } from "../../plugins/swagger.js";
+import { MelodleTagName } from "../../plugins/swagger.js";
 import { leaderBoardRangeSchema, leaderboardSchema } from "../../types/leaderboard.js";
 import { gameModeArraySchema } from "../../types/melodle.js";
 
@@ -18,7 +18,7 @@ export default (async (fastify) => {
             },
             summary: "Fetches global leaderboard information.",
             description: undefined,
-            tags: ["Leaderboards"] satisfies MelodleTagNames[],
+            tags: ["Leaderboards"] satisfies MelodleTagName[],
         },
         async handler(_request, reply) {
             return reply.notImplemented();

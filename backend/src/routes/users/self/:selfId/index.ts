@@ -1,7 +1,7 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { SafeType } from "../../../../utils/typebox.js";
 import { selfIdSchema, userSchema } from "../../../../types/user.js";
-import { MelodleTagNames } from "../../../../plugins/swagger.js";
+import { MelodleTagName } from "../../../../plugins/swagger.js";
 import { runPreparedQuery } from "../../../../services/database.js";
 import {
     deleteUser,
@@ -34,7 +34,7 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 }),
                 ...SafeType.CreateErrors(["unauthorized"]),
             },
-            tags: ["User CRUD", "User"] satisfies MelodleTagNames[],
+            tags: ["User CRUD", "User"] satisfies MelodleTagName[],
             summary: "Get your own user's information.",
             description:
                 "This is the route that exposes the most information about a user.",
@@ -87,7 +87,7 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 ]),
                 ...SafeType.CreateErrors(["unauthorized"]),
             },
-            tags: ["User CRUD", "User"] satisfies MelodleTagNames[],
+            tags: ["User CRUD", "User"] satisfies MelodleTagName[],
             summary: "Update your own user's information.",
         },
         handler: async function (request, reply) {
@@ -108,7 +108,7 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 200: SafeType.Pick(userSchema, ["username"]),
                 ...SafeType.CreateErrors(["unauthorized", "notFound"]),
             },
-            tags: ["User CRUD"] satisfies MelodleTagNames[],
+            tags: ["User CRUD"] satisfies MelodleTagName[],
             summary:
                 "Delete your own user and all their associated information.",
             description:

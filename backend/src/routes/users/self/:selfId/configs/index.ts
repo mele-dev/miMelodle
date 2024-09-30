@@ -1,6 +1,6 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { SafeType } from "../../../../../utils/typebox.js";
-import { MelodleTagNames } from "../../../../../plugins/swagger.js";
+import { MelodleTagName } from "../../../../../plugins/swagger.js";
 import { melodleGameConfig } from "../../../../../types/melodleConfigs.js";
 import { decorators } from "../../../../../services/decorators.js";
 import { ParamsSchema } from "../../../../../types/params.js";
@@ -18,7 +18,7 @@ export default (async (fastify) => {
                 ...SafeType.CreateErrors(["unauthorized"]),
             },
             summary: "Get saved user configurations.",
-            tags: ["Game configs"] satisfies MelodleTagNames[],
+            tags: ["Game configs"] satisfies MelodleTagName[],
         },
         async handler(_request, reply) {
             return reply.notImplemented();
@@ -36,7 +36,7 @@ export default (async (fastify) => {
             },
             summary: "Add a new configuration preset.",
             description: undefined,
-            tags: ["Game configs"] satisfies MelodleTagNames[],
+            tags: ["Game configs"] satisfies MelodleTagName[],
         },
         async handler(_request, reply) {
             return reply.notImplemented();
@@ -53,7 +53,7 @@ export default (async (fastify) => {
             },
             summary: "Delete a configuration preset.",
             description: undefined,
-            tags: ["Game configs"] satisfies MelodleTagNames[],
+            tags: ["Game configs"] satisfies MelodleTagName[],
         },
         async handler(_request, reply) {
             return reply.notImplemented();
@@ -70,7 +70,7 @@ export default (async (fastify) => {
             },
             summary: "Update a configuration preset.",
             description: undefined,
-            tags: ["Game configs"] satisfies MelodleTagNames[],
+            tags: ["Game configs"] satisfies MelodleTagName[],
         },
         async handler(_request, reply) {
             return reply.notImplemented();
@@ -91,7 +91,7 @@ export default (async (fastify) => {
             description:
                 "TODO: Discuss whether we should ask for the id or "
                 + "make the frontend fetch the data and pass it to us." ,
-            tags: ["Game configs"] satisfies MelodleTagNames[],
+            tags: ["Game configs"] satisfies MelodleTagName[],
         },
         async handler(_request, reply) {
             return reply.notImplemented();

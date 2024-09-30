@@ -8,7 +8,7 @@ import { runPreparedQuery } from "../../../services/database.js";
 import { SafeType } from "../../../utils/typebox.js";
 import { loginUser } from "../../../queries/dml.queries.js";
 import { sendError } from "../../../utils/errors.js";
-import { MelodleTagNames } from "../../../plugins/swagger.js";
+import { MelodleTagName } from "../../../plugins/swagger.js";
 
 const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
     fastify.post("", {
@@ -22,7 +22,7 @@ const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                     },
                 ]
             ),
-            tags: ["Auth"] satisfies MelodleTagNames[],
+            tags: ["Auth"] satisfies MelodleTagName[],
             response: {
                 200: SafeType.Intersect([
                     jwtTokenSchema,

@@ -13,8 +13,25 @@ export const musixmatchIdSchema = SafeType.Object({
     }),
 });
 
-export const MelodleAttemptSchema = SafeType.Object({
+export const guessSongHintsSchema = SafeType.Object({
+    correctArtist: SafeType.Boolean(),
+    correctBand: SafeType.Boolean(),
+    correctAlbum: SafeType.Boolean(),
+});
+
+export const guessLineHintSchema = SafeType.Object({
+    guessLineHints: SafeType.Array(
+        SafeType.StringEnum(["Correct spot", "Correct letter, wrong spot."])
+    ),
+});
+
+export const MelodleGuessSongAttemptSchema = SafeType.Object({
     guessedSongId: musixmatchIdSchema.properties.musixmatchId,
+    guessedAt: SafeType.String({ format: "date-time" }),
+});
+
+export const MelodleGuessLineAttemptSchema = SafeType.Object({
+    guessedLine: SafeType.String({ maxLength: 1000 }),
     guessedAt: SafeType.String({ format: "date-time" }),
 });
 
@@ -23,7 +40,10 @@ export const MelodleGameSchema = SafeType.Object({
     gameId: SafeType.Integer({
         description: "A unique identifier for a melodle game.",
     }),
-    attempts: SafeType.Array(MelodleAttemptSchema, {}),
+    attempts: SafeType.Union([
+        SafeType.Array(MelodleGuessSongAttemptSchema),
+        SafeType.Array(MelodleGuessLineAttemptSchema),
+    ]),
     ...SafeType.Partial(
         SafeType.Object({
             won: SafeType.Boolean(),

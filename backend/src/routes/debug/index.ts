@@ -2,7 +2,7 @@ import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { typedEnv } from "../../types/env.js";
 import { SafeType } from "../../utils/typebox.js";
 import { userSchema } from "../../types/user.js";
-import { MelodleTagNames } from "../../plugins/swagger.js";
+import { MelodleTagName } from "../../plugins/swagger.js";
 import { selectUsers } from "../../queries/dml.queries.js";
 import { runPreparedQuery } from "../../services/database.js";
 
@@ -15,7 +15,7 @@ export default (async (fastify) => {
                 response: {
                     200: SafeType.Array(SafeType.Partial(userSchema)),
                 },
-                tags: ["Debug"] satisfies MelodleTagNames[],
+                tags: ["Debug"] satisfies MelodleTagName[],
             },
             async handler(_request, reply) {
                 const users = await runPreparedQuery(selectUsers, {});

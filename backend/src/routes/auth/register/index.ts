@@ -8,7 +8,7 @@ import { runPreparedQuery } from "../../../services/database.js";
 import { SafeType } from "../../../utils/typebox.js";
 import { insertUser } from "../../../queries/dml.queries.js";
 import { sendError } from "../../../utils/errors.js";
-import { MelodleTagNames } from "../../../plugins/swagger.js";
+import { MelodleTagName } from "../../../plugins/swagger.js";
 
 const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
     fastify.post("", {
@@ -48,7 +48,7 @@ const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 ...SafeType.CreateErrors(["badRequest"]),
             },
             security: [],
-            tags: ["Auth", "User CRUD", "User"] satisfies MelodleTagNames[],
+            tags: ["Auth", "User CRUD", "User"] satisfies MelodleTagName[],
             summary: "Create a user.",
             description:
                 "Creates a new user with the given credentials if possible.",

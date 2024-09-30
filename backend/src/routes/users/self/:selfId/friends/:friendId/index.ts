@@ -1,7 +1,7 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { SafeType } from "../../../../../../utils/typebox.js";
 import { friendRelationShipSchema, friendSchema, userSchema } from "../../../../../../types/user.js";
-import { MelodleTagNames } from "../../../../../../plugins/swagger.js";
+import { MelodleTagName } from "../../../../../../plugins/swagger.js";
 import { decorators } from "../../../../../../services/decorators.js";
 
 const friendsRoutes: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
@@ -13,7 +13,7 @@ const friendsRoutes: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 200: SafeType.Pick(userSchema, ["username"]),
                 ...SafeType.CreateErrors(["badRequest", "notFound", "unauthorized"]),
             },
-            tags: ["Friends"] satisfies MelodleTagNames[],
+            tags: ["Friends"] satisfies MelodleTagName[],
             summary: "Removes a friend.",
             description:
                 "This does not block them, and if they are blocked " +
@@ -29,7 +29,7 @@ const friendsRoutes: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
         onRequest: [decorators.authenticateSelf()],
         schema: {
             params: friendRelationShipSchema,
-            tags: ["Friends"] satisfies MelodleTagNames[],
+            tags: ["Friends"] satisfies MelodleTagName[],
             response: {
                 200: SafeType.Pick(userSchema, ["username"]),
                 ...SafeType.CreateErrors(["badRequest", "notFound", "unauthorized"]),
@@ -48,7 +48,7 @@ const friendsRoutes: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
             body: SafeType.Object({
                 status: SafeType.StringEnum(["blocked", "accepted"]),
             }),
-            tags: ["Friends"] satisfies MelodleTagNames[],
+            tags: ["Friends"] satisfies MelodleTagName[],
             response: {
                 200: SafeType.Pick(friendSchema, ["status"]),
                 ...SafeType.CreateErrors([

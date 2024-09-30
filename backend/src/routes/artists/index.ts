@@ -2,7 +2,7 @@ import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { SafeType } from "../../utils/typebox.js";
 import { ParamsSchema } from "../../types/params.js";
 import { artistSchema } from "../../types/artist.js";
-import { MelodleTagNames } from "../../plugins/swagger.js";
+import { MelodleTagName } from "../../plugins/swagger.js";
 
 const artist: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
     fastify.get("/:artistMusixMatchId", {
@@ -18,7 +18,7 @@ const artist: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 ]),
                 ...SafeType.CreateErrors(["notFound"]),
             },
-            tags: ["TODO Schema"] satisfies MelodleTagNames[],
+            tags: ["Artists"] satisfies MelodleTagName[],
         },
         async handler(_request, reply) {
             return reply.notImplemented();
@@ -28,17 +28,29 @@ const artist: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
     fastify.get("/search", {
         onRequest: [],
         schema: {
+            security: [],
+            querystring: SafeType.Object({
+                query: SafeType.String({ maxLength: 500 }),
+            }),
             response: {
-                200: SafeType.Literal("TODO!"),
+                200: SafeType.Array(
+                    SafeType.Pick(artistSchema, [
+                        "musixmatchArtistId",
+                        "name",
+                        "imageUrl",
+                    ])
+                ),
                 ...SafeType.CreateErrors([]),
             },
             summary: "Search for available artists.",
-            description: undefined,
-            tags: ["TODO Schema"] satisfies MelodleTagNames[],
+            description:
+                "We use a custom algorithm to determine which artists are most relevant, " +
+                "based off the query in the querystring.",
+            tags: ["Artists"] satisfies MelodleTagName[],
         },
         async handler(_request, reply) {
             return reply.notImplemented();
-        }
+        },
     });
 };
 
