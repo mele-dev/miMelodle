@@ -1,50 +1,24 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { SafeType } from "../../utils/typebox.js";
 import { MelodleTagNames } from "../../plugins/swagger.js";
+import { leaderBoardRangeSchema, leaderboardSchema } from "../../types/leaderboard.js";
+import { gameModeArraySchema } from "../../types/melodle.js";
 
 export default (async (fastify) => {
-    fastify.get("/global", {
+    fastify.post("/", {
         onRequest: undefined,
         schema: {
+            querystring: SafeType.Object({
+                ...gameModeArraySchema.properties,
+                ...leaderBoardRangeSchema.properties,
+            }),
             response: {
-                200: SafeType.Literal("TODO!"),
+                200: leaderboardSchema,
                 ...SafeType.CreateErrors([]),
             },
-            summary: "Fetches information about the global leaderboard.",
+            summary: "Fetches global leaderboard information.",
             description: undefined,
-            tags: ["TODO Schema"] satisfies MelodleTagNames[],
-        },
-        async handler(_request, reply) {
-            return reply.notImplemented();
-        },
-    });
-    fastify.get("/:gameMode", {
-        onRequest: [],
-        schema: {
-            response: {
-                200: SafeType.Literal("TODO!"),
-                ...SafeType.CreateErrors([]),
-            },
-            summary:
-                "Fetches information about the game mode's global leaderboard.",
-            description: undefined,
-            tags: ["TODO Schema"] satisfies MelodleTagNames[],
-        },
-        async handler(_request, reply) {
-            return reply.notImplemented();
-        },
-    });
-    fastify.get("/GuessSong", {
-        onRequest: [],
-        schema: {
-            response: {
-                200: SafeType.Literal("TODO!"),
-                ...SafeType.CreateErrors([]),
-            },
-            summary:
-                "Fetches information about the game mode's global leaderboard.",
-            description: undefined,
-            tags: ["TODO Schema"] satisfies MelodleTagNames[],
+            tags: ["Leaderboards"] satisfies MelodleTagNames[],
         },
         async handler(_request, reply) {
             return reply.notImplemented();
