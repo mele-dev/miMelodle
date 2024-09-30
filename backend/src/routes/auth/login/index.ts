@@ -17,8 +17,8 @@ const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 SafeType.Pick(userSchema, ["email", "password"]),
                 [
                     {
-                        email: "ezponjares@gmail.com",
-                        password: "Cris123!",
+                        email: "juanaxlopez1@gmail.com",
+                        password: "Juana123!",
                     },
                 ]
             ),

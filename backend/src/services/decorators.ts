@@ -1,5 +1,5 @@
 import { Value } from "@sinclair/typebox/value";
-import { FastifyReply, FastifyRequest } from "fastify";
+import fastify, { FastifyReply, FastifyRequest } from "fastify";
 import { jwtTokenContentSchema, User } from "../types/user.js";
 import schemaReferences from "../types/schemaReferences.js";
 import {
@@ -7,6 +7,7 @@ import {
     CommonErrorToCode,
     sendError,
 } from "../utils/errors.js";
+import fastifyOauth2 from "@fastify/oauth2";
 
 type FastifyReplyWithErrorCodes<TErrorName extends CommonErrorName> =
     FastifyReply & {
@@ -24,7 +25,6 @@ export const decorators = {
             reply: FastifyReplyWithErrorCodes<"unauthorized">
         ) {
             try {
-                reply.routeOptions.schema?.response;
                 await request.jwtVerify();
             } catch (err) {
                 return reply.unauthorized(
@@ -41,20 +41,36 @@ export const decorators = {
             request: FastifyRequest & { params: { selfId: User["id"] } },
             reply: FastifyReplyWithErrorCodes<"unauthorized">
         ) {
+            message ??= "";
             try {
                 const tokenContent = await request.jwtVerify();
 
-                Value.Assert(
-                    jwtTokenContentSchema,
-                    schemaReferences,
-                    tokenContent
-                );
-                Value.Equal(request.params.selfId, tokenContent.id);
+                if (
+                    !Value.Check(
+                        jwtTokenContentSchema,
+                        schemaReferences,
+                        tokenContent
+                    )
+                ) {
+                    return sendError(
+                        reply,
+                        "unauthorized",
+                        "jwt token has the wrong payload" + message
+                    );
+                }
+
+                if (request.params.selfId != tokenContent.id) {
+                    return sendError(
+                        reply,
+                        "unauthorized",
+                        `this is not you: ${request.params.selfId}, ${tokenContent.id}. ${message}`
+                    );
+                }
             } catch {
                 return sendError(
                     reply,
                     "unauthorized",
-                    `Invalid jwt token: ${request.headers.authorization}. ${message ?? ""}`
+                    `Invalid jwt token: ${request.headers.authorization}. ${message}`
                 );
             }
         };

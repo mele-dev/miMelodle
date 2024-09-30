@@ -10,11 +10,14 @@ export const userSchema = SafeType.Object(
                 "unique and unchangeable.",
         }),
         username: SafeType.String({
+            pattern: /^[a-zA-Z0-9.-_]+$/.source,
             minLength: 3,
-            maxLength: 20,
+            maxLength: 30,
             description:
                 "The id to display to users. They must be unique, but the " +
-                "users can choose and change them.",
+                "users can choose and change them.\n" +
+                "### Rules\n" +
+                "- Only accepts letters, digits and '.', '-', '_'.",
         }),
         email: SafeType.String({
             pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.source,
@@ -40,8 +43,8 @@ export const userSchema = SafeType.Object(
         }),
         profilePictureFilename: profilePictureSchema.properties.filename,
         name: SafeType.String({
-            maxLength: 25,
-            minLength: 3,
+            minLength: 1,
+            maxLength: 40,
             description:
                 "The user's display name. It does not need to be unique.",
         }),

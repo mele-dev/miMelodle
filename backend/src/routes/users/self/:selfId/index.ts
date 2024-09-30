@@ -121,6 +121,8 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 request.params
             );
 
+
+
             switch (queryResult.length) {
                 case 0:
                     return sendError(
@@ -129,7 +131,7 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                         "Could not delete person with such crentials."
                     );
                 case 1:
-                    return reply.code(200);
+                    return reply.code(200).send({"username": queryResult[0].username});
                 default:
                     throw `Deleted ${queryResult.length} rows.`;
             }
