@@ -1,27 +1,32 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { SafeType } from "../../../../../../../../utils/typebox.js";
-import { MelodleTagNames } from "../../../../../../../../plugins/swagger.js";
-import { MelodleAttemptSchema } from "../../../../../../../../types/melodle.js";
+import { MelodleTagName } from "../../../../../../../../plugins/swagger.js";
+import {
+    guessSongHintsSchema,
+    MelodleGuessSongAttemptSchema,
+} from "../../../../../../../../types/melodle.js";
+import { decorators } from "../../../../../../../../services/decorators.js";
+import { ParamsSchema } from "../../../../../../../../types/params.js";
 
 export default (async (fastify) => {
     fastify.post("", {
-        onRequest: [],
+        onRequest: [decorators.authenticateSelf()],
         schema: {
-            body: MelodleAttemptSchema,
+            params: SafeType.Pick(ParamsSchema, ["selfId", "gameId"]),
+            body: SafeType.Pick(MelodleGuessSongAttemptSchema, ["guessedSongId"]),
             response: {
-                200: SafeType.Literal("Success"),
-                ...SafeType.CreateErrors([]),
+                200: SafeType.Object({
+                    ...guessSongHintsSchema.properties,
+                    won: SafeType.Boolean(),
+                }),
+                ...SafeType.CreateErrors(["unauthorized", "notFound"]),
             },
             summary: "Submit a guess for a melodle game.",
-            description: "Submit user attempts for guessing the song in a melodle game.",
-            tags: ["Juana"] satisfies MelodleTagNames[],
-            params: SafeType.Object({
-                selfId: SafeType.String({ description: "ID of the user" }),
-                gameId: SafeType.String({ description: "ID of the melodle game" })
-            })
+            description: undefined,
+            tags: ["Melodle"] satisfies MelodleTagName[],
         },
         async handler(_request, reply) {
             return reply.notImplemented();
-        }
+        },
     });
 }) satisfies FastifyPluginAsyncTypebox;

@@ -57,7 +57,7 @@ const extensions = {
         return Type.Unsafe<T[number]>({
             type: "string",
             enum: values,
-            ...options
+            ...options,
         });
     },
     /**
@@ -91,7 +91,7 @@ const extensions = {
      *     ...SafeType.CreateErrors([400, 404]);
      * }
      */
-    CreateErrors<TErrors extends (CommonErrorCode | CommonErrorName)[]>(
+    CreateErrors<TErrors extends CommonErrorName[]>(
         errors: TErrors
     ): {
         [E in TErrors[number] as CommonErrorToCode<E>]: TObject<{
@@ -110,11 +110,14 @@ const extensions = {
             (acc, error) => {
                 const code =
                     typeof error === "string" ? commonErrors[error] : error;
-                const schema = SafeType.Object({
-                    statusCode: Type.Literal(code),
-                    error: Type.String(),
-                    message: Type.String(),
-                }) satisfies ErrorSchema;
+                const schema = SafeType.Object(
+                    {
+                        statusCode: Type.Literal(code),
+                        error: Type.String(),
+                        message: Type.String(),
+                    },
+                    { description: error }
+                ) satisfies ErrorSchema;
 
                 return { ...acc, [code]: schema };
             },

@@ -14,4 +14,5 @@ export const ParamsSchema = SafeType.Object({
     optionalGameMode: SafeType.Optional(MelodleGameSchema.properties.gameMode),
     artistMusixMatchId: artistSchema.properties.musixmatchArtistId,
     melodleConfigId: melodleGameConfig.properties.id,
+    gameId: MelodleGameSchema.properties.gameId,
 });

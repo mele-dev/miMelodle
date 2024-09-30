@@ -4,7 +4,7 @@ import { selectUsers } from "../../queries/dml.queries.js";
 import { SafeType } from "../../utils/typebox.js";
 import { friendSchema, userSchema } from "../../types/user.js";
 import { typedEnv } from "../../types/env.js";
-import { MelodleTagNames } from "../../plugins/swagger.js";
+import { MelodleTagName } from "../../plugins/swagger.js";
 
 const users: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
     fastify.get("/:userId", {
@@ -23,7 +23,7 @@ const users: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
             summary: "Get public information from some user.",
             description:
                 "Authentication is not needed to see public user information.",
-            tags: ["User"] satisfies MelodleTagNames[],
+            tags: ["User"] satisfies MelodleTagName[],
         },
         async handler(_request, reply) {
             return reply.notImplemented();
@@ -41,7 +41,7 @@ const users: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                         "Query to be used to search for users in the database.",
                 }),
             }),
-            tags: ["User"] satisfies MelodleTagNames[],
+            tags: ["User"] satisfies MelodleTagName[],
             response: {
                 200: SafeType.Array(
                     SafeType.Pick(userSchema, [

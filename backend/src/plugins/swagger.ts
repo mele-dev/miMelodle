@@ -53,6 +53,11 @@ export const tags = [
             "Endpoints about information that never changes through user interaction.",
     },
     {
+        name: "Artists",
+        description:
+            "Endpoints about fetching information from artists."
+    },
+    {
         name: "Friends",
         description: "Friends related endpoints.",
     },
@@ -72,17 +77,13 @@ export const tags = [
         name: "Other",
         description: "Endpoints which serve odd purposes.",
     },
-    {
-        name: "Juana",
-        description: "Cris must check"
-    }
 ] as const satisfies {
     name: string;
     description: string;
     externalDocs?: string;
 }[];
 
-export type MelodleTagNames = (typeof tags)[number]["name"];
+export type MelodleTagName = (typeof tags)[number]["name"];
 
 export default fp<FastifySwaggerOptions>(async (fastify, _opts) => {
     await fastify.register(swagger, {

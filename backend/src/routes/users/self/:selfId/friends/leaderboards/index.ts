@@ -1,6 +1,6 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { SafeType } from "../../../../../../utils/typebox.js";
-import { MelodleTagNames } from "../../../../../../plugins/swagger.js";
+import { MelodleTagName } from "../../../../../../plugins/swagger.js";
 import { decorators } from "../../../../../../services/decorators.js";
 import { ParamsSchema } from "../../../../../../types/params.js";
 import {
@@ -25,7 +25,7 @@ export default (async (fastify) => {
             summary:
                 "Gets information about the user's friends leaderboard on the gamemode.",
             description: undefined,
-            tags: ["Leaderboards"] satisfies MelodleTagNames[],
+            tags: ["Leaderboards"] satisfies MelodleTagName[],
         },
         async handler(_request, reply) {
             return reply.notImplemented();
