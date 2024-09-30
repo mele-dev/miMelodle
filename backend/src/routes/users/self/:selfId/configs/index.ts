@@ -4,6 +4,7 @@ import { MelodleTagNames } from "../../../../../plugins/swagger.js";
 import { melodleGameConfig } from "../../../../../types/melodleConfigs.js";
 import { decorators } from "../../../../../services/decorators.js";
 import { ParamsSchema } from "../../../../../types/params.js";
+import { userSchema } from "../../../../../types/user.js";
 
 export default (async (fastify) => {
     fastify.get("", {
@@ -69,6 +70,27 @@ export default (async (fastify) => {
             },
             summary: "Update a configuration preset.",
             description: undefined,
+            tags: ["Game configs"] satisfies MelodleTagNames[],
+        },
+        async handler(_request, reply) {
+            return reply.notImplemented();
+        },
+    });
+
+    fastify.get("/suggest", {
+        onRequest: [decorators.authenticateSelf()],
+        schema: {
+            params: SafeType.Pick(ParamsSchema, ["selfId"]),
+            querystring: SafeType.Pick(userSchema, ["spotifyId"]),
+            response: {
+                200: SafeType.Array(SafeType.Omit(melodleGameConfig, ["id"])),
+                ...SafeType.CreateErrors(["unauthorized"]),
+            },
+            summary:
+                "Ask for a configuration suggestion based off of the user's spotify information.",
+            description:
+                "TODO: Discuss whether we should ask for the id or "
+                + "make the frontend fetch the data and pass it to us." ,
             tags: ["Game configs"] satisfies MelodleTagNames[],
         },
         async handler(_request, reply) {
