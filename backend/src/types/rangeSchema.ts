@@ -15,6 +15,7 @@ export function createRangeSchema(amount: number) {
             })
         },
         {
+            description: "A range which indicates the elements of the list to return.",
             $id: "RangeSchema",
             title: "rangeSchema",
         }

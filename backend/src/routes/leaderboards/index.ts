@@ -1,35 +1,27 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
-import { jwtTokenSchema } from "../../types/user.js";
 import { SafeType } from "../../utils/typebox.js";
-import { MelodleTagNames } from "../../plugins/swagger.js";
-import { createRangeSchema } from "../../types/rangeSchema.js";
-import { leaderboardSchema } from "../../types/leaderboard.js";
+import { MelodleTagName } from "../../plugins/swagger.js";
+import { leaderBoardRangeSchema, leaderboardSchema } from "../../types/leaderboard.js";
+import { gameModeArraySchema } from "../../types/melodle.js";
 
-
-const leaderboard: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
+export default (async (fastify) => {
     fastify.get("/", {
+        onRequest: undefined,
         schema: {
-            querystring: SafeType.WithExamples(createRangeSchema(50), [
-                {
-                    amount: 50,
-                    start: 50
-                }
-            ]),
+            querystring: SafeType.Object({
+                ...gameModeArraySchema.properties,
+                ...leaderBoardRangeSchema.properties,
+            }),
             response: {
-                200: SafeType.Ref(leaderboardSchema),
-                ...SafeType.CreateErrors(["badRequest"]),
+                200: leaderboardSchema,
+                ...SafeType.CreateErrors([]),
             },
-            security: [],
-            tags: ["Leaderboards"] satisfies MelodleTagNames[],
-            summary: "Route to get global leaderboard.",
-            description:
-                "Returns the global leaderboard across all game modes.",
+            summary: "Fetches global leaderboard information.",
+            description: undefined,
+            tags: ["Leaderboards"] satisfies MelodleTagName[],
         },
-
-        handler: async function (request, reply) {
+        async handler(_request, reply) {
             return reply.notImplemented();
         },
     });
-};
-
-export default leaderboard;
+}) satisfies FastifyPluginAsyncTypebox;

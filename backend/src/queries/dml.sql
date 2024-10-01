@@ -21,13 +21,13 @@ RETURNING id;
         , "passwordHash"     = encrypt_password(:password!)
         , "profilePictureId" = :profilePictureId!
         , name               = :name!
-    WHERE username = :oldUsername!
+    WHERE id = :selfId!
 RETURNING username;
 
 /* @name deleteUser */
    DELETE
      FROM users
-    WHERE id = :id!
+    WHERE id = :selfId!
 RETURNING *;
 
 /* @name selectAllIcons */
@@ -37,12 +37,15 @@ SELECT *
 /* @name deleteIcons */
    DELETE
      FROM "profilePictures"
-RETURNING 1 as output;
+RETURNING 1 AS output;
 
-/*
-  @name insertIcons
-  @param input -> ((id!, filename!)...)
-*/
+/* @name getSelfuser */
+SELECT pp.filename as "profilePictureFile", u.name, u.email, u.username, u.id
+  FROM users u
+           INNER JOIN public."profilePictures" pp ON pp.id = u."profilePictureId"
+where u.id = :selfId!;
+
+/* @name insertIcon */
 INSERT
-  INTO "profilePictures" (id, filename)
-VALUES :input;
+  INTO "profilePictures" (filename)
+VALUES (:file!);

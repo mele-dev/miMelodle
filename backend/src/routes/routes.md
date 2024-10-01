@@ -1,18 +1,16 @@
 # Listado de rutas
 
-- auth/registro: post 
+- [x] auth/registro: post 
 
-- auth/login: post
+- [x] auth/login: post 
 
-- auth/login/spotify: post
-
-- auth/login/spotify/callback: get
+- [x] auth/login/spotify/callback: get
 
 - public/usericons/:id: get
 
-- profile/:userid: get, put, delete
+- [x] profile/:userid: get, put, delete 
 
-- profile/:userid/friends: get, delete, put, post
+- [x] profile/:userid/friends: get, delete, put, post
 
 - leaderboards/:userid: get
 

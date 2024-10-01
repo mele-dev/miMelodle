@@ -1,5 +1,6 @@
 import { Static } from "@sinclair/typebox";
 import { SafeType } from "../utils/typebox.js";
+import { profilePictureSchema } from "./public.js";
 
 export const userSchema = SafeType.Object(
     {
@@ -37,6 +38,7 @@ export const userSchema = SafeType.Object(
                 "These pictures cannot be uploaded, we store the " +
                 "options manually.",
         }),
+        profilePictureFilename: profilePictureSchema.properties.filename,
         name: SafeType.String({
             maxLength: 25,
             minLength: 3,
@@ -74,6 +76,21 @@ export const jwtTokenSchema = SafeType.Object(
     }
 );
 
+export const friendSchema = SafeType.Object({
+    username: userSchema.properties.username,
+    status: SafeType.StringEnum(["pending", "blocked", "accepted"])
+})
+
+export const selfIdSchema = SafeType.Object({
+    selfId: userSchema.properties.id,
+})
+
+export const friendRelationShipSchema = SafeType.Object({
+    ...selfIdSchema.properties,
+    friendId: userSchema.properties.id,
+});
+
+
 /** Use this schema to assert the contents of the jwt token. */
 export const jwtTokenContentSchema = SafeType.Pick(userSchema, ["id"]);
 
@@ -81,3 +98,5 @@ export type JwtTokenContent = Static<typeof jwtTokenContentSchema>;
 export type jwtTokenReturn = Static<typeof jwtTokenSchema>;
 
 export type User = Static<typeof userSchema>;
+
+export type FriendType = Static<typeof friendSchema>;

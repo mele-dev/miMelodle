@@ -8,13 +8,19 @@ import { runPreparedQuery } from "../../../services/database.js";
 import { SafeType } from "../../../utils/typebox.js";
 import { insertUser } from "../../../queries/dml.queries.js";
 import { sendError } from "../../../utils/errors.js";
-import { MelodleTagNames } from "../../../plugins/swagger.js";
+import { MelodleTagName } from "../../../plugins/swagger.js";
 
 const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
-    fastify.post("/", {
+    fastify.post("", {
         schema: {
             body: SafeType.WithExamples(
-                SafeType.Omit(userSchema, ["spotifyId", "id"]),
+                SafeType.Pick(userSchema, [
+                    "username",
+                    "profilePictureId",
+                    "email",
+                    "password",
+                    "name",
+                ]),
                 [
                     {
                         username: "juanalopez1",
@@ -26,17 +32,24 @@ const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 ]
             ),
             response: {
-                200: SafeType.WithExamples(SafeType.Ref(jwtTokenSchema), [
-                    {
-                        jwtToken:
-                            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNzI3NDExODc4fQ.lCYmZF_REl8rYYj1UjJzacXrPCTyjVdA-KsR71xHwQw",
-                    },
-                ]),
+                200: SafeType.WithExamples(
+                    SafeType.Object({
+                        ...jwtTokenSchema.properties,
+                        ...SafeType.Pick(userSchema, ["id"]).properties,
+                    }),
+                    [
+                        {
+                            jwtToken:
+                                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNzI3NDExODc4fQ.lCYmZF_REl8rYYj1UjJzacXrPCTyjVdA-KsR71xHwQw",
+                            id: 2,
+                        },
+                    ]
+                ),
                 ...SafeType.CreateErrors(["badRequest"]),
             },
             security: [],
-            tags: ["Auth"] satisfies MelodleTagNames[],
-            summary: "Route to register a user.",
+            tags: ["Auth", "User CRUD", "User"] satisfies MelodleTagName[],
+            summary: "Create a user.",
             description:
                 "Creates a new user with the given credentials if possible.",
         },
@@ -56,7 +69,7 @@ const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 id: result[0].id,
             } satisfies JwtTokenContent);
 
-            return reply.code(200).send({ jwtToken: token });
+            return reply.code(200).send({ jwtToken: token, id: result[0].id });
         },
     });
 };
