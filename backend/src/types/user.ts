@@ -1,6 +1,7 @@
 import { Static } from "@sinclair/typebox";
 import { SafeType } from "../utils/typebox.js";
 import { profilePictureSchema } from "./public.js";
+import { artistSchema } from "./artist.js";
 
 export const userSchema = SafeType.Object(
     {
@@ -40,6 +41,10 @@ export const userSchema = SafeType.Object(
                 "The id to the profile picture of the user. " +
                 "These pictures cannot be uploaded, we store the " +
                 "options manually.",
+        }),
+        favoriteArtists: SafeType.Array(artistSchema, {
+            description:
+                "An array of every artist currently favorited by the user.",
         }),
         profilePictureFilename: profilePictureSchema.properties.filename,
         name: SafeType.String({
@@ -81,18 +86,17 @@ export const jwtTokenSchema = SafeType.Object(
 
 export const friendSchema = SafeType.Object({
     username: userSchema.properties.username,
-    status: SafeType.StringEnum(["pending", "blocked", "accepted"])
-})
+    status: SafeType.StringEnum(["pending", "blocked", "accepted"]),
+});
 
 export const selfIdSchema = SafeType.Object({
     selfId: userSchema.properties.id,
-})
+});
 
 export const friendRelationShipSchema = SafeType.Object({
     ...selfIdSchema.properties,
     friendId: userSchema.properties.id,
 });
-
 
 /** Use this schema to assert the contents of the jwt token. */
 export const jwtTokenContentSchema = SafeType.Pick(userSchema, ["id"]);

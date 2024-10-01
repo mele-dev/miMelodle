@@ -4,7 +4,7 @@ import {
     getAllUserIconsFileNames,
     getIconFromFile,
 } from "../../services/files.js";
-import { sendError } from "../../utils/errors.js";
+import { sendError, sendOk } from "../../utils/reply.js";
 import { profilePictureSchema, svgSchema } from "../../types/public.js";
 import { runPreparedQuery } from "../../services/database.js";
 import { selectAllIcons } from "../../queries/dml.queries.js";
@@ -40,9 +40,8 @@ const pub: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                     "The speccified file does not exist."
                 );
             }
-            return reply
-                .code(200)
-                .send(getIconFromFile(request.params.filename));
+
+            return sendOk(reply, 200, icon);
         },
     });
 
@@ -61,7 +60,7 @@ const pub: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
         },
         async handler(_request, reply) {
             const result = await runPreparedQuery(selectAllIcons, {});
-            return reply.code(200).send(result);
+            return sendOk(reply, 200, result);
         },
     });
 };

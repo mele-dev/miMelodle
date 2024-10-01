@@ -6,7 +6,7 @@ import {
     CommonErrorName,
     CommonErrorToCode,
     sendError,
-} from "../utils/errors.js";
+} from "../utils/reply.js";
 
 type FastifyReplyWithErrorCodes<TErrorName extends CommonErrorName> =
     FastifyReply & {
@@ -26,7 +26,9 @@ export const decorators = {
             try {
                 await request.jwtVerify();
             } catch (err) {
-                return reply.unauthorized(
+                sendError(
+                    reply,
+                    "unauthorized",
                     `Invalid jwt token: ${request.headers.authorization}. ${message ?? ""}`
                 );
             }
