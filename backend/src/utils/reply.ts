@@ -1,7 +1,7 @@
-import { FastifyReply, FastifyTypeProvider } from "fastify";
+import { FastifyReply } from "fastify";
 import { reverseMap, ReverseMap } from "./utils.js";
 import { Static } from "@sinclair/typebox";
-import { TSchema } from "@geut/openapi-box";
+import { TSchema } from "@sinclair/typebox";
 
 // Error replies.
 
