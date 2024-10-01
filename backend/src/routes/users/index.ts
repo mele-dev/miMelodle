@@ -3,6 +3,8 @@ import { SafeType } from "../../utils/typebox.js";
 import { userSchema } from "../../types/user.js";
 import { MelodleTagName } from "../../plugins/swagger.js";
 import { decorators } from "../../services/decorators.js";
+import { friendSchema } from "../../types/user.js";
+import { typedEnv } from "../../types/env.js";
 
 const users: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
     fastify.get("/:userId", {
