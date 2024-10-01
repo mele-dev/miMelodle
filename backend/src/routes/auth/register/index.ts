@@ -8,7 +8,6 @@ import { runPreparedQuery } from "../../../services/database.js";
 import { SafeType } from "../../../utils/typebox.js";
 import { insertUser } from "../../../queries/dml.queries.js";
 import { sendError, sendOk } from "../../../utils/reply.js";
-import { MelodleTagName } from "../../../plugins/swagger.js";
 import { decorators } from "../../../services/decorators.js";
 import { MelodleTagName } from "../../../plugins/swagger.js";
 
