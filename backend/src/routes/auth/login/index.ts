@@ -7,18 +7,25 @@ import {
 import { runPreparedQuery } from "../../../services/database.js";
 import { SafeType } from "../../../utils/typebox.js";
 import { loginUser } from "../../../queries/dml.queries.js";
-import { sendError } from "../../../utils/errors.js";
+import {
+    CommonErrorCode,
+    Responses,
+    sendError,
+    sendOk,
+} from "../../../utils/reply.js";
 import { MelodleTagName } from "../../../plugins/swagger.js";
+import { decorators } from "../../../services/decorators.js";
 
 const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
     fastify.post("", {
+        onRequest: [decorators.noSecurity],
         schema: {
             body: SafeType.WithExamples(
                 SafeType.Pick(userSchema, ["email", "password"]),
                 [
                     {
-                        email: "ezponjares@gmail.com",
-                        password: "Cris123!",
+                        email: "juanaxlopez1@gmail.com",
+                        password: "Juana123!",
                     },
                 ]
             ),
@@ -36,6 +43,9 @@ const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
 
         handler: async function (request, reply) {
             const result = await runPreparedQuery(loginUser, request.body);
+            type res = Responses<typeof reply>;
+            type codes = keyof res;
+            type goodCodes = Exclude<codes, CommonErrorCode>;
 
             if (result.length !== 1) {
                 return sendError(reply, "notFound", "Wrong email or password");
@@ -45,7 +55,7 @@ const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 id: result[0].id,
             } satisfies JwtTokenContent);
 
-            return { jwtToken: token, id: result[0].id };
+            return sendOk(reply, 200, { jwtToken: token, id: result[0].id })
         },
     });
 };

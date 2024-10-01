@@ -1,11 +1,11 @@
 import { SafeType } from "../utils/typebox.js";
 
 export const svgSchema = SafeType.Unsafe<string>({
-    description: "An svg file.",
     $id: "svg",
     content: {
         "image/svg+xml": {
             schema: {
+                description: "An svg file.",
                 type: "string",
                 format: "binary",
             },

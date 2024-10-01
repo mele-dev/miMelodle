@@ -1,7 +1,6 @@
 import { SafeType } from "../utils/typebox.js";
 import { artistSchema } from "./artist.js";
-import { MelodleGameSchema } from "./melodle.js";
-import { melodleGameConfig } from "./melodleConfigs.js";
+import { melodleGameConfig, MelodleGameSchema } from "./melodle.js";
 import { profilePictureSchema } from "./public.js";
 import { userSchema } from "./user.js";
 

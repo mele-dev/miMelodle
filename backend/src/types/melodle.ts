@@ -1,10 +1,26 @@
 import { Static } from "@sinclair/typebox";
 import { SafeType } from "../utils/typebox.js";
 import { userSchema } from "./user.js";
+import { artistSchema } from "./artist.js";
 
 export const gameModes = ["Guess Line", "Guess Song"] as const;
 
 export type GameMode = (typeof gameModes)[number];
+
+export const melodleGameConfig = SafeType.Object({
+    id: SafeType.Integer({ description: "Unique identifier for a config." }),
+    mode: SafeType.StringEnum([...gameModes]),
+    onlyFavoriteArtists: SafeType.Boolean({
+        description: "Whether to pick from any artist or only favorited ones.",
+    }),
+    fromArtists: SafeType.Array(
+        SafeType.Pick(artistSchema, ["musixmatchArtistId"]),
+        {
+            description:
+                "The artists we can choose from. If empty, it means this filter does not do anything.",
+        }
+    ),
+});
 
 export const musixmatchIdSchema = SafeType.Object({
     musixmatchId: SafeType.String({
@@ -21,8 +37,16 @@ export const guessSongHintsSchema = SafeType.Object({
 
 export const guessLineHintSchema = SafeType.Object({
     guessLineHints: SafeType.Array(
-        SafeType.StringEnum(["Correct spot", "Correct letter, wrong spot."])
+        SafeType.StringEnum([
+            "Correct spot",
+            "Correct letter, wrong spot.",
+            "Wrong",
+        ]),
+        {
+            description: "For every letter given returns a hint, in order.",
+        }
     ),
+    input: SafeType.String(),
 });
 
 export const MelodleGuessSongAttemptSchema = SafeType.Object({
@@ -31,7 +55,10 @@ export const MelodleGuessSongAttemptSchema = SafeType.Object({
 });
 
 export const MelodleGuessLineAttemptSchema = SafeType.Object({
-    guessedLine: SafeType.String({ maxLength: 1000 }),
+    guessedLine: SafeType.String({
+        maxLength: 1000,
+        description: "A line to match against the actual line of the song.",
+    }),
     guessedAt: SafeType.String({ format: "date-time" }),
 });
 
@@ -53,6 +80,7 @@ export const MelodleGameSchema = SafeType.Object({
     won: SafeType.Optional(SafeType.Boolean()),
     endingTime: SafeType.Optional(SafeType.String({ format: "date-time" })),
     gameMode: SafeType.StringEnum([...gameModes]),
+    config: melodleGameConfig,
 });
 
 export const gameModeArraySchema = SafeType.Object({

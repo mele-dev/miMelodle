@@ -7,11 +7,13 @@ import {
 import { runPreparedQuery } from "../../../services/database.js";
 import { SafeType } from "../../../utils/typebox.js";
 import { insertUser } from "../../../queries/dml.queries.js";
-import { sendError } from "../../../utils/errors.js";
+import { sendError, sendOk } from "../../../utils/reply.js";
+import { decorators } from "../../../services/decorators.js";
 import { MelodleTagName } from "../../../plugins/swagger.js";
 
 const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
     fastify.post("", {
+        onRequest: [decorators.noSecurity],
         schema: {
             body: SafeType.WithExamples(
                 SafeType.Pick(userSchema, [
@@ -69,7 +71,7 @@ const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 id: result[0].id,
             } satisfies JwtTokenContent);
 
-            return reply.code(200).send({ jwtToken: token, id: result[0].id });
+            return sendOk(reply, 200, { jwtToken: token, id: result[0].id });
         },
     });
 };

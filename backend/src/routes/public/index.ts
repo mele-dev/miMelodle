@@ -4,14 +4,16 @@ import {
     getAllUserIconsFileNames,
     getIconFromFile,
 } from "../../services/files.js";
-import { sendError } from "../../utils/errors.js";
+import { sendError, sendOk } from "../../utils/reply.js";
 import { profilePictureSchema, svgSchema } from "../../types/public.js";
 import { runPreparedQuery } from "../../services/database.js";
 import { selectAllIcons } from "../../queries/dml.queries.js";
 import { MelodleTagName } from "../../plugins/swagger.js";
+import { decorators } from "../../services/decorators.js";
 
 const pub: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
     fastify.get("/icons/:filename", {
+        onRequest: [decorators.noSecurity],
         schema: {
             description:
                 "Get the svg for a certain user icon. The selection of user icons is fixed.",
@@ -38,13 +40,13 @@ const pub: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                     "The speccified file does not exist."
                 );
             }
-            return reply
-                .code(200)
-                .send(getIconFromFile(request.params.filename));
+
+            return sendOk(reply, 200, icon);
         },
     });
 
     fastify.get("/icons", {
+        onRequest: [decorators.noSecurity],
         schema: {
             summary: "Get information about all user icons.",
             tags: ["Static"] satisfies MelodleTagName[],
@@ -58,7 +60,7 @@ const pub: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
         },
         async handler(_request, reply) {
             const result = await runPreparedQuery(selectAllIcons, {});
-            return reply.code(200).send(result);
+            return sendOk(reply, 200, result);
         },
     });
 };

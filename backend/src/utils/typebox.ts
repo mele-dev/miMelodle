@@ -17,7 +17,7 @@ import {
     CommonErrorName,
     commonErrors,
     CommonErrorToCode,
-} from "./errors.js";
+} from "./reply.js";
 
 // Redeclarations
 const safeTypeOverrides = {

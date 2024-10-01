@@ -1,5 +1,9 @@
 import { FastifyReply } from "fastify";
 import { reverseMap, ReverseMap } from "./utils.js";
+import { Static } from "@sinclair/typebox";
+import { TSchema } from "@sinclair/typebox";
+
+// Error replies.
 
 /**
  * Map from every error in fastify sensible to their status code.
@@ -121,17 +125,29 @@ export type FastifyError<TNumber extends number> = {
     message: string;
 };
 
+export type Responses<TReply extends FastifyReply> = NonNullable<
+    NonNullable<TReply["routeOptions"]["schema"]>["response"]
+>;
+
 export function sendError<
     TCode extends keyof TResponses & CommonErrorCode,
     TReply extends FastifyReply,
-    TResponses extends Record<number, any> = NonNullable<
-        NonNullable<TReply["routeOptions"]["schema"]>["response"]
-    >,
->(
-    reply: TReply,
-    code: TCode | CodeToCommonError<TCode>,
-    message?: string
-) {
+    TResponses extends Responses<TReply>,
+>(reply: TReply, code: TCode | CodeToCommonError<TCode>, message?: string) {
     const index = typeof code === "number" ? codeToCommonErrors[code] : code;
     return reply[index](message);
+}
+
+// Ok replies
+export function sendOk<
+    TCode extends Exclude<keyof TResponses, CommonErrorCode> & number,
+    TReply extends FastifyReply,
+    TResponses extends Responses<TReply> &
+        Record<any, TSchema> = Responses<TReply>,
+>(
+    reply: TReply,
+    code: TCode,
+    value: Static<NoInfer<TResponses[TCode]>>
+) {
+    return reply.code(code).send(value as any);
 }

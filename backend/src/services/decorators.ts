@@ -6,7 +6,7 @@ import {
     CommonErrorName,
     CommonErrorToCode,
     sendError,
-} from "../utils/errors.js";
+} from "../utils/reply.js";
 
 type FastifyReplyWithErrorCodes<TErrorName extends CommonErrorName> =
     FastifyReply & {
@@ -24,34 +24,9 @@ export const decorators = {
             reply: FastifyReplyWithErrorCodes<"unauthorized">
         ) {
             try {
-                reply.routeOptions.schema?.response;
                 await request.jwtVerify();
             } catch (err) {
-                return reply.unauthorized(
-                    `Invalid jwt token: ${request.headers.authorization}. ${message ?? ""}`
-                );
-            }
-        };
-    },
-    /** Required that the schema has a 401 error and a selfId in params,
-     * and check the selfId against the user's token.
-     */
-    authenticateSelf(message?: string) {
-        return async function (
-            request: FastifyRequest & { params: { selfId: User["id"] } },
-            reply: FastifyReplyWithErrorCodes<"unauthorized">
-        ) {
-            try {
-                const tokenContent = await request.jwtVerify();
-
-                Value.Assert(
-                    jwtTokenContentSchema,
-                    schemaReferences,
-                    tokenContent
-                );
-                Value.Equal(request.params.selfId, tokenContent.id);
-            } catch {
-                return sendError(
+                sendError(
                     reply,
                     "unauthorized",
                     `Invalid jwt token: ${request.headers.authorization}. ${message ?? ""}`
@@ -59,4 +34,59 @@ export const decorators = {
             }
         };
     },
+    /**
+     * Required that the schema has a 401 error and a selfId in params,
+     * and check the selfId against the user's token.
+     */
+    authenticateSelf(message?: string) {
+        return async function (
+            request: FastifyRequest & {
+                params: { readonly selfId: User["id"] };
+            },
+            reply: FastifyReplyWithErrorCodes<"unauthorized">
+        ) {
+            message ??= "";
+            try {
+                const tokenContent = await request.jwtVerify();
+
+                if (
+                    !Value.Check(
+                        jwtTokenContentSchema,
+                        schemaReferences,
+                        tokenContent
+                    )
+                ) {
+                    return sendError(
+                        reply,
+                        "unauthorized",
+                        "Jwt token has the wrong payload. " + message
+                    );
+                }
+
+                if (request.params.selfId != tokenContent.id) {
+                    return sendError(
+                        reply,
+                        "unauthorized",
+                        `this is not you: ${request.params.selfId}, ${tokenContent.id}. ${message}`
+                    );
+                }
+            } catch {
+                return sendError(
+                    reply,
+                    "unauthorized",
+                    `Invalid jwt token: ${request.headers.authorization}. ${message}`
+                );
+            }
+        };
+    },
+    /**
+     * Use this to explicitly state you do not wish to validate anything from
+     * the request via decorators. That means security must be empty.
+     */
+    async noSecurity(
+        _request: FastifyRequest & {
+            routeOptions: { schema?: { security: readonly [] } };
+        },
+        _reply: FastifyReply
+    ) {},
 } as const;

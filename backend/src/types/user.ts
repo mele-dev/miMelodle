@@ -1,6 +1,7 @@
 import { Static } from "@sinclair/typebox";
 import { SafeType } from "../utils/typebox.js";
 import { profilePictureSchema } from "./public.js";
+import { artistSchema } from "./artist.js";
 
 export const userSchema = SafeType.Object(
     {
@@ -10,11 +11,14 @@ export const userSchema = SafeType.Object(
                 "unique and unchangeable.",
         }),
         username: SafeType.String({
+            pattern: /^[a-zA-Z0-9.-_]+$/.source,
             minLength: 3,
-            maxLength: 20,
+            maxLength: 30,
             description:
                 "The id to display to users. They must be unique, but the " +
-                "users can choose and change them.",
+                "users can choose and change them.\n" +
+                "### Rules\n" +
+                "- Only accepts letters, digits and '.', '-', '_'.",
         }),
         email: SafeType.String({
             pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.source,
@@ -38,10 +42,14 @@ export const userSchema = SafeType.Object(
                 "These pictures cannot be uploaded, we store the " +
                 "options manually.",
         }),
+        favoriteArtists: SafeType.Array(artistSchema, {
+            description:
+                "An array of every artist currently favorited by the user.",
+        }),
         profilePictureFilename: profilePictureSchema.properties.filename,
         name: SafeType.String({
-            maxLength: 25,
-            minLength: 3,
+            minLength: 1,
+            maxLength: 40,
             description:
                 "The user's display name. It does not need to be unique.",
         }),
@@ -78,18 +86,17 @@ export const jwtTokenSchema = SafeType.Object(
 
 export const friendSchema = SafeType.Object({
     username: userSchema.properties.username,
-    status: SafeType.StringEnum(["pending", "blocked", "accepted"])
-})
+    status: SafeType.StringEnum(["pending", "blocked", "accepted"]),
+});
 
 export const selfIdSchema = SafeType.Object({
     selfId: userSchema.properties.id,
-})
+});
 
 export const friendRelationShipSchema = SafeType.Object({
     ...selfIdSchema.properties,
     friendId: userSchema.properties.id,
 });
-
 
 /** Use this schema to assert the contents of the jwt token. */
 export const jwtTokenContentSchema = SafeType.Pick(userSchema, ["id"]);

@@ -3,9 +3,11 @@ import { SafeType } from "../../utils/typebox.js";
 import { ParamsSchema } from "../../types/params.js";
 import { artistSchema } from "../../types/artist.js";
 import { MelodleTagName } from "../../plugins/swagger.js";
+import { decorators } from "../../services/decorators.js";
 
 const artist: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
     fastify.get("/:artistMusixMatchId", {
+        onRequest: [decorators.noSecurity],
         schema: {
             security: [],
             params: SafeType.Pick(ParamsSchema, ["artistMusixMatchId"]),
@@ -26,7 +28,7 @@ const artist: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
     });
 
     fastify.get("/search", {
-        onRequest: [],
+        onRequest: [decorators.noSecurity],
         schema: {
             security: [],
             querystring: SafeType.Object({

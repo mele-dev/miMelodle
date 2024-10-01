@@ -5,10 +5,13 @@ import { userSchema } from "../../types/user.js";
 import { MelodleTagName } from "../../plugins/swagger.js";
 import { selectUsers } from "../../queries/dml.queries.js";
 import { runPreparedQuery } from "../../services/database.js";
+import { decorators } from "../../services/decorators.js";
+import { sendOk } from "../../utils/reply.js";
 
 export default (async (fastify) => {
     if (typedEnv.NODE_ENV === "development") {
         fastify.get("/users", {
+            onRequest: [decorators.noSecurity],
             schema: {
                 security: [],
                 summary: "Route to get all users",
@@ -19,7 +22,9 @@ export default (async (fastify) => {
             },
             async handler(_request, reply) {
                 const users = await runPreparedQuery(selectUsers, {});
-                return reply.code(200).send(
+                return sendOk(
+                    reply,
+                    200,
                     users.map((val) => ({
                         ...val,
                         spotifyId: val.spotifyId ?? undefined,
@@ -28,5 +33,4 @@ export default (async (fastify) => {
             },
         });
     }
-
 }) satisfies FastifyPluginAsyncTypebox;

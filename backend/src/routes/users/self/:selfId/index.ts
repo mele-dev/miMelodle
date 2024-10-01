@@ -8,7 +8,7 @@ import {
     getSelfuser,
     updateUser,
 } from "../../../../queries/dml.queries.js";
-import { sendError } from "../../../../utils/errors.js";
+import { sendError, sendOk } from "../../../../utils/reply.js";
 import { decorators } from "../../../../services/decorators.js";
 import { profilePictureSchema } from "../../../../types/public.js";
 
@@ -45,7 +45,7 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 getSelfuser,
                 request.params
             );
-            return reply.code(200).send(userProfile[0]);
+            return sendOk(reply, 200, userProfile[0]);
         },
     });
 
@@ -96,7 +96,7 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 ...request.params,
             });
 
-            return reply.code(200).send(request.body);
+            return sendOk(reply, 200, request.body);
         },
     });
 
@@ -129,7 +129,9 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                         "Could not delete person with such crentials."
                     );
                 case 1:
-                    return reply.code(200);
+                    return sendOk(reply, 200, {
+                        username: queryResult[0].username,
+                    });
                 default:
                     throw `Deleted ${queryResult.length} rows.`;
             }

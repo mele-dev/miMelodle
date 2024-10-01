@@ -14,3 +14,5 @@
 
 - Id de usuario:
     - TODO
+
+> Falta formalizar algunas validaciones.

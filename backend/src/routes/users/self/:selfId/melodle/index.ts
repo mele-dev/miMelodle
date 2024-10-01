@@ -1,6 +1,6 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { SafeType } from "../../../../../utils/typebox.js";
-import { MelodleGameSchema } from "../../../../../types/melodle.js";
+import { melodleGameConfig, MelodleGameSchema } from "../../../../../types/melodle.js";
 import { decorators } from "../../../../../services/decorators.js";
 import { ParamsSchema } from "../../../../../types/params.js";
 import { MelodleTagName } from "../../../../../plugins/swagger.js";
@@ -11,9 +11,9 @@ export default (async (fastify) => {
         schema: {
             params: SafeType.Pick(ParamsSchema, ["selfId"]),
             summary: "Start a new melodle game.",
-            body: SafeType.Pick(MelodleGameSchema, ["gameMode"]),
+            body: melodleGameConfig,
             response: {
-                200: SafeType.Pick(MelodleGameSchema, ["gameId", "gameMode"]),
+                200: SafeType.Pick(MelodleGameSchema, ["gameId", "config"]),
                 ...SafeType.CreateErrors(["unauthorized", "tooEarly"]),
             },
             tags: ["Melodle"] satisfies MelodleTagName[],

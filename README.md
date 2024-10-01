@@ -8,7 +8,7 @@ Equipo 4 - Juan Tanca, Cristian Rodriguez, Juana López
 
 Pensamos desarrollar una versión innovadora de Wordle, pero con un giro
 especial: en lugar de palabras aleatorias, las respuestas estarán inspiradas en
-letras de canciones de los artistas favoritos de cada usuario. 
+letras de canciones de los artistas favoritos de cada usuario.
 
 Wordle es un juego de palabras en línea en el que los jugadores deben adivinar
 una palabra de cinco letras en un máximo de seis intentos. Tras cada intento, el
@@ -37,6 +37,14 @@ clasificación y compararse con sus amigos.
 ## Notas para profesores:
 
 - Bases de datos:
-    - Hay un archivo de drawio con el [mer](./docs/mer.drawio)
-    - Hay una imagen con el [diagrama físico](./docs/diagrama_físico.png)
-    - Existe un archivo [ddl](./db/init.sql)
+
+  - Hay un archivo de drawio con el [mer](./docs/mer.drawio)
+  - Hay una imagen con el [diagrama físico](./docs/diagrama_físico.png)
+  - Existe un archivo [ddl](./db/init.sql)
+
+- Desarrollo Web:
+  - Las tecnologías utilizadas, por fuera de las presentadas en clase, las
+    justificamos en [el archivo de justificaciones](./docs/technologyJustification.md).
+  - Muy probablemente el diagrama físico y mer se encuentren desactualizados
+    cuando los vea. Utilize alguna herramienta de autogeneración para verlos,
+    nosotros hacemos eso; solo los actualizamos para entregas de bases de datos.
