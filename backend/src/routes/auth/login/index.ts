@@ -9,9 +9,11 @@ import { SafeType } from "../../../utils/typebox.js";
 import { loginUser } from "../../../queries/dml.queries.js";
 import { sendError } from "../../../utils/errors.js";
 import { MelodleTagName } from "../../../plugins/swagger.js";
+import { decorators } from "../../../services/decorators.js";
 
 const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
     fastify.post("", {
+        onRequest: [decorators.noSecurity],
         schema: {
             body: SafeType.WithExamples(
                 SafeType.Pick(userSchema, ["email", "password"]),

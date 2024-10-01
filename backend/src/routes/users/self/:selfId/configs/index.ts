@@ -1,10 +1,10 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { SafeType } from "../../../../../utils/typebox.js";
 import { MelodleTagName } from "../../../../../plugins/swagger.js";
-import { melodleGameConfig } from "../../../../../types/melodleConfigs.js";
 import { decorators } from "../../../../../services/decorators.js";
 import { ParamsSchema } from "../../../../../types/params.js";
 import { userSchema } from "../../../../../types/user.js";
+import { melodleGameConfig } from "../../../../../types/melodle.js";
 
 export default (async (fastify) => {
     fastify.get("", {

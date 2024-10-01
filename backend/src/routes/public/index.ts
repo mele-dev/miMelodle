@@ -9,9 +9,11 @@ import { profilePictureSchema, svgSchema } from "../../types/public.js";
 import { runPreparedQuery } from "../../services/database.js";
 import { selectAllIcons } from "../../queries/dml.queries.js";
 import { MelodleTagName } from "../../plugins/swagger.js";
+import { decorators } from "../../services/decorators.js";
 
 const pub: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
     fastify.get("/icons/:filename", {
+        onRequest: [decorators.noSecurity],
         schema: {
             description:
                 "Get the svg for a certain user icon. The selection of user icons is fixed.",
@@ -45,6 +47,7 @@ const pub: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
     });
 
     fastify.get("/icons", {
+        onRequest: [decorators.noSecurity],
         schema: {
             summary: "Get information about all user icons.",
             tags: ["Static"] satisfies MelodleTagName[],

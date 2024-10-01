@@ -3,10 +3,11 @@ import { SafeType } from "../../utils/typebox.js";
 import { MelodleTagName } from "../../plugins/swagger.js";
 import { leaderBoardRangeSchema, leaderboardSchema } from "../../types/leaderboard.js";
 import { gameModeArraySchema } from "../../types/melodle.js";
+import { decorators } from "../../services/decorators.js";
 
 export default (async (fastify) => {
     fastify.get("/", {
-        onRequest: undefined,
+        onRequest: [decorators.noSecurity],
         schema: {
             querystring: SafeType.Object({
                 ...gameModeArraySchema.properties,
@@ -19,6 +20,7 @@ export default (async (fastify) => {
             summary: "Fetches global leaderboard information.",
             description: undefined,
             tags: ["Leaderboards"] satisfies MelodleTagName[],
+            security: [],
         },
         async handler(_request, reply) {
             return reply.notImplemented();

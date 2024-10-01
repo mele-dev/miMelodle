@@ -5,10 +5,12 @@ import { userSchema } from "../../types/user.js";
 import { MelodleTagName } from "../../plugins/swagger.js";
 import { selectUsers } from "../../queries/dml.queries.js";
 import { runPreparedQuery } from "../../services/database.js";
+import { decorators } from "../../services/decorators.js";
 
 export default (async (fastify) => {
     if (typedEnv.NODE_ENV === "development") {
         fastify.get("/users", {
+            onRequest: [decorators.noSecurity],
             schema: {
                 security: [],
                 summary: "Route to get all users",

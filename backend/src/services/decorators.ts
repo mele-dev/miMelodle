@@ -1,5 +1,5 @@
 import { Value } from "@sinclair/typebox/value";
-import fastify, { FastifyReply, FastifyRequest } from "fastify";
+import { FastifyReply, FastifyRequest } from "fastify";
 import { jwtTokenContentSchema, User } from "../types/user.js";
 import schemaReferences from "../types/schemaReferences.js";
 import {
@@ -7,7 +7,6 @@ import {
     CommonErrorToCode,
     sendError,
 } from "../utils/errors.js";
-import fastifyOauth2 from "@fastify/oauth2";
 
 type FastifyReplyWithErrorCodes<TErrorName extends CommonErrorName> =
     FastifyReply & {
@@ -33,12 +32,15 @@ export const decorators = {
             }
         };
     },
-    /** Required that the schema has a 401 error and a selfId in params,
+    /**
+     * Required that the schema has a 401 error and a selfId in params,
      * and check the selfId against the user's token.
      */
     authenticateSelf(message?: string) {
         return async function (
-            request: FastifyRequest & { params: { selfId: User["id"] } },
+            request: FastifyRequest & {
+                params: { readonly selfId: User["id"] };
+            },
             reply: FastifyReplyWithErrorCodes<"unauthorized">
         ) {
             message ??= "";
@@ -55,7 +57,7 @@ export const decorators = {
                     return sendError(
                         reply,
                         "unauthorized",
-                        "jwt token has the wrong payload" + message
+                        "Jwt token has the wrong payload. " + message
                     );
                 }
 
@@ -75,4 +77,14 @@ export const decorators = {
             }
         };
     },
+    /**
+     * Use this to explicitly state you do not wish to validate anything from
+     * the request via decorators. That means security must be empty.
+     */
+    async noSecurity(
+        _request: FastifyRequest & {
+            routeOptions: { schema?: { security: readonly [] } };
+        },
+        _reply: FastifyReply
+    ) {},
 } as const;
