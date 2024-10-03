@@ -35,7 +35,7 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 ...SafeType.CreateErrors(["unauthorized"]),
             },
             tags: ["User CRUD", "User"] satisfies MelodleTagName[],
-            summary: "Get your own user's information.",
+            summary: "Get your user information.",
             description:
                 "This is the route that exposes the most information about a user.",
         },
@@ -88,7 +88,7 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 ...SafeType.CreateErrors(["unauthorized"]),
             },
             tags: ["User CRUD", "User"] satisfies MelodleTagName[],
-            summary: "Update your own user's information.",
+            summary: "Update your user information.",
         },
         handler: async function (request, reply) {
             await runPreparedQuery(updateUser, {
@@ -126,7 +126,7 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                     return sendError(
                         reply,
                         "notFound",
-                        "Could not delete person with such crentials."
+                        "Could not delete person with such credentials."
                     );
                 case 1:
                     return sendOk(reply, 200, {
