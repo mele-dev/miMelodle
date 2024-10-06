@@ -37,7 +37,7 @@ if (filteredProperties.length !== 0) {
  * program starts. It is not necessary to make any more runtime checks
  * for this.
  */
-export const typedEnv = Value.Decode(
+export const typedEnv = Value.Parse(
     envSchema,
     schemaReferences,
     process.env

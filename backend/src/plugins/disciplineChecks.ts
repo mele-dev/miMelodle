@@ -18,7 +18,7 @@ export default fastifyPlugin(async (fastify) => {
             route.onRequest,
             `Route ${route.path} must specify a request decorator. ` +
                 "If you wish to omit decorators, just add a decorator that does nothing, " +
-                `like ${decorators.noSecurity.name}`
+                `like ${Object.keys({ decorators })[0]}.${decorators.noSecurity.name}`
         );
 
         await fastify.close();
