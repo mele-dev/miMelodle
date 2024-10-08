@@ -2,6 +2,7 @@ import { FastifyReply } from "fastify";
 import { reverseMap, ReverseMap } from "./utils.js";
 import { Static } from "@sinclair/typebox";
 import { TSchema } from "@sinclair/typebox";
+import fastifySensible from "@fastify/sensible";
 
 // Error replies.
 
@@ -99,7 +100,7 @@ export const commonErrors = {
     // This `satisfies` assertion proves everything is correct;
     // no hallucinations.
 } as const satisfies {
-    [key: string]: number;
+    [K in fastifySensible.HttpErrorNames]: fastifySensible.HttpErrorCodes;
 };
 
 export const codeToCommonErrors = reverseMap(commonErrors);
