@@ -1,4 +1,4 @@
-import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
+import { FastifyPluginAsyncTypebox, TSchema } from "@fastify/type-provider-typebox";
 import { typedEnv } from "../../types/env.js";
 import { SafeType } from "../../utils/typebox.js";
 import { MelodleTagName } from "../../plugins/swagger.js";
@@ -14,7 +14,6 @@ import {
 } from "../../queries/snapshots.queries.js";
 import { friendSchema, User, userSchema } from "../../types/user.js";
 import { sendOk } from "../../utils/reply.js";
-import { TSchema } from "@geut/openapi-box";
 
 export default (async (fastify) => {
     if (typedEnv.NODE_ENV === "development") {
