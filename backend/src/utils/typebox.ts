@@ -9,6 +9,7 @@ import {
     Type,
     SchemaOptions,
     UnsafeOptions,
+    TEnum,
 } from "@sinclair/typebox";
 import { Value } from "@sinclair/typebox/value";
 import schemaReferences from "../types/schemaReferences.js";
@@ -17,7 +18,9 @@ import {
     CommonErrorName,
     commonErrors,
     CommonErrorToCode,
+    FastifyError,
 } from "./reply.js";
+import { TypeCompiler } from "@sinclair/typebox/compiler";
 
 // Redeclarations
 const safeTypeOverrides = {
@@ -53,12 +56,21 @@ const safeTypeOverrides = {
 
 // Added functionality
 const extensions = {
-    StringEnum<T extends string[]>(values: [...T], options?: UnsafeOptions) {
-        return Type.Unsafe<T[number]>({
-            type: "string",
-            enum: values,
-            ...options,
-        });
+    /**
+     * Returns a string template with a regex that matches all strings passed.
+     * This is preferable to a union of strings, since both fastify and typebox
+     * work well with this.
+     */
+    StringEnum<T extends readonly string[]>(
+        values: [...T],
+        options?: SchemaOptions
+    ) {
+        return Type.TemplateLiteral([
+            Type.Union(
+                values.map((v) => Type.Literal(v)),
+                { ...options }
+            ),
+        ]);
     },
     /**
      * Adds example values to the schema, and checks if they are valid. If not,
@@ -94,11 +106,9 @@ const extensions = {
     CreateErrors<TErrors extends CommonErrorName[]>(
         errors: TErrors
     ): {
-        [E in TErrors[number] as CommonErrorToCode<E>]: TObject<{
-            statusCode: TLiteral<CommonErrorToCode<E>>;
-            error: TString;
-            message: TString;
-        }>;
+        [E in TErrors[number] as CommonErrorToCode<E>]: FastifyError<
+            CommonErrorToCode<E>
+        >;
     } {
         type ErrorSchema = TObject<{
             statusCode: TLiteral<CommonErrorCode>;

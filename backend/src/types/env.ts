@@ -5,10 +5,7 @@ import { Static } from "@sinclair/typebox";
 
 // If any new environment variables are added, they should be put here.
 const envSchema = SafeType.Object({
-    NODE_ENV: SafeType.Union([
-        SafeType.Literal("development"),
-        SafeType.Literal("production"),
-    ]),
+    NODE_ENV: SafeType.StringEnum(["development", "production"]),
     PGDATABASE: SafeType.String(),
     PGUSER: SafeType.String(),
     PGPASSWORD: SafeType.String(),
@@ -29,7 +26,7 @@ if (filteredProperties.length !== 0) {
     console.log(
         "Make sure every required variable is set and their values are correct."
     );
-    throw 'Exiting.';
+    throw "Exiting.";
 }
 
 /**
