@@ -1,5 +1,10 @@
 import { PreparedQuery } from "@pgtyped/runtime";
 import pg from "pg";
+import {
+    beginTransaction,
+    commitTransaction,
+    rollbackTransaction,
+} from "../queries/dml.queries.js";
 const { Pool } = pg;
 
 const pool = new Pool();
@@ -24,4 +29,25 @@ export async function runPreparedQuery<
     P extends Parameters<T["run"]>["0"],
 >(preparedQuery: T, params: P extends void ? {} : P): Promise<R> {
     return await (preparedQuery.run(params, pool) as R);
+}
+
+/**
+ * Wraps the inner code within a postgress transaction which automatically
+ * closes before returning, and, if any errors are thrown within the
+ * transaction, it is automatically rolled back (and the error is re-thrown).
+ *
+ * So, the order is: BEGIN; await transaction(); (COMMIT | ROLLBACK);
+ */
+export async function executeTransaction<TReturn>(
+    transaction: () => Promise<TReturn>
+) {
+    try {
+        await runPreparedQuery(beginTransaction, {});
+        const output = await transaction();
+        await runPreparedQuery(commitTransaction, {});
+        return output;
+    } catch (e) {
+        await runPreparedQuery(rollbackTransaction, {});
+        throw e;
+    }
 }

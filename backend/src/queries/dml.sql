@@ -49,3 +49,12 @@ where u.id = :selfId!;
 INSERT
   INTO "profilePictures" (filename)
 VALUES (:file!);
+
+/* @name beginTransaction */
+BEGIN;
+
+/* @name commitTransaction */
+COMMIT;
+
+/* @name rollbackTransaction */
+ROLLBACK;
