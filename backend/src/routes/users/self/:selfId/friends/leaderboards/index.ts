@@ -23,7 +23,7 @@ export default (async (fastify) => {
                 ...SafeType.CreateErrors(["unauthorized"]),
             },
             summary:
-                "Gets information about the user's friends leaderboard on the gamemode.",
+                "Gets information about the user's friends leaderboard on the game mode.",
             description: undefined,
             tags: ["Leaderboards"] satisfies MelodleTagName[],
         },

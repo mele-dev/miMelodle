@@ -1,4 +1,5 @@
 import fastifyPlugin from "fastify-plugin";
+import { decorators } from "../services/decorators.js";
 
 export default fastifyPlugin(async (fastify) => {
     fastify.addHook("onRoute", async (route) => {
@@ -16,7 +17,8 @@ export default fastifyPlugin(async (fastify) => {
         fastify.log.fatal(
             route.onRequest,
             `Route ${route.path} must specify a request decorator. ` +
-                "If you wish to omit decorators, just add a function that does nothing."
+                "If you wish to omit decorators, just add a decorator that does nothing, " +
+                `like ${Object.keys({ decorators })[0]}.${decorators.noSecurity.name}`
         );
 
         await fastify.close();

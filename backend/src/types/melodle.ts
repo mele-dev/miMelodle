@@ -25,7 +25,7 @@ export const melodleGameConfig = SafeType.Object({
 export const musixmatchIdSchema = SafeType.Object({
     musixmatchId: SafeType.String({
         description:
-            "Identifier which can be used to fetch artist data from musicmatch.",
+            "Identifier which can be used to fetch artist data from MusixMatch.",
     }),
 });
 
