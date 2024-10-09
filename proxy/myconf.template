@@ -24,7 +24,7 @@ server {
 
     location / {
 
-        proxy_pass http://frontend;
+        proxy_pass http://frontend:4200;
 
         proxy_http_version 1.1;
 
