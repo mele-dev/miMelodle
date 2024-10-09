@@ -6,6 +6,7 @@ export default {
         output: {
             target: "src/apiCodegen/spotify.ts",
             prettier: true,
+            baseUrl: 'https://api.spotify.com/v1',
         },
     },
 };
