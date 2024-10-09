@@ -2760,7 +2760,7 @@ export const getAnAlbum = <TData = AxiosResponse<OneAlbumResponse>>(
     params?: GetAnAlbumParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/albums/${id}`, {
+    return axios.get(`https://api.spotify.com/v1/albums/${id}`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -2776,7 +2776,7 @@ export const getMultipleAlbums = <TData = AxiosResponse<ManyAlbumsResponse>>(
     params: GetMultipleAlbumsParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/albums`, {
+    return axios.get(`https://api.spotify.com/v1/albums`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -2796,7 +2796,7 @@ export const getAnAlbumsTracks = <
     params?: GetAnAlbumsTracksParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/albums/${id}/tracks`, {
+    return axios.get(`https://api.spotify.com/v1/albums/${id}/tracks`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -2812,7 +2812,7 @@ export const getAnArtist = <TData = AxiosResponse<OneArtistResponse>>(
     id: string,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/artists/${id}`, options);
+    return axios.get(`https://api.spotify.com/v1/artists/${id}`, options);
 };
 
 /**
@@ -2825,7 +2825,7 @@ export const getMultipleArtists = <TData = AxiosResponse<ManyArtistsResponse>>(
     params: GetMultipleArtistsParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/artists`, {
+    return axios.get(`https://api.spotify.com/v1/artists`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -2844,7 +2844,7 @@ export const getAnArtistsAlbums = <
     params?: GetAnArtistsAlbumsParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/artists/${id}/albums`, {
+    return axios.get(`https://api.spotify.com/v1/artists/${id}/albums`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -2863,7 +2863,7 @@ export const getAnArtistsTopTracks = <
     params?: GetAnArtistsTopTracksParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/artists/${id}/top-tracks`, {
+    return axios.get(`https://api.spotify.com/v1/artists/${id}/top-tracks`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -2881,7 +2881,10 @@ export const getAnArtistsRelatedArtists = <
     id: string,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/artists/${id}/related-artists`, options);
+    return axios.get(
+        `https://api.spotify.com/v1/artists/${id}/related-artists`,
+        options
+    );
 };
 
 /**
@@ -2896,7 +2899,7 @@ export const getAShow = <TData = AxiosResponse<OneShowResponse>>(
     params?: GetAShowParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/shows/${id}`, {
+    return axios.get(`https://api.spotify.com/v1/shows/${id}`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -2914,7 +2917,7 @@ export const getMultipleShows = <
     params: GetMultipleShowsParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/shows`, {
+    return axios.get(`https://api.spotify.com/v1/shows`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -2933,7 +2936,7 @@ export const getAShowsEpisodes = <
     params?: GetAShowsEpisodesParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/shows/${id}/episodes`, {
+    return axios.get(`https://api.spotify.com/v1/shows/${id}/episodes`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -2951,7 +2954,7 @@ export const getAnEpisode = <TData = AxiosResponse<OneEpisodeResponse>>(
     params?: GetAnEpisodeParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/episodes/${id}`, {
+    return axios.get(`https://api.spotify.com/v1/episodes/${id}`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -2969,7 +2972,7 @@ export const getMultipleEpisodes = <
     params: GetMultipleEpisodesParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/episodes`, {
+    return axios.get(`https://api.spotify.com/v1/episodes`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -2986,7 +2989,7 @@ export const getAnAudiobook = <TData = AxiosResponse<OneAudiobookResponse>>(
     params?: GetAnAudiobookParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/audiobooks/${id}`, {
+    return axios.get(`https://api.spotify.com/v1/audiobooks/${id}`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -3004,7 +3007,7 @@ export const getMultipleAudiobooks = <
     params: GetMultipleAudiobooksParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/audiobooks`, {
+    return axios.get(`https://api.spotify.com/v1/audiobooks`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -3023,7 +3026,7 @@ export const getAudiobookChapters = <
     params?: GetAudiobookChaptersParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/audiobooks/${id}/chapters`, {
+    return axios.get(`https://api.spotify.com/v1/audiobooks/${id}/chapters`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -3041,7 +3044,7 @@ export const getUsersSavedAudiobooks = <
     params?: GetUsersSavedAudiobooksParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/me/audiobooks`, {
+    return axios.get(`https://api.spotify.com/v1/me/audiobooks`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -3057,7 +3060,7 @@ export const saveAudiobooksUser = <TData = AxiosResponse<void>>(
     params: SaveAudiobooksUserParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.put(`/me/audiobooks`, undefined, {
+    return axios.put(`https://api.spotify.com/v1/me/audiobooks`, undefined, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -3073,7 +3076,7 @@ export const removeAudiobooksUser = <TData = AxiosResponse<void>>(
     params: RemoveAudiobooksUserParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.delete(`/me/audiobooks`, {
+    return axios.delete(`https://api.spotify.com/v1/me/audiobooks`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -3091,7 +3094,7 @@ export const checkUsersSavedAudiobooks = <
     params: CheckUsersSavedAudiobooksParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/me/audiobooks/contains`, {
+    return axios.get(`https://api.spotify.com/v1/me/audiobooks/contains`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -3108,7 +3111,7 @@ export const getAChapter = <TData = AxiosResponse<OneChapterResponse>>(
     params?: GetAChapterParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/chapters/${id}`, {
+    return axios.get(`https://api.spotify.com/v1/chapters/${id}`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -3124,7 +3127,7 @@ export const getSeveralChapters = <TData = AxiosResponse<ManyChaptersResponse>>(
     params: GetSeveralChaptersParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/chapters`, {
+    return axios.get(`https://api.spotify.com/v1/chapters`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -3142,7 +3145,7 @@ export const getTrack = <TData = AxiosResponse<OneTrackResponse>>(
     params?: GetTrackParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/tracks/${id}`, {
+    return axios.get(`https://api.spotify.com/v1/tracks/${id}`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -3158,7 +3161,7 @@ export const getSeveralTracks = <TData = AxiosResponse<ManyTracksResponse>>(
     params: GetSeveralTracksParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/tracks`, {
+    return axios.get(`https://api.spotify.com/v1/tracks`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -3175,7 +3178,7 @@ export const search = <TData = AxiosResponse<SearchItemsResponse>>(
     params: SearchParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/search`, {
+    return axios.get(`https://api.spotify.com/v1/search`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -3193,7 +3196,7 @@ export const getCurrentUsersProfile = <
 >(
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/me`, options);
+    return axios.get(`https://api.spotify.com/v1/me`, options);
 };
 
 /**
@@ -3207,7 +3210,7 @@ export const getPlaylist = <TData = AxiosResponse<OnePlaylistResponse>>(
     params?: GetPlaylistParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/playlists/${playlistId}`, {
+    return axios.get(`https://api.spotify.com/v1/playlists/${playlistId}`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -3226,7 +3229,7 @@ export const changePlaylistDetails = <TData = AxiosResponse<void>>(
     options?: AxiosRequestConfig
 ): Promise<TData> => {
     return axios.put(
-        `/playlists/${playlistId}`,
+        `https://api.spotify.com/v1/playlists/${playlistId}`,
         changePlaylistDetailsBody,
         options
     );
@@ -3245,10 +3248,13 @@ export const getPlaylistsTracks = <
     params?: GetPlaylistsTracksParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/playlists/${playlistId}/tracks`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    return axios.get(
+        `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
+        {
+            ...options,
+            params: { ...params, ...options?.params },
+        }
+    );
 };
 
 /**
@@ -3266,7 +3272,7 @@ export const addTracksToPlaylist = <
     options?: AxiosRequestConfig
 ): Promise<TData> => {
     return axios.post(
-        `/playlists/${playlistId}/tracks`,
+        `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
         addTracksToPlaylistBody,
         {
             ...options,
@@ -3296,7 +3302,7 @@ export const reorderOrReplacePlaylistsTracks = <
     options?: AxiosRequestConfig
 ): Promise<TData> => {
     return axios.put(
-        `/playlists/${playlistId}/tracks`,
+        `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
         reorderOrReplacePlaylistsTracksBody,
         {
             ...options,
@@ -3318,10 +3324,10 @@ export const removeTracksPlaylist = <
     removeTracksPlaylistBody: RemoveTracksPlaylistBody,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.delete(`/playlists/${playlistId}/tracks`, {
-        data: removeTracksPlaylistBody,
-        ...options,
-    });
+    return axios.delete(
+        `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
+        { data: removeTracksPlaylistBody, ...options }
+    );
 };
 
 /**
@@ -3337,7 +3343,7 @@ export const getAListOfCurrentUsersPlaylists = <
     params?: GetAListOfCurrentUsersPlaylistsParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/me/playlists`, {
+    return axios.get(`https://api.spotify.com/v1/me/playlists`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -3355,7 +3361,7 @@ export const getUsersSavedAlbums = <
     params?: GetUsersSavedAlbumsParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/me/albums`, {
+    return axios.get(`https://api.spotify.com/v1/me/albums`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -3372,10 +3378,14 @@ export const saveAlbumsUser = <TData = AxiosResponse<void>>(
     params: SaveAlbumsUserParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.put(`/me/albums`, saveAlbumsUserBody, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    return axios.put(
+        `https://api.spotify.com/v1/me/albums`,
+        saveAlbumsUserBody,
+        {
+            ...options,
+            params: { ...params, ...options?.params },
+        }
+    );
 };
 
 /**
@@ -3389,7 +3399,7 @@ export const removeAlbumsUser = <TData = AxiosResponse<void>>(
     params: RemoveAlbumsUserParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.delete(`/me/albums`, {
+    return axios.delete(`https://api.spotify.com/v1/me/albums`, {
         data: removeAlbumsUserBody,
         ...options,
         params: { ...params, ...options?.params },
@@ -3408,7 +3418,7 @@ export const checkUsersSavedAlbums = <
     params: CheckUsersSavedAlbumsParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/me/albums/contains`, {
+    return axios.get(`https://api.spotify.com/v1/me/albums/contains`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -3426,7 +3436,7 @@ export const getUsersSavedTracks = <
     params?: GetUsersSavedTracksParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/me/tracks`, {
+    return axios.get(`https://api.spotify.com/v1/me/tracks`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -3443,10 +3453,14 @@ export const saveTracksUser = <TData = AxiosResponse<void>>(
     params: SaveTracksUserParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.put(`/me/tracks`, saveTracksUserBody, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    return axios.put(
+        `https://api.spotify.com/v1/me/tracks`,
+        saveTracksUserBody,
+        {
+            ...options,
+            params: { ...params, ...options?.params },
+        }
+    );
 };
 
 /**
@@ -3460,7 +3474,7 @@ export const removeTracksUser = <TData = AxiosResponse<void>>(
     params: RemoveTracksUserParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.delete(`/me/tracks`, {
+    return axios.delete(`https://api.spotify.com/v1/me/tracks`, {
         data: removeTracksUserBody,
         ...options,
         params: { ...params, ...options?.params },
@@ -3479,7 +3493,7 @@ export const checkUsersSavedTracks = <
     params: CheckUsersSavedTracksParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/me/tracks/contains`, {
+    return axios.get(`https://api.spotify.com/v1/me/tracks/contains`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -3498,7 +3512,7 @@ export const getUsersSavedEpisodes = <
     params?: GetUsersSavedEpisodesParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/me/episodes`, {
+    return axios.get(`https://api.spotify.com/v1/me/episodes`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -3516,10 +3530,14 @@ export const saveEpisodesUser = <TData = AxiosResponse<void>>(
     params: SaveEpisodesUserParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.put(`/me/episodes`, saveEpisodesUserBody, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    return axios.put(
+        `https://api.spotify.com/v1/me/episodes`,
+        saveEpisodesUserBody,
+        {
+            ...options,
+            params: { ...params, ...options?.params },
+        }
+    );
 };
 
 /**
@@ -3534,7 +3552,7 @@ export const removeEpisodesUser = <TData = AxiosResponse<void>>(
     params: RemoveEpisodesUserParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.delete(`/me/episodes`, {
+    return axios.delete(`https://api.spotify.com/v1/me/episodes`, {
         data: removeEpisodesUserBody,
         ...options,
         params: { ...params, ...options?.params },
@@ -3554,7 +3572,7 @@ export const checkUsersSavedEpisodes = <
     params: CheckUsersSavedEpisodesParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/me/episodes/contains`, {
+    return axios.get(`https://api.spotify.com/v1/me/episodes/contains`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -3572,7 +3590,7 @@ export const getUsersSavedShows = <
     params?: GetUsersSavedShowsParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/me/shows`, {
+    return axios.get(`https://api.spotify.com/v1/me/shows`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -3588,7 +3606,7 @@ export const saveShowsUser = <TData = AxiosResponse<void>>(
     params: SaveShowsUserParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.put(`/me/shows`, undefined, {
+    return axios.put(`https://api.spotify.com/v1/me/shows`, undefined, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -3604,7 +3622,7 @@ export const removeShowsUser = <TData = AxiosResponse<void>>(
     params: RemoveShowsUserParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.delete(`/me/shows`, {
+    return axios.delete(`https://api.spotify.com/v1/me/shows`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -3622,7 +3640,7 @@ export const checkUsersSavedShows = <
     params: CheckUsersSavedShowsParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/me/shows/contains`, {
+    return axios.get(`https://api.spotify.com/v1/me/shows/contains`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -3641,7 +3659,7 @@ export const getUsersTopArtistsAndTracks = <
     params?: GetUsersTopArtistsAndTracksParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/me/top/${type}`, {
+    return axios.get(`https://api.spotify.com/v1/me/top/${type}`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -3657,7 +3675,7 @@ export const getUsersProfile = <TData = AxiosResponse<OnePublicUserResponse>>(
     userId: string,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/users/${userId}`, options);
+    return axios.get(`https://api.spotify.com/v1/users/${userId}`, options);
 };
 
 /**
@@ -3673,7 +3691,7 @@ export const getListUsersPlaylists = <
     params?: GetListUsersPlaylistsParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/users/${userId}/playlists`, {
+    return axios.get(`https://api.spotify.com/v1/users/${userId}/playlists`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -3693,7 +3711,7 @@ export const createPlaylist = <TData = AxiosResponse<OnePlaylistResponse>>(
     options?: AxiosRequestConfig
 ): Promise<TData> => {
     return axios.post(
-        `/users/${userId}/playlists`,
+        `https://api.spotify.com/v1/users/${userId}/playlists`,
         createPlaylistBody,
         options
     );
@@ -3711,7 +3729,7 @@ export const followPlaylist = <TData = AxiosResponse<void>>(
     options?: AxiosRequestConfig
 ): Promise<TData> => {
     return axios.put(
-        `/playlists/${playlistId}/followers`,
+        `https://api.spotify.com/v1/playlists/${playlistId}/followers`,
         followPlaylistBody,
         options
     );
@@ -3727,7 +3745,10 @@ export const unfollowPlaylist = <TData = AxiosResponse<void>>(
     playlistId: string,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.delete(`/playlists/${playlistId}/followers`, options);
+    return axios.delete(
+        `https://api.spotify.com/v1/playlists/${playlistId}/followers`,
+        options
+    );
 };
 
 /**
@@ -3742,7 +3763,7 @@ export const getFeaturedPlaylists = <
     params?: GetFeaturedPlaylistsParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/browse/featured-playlists`, {
+    return axios.get(`https://api.spotify.com/v1/browse/featured-playlists`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -3758,7 +3779,7 @@ export const getCategories = <TData = AxiosResponse<PagedCategoriesResponse>>(
     params?: GetCategoriesParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/browse/categories`, {
+    return axios.get(`https://api.spotify.com/v1/browse/categories`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -3775,10 +3796,13 @@ export const getACategory = <TData = AxiosResponse<OneCategoryResponse>>(
     params?: GetACategoryParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/browse/categories/${categoryId}`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    return axios.get(
+        `https://api.spotify.com/v1/browse/categories/${categoryId}`,
+        {
+            ...options,
+            params: { ...params, ...options?.params },
+        }
+    );
 };
 
 /**
@@ -3794,10 +3818,13 @@ export const getACategoriesPlaylists = <
     params?: GetACategoriesPlaylistsParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/browse/categories/${categoryId}/playlists`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    return axios.get(
+        `https://api.spotify.com/v1/browse/categories/${categoryId}/playlists`,
+        {
+            ...options,
+            params: { ...params, ...options?.params },
+        }
+    );
 };
 
 /**
@@ -3810,7 +3837,10 @@ export const getPlaylistCover = <TData = AxiosResponse<ArrayOfImagesResponse>>(
     playlistId: string,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/playlists/${playlistId}/images`, options);
+    return axios.get(
+        `https://api.spotify.com/v1/playlists/${playlistId}/images`,
+        options
+    );
 };
 
 /**
@@ -3825,7 +3855,7 @@ export const uploadCustomPlaylistCover = <TData = AxiosResponse<void>>(
     options?: AxiosRequestConfig
 ): Promise<TData> => {
     return axios.put(
-        `/playlists/${playlistId}/images`,
+        `https://api.spotify.com/v1/playlists/${playlistId}/images`,
         uploadCustomPlaylistCoverBody,
         options
     );
@@ -3841,7 +3871,7 @@ export const getNewReleases = <TData = AxiosResponse<PagedAlbumsResponse>>(
     params?: GetNewReleasesParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/browse/new-releases`, {
+    return axios.get(`https://api.spotify.com/v1/browse/new-releases`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -3857,7 +3887,7 @@ export const getFollowed = <TData = AxiosResponse<CursorPagedArtistsResponse>>(
     params: GetFollowedParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/me/following`, {
+    return axios.get(`https://api.spotify.com/v1/me/following`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -3874,10 +3904,14 @@ export const followArtistsUsers = <TData = AxiosResponse<void>>(
     params: FollowArtistsUsersParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.put(`/me/following`, followArtistsUsersBody, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    return axios.put(
+        `https://api.spotify.com/v1/me/following`,
+        followArtistsUsersBody,
+        {
+            ...options,
+            params: { ...params, ...options?.params },
+        }
+    );
 };
 
 /**
@@ -3891,7 +3925,7 @@ export const unfollowArtistsUsers = <TData = AxiosResponse<void>>(
     params: UnfollowArtistsUsersParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.delete(`/me/following`, {
+    return axios.delete(`https://api.spotify.com/v1/me/following`, {
         data: unfollowArtistsUsersBody,
         ...options,
         params: { ...params, ...options?.params },
@@ -3910,7 +3944,7 @@ export const checkCurrentUserFollows = <
     params: CheckCurrentUserFollowsParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/me/following/contains`, {
+    return axios.get(`https://api.spotify.com/v1/me/following/contains`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -3929,10 +3963,13 @@ export const checkIfUserFollowsPlaylist = <
     params?: CheckIfUserFollowsPlaylistParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/playlists/${playlistId}/followers/contains`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    return axios.get(
+        `https://api.spotify.com/v1/playlists/${playlistId}/followers/contains`,
+        {
+            ...options,
+            params: { ...params, ...options?.params },
+        }
+    );
 };
 
 /**
@@ -3947,7 +3984,7 @@ export const getSeveralAudioFeatures = <
     params: GetSeveralAudioFeaturesParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/audio-features`, {
+    return axios.get(`https://api.spotify.com/v1/audio-features`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -3966,7 +4003,10 @@ export const getAudioFeatures = <
     id: string,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/audio-features/${id}`, options);
+    return axios.get(
+        `https://api.spotify.com/v1/audio-features/${id}`,
+        options
+    );
 };
 
 /**
@@ -3981,7 +4021,10 @@ export const getAudioAnalysis = <
     id: string,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/audio-analysis/${id}`, options);
+    return axios.get(
+        `https://api.spotify.com/v1/audio-analysis/${id}`,
+        options
+    );
 };
 
 /**
@@ -3998,7 +4041,7 @@ export const getRecommendations = <
     params: GetRecommendationsParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/recommendations`, {
+    return axios.get(`https://api.spotify.com/v1/recommendations`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -4015,7 +4058,10 @@ export const getRecommendationGenres = <
 >(
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/recommendations/available-genre-seeds`, options);
+    return axios.get(
+        `https://api.spotify.com/v1/recommendations/available-genre-seeds`,
+        options
+    );
 };
 
 /**
@@ -4030,7 +4076,7 @@ export const getInformationAboutTheUsersCurrentPlayback = <
     params?: GetInformationAboutTheUsersCurrentPlaybackParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/me/player`, {
+    return axios.get(`https://api.spotify.com/v1/me/player`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -4046,7 +4092,11 @@ export const transferAUsersPlayback = <TData = AxiosResponse<void>>(
     transferAUsersPlaybackBody: TransferAUsersPlaybackBody,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.put(`/me/player`, transferAUsersPlaybackBody, options);
+    return axios.put(
+        `https://api.spotify.com/v1/me/player`,
+        transferAUsersPlaybackBody,
+        options
+    );
 };
 
 /**
@@ -4060,7 +4110,7 @@ export const getAUsersAvailableDevices = <
 >(
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/me/player/devices`, options);
+    return axios.get(`https://api.spotify.com/v1/me/player/devices`, options);
 };
 
 /**
@@ -4075,7 +4125,7 @@ export const getTheUsersCurrentlyPlayingTrack = <
     params?: GetTheUsersCurrentlyPlayingTrackParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/me/player/currently-playing`, {
+    return axios.get(`https://api.spotify.com/v1/me/player/currently-playing`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -4092,10 +4142,14 @@ export const startAUsersPlayback = <TData = AxiosResponse<void>>(
     params?: StartAUsersPlaybackParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.put(`/me/player/play`, startAUsersPlaybackBody, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    return axios.put(
+        `https://api.spotify.com/v1/me/player/play`,
+        startAUsersPlaybackBody,
+        {
+            ...options,
+            params: { ...params, ...options?.params },
+        }
+    );
 };
 
 /**
@@ -4108,7 +4162,7 @@ export const pauseAUsersPlayback = <TData = AxiosResponse<void>>(
     params?: PauseAUsersPlaybackParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.put(`/me/player/pause`, undefined, {
+    return axios.put(`https://api.spotify.com/v1/me/player/pause`, undefined, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -4124,7 +4178,7 @@ export const skipUsersPlaybackToNextTrack = <TData = AxiosResponse<void>>(
     params?: SkipUsersPlaybackToNextTrackParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.post(`/me/player/next`, undefined, {
+    return axios.post(`https://api.spotify.com/v1/me/player/next`, undefined, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -4140,10 +4194,14 @@ export const skipUsersPlaybackToPreviousTrack = <TData = AxiosResponse<void>>(
     params?: SkipUsersPlaybackToPreviousTrackParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.post(`/me/player/previous`, undefined, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    return axios.post(
+        `https://api.spotify.com/v1/me/player/previous`,
+        undefined,
+        {
+            ...options,
+            params: { ...params, ...options?.params },
+        }
+    );
 };
 
 /**
@@ -4158,7 +4216,7 @@ export const seekToPositionInCurrentlyPlayingTrack = <
     params: SeekToPositionInCurrentlyPlayingTrackParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.put(`/me/player/seek`, undefined, {
+    return axios.put(`https://api.spotify.com/v1/me/player/seek`, undefined, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -4174,7 +4232,7 @@ export const setRepeatModeOnUsersPlayback = <TData = AxiosResponse<void>>(
     params: SetRepeatModeOnUsersPlaybackParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.put(`/me/player/repeat`, undefined, {
+    return axios.put(`https://api.spotify.com/v1/me/player/repeat`, undefined, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -4190,7 +4248,7 @@ export const setVolumeForUsersPlayback = <TData = AxiosResponse<void>>(
     params: SetVolumeForUsersPlaybackParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.put(`/me/player/volume`, undefined, {
+    return axios.put(`https://api.spotify.com/v1/me/player/volume`, undefined, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -4206,10 +4264,14 @@ export const toggleShuffleForUsersPlayback = <TData = AxiosResponse<void>>(
     params: ToggleShuffleForUsersPlaybackParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.put(`/me/player/shuffle`, undefined, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    return axios.put(
+        `https://api.spotify.com/v1/me/player/shuffle`,
+        undefined,
+        {
+            ...options,
+            params: { ...params, ...options?.params },
+        }
+    );
 };
 
 /**
@@ -4225,7 +4287,7 @@ export const getRecentlyPlayed = <
     params?: GetRecentlyPlayedParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/me/player/recently-played`, {
+    return axios.get(`https://api.spotify.com/v1/me/player/recently-played`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -4240,7 +4302,7 @@ export const getRecentlyPlayed = <
 export const getQueue = <TData = AxiosResponse<QueueResponse>>(
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/me/player/queue`, options);
+    return axios.get(`https://api.spotify.com/v1/me/player/queue`, options);
 };
 
 /**
@@ -4253,7 +4315,7 @@ export const addToQueue = <TData = AxiosResponse<void>>(
     params: AddToQueueParams,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.post(`/me/player/queue`, undefined, {
+    return axios.post(`https://api.spotify.com/v1/me/player/queue`, undefined, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -4270,7 +4332,7 @@ export const getAvailableMarkets = <
 >(
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`/markets`, options);
+    return axios.get(`https://api.spotify.com/v1/markets`, options);
 };
 
 export type GetAnAlbumResult = AxiosResponse<OneAlbumResponse>;

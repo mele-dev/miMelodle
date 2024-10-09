@@ -65,6 +65,7 @@ export default fastifyPlugin(async (fastify) => {
         pkce: "S256",
         credentials: {
             client: {
+                // FIXME: Move this info to .env
                 id: "1cbcb63c89134289aac6425996162c4a",
                 secret: "f2903f0fa6da4e17b8bb324b86b12940",
             },

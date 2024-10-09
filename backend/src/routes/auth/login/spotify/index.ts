@@ -46,8 +46,6 @@ export default (async (fastify) => {
                 headers: {
                     Authorization: "Bearer " + spotifyToken.token.access_token,
                 },
-                // FIXME: Make orval automatically add the base url.
-                baseURL: "https://api.spotify.com/v1",
             });
 
             const parsedUserInfo = spotifyCallbackGuard.Decode({
