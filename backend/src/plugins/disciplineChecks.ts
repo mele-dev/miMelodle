@@ -21,6 +21,12 @@ export default fastifyPlugin(async (fastify) => {
 
     // No routes without considering security check.
     fastify.addHook("onRoute", async (route) => {
+        // Exclude routes outside our control from this check.
+        const pluginRoutes = ["/auth/register/spotify"];
+        if (pluginRoutes.includes(route.path)) {
+            return;
+        }
+
         // A single function could be an acceptable request.
         if (typeof route.onRequest === "function") {
             return;
