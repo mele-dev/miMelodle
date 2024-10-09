@@ -11,7 +11,7 @@ import { sendError, sendOk } from "../../../utils/reply.js";
 import { decorators } from "../../../services/decorators.js";
 import { MelodleTagName } from "../../../plugins/swagger.js";
 
-const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
+export default (async (fastify) => {
     fastify.post("", {
         onRequest: [decorators.noSecurity],
         schema: {
@@ -74,6 +74,4 @@ const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
             return sendOk(reply, 200, { jwtToken: token, id: result[0].id });
         },
     });
-};
-
-export default auth;
+}) satisfies FastifyPluginAsyncTypebox;
