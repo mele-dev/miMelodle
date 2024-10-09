@@ -5,7 +5,7 @@ import { MelodleTagName } from "./swagger.js";
 
 export default fastifyPlugin(async (fastify) => {
     // No debug in production check.
-    if (typedEnv.NODE_ENV === "development") {
+    if (typedEnv.NODE_ENV === "production") {
         fastify.addHook("onRoute", async (route) => {
             if (
                 route.schema?.tags?.includes("Debug" satisfies MelodleTagName)
