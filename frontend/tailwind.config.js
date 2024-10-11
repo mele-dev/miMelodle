@@ -1,12 +1,10 @@
-import typography from '@tailwindcss/typography';
+import typography from "@tailwindcss/typography";
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./src/**/*.{html,ts}",
-  ],
-  theme: {
-    extend: {},
-  },
-  plugins: [typography],
-}
+    content: ["./src/**/*.{html,ts}"],
+    theme: {
+        extend: {},
+    },
+    plugins: [typography],
+};

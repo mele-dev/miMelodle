@@ -1,11 +1,11 @@
 {
-  "$schema": "https://json.schemastore.org/prettierrc.json",
-  "trailingComma": "es5",
-  "tabWidth": 4,
-  "semi": true,
-  "printWidth": 80,
-  "singleQuote": false,
-  "proseWrap": "always",
-  "tailwindConfig": "./tailwind.config.js",
-  "plugins": ["prettier-plugin-tailwindcss"]
+    "$schema": "https://json.schemastore.org/prettierrc.json",
+    "trailingComma": "es5",
+    "tabWidth": 4,
+    "semi": true,
+    "printWidth": 80,
+    "singleQuote": false,
+    "proseWrap": "always",
+    "tailwindConfig": "./tailwind.config.js",
+    "plugins": ["prettier-plugin-tailwindcss"]
 }
