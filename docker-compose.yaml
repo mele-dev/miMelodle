@@ -17,10 +17,13 @@ services:
     depends_on:
       - database
   frontend:
-    image: nginx:alpine
+    image: frontend
     container_name: frontend
+    command: sh -c "npm install && npm start"
     volumes:
-      - ./frontend/:/usr/share/nginx/html
+      - ./frontend/:/frontend
+    build:
+      context: ./frontend
   database:
     image: database
     container_name: database
