@@ -1,0 +1,17 @@
+<p>Sample text: {{ this.translations.getTranslation("Example key") }}</p>
+<p>
+    Interpolated with "me":
+    {{ this.translations.getTranslation("Example interpolation key")("me") }}
+</p>
+
+<p>
+    Interpolated with "you":
+    {{ this.translations.getTranslation("Example interpolation key")("you") }}
+</p>
+
+<button type="button" class="mx-2 rounded border bg-blue-300 p-2 px-4">
+    EN
+</button>
+<button type="button" class="mx-2 rounded border bg-red-300 p-2 px-4">
+    ES
+</button>
