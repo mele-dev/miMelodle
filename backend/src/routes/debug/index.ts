@@ -6,7 +6,6 @@ import {
     executeTransaction,
     runPreparedQuery,
 } from "../../services/database.js";
-import { deleteUser, selectUsers } from "../../queries/dml.queries.js";
 import { decorators } from "../../services/decorators.js";
 import {
     getFriendsSnapshot,
@@ -89,60 +88,6 @@ export default (async (fastify) => {
             async handler(_request, reply) {
                 return reply.notImplemented();
             },
-        });
-
-        fastify.delete("/users", {
-            onRequest: [decorators.noSecurity],
-            schema: {
-                response: {
-                    200: SafeType.Array(SafeType.Partial(userSchema)),
-                    ...SafeType.CreateErrors([]),
-                },
-                summary: "Delete all users.",
-                description: undefined,
-                tags: ["Debug"] satisfies MelodleTagName[],
-                security: [],
-            },
-            async handler(_request, reply) {
-                const users = await runPreparedQuery(selectUsers, {});
-
-                const promises = users.map((user) =>
-                    runPreparedQuery(deleteUser, { selfId: user.id })
-                );
-
-                await Promise.allSettled(promises);
-
-                const usersAfterDeletion = await runPreparedQuery(
-                    selectUsers,
-                    {}
-                );
-
-                return sendOk(
-                    reply,
-                    200,
-                    usersAfterDeletion.map((val) => ({
-                        ...val,
-                        spotifyId: val.spotifyId ?? undefined,
-                    }))
-                );
-            },
-        });
-
-        fastify.put("/reinit", {
-            onRequest: [decorators.noSecurity],
-            schema: {
-                response: {
-                    200: SafeType.Literal("Done."),
-                    ...SafeType.CreateErrors([]),
-                },
-                summary: "Delete db and rerun init. (TODO!)",
-                description: undefined,
-                tags: ["Debug"] satisfies MelodleTagName[],
-                security: [],
-            },
-            async handler(_request, reply) {
-                return reply.notImplemented();
-            }
         });
     }
 }) satisfies FastifyPluginAsyncTypebox;

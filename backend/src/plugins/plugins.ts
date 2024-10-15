@@ -4,6 +4,7 @@ import swagger from "./swagger.js";
 import support from "./support.js";
 import sensible from "./sensible.js";
 import disciplineChecks from "./disciplineChecks.js";
+import oauth from "./oauth.js";
 
 const plugins: (FastifyPluginAsync<any> | FastifyPluginCallback<any>)[] = [
     jwt,
@@ -11,6 +12,7 @@ const plugins: (FastifyPluginAsync<any> | FastifyPluginCallback<any>)[] = [
     support,
     sensible,
     disciplineChecks,
+    oauth
 ];
 
 export default plugins;

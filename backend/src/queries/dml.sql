@@ -40,10 +40,10 @@ SELECT *
 RETURNING 1 AS output;
 
 /* @name getSelfuser */
-SELECT pp.filename as "profilePictureFile", u.name, u.email, u.username, u.id
+SELECT pp.filename AS "profilePictureFile", u.name, u.email, u.username, u.id
   FROM users u
            INNER JOIN public."profilePictures" pp ON pp.id = u."profilePictureId"
-where u.id = :selfId!;
+ WHERE u.id = :selfId!;
 
 /* @name insertIcon */
 INSERT
@@ -58,3 +58,14 @@ COMMIT;
 
 /* @name rollbackTransaction */
 ROLLBACK;
+
+/* @name insertUserSpotify */
+   INSERT
+     INTO users (username, email, "passwordHash", "spotifyId", "profilePictureId", name)
+   VALUES (:username!, :email!, default, :spotifyId!, default, :name!)
+RETURNING id;
+
+/* @name loginUserSpotify */
+SELECT u.id
+  FROM users u
+ WHERE u."spotifyId" = :spotifyId!;
