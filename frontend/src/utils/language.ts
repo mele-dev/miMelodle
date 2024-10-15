@@ -2,7 +2,9 @@ import { Inject, Injectable, InjectionToken } from "@angular/core";
 
 export type Language = "en" | "es";
 
-let currentLanguage: Language = "es";
+let currentLanguage: Language = (["en", "es"] as const)[
+    Math.floor(Math.random() * 2)
+];
 
 export function getCurrentLanguage(): Language {
     // TODO
@@ -37,9 +39,22 @@ export class Translator<TTranslations extends Translations> {
     /**
      * name
      */
-    public getTranslation<TKey extends keyof TTranslations & string>(
+    public get<TKey extends keyof TTranslations & string>(
         key: TKey
     ): TTranslations[TKey][Language] {
         return this.translations[key][getCurrentLanguage()];
+    }
+
+    public getDict(): {
+        [K in keyof TTranslations]: TTranslations[K][Language];
+    } {
+        return Object.fromEntries(
+            Object.entries(this.translations).map(([key, value]) => [
+                key,
+                value[getCurrentLanguage()],
+            ])
+            // As any out of lazyness. Fix it if you want, i'm pretty sure its ok
+            // as-is - cr
+        ) as any;
     }
 }
