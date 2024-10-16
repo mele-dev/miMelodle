@@ -230,8 +230,7 @@
                                     "type": "object",
                                     "properties": {
                                         "root": {
-                                            "type": "boolean",
-                                            "enum": [true]
+                                            "type": "boolean"
                                         },
                                         "ping": {
                                             "type": "string",

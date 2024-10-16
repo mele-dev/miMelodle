@@ -19,4 +19,14 @@ export default {
             baseUrl: "https://localhost/backend",
         },
     },
+    backend_zod: {
+        input: {
+            target: "./schemas/backendSchema.json",
+        },
+        output: {
+            client: 'zod',
+            target: "src/apiCodegen/backend-zod.ts",
+            prettier: true,
+        },
+    },
 };

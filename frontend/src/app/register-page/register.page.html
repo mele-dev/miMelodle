@@ -1,8 +1,11 @@
-<div class="flex h-dvh place-items-stretch overflow-y-scroll p-5">
+<div class="flex h-dvh place-items-stretch gap-10 overflow-y-scroll p-10">
     <div
         class="rounded-2xl bg-gradient-to-r from-violet-500 to-fuchsia-500 md:flex-grow"
     ></div>
-    <main class="flex flex-col justify-center px-10">
+    <form
+        (input)="this.onFormChange()"
+        class="flex flex-col justify-center overflow-y-scroll"
+    >
         <h1 class="me-10 font-sans text-6xl">{{ dict.title }}</h1>
         <p class="mb-8">
             <a href="" class="hover:underline">{{ dict.existingAccount }}</a>
@@ -12,31 +15,50 @@
                 {{ dict.howDoYouWantOthersToSeeYou }}
             </h2>
         </div>
-        <section class="mx-auto my-5 flex w-96 rounded-full border p-3 pe-10">
+        <div class="relative mx-auto my-5">
+            <!-- TODO: Fix bg image this stuff-->
             <div
-                [innerHTML]="
-                    sanitizer.bypassSecurityTrustHtml(defaultIcon?.svg ?? '')
-                "
-                class="row-span-4 aspect-square h-full w-auto columns-1 rounded-full bg-white p-1 text-white shadow-inner"
+                class="bg-red absolute -z-10 h-full w-96 -translate-x-1 translate-y-1 rounded-full bg-[url(/assets/svgs/diagonal-lines.svg)]"
             ></div>
-            <div class="ms-2 flex grow flex-col">
-                <input
-                    class="text-bold rounded border-none bg-transparent px-0 py-1 text-xl text-white"
-                    type="text"
-                    name="name"
-                    [placeholder]="dict.namePlaceholder"
-                />
-                <div class="flex w-full">
-                    <span>&#64;</span
-                    ><input
+            <section
+                class="flex w-96 gap-2 rounded-full border bg-neutral-950 p-3 pe-10"
+            >
+                <div
+                    [innerHTML]="
+                        sanitizer.bypassSecurityTrustHtml(
+                            chosenIcon?.svg ?? ''
+                        )
+                    "
+                    class="row-span-4 aspect-square h-16 w-auto rounded-full border-none bg-white p-1 text-white shadow-inner"
+                ></div>
+                <div class="flex grow flex-col">
+                    <input
+                        class="text-bold rounded border-none bg-transparent px-0 py-1 text-xl text-white"
                         type="text"
-                        name="username"
-                        class="grow rounded border-none bg-transparent py-0 ps-0 text-inherit"
-                        [placeholder]="dict.usernamePlaceholder"
+                        (input)="this.onNameChange($event)"
+                        name="name"
+                        [placeholder]="dict.namePlaceholder"
                     />
+                    <div class="flex w-full">
+                        <span>&#64;</span
+                        ><input
+                            type="text"
+                            name="username"
+                            class="grow rounded border-none bg-transparent py-0 ps-0 text-inherit"
+                            [placeholder]="dict.usernamePlaceholder"
+                        />
+                    </div>
                 </div>
+            </section>
+            <div>
+                <p class="ms-10 text-xs text-red-500">
+                    <!-- TODO: Figure out how to present profile errors -->
+                    @if (this.personValidations.name){
+                    <span> {{ this.personValidations.name }} </span>
+                    }
+                </p>
             </div>
-        </section>
+        </div>
         <!-- Unique data -->
         <section class="mt-5">
             <div class="flex justify-center">
@@ -47,38 +69,52 @@
             <h3>{{ dict.email }}</h3>
             <input
                 type="text"
+                (input)="onEmailChange($event)"
                 name="email"
-                class="mb-2 w-full rounded bg-inherit text-inherit"
+                class="w-full rounded bg-inherit text-inherit"
             />
+            <p class="mb-2 mt-1 text-xs text-red-500">
+                {{ this.personValidations.email }}
+            </p>
             <h3>{{ dict.password }}</h3>
             <input
                 type="password"
                 name="email"
-                class="mb-2 w-full rounded bg-inherit text-inherit"
+                (input)="onPasswordChange($event); onRepeatPasswordChange()"
+                class="w-full rounded bg-inherit text-inherit"
             />
+            <p class="mb-2 mt-1 text-xs text-red-500">
+                {{ this.personValidations.password }}
+            </p>
             <h3>{{ dict.confirmPassword }}</h3>
             <input
                 type="password"
                 name="email"
-                class="mb-2 w-full rounded bg-inherit text-inherit"
+                (input)="this.onRepeatPasswordChange($event)"
+                class="w-full rounded bg-inherit text-inherit"
             />
+            <p class="mb-2 mt-1 text-xs text-red-500">
+                {{ this.personValidations.repeatPassword }}
+            </p>
         </section>
         <!-- Submit -->
         <section class="mt-5 flex flex-col items-center">
             <button
                 type=""
-                class="w-full rounded-lg bg-emerald-500 bg-gradient-to-r from-violet-500 to-fuchsia-500 p-2 px-4 text-lg font-extrabold text-neutral-800"
+                [disabled]="!this.isFormValid"
+                class="w-full rounded-lg bg-gradient-to-r from-violet-500 to-fuchsia-500 p-2 px-4 text-lg font-extrabold text-neutral-800 disabled:from-gray-500 disabled:to-neutral-500"
             >
                 {{ dict.createAccountButton }}
             </button>
             <div class="flex w-full items-center py-2 text-xs text-neutral-400">
-                <div class="grow border-b border-neutral-400"></div>
-                <span class="mx-1">{{ dict.orRegister }}</span>
-                <div class="grow border-b border-neutral-400"></div>
+                <div class="grow border-b border-neutral-600"></div>
+                <span class="mx-4">{{ dict.orRegister }}</span>
+                <div class="grow border-b border-neutral-600"></div>
             </div>
             <div class="flex w-full gap-2">
-                <button
+                <a
                     type="button"
+                    href="https://localhost/backend/auth/login/spotify"
                     class="flex w-full justify-center rounded-lg border border-neutral-800"
                 >
                     <svg
@@ -100,10 +136,10 @@
                             <circle cx="440.1" cy="49.1" r="9.3" />
                         </g>
                     </svg>
-                </button>
-                <button
-                    type="button"
+                </a>
+                <a
                     class="flex w-full justify-center rounded-lg border border-neutral-800"
+                    href=""
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -136,8 +172,8 @@
                             />
                         </defs>
                     </svg>
-                </button>
+                </a>
             </div>
         </section>
-    </main>
+    </form>
 </div>
