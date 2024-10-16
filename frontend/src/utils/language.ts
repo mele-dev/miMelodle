@@ -1,24 +1,15 @@
-import { Inject, Injectable, InjectionToken } from "@angular/core";
+import {
+    computed,
+    Inject,
+    Injectable,
+    InjectionToken,
+    signal,
+} from "@angular/core";
 
-export type Language = "en" | "es";
-
-let currentLanguage: Language = (["en", "es"] as const)[
-    Math.floor(Math.random() * 2)
-];
-
-export function getCurrentLanguage(): Language {
-    // TODO
-    return currentLanguage;
-}
-
-export function setCurrentLanguage(lang: Language) {
-    currentLanguage = lang;
-}
-
+export const supportedLanguages = ["en", "es"] as const;
+export type Language = (typeof supportedLanguages)[number];
 export type Translation = Readonly<{ [K in Language]: unknown }>;
-
 export type Translations = Readonly<Record<string, Translation>>;
-
 export const TranslationsInjectionToken = new InjectionToken("Translations");
 
 @Injectable({
@@ -26,6 +17,8 @@ export const TranslationsInjectionToken = new InjectionToken("Translations");
 })
 export class Translator<TTranslations extends Translations> {
     private translations: Translations;
+
+    public static readonly currentLanguage = signal<Language>("en");
 
     /**
      * Create a new Translation with the given translations.
@@ -36,25 +29,19 @@ export class Translator<TTranslations extends Translations> {
         this.translations = translations;
     }
 
-    /**
-     * name
-     */
-    public get<TKey extends keyof TTranslations & string>(
-        key: TKey
-    ): TTranslations[TKey][Language] {
-        return this.translations[key][getCurrentLanguage()];
-    }
-
-    public getDict(): {
-        [K in keyof TTranslations]: TTranslations[K][Language];
-    } {
+    public dict = computed(() => {
         return Object.fromEntries(
             Object.entries(this.translations).map(([key, value]) => [
                 key,
-                value[getCurrentLanguage()],
+                value[Translator.currentLanguage()],
             ])
-            // As any out of lazyness. Fix it if you want, i'm pretty sure its ok
-            // as-is - cr
-        ) as any;
+        ) as {
+            [K in keyof TTranslations]: TTranslations[K][Language];
+        };
+    });
+
+    public updateGlobalLanguage(language: Language) {
+        Translator.currentLanguage.set(language);
+        localStorage.setItem("Language", language);
     }
 }

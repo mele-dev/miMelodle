@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit, output } from "@angular/core";
+import { Component, inject, input, OnInit, output, signal, Signal } from "@angular/core";
 import { registerTranslations } from "./register.translations";
 import { JsonPipe } from "@angular/common";
 import {
@@ -11,6 +11,7 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { FormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
 import { ClientValidationService } from "../services/client-validation.service";
+import { Language } from "../../utils/language";
 
 @Component({
     selector: "app-register-page",
@@ -20,7 +21,7 @@ import { ClientValidationService } from "../services/client-validation.service";
 })
 export class RegisterPage implements OnInit {
     isFormValid = false;
-    dict = registerTranslations.getDict();
+    dict = registerTranslations.dict;
     allIcons?: {
         svg: string;
         iconInfo: GetPublicIcons200Item;
@@ -40,10 +41,18 @@ export class RegisterPage implements OnInit {
     };
 
     personValidations: {
-        [K in keyof PostAuthRegisterBody | "repeatPassword"]?:
-            | string
-            | undefined;
-    } = {};
+        [K in keyof PostAuthRegisterBody | "repeatPassword"]:
+            Signal<string | undefined>
+    } = {
+        name: signal(undefined),
+        email: signal(undefined),
+        password: signal(undefined),
+        repeatPassword: signal(undefined),
+        username: signal(undefined),
+        profilePictureId: signal(undefined),
+    };
+
+    updateLanguage = registerTranslations.updateGlobalLanguage;
 
     onEmailChange(email: Event) {
         const target = email.target as HTMLInputElement;

@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { computed, Injectable } from "@angular/core";
 import {
     postAuthLoginBody,
     postAuthLoginBodyEmailMax,
@@ -14,49 +14,53 @@ import { validationTranslator } from "./client-validation.translation";
     providedIn: "root",
 })
 export class ClientValidationService {
-    dict = validationTranslator.getDict();
+    dict = validationTranslator.dict;
     constructor() {}
 
     public validateEmail(email: string) {
         if (email.length > postAuthLoginBodyEmailMax) {
-            return this.dict.wrongEmailLength;
+            return computed(() => this.dict().wrongEmailLength);
         }
 
         if (!postAuthLoginBodyEmailRegExp.test(email)) {
-            return this.dict.invalidEmail;
+            return computed(() => this.dict().invalidEmail);
         }
 
-        return undefined;
+        return computed(() => undefined);
     }
 
     public validatePassword(password: string) {
         const passwordSchema = postAuthLoginBody.shape.password;
 
         if (!passwordSchema.safeParse(password).success) {
-            return this.dict.invalidPassword(
-                postAuthLoginBodyPasswordMin,
-                postAuthLoginBodyPasswordMax
+            return computed(() =>
+                this.dict().invalidPassword(
+                    postAuthLoginBodyPasswordMin,
+                    postAuthLoginBodyPasswordMax
+                )
             );
         }
 
-        return undefined;
+        return computed(() => undefined);
     }
 
-    public validateRepeatPassword(password: string, password2 : string) {
+    public validateRepeatPassword(password: string, password2: string) {
         if (password !== password2) {
-            return this.dict.invalidRepeatPassword;
+            return computed(() => this.dict().invalidRepeatPassword);
         }
 
-        return undefined;
+        return computed(() => undefined);
     }
 
     public validateName(name: string) {
         const nameSchema = postAuthRegisterBody.shape.name;
 
         if (!nameSchema.safeParse(name).success) {
-          return this.dict.invalidName(postAuthRegisterBodyNameMax)
+            return computed(() =>
+                this.dict().invalidName(postAuthRegisterBodyNameMax)
+            );
         }
 
-        return undefined;
+        return computed(() => undefined);
     }
 }

@@ -6,13 +6,13 @@
         (input)="this.onFormChange()"
         class="flex flex-col justify-center overflow-y-scroll"
     >
-        <h1 class="me-10 font-sans text-6xl">{{ dict.title }}</h1>
+        <h1 class="me-10 font-sans text-6xl">{{ dict().title }}</h1>
         <p class="mb-8">
-            <a href="" class="hover:underline">{{ dict.existingAccount }}</a>
+            <a href="" class="hover:underline">{{ dict().existingAccount }}</a>
         </p>
         <div class="flex justify-center">
             <h2 class="text-xl font-bold">
-                {{ dict.howDoYouWantOthersToSeeYou }}
+                {{ dict().howDoYouWantOthersToSeeYou }}
             </h2>
         </div>
         <div class="relative mx-auto my-5">
@@ -37,7 +37,7 @@
                         type="text"
                         (input)="this.onNameChange($event)"
                         name="name"
-                        [placeholder]="dict.namePlaceholder"
+                        [placeholder]="dict().namePlaceholder"
                     />
                     <div class="flex w-full">
                         <span>&#64;</span
@@ -45,7 +45,7 @@
                             type="text"
                             name="username"
                             class="grow rounded border-none bg-transparent py-0 ps-0 text-inherit"
-                            [placeholder]="dict.usernamePlaceholder"
+                            [placeholder]="dict().usernamePlaceholder"
                         />
                     </div>
                 </div>
@@ -53,8 +53,8 @@
             <div>
                 <p class="ms-10 text-xs text-red-500">
                     <!-- TODO: Figure out how to present profile errors -->
-                    @if (this.personValidations.name){
-                    <span> {{ this.personValidations.name }} </span>
+                    @if (this.personValidations.name()){
+                    <span> {{ this.personValidations.name() }} </span>
                     }
                 </p>
             </div>
@@ -63,10 +63,10 @@
         <section class="mt-5">
             <div class="flex justify-center">
                 <h2 class="mb-2 text-xl font-bold">
-                    {{ dict.weNeedSomeDataToIdentifyYou }}
+                    {{ dict().weNeedSomeDataToIdentifyYou }}
                 </h2>
             </div>
-            <h3>{{ dict.email }}</h3>
+            <h3>{{ dict().email }}</h3>
             <input
                 type="text"
                 (input)="onEmailChange($event)"
@@ -74,9 +74,9 @@
                 class="w-full rounded bg-inherit text-inherit"
             />
             <p class="mb-2 mt-1 text-xs text-red-500">
-                {{ this.personValidations.email }}
+                {{ this.personValidations.email() }}
             </p>
-            <h3>{{ dict.password }}</h3>
+            <h3>{{ dict().password }}</h3>
             <input
                 type="password"
                 name="email"
@@ -84,9 +84,9 @@
                 class="w-full rounded bg-inherit text-inherit"
             />
             <p class="mb-2 mt-1 text-xs text-red-500">
-                {{ this.personValidations.password }}
+                {{ this.personValidations.password() }}
             </p>
-            <h3>{{ dict.confirmPassword }}</h3>
+            <h3>{{ dict().confirmPassword }}</h3>
             <input
                 type="password"
                 name="email"
@@ -94,21 +94,23 @@
                 class="w-full rounded bg-inherit text-inherit"
             />
             <p class="mb-2 mt-1 text-xs text-red-500">
-                {{ this.personValidations.repeatPassword }}
+                {{ this.personValidations.repeatPassword() }}
             </p>
         </section>
         <!-- Submit -->
         <section class="mt-5 flex flex-col items-center">
+            <button (click)="updateLanguage('es')">es</button>
+            <button (click)="updateLanguage('en')">en</button>
             <button
                 type=""
                 [disabled]="!this.isFormValid"
                 class="w-full rounded-lg bg-gradient-to-r from-violet-500 to-fuchsia-500 p-2 px-4 text-lg font-extrabold text-neutral-800 disabled:from-gray-500 disabled:to-neutral-500"
             >
-                {{ dict.createAccountButton }}
+                {{ dict().createAccountButton }}
             </button>
             <div class="flex w-full items-center py-2 text-xs text-neutral-400">
                 <div class="grow border-b border-neutral-600"></div>
-                <span class="mx-4">{{ dict.orRegister }}</span>
+                <span class="mx-4">{{ dict().orRegister }}</span>
                 <div class="grow border-b border-neutral-600"></div>
             </div>
             <div class="flex w-full gap-2">
