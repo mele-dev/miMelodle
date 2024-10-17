@@ -1,4 +1,4 @@
-import { Translator } from "../../utils/language";
+import { Translator } from "../../../utils/language";
 
 export const registerTranslations = new Translator({
     title: {
@@ -52,5 +52,25 @@ export const registerTranslations = new Translator({
     orRegister: {
         en: "Or register via",
         es: "O regístrese via",
+    },
+    mustComplete: {
+        en: (valueName: string) => `You must provide a ${valueName}.` as const,
+        es: (valueName: string) => `Debe completar su ${valueName}.` as const,
+    },
+    name: {
+        en: "name",
+        es: "nombre",
+    },
+    username: {
+        en: "username",
+        es: "nombre de usuario",
+    },
+    Name: {
+        en: "Name",
+        es: "Nombre",
+    },
+    Username: {
+        en: "Username",
+        es: "Nombre de usuario",
     },
 } as const);

@@ -1,4 +1,11 @@
-import { postAuthLoginBodyEmailMax } from "../../apiCodegen/backend-zod";
+import {
+    postAuthLoginBodyEmailMax,
+    postAuthLoginBodyPasswordMax,
+    postAuthRegisterBodyNameMax,
+    postAuthRegisterBodyPasswordMin,
+    postAuthRegisterBodyUsernameMax,
+    postAuthRegisterBodyUsernameMin,
+} from "../../apiCodegen/backend-zod";
 import { Translator } from "../../utils/language";
 
 export const validationTranslator = new Translator({
@@ -11,17 +18,31 @@ export const validationTranslator = new Translator({
         es: "Correo electrónico inválido.",
     },
     invalidPassword: {
-        en: (min: number, max: number) =>
-            `A password must have between ${min} and ${max} characters.` as const,
-        es: (min: number, max: number) =>
-            `Una contraseña debe tener entre ${min} y ${max} caracteres.` as const,
+        en: `A password must have between ${postAuthRegisterBodyPasswordMin} and ${postAuthLoginBodyPasswordMax} characters.`,
+        es: `Una contraseña debe tener entre ${postAuthRegisterBodyPasswordMin} y ${postAuthLoginBodyPasswordMax} caracteres.`,
     },
     invalidRepeatPassword: {
         en: "Passwords do not match.",
         es: "Las contraseñas no coinciden.",
     },
     invalidName: {
-        en: (max: number) => `Max length is ${max}.` as const,
-        es: (max: number) => `Máximo de ${max}.` as const,
+        en: `Max name length is ${postAuthRegisterBodyNameMax}.` as const,
+        es: `Máximo largo de nombre: ${postAuthRegisterBodyNameMax}.` as const,
+    },
+    invalidUsername: {
+        en: {
+            title: "A username must:",
+            rules: [
+                "Include only letters, digits, and '.', '-' or '_'",
+                `Be between ${postAuthRegisterBodyUsernameMin} and ${postAuthRegisterBodyUsernameMax} characters.`,
+            ],
+        },
+        es: {
+            title: "Un nombre de usuario debe:",
+            rules: [
+                "Incluir unicamente letras, dígitos, y '.', '-' o '_'",
+                `Tener entre ${postAuthRegisterBodyUsernameMin} y ${postAuthRegisterBodyUsernameMax} caracteres.`,
+            ],
+        },
     },
 } as const);

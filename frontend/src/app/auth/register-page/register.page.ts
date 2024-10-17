@@ -1,55 +1,66 @@
-import { Component, inject, input, OnInit, output, signal, Signal } from "@angular/core";
+import {
+    Component,
+    computed,
+    inject,
+    OnInit,
+    signal,
+    Signal,
+} from "@angular/core";
 import { registerTranslations } from "./register.translations";
 import { JsonPipe } from "@angular/common";
 import {
     getPublicIcons,
-    GetPublicIcons200Item,
     getPublicIconsFilename,
     PostAuthRegisterBody,
-} from "../../apiCodegen/backend";
+} from "../../../apiCodegen/backend";
 import { DomSanitizer } from "@angular/platform-browser";
 import { FormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
-import { ClientValidationService } from "../services/client-validation.service";
-import { Language } from "../../utils/language";
+import { ClientValidationService } from "../../services/client-validation.service";
+import { SpotifyRectangleComponent } from "../../icons/spotify-rectangle/spotify-rectangle.component";
+import { GoogleRectangleComponent } from "../../icons/google-rectangle/google-rectangle.component";
+import { BackendIcon } from "../../types/backend-icon";
+import { IconPickerComponent } from "./icon-picker/icon-picker.component";
+import { TickCircleIconComponent } from "../../icons/tick-circle-icon/tick-circle-icon.component";
 
 @Component({
     selector: "app-register-page",
     standalone: true,
-    imports: [JsonPipe, FormsModule, RouterModule],
+    imports: [
+        JsonPipe,
+        FormsModule,
+        RouterModule,
+        SpotifyRectangleComponent,
+        GoogleRectangleComponent,
+        IconPickerComponent,
+        TickCircleIconComponent,
+    ],
     templateUrl: "./register.page.html",
 })
 export class RegisterPage implements OnInit {
+    private validator = inject(ClientValidationService);
     isFormValid = false;
     dict = registerTranslations.dict;
-    allIcons?: {
-        svg: string;
-        iconInfo: GetPublicIcons200Item;
-    }[];
-    chosenIcon?: {
-        svg: string;
-        iconInfo: GetPublicIcons200Item;
-    };
+    allIcons?: BackendIcon[];
+    chosenIcon?: BackendIcon;
     sanitizer = inject(DomSanitizer);
-    private validator = inject(ClientValidationService);
-    person: Partial<PostAuthRegisterBody & { repeatPassword: string }> = {
-        name: "asda",
+    person: PostAuthRegisterBody & { repeatPassword: string } = {
+        name: "",
         email: "",
         password: "",
-        username: "asdad",
+        username: "",
+        repeatPassword: "",
         profilePictureId: -1,
     };
 
-    personValidations: {
-        [K in keyof PostAuthRegisterBody | "repeatPassword"]:
-            Signal<string | undefined>
-    } = {
-        name: signal(undefined),
-        email: signal(undefined),
-        password: signal(undefined),
-        repeatPassword: signal(undefined),
-        username: signal(undefined),
-        profilePictureId: signal(undefined),
+    personValidations = {
+        name: computed<string | undefined>(() => undefined),
+        email: computed<string | undefined>(() => undefined),
+        password: computed<string | undefined>(() => undefined),
+        repeatPassword: computed<string | undefined>(() => undefined),
+        username: computed(() => undefined) as ReturnType<
+            typeof this.validator.validateUsername
+        >,
     };
 
     updateLanguage = registerTranslations.updateGlobalLanguage;
@@ -79,7 +90,7 @@ export class RegisterPage implements OnInit {
                 target?.value ?? this.person.repeatPassword ?? ""
             );
 
-        this.person.repeatPassword = target?.value;
+        this.person.repeatPassword = target?.value ?? "";
     }
 
     onNameChange(name: Event) {
@@ -88,16 +99,25 @@ export class RegisterPage implements OnInit {
         this.person.name = target.value;
     }
 
+    onUsernameChange(username: Event) {
+        const target = username.target as HTMLInputElement;
+        this.personValidations.username = this.validator.validateUsername(
+            target.value
+        );
+        console.log(this.personValidations.username());
+    }
+
     onFormChange() {
         const errors = Object.values(this.personValidations);
         const values = Object.values(this.person);
 
         this.isFormValid =
-            (errors.length === 0 || errors.every((v) => v === undefined)) &&
+            (errors.length === 0 || errors.every((v) => v() === undefined)) &&
             values.every((v) => v !== "" && v !== undefined);
+    }
 
-        console.log(this.person);
-        console.log(this.personValidations);
+    onIconChange(icon: BackendIcon) {
+        this.chosenIcon = icon;
     }
 
     async ngOnInit(): Promise<void> {
@@ -108,12 +128,12 @@ export class RegisterPage implements OnInit {
                 svg: await (
                     await getPublicIconsFilename(icon.filename)
                 ).data.text(),
-                iconInfo: icon,
+                ...icon,
             }))
         );
 
         this.chosenIcon = this.allIcons.find(
-            (v) => v.iconInfo.filename === "default.svg"
+            (v) => v.filename === "default.svg"
         );
     }
 }

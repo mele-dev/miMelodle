@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
-import { RegisterPage } from "./register-page/register.page";
+import { RegisterPage } from "./auth/register-page/register.page";
 
 @Component({
     selector: "app-root",

@@ -34,10 +34,7 @@ export class ClientValidationService {
 
         if (!passwordSchema.safeParse(password).success) {
             return computed(() =>
-                this.dict().invalidPassword(
-                    postAuthLoginBodyPasswordMin,
-                    postAuthLoginBodyPasswordMax
-                )
+                this.dict().invalidPassword
             );
         }
 
@@ -57,8 +54,18 @@ export class ClientValidationService {
 
         if (!nameSchema.safeParse(name).success) {
             return computed(() =>
-                this.dict().invalidName(postAuthRegisterBodyNameMax)
+                this.dict().invalidName
             );
+        }
+
+        return computed(() => undefined);
+    }
+
+    public validateUsername(username: string) {
+        const usernameSchema = postAuthRegisterBody.shape.username;
+
+        if (!usernameSchema.safeParse(username).success) {
+            return computed(() => this.dict().invalidUsername);
         }
 
         return computed(() => undefined);
