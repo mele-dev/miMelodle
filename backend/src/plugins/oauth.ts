@@ -55,4 +55,22 @@ export default fastifyPlugin(async (fastify) => {
         startRedirectPath: "/auth/register/spotify",
         callbackUri: "https://localhost/backend/auth/register/spotify/callback",
     });
+
+    fastify.register(fastifyOauth2, {
+        name: "spotifyLogin",
+        scope: [
+            "user-read-email",
+            "user-read-private",
+        ] satisfies SpotifyScopes[],
+        pkce: "S256",
+        credentials: {
+            client: {
+                id: "1cbcb63c89134289aac6425996162c4a",
+                secret: "f2903f0fa6da4e17b8bb324b86b12940",
+            },
+            auth: fastifyOauth2.fastifyOauth2.SPOTIFY_CONFIGURATION,
+        },
+        startRedirectPath: "/auth/login/spotify",
+        callbackUri: "https://localhost/backend/auth/login/spotify/callback",
+    });
 });
