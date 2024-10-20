@@ -12,7 +12,7 @@ import { Translations, TranslatorService } from "./translator.service";
 export const validationDict = {
     wrongEmailLength: {
         en: `Max length is ${postAuthLoginBodyEmailMax}.`,
-        es: `Máximo largo de ${postAuthLoginBodyEmailMax}.`,
+        es: `El máximo es de ${postAuthLoginBodyEmailMax} caracteres.`,
     },
     invalidEmail: {
         en: "Invalid email.",
@@ -20,7 +20,7 @@ export const validationDict = {
     },
     invalidPassword: {
         en: `A password must have between ${postAuthRegisterBodyPasswordMin} and ${postAuthLoginBodyPasswordMax} characters.`,
-        es: `Una contraseña debe tener entre ${postAuthRegisterBodyPasswordMin} y ${postAuthLoginBodyPasswordMax} caracteres.`,
+        es: `La contraseña debe tener entre ${postAuthRegisterBodyPasswordMin} y ${postAuthLoginBodyPasswordMax} caracteres.`,
     },
     invalidRepeatPassword: {
         en: "Passwords do not match.",
@@ -28,7 +28,7 @@ export const validationDict = {
     },
     invalidName: {
         en: `A name must be between 1 and ${postAuthRegisterBodyNameMax} characters.` as const,
-        es: `Un nombre de usuario debe tener entre 1 y ${postAuthRegisterBodyNameMax} caracteres.` as const,
+        es: `Un nombre debe tener entre 1 y ${postAuthRegisterBodyNameMax} caracteres.` as const,
     },
     invalidUsername: {
         en: {
@@ -41,7 +41,7 @@ export const validationDict = {
         es: {
             title: "Un nombre de usuario debe:",
             rules: [
-                "Incluir unicamente letras, dígitos, '.', '-' o '_'.",
+                "Incluir únicamente letras, dígitos, '.', '-' o '_'.",
                 `Tener entre ${postAuthRegisterBodyUsernameMin} y ${postAuthRegisterBodyUsernameMax} caracteres.`,
             ],
         },

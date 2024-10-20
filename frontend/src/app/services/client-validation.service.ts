@@ -4,7 +4,7 @@ import { ValidationErrors } from "@angular/forms";
 import { ZodSchema } from "zod";
 
 @Injectable({
-    providedIn: "any",
+    providedIn: "root",
 })
 export class ClientValidationService {
     private translator = inject(ValidationTranslator);
