@@ -1,12 +1,12 @@
 import { AbstractStorageService, StorageMap } from "./abstract-storage.service";
 import { postAuthLoginResponse } from "../../apiCodegen/backend-zod";
-import { inject, Injectable } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { z } from "zod";
-import { LanguageManagerService } from "./language-manager.service";
+import { supportedLanguages } from "./language-manager.service";
 
 const localStorageMap = {
     userInfo: postAuthLoginResponse,
-    language: z.enum(inject(LanguageManagerService).supportedLanguages),
+    language: z.enum(supportedLanguages),
 } as const satisfies StorageMap;
 
 @Injectable({

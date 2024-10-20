@@ -5,11 +5,13 @@ import { LocalStorageService } from "./local-storage.service";
 export type Language =
     (typeof LanguageManagerService.prototype.supportedLanguages)[number];
 
+export const supportedLanguages = ["en", "es"] as const;
+
 @Injectable({
     providedIn: "root",
 })
 export class LanguageManagerService {
-    public readonly supportedLanguages = ["en", "es"] as const;
+    public readonly supportedLanguages = supportedLanguages;
     private readonly localStorage = inject(LocalStorageService);
 
     private initializeLanguage(): Language {
