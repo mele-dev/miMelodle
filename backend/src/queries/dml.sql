@@ -70,4 +70,7 @@ RETURNING id;
 SELECT u.id
   FROM users u
  WHERE u."spotifyId" = :spotifyId!;
+<<<<<<< HEAD
 >>>>>>> d602755 (Initial implementation of spotify auth)
+=======
+>>>>>>> 4a06042 (it now compiles)
