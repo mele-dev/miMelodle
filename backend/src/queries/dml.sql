@@ -58,3 +58,52 @@ COMMIT;
 
 /* @name rollbackTransaction */
 ROLLBACK;
+
+/* @name getSelfFriends */
+SELECT f."user2Id",
+       f."userId",
+       f.status,
+       u.name as name1,
+       u2.name as name2,
+       u.username  as username1,
+       u2.username as username2,
+       pP.id       as "profilePictureId1",
+       pP2.id      as "profilePictureId2",
+       pP.filename as "profilePictureFilename1",
+       pP2.filename as "profilePictureFilename2"
+FROM friendships f
+         inner join public.users u2 on u2.id = f."user2Id"
+         inner join public.users u on u.id = f."userId"
+         inner join public."profilePictures" pP on pP.id = u."profilePictureId"
+         inner join public."profilePictures" pP2 on pP2.id = u2."profilePictureId"
+where "user2Id" = :selfId!
+   or "userId" = :selfId!;
+
+/* @name deleteFriend */
+delete
+from friendships f
+where (f."userId" = :selfId! and f."user2Id" = :friendId!)
+   or (f."userId" = :friendId! and f."user2Id" = :selfId!);
+
+/* @name addNewFriend */
+insert into friendships ("userId", "user2Id")
+values (:selfId!, :friendId!) RETURNING status;
+
+/* @name changeStatus */
+update friendships f
+set status = :status!
+where (f."userId" = :selfId! and f."user2Id" = :friendId!)
+   or (f."userId" = :friendId! and f."user2Id" = :selfId!);
+
+/* @name getStatus */
+SELECT status FROM friendships f where (f."userId" = :selfId! and f."user2Id" = :friendId!)
+   or (f."userId" = :friendId! and f."user2Id" = :selfId!);
+
+/* @name blockUser */
+INSERT INTO blocks("userWhoBlocksId", "blockedUserId") values (:selfId!,:friendId!);
+
+/* @name unblockUser */
+DELETE
+FROM blocks
+WHERE "userWhoBlocksId" = :selfId! and "blockedUserId" = :friendId!
+RETURNING *;

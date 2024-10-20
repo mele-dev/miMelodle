@@ -25,15 +25,22 @@ CREATE TABLE users (
     CHECK ( "passwordHash" IS NOT NULL OR "spotifyId" IS NOT NULL )
 );
 
-CREATE TYPE "friendshipStatus" AS ENUM ('pending', 'accepted', 'blocked');
+CREATE TYPE "friendshipStatus" AS ENUM ('pending', 'accepted');
 
 CREATE TABLE friendships (
     id         SERIAL PRIMARY KEY,
     "userId"    BIGINT REFERENCES users (id)        NOT NULL,
-    "friendId"  BIGINT REFERENCES users (id)        NOT NULL,
+    "user2Id"  BIGINT REFERENCES users (id)        NOT NULL,
     "createdAt" timestamptz       DEFAULT NOW()     NOT NULL,
     status     "friendshipStatus" DEFAULT 'pending' NOT NULL,
-    CHECK ( "userId" <> friendships."friendId" )
+    CHECK ( "userId" <> friendships."user2Id" )
+);
+
+CREATE TABLE blocks (
+    id         SERIAL PRIMARY KEY,
+    "userWhoBlocksId"    BIGINT REFERENCES users (id)        NOT NULL,
+    "blockedUserId"    BIGINT REFERENCES users (id)        NOT NULL,
+    "createdAt" timestamptz       DEFAULT NOW()     NOT NULL
 );
 
 CREATE TABLE artists (
@@ -122,3 +129,4 @@ BEGIN
     RETURN encrypted_password = crypt(unencrypted_password, encrypted_password);
 END;
 $$ LANGUAGE plpgsql;
+
