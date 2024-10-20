@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 
-const apiKey = "TU_apiKey_AQUÍ";
+const apiKey = "";
 const url = "https://api.musixmatch.com/ws/1.1";
 
 interface MusixmatchResponse<T> {
