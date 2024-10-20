@@ -5,16 +5,12 @@ import { SpotifyRectangleComponent } from "../../icons/spotify-rectangle/spotify
 import { GoogleRectangleComponent } from "../../icons/google-rectangle/google-rectangle.component";
 import { InnerRoutingService } from "../../services/inner-routing.service";
 import { RouterModule } from "@angular/router";
-import {
-    FormBuilder,
-    ReactiveFormsModule,
-} from "@angular/forms";
+import { FormBuilder, ReactiveFormsModule } from "@angular/forms";
 import { JsonPipe } from "@angular/common";
-import {
-    postAuthLoginBody,
-} from "../../../apiCodegen/backend-zod";
+import { postAuthLoginBody } from "../../../apiCodegen/backend-zod";
 import { postAuthLogin, PostAuthLoginBody } from "../../../apiCodegen/backend";
 import { LocalStorageService } from "../../services/local-storage.service";
+import { ClientValidationService } from "../../services/client-validation.service";
 
 @Component({
     selector: "app-login",
@@ -33,6 +29,7 @@ export class LoginPage {
     private readonly translator = inject(LoginTranslator);
     private readonly localStorage = inject(LocalStorageService);
     innerRouter = inject(InnerRoutingService);
+    private validator = inject(ClientValidationService);
     dict = this.translator.dict;
 
     person = new FormBuilder().nonNullable.group(
@@ -41,7 +38,7 @@ export class LoginPage {
             password: "",
         } satisfies { [K in keyof PostAuthLoginBody]: unknown },
         {
-            validators: (c) => postAuthLoginBody.safeParse(c.value).error ?? {},
+            asyncValidators: this.validator.Schema(postAuthLoginBody),
         }
     );
 

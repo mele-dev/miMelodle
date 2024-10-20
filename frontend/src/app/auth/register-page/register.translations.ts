@@ -1,12 +1,11 @@
 import { Injectable } from "@angular/core";
 import { validationDict } from "../../services/client-validation.translation";
-import { LanguageManagerService } from "../../services/language-manager.service";
 import { Translations, TranslatorService } from "../../services/translator.service";
 
 export const registerDict = {
     title: {
         en: "Join melodle",
-        es: "Unirse a melodle",
+        es: "Únete a melodle",
     },
     existingAccount: {
         en: "Already have an account? Log in.",
@@ -14,19 +13,11 @@ export const registerDict = {
     },
     howDoYouWantOthersToSeeYou: {
         en: "How do you want others to see you?",
-        es: "¿Cómo quieres que te vean los demás?",
-    },
-    nameDescription: {
-        en: "A name for others to see",
-        es: "El nombre que verán los demás",
-    },
-    usernameDescription: {
-        en: "A username for others to search",
-        es: "Un identificador para buscarte",
+        es: "¿Cómo quieres que los demás te vean?",
     },
     iconDescription: {
         en: "Select your profile picture",
-        es: "Seleccione su foto de perfil",
+        es: "Selecciona tu foto de perfil",
     },
     namePlaceholder: {
         en: "Your name",
@@ -42,7 +33,7 @@ export const registerDict = {
     },
     email: {
         en: "Email",
-        es: "Correo electrónico",
+        es: "Email",
     },
     password: {
         en: "Password",
@@ -58,11 +49,11 @@ export const registerDict = {
     },
     orRegister: {
         en: "Or register via",
-        es: "O regístrese via",
+        es: "O regístrate vía",
     },
     mustComplete: {
         en: (valueName: string) => `You must provide a ${valueName}.` as const,
-        es: (valueName: string) => `Debe completar su ${valueName}.` as const,
+        es: (valueName: string) => `Debes completar tu ${valueName}.` as const,
     },
     name: {
         en: "name",

@@ -12,11 +12,11 @@ export const routes = [
         children: [
             {
                 path: "register",
-                component: RegisterPage, // This should be included for component-based extraction
+                component: RegisterPage,
                 title: "Create Account",
             },
             {
-                path: "login", // No component here, will be excluded in the component-based result
+                path: "login",
                 component: LoginPage,
                 title: "Log in",
             },

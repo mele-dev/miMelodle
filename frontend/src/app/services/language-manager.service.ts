@@ -1,5 +1,6 @@
-import { effect, Injectable, signal } from "@angular/core";
+import { effect, inject, Injectable, signal } from "@angular/core";
 import { z } from "zod";
+import { LocalStorageService } from "./local-storage.service";
 
 export type Language =
     (typeof LanguageManagerService.prototype.supportedLanguages)[number];
@@ -9,15 +10,14 @@ export type Language =
 })
 export class LanguageManagerService {
     public readonly supportedLanguages = ["en", "es"] as const;
+    private readonly localStorage = inject(LocalStorageService);
 
     private initializeLanguage(): Language {
         const languageSchema = z.enum(this.supportedLanguages);
-        const local = languageSchema.safeParse(
-            localStorage.getItem("Language")
-        );
+        const local = this.localStorage.getItem("language");
 
-        if (local.success) {
-            return local.data;
+        if (local !== null) {
+            return local;
         }
 
         const browserDefault = languageSchema.safeParse(
@@ -41,7 +41,7 @@ export class LanguageManagerService {
         effect(() => {
             const lang = this.currentLanguage();
             document.documentElement.lang = lang;
-            localStorage.setItem("Language", lang);
+            this.localStorage.setItem("language", lang);
         });
     }
 }

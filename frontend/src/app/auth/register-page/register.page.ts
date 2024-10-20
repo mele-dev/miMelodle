@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from "@angular/core";
+import { Component, effect, inject, OnInit, signal } from "@angular/core";
 import { CommonModule, JsonPipe } from "@angular/common";
 import {
     getPublicIcons,
@@ -95,6 +95,7 @@ export class RegisterPage implements OnInit {
             ),
         } satisfies { [K in keyof RegisterFormFields]: unknown },
         {
+            validators: this.validateRepeatPassword(),
             asyncValidators: this.validator.Schema(this.schema),
         }
     );
@@ -110,6 +111,16 @@ export class RegisterPage implements OnInit {
                 thisBinding.person.controls.repeatPassword.value
             );
         };
+    }
+
+    constructor() {
+        // Effects must go on constructors for some reason. This would fail on
+        // ngOnInit.
+        effect(() =>
+            this.person.patchValue({
+                profilePictureId: this.chosenIcon()?.id ?? -1,
+            })
+        );
     }
 
     async ngOnInit(): Promise<void> {

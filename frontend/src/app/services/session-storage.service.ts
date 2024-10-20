@@ -11,5 +11,5 @@ export class SessionStorageService extends AbstractStorageService<
     typeof sessionStorageMap
 > {
     public override readonly storageMap = sessionStorageMap;
-    protected override storage = localStorage;
+    protected override storage = sessionStorage;
 }
