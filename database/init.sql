@@ -6,22 +6,33 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 CREATE TABLE "profilePictures" (
     id         SERIAL PRIMARY KEY,
-    "filename" TEXT NOT NULL
+    "filename" TEXT UNIQUE NOT NULL
 );
 
 CREATE DOMAIN email_domain AS VARCHAR(254) CHECK ( value ~ '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$' );
 
-CREATE DOMAIN username_domain AS VARCHAR(20) CHECK ( LENGTH(value) >= 3 );
+CREATE DOMAIN username_domain AS VARCHAR(50) CHECK ( LENGTH(value) >= 3 );
+
+CREATE OR REPLACE FUNCTION get_default_profile_picture() RETURNS BIGINT AS $$
+DECLARE
+    default_id BIGINT;
+BEGIN
+    SELECT pp.id INTO default_id FROM "profilePictures" pp WHERE pp.filename = 'default.svg' LIMIT 1;
+
+    RETURN default_id;
+END;
+$$ LANGUAGE plpgsql;
 
 CREATE TABLE users (
     id                 SERIAL PRIMARY KEY,
-    username           username_domain UNIQUE                             NOT NULL,
+    username           username_domain UNIQUE                   NOT NULL,
     -- https://stackoverflow.com/questions/386294/what-is-the-maximum-length-of-a-valid-email-address
-    email              email_domain UNIQUE                                NOT NULL,
-    "passwordHash"     TEXT                                               NULL,
-    "spotifyId"        TEXT UNIQUE                                        NULL,
-    "profilePictureId" BIGINT REFERENCES "profilePictures" (id) DEFAULT 0 NOT NULL,
-    name               VARCHAR(25)                                        NOT NULL,
+    email              email_domain UNIQUE                      NOT NULL,
+    "passwordHash"     TEXT                                     NULL,
+    "spotifyId"        TEXT UNIQUE                              NULL,
+    "profilePictureId" BIGINT REFERENCES "profilePictures" (id) NOT NULL DEFAULT get_default_profile_picture(),
+    -- same as username_domain for now, we'll discuss it later.
+    name               username_domain                          NOT NULL,
     CHECK ( "passwordHash" IS NOT NULL OR "spotifyId" IS NOT NULL )
 );
 
