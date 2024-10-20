@@ -15,7 +15,7 @@
     <div class="flex items-baseline justify-between">
         <a
             class="w-fit cursor-pointer hover:underline"
-            [routerLink]="this.innerRouter.createLink('/auth/register')"
+            [routerLink]="this.safeRouter.createLink('/auth/register')"
             >{{ dict().registerLink }}</a
         >
         <app-language-picker></app-language-picker>

@@ -5,7 +5,7 @@ import { AllMelodlePaths } from '../app.routes';
 @Injectable({
   providedIn: 'root'
 })
-export class InnerRoutingService {
+export class SafeRoutingService {
   readonly router = inject(Router);
 
   // TODO

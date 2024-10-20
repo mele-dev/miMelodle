@@ -22,7 +22,7 @@ import { TickCircleIconComponent } from "../../icons/tick-circle-icon/tick-circl
 import { InfoCircleComponent } from "../../icons/info-circle/info-circle.component";
 import { postAuthRegisterBody } from "../../../apiCodegen/backend-zod";
 import axios from "axios";
-import { InnerRoutingService } from "../../services/inner-routing.service";
+import { SafeRoutingService } from "../../services/safe-routing.service";
 import { RegisterTranslator } from "./register.translations";
 import { LanguagePickerComponent } from "../../components/language-picker/language-picker.component";
 import { AuthLayoutComponent } from "../auth-layout/auth-layout.component";
@@ -52,7 +52,7 @@ export class RegisterPage implements OnInit {
     private validator = inject(ClientValidationService);
     private translator = inject(RegisterTranslator);
     private localStorage = inject(LocalStorageService);
-    innerRouter = inject(InnerRoutingService);
+    safeRouter = inject(SafeRoutingService);
     dict = this.translator.dict;
     allIcons?: BackendIcon[];
     chosenIcon = signal<BackendIcon | undefined>(undefined);
@@ -150,7 +150,7 @@ export class RegisterPage implements OnInit {
         try {
             const result = await postAuthRegister(this.person.getRawValue());
             this.localStorage.setItem("userInfo", result.data);
-            this.innerRouter.navigate(["/"]);
+            this.safeRouter.navigate(["/"]);
         } catch (e) {
             if (e instanceof axios.AxiosError) {
             }

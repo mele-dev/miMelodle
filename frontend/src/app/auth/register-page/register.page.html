@@ -7,7 +7,7 @@
     <div class="flex items-baseline justify-between">
         <a
             class="mb-8 w-fit cursor-pointer hover:underline"
-            [routerLink]="this.innerRouter.createLink('/auth/login')"
+            [routerLink]="this.safeRouter.createLink('/auth/login')"
             >{{ dict().existingAccount }}</a
         >
         <app-language-picker></app-language-picker>

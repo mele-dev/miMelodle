@@ -3,7 +3,7 @@ import { LoginTranslator } from "./login.translations";
 import { LanguagePickerComponent } from "../../components/language-picker/language-picker.component";
 import { SpotifyRectangleComponent } from "../../icons/spotify-rectangle/spotify-rectangle.component";
 import { GoogleRectangleComponent } from "../../icons/google-rectangle/google-rectangle.component";
-import { InnerRoutingService } from "../../services/inner-routing.service";
+import { SafeRoutingService } from "../../services/safe-routing.service";
 import { RouterModule } from "@angular/router";
 import { FormBuilder, ReactiveFormsModule } from "@angular/forms";
 import { JsonPipe } from "@angular/common";
@@ -28,7 +28,7 @@ import { ClientValidationService } from "../../services/client-validation.servic
 export class LoginPage {
     private readonly translator = inject(LoginTranslator);
     private readonly localStorage = inject(LocalStorageService);
-    innerRouter = inject(InnerRoutingService);
+    safeRouter = inject(SafeRoutingService);
     private validator = inject(ClientValidationService);
     dict = this.translator.dict;
 
@@ -46,7 +46,7 @@ export class LoginPage {
         try {
             const result = await postAuthLogin(this.person.getRawValue());
             this.localStorage.setItem("userInfo", result.data);
-            this.innerRouter.navigate(["/"]);
+            this.safeRouter.navigate(["/"]);
         } catch (e) {
             alert("Error al iniciar sesión.");
         }
