@@ -126,7 +126,7 @@ const extensions = {
                         error: Type.String(),
                         message: Type.String(),
                     },
-                    { description: error }
+                    { description: error, additionalProperties: true }
                 ) satisfies ErrorSchema;
 
                 return { ...acc, [code]: schema };
