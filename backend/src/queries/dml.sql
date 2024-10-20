@@ -83,7 +83,7 @@ where "user2Id" = :selfId!
 delete
 from friendships f
 where (f."userId" = :selfId! and f."user2Id" = :friendId!)
-   or (f."userId" = :friendId! and f."user2Id" = :selfId!);
+   or (f."userId" = :friendId! and f."user2Id" = :selfId!) RETURNING *;
 
 /* @name addNewFriend */
 insert into friendships ("userId", "user2Id")

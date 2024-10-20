@@ -77,40 +77,80 @@ export default (async (fastify, _opts) => {
             summary: "Sends a friend request",
         },
         handler: async function (request, reply) {
-            const queryResult = await runPreparedQuery(
-                addNewFriend,
+            const currentStatus = await runPreparedQuery(
+                getStatus,
                 request.params
             );
 
+            if (currentStatus.length === 0) {
+                const queryResult = await runPreparedQuery(
+                    addNewFriend,
+                    request.params
+                );
+                if (queryResult.length === 1) {
+                    return sendOk(reply, 201, {
+                        status: queryResult[0].status,
+                    });
+                } else {
+                    return sendError(
+                        reply,
+                        "notFound",
+                        "Could not find target user."
+                    );
+                }
+            }
+            if (currentStatus[0].status === "accepted") {
+                return sendError(
+                    reply,
+                    "badRequest",
+                    "Already friends with this person."
+                )
+            }
+        },
+    });
+
+    fastify.put("", {
+        onRequest: [decorators.authenticateSelf()],
+        schema: {
+            params: friendRelationShipSchema,
+            body: SafeType.Object({
+                status: SafeType.StringEnum(["accepted"]),
+            }),
+            tags: ["Friends"] satisfies MelodleTagName[],
+            response: {
+                200: SafeType.Pick(friendSchema, ["status"]),
+                ...SafeType.CreateErrors([
+                    "badRequest",
+                    "notFound",
+                    "preconditionRequired",
+                    "unauthorized",
+                ]),
+            },
+            summary: "It accepts a friend request.",
+        },
+        handler: async function (request, reply) {
             const currentStatus = await runPreparedQuery(
                 getStatus,
                 request.params
             );
 
             if (
-                queryResult.length === 1 &&
-                currentStatus[0].status === "pending"
+                currentStatus[0].status === "pending" &&
+                request.body.status === "accepted"
             ) {
-                return sendOk(reply, 201, { status: queryResult[0].status });
-            }
-            if (
-                queryResult.length === 0 &&
-                currentStatus[0].status === "accepted"
-            ) {
+                await runPreparedQuery(changeStatus, {
+                    ...request.body,
+                    ...request.params,
+                });
+
+                return sendOk(reply, 200, request.body);
+            } else {
                 return sendError(
                     reply,
                     "badRequest",
-                    "Already friends with this person."
-                );
-            }
-            if (queryResult.length === 0) {
-                return sendError(
-                    reply,
-                    "notFound",
-                    "Could not find target user."
+                    "Current or submitted status is invalid."
                 );
             }
         },
     });
-
 }) satisfies FastifyPluginAsyncTypebox;
