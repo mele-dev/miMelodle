@@ -1,11 +1,4 @@
-import {
-    Component,
-    computed,
-    inject,
-    OnInit,
-    Signal,
-    signal,
-} from "@angular/core";
+import { Component, inject, OnInit, signal } from "@angular/core";
 import { CommonModule, JsonPipe } from "@angular/common";
 import {
     getPublicIcons,
@@ -14,7 +7,11 @@ import {
     PostAuthRegisterBody,
 } from "../../../apiCodegen/backend";
 import { DomSanitizer } from "@angular/platform-browser";
-import { FormsModule } from "@angular/forms";
+import {
+    FormBuilder,
+    ReactiveFormsModule,
+    ValidationErrors,
+} from "@angular/forms";
 import { RouterModule } from "@angular/router";
 import { ClientValidationService } from "../../services/client-validation.service";
 import { SpotifyRectangleComponent } from "../../icons/spotify-rectangle/spotify-rectangle.component";
@@ -38,7 +35,7 @@ type RegisterFormFields = PostAuthRegisterBody & { repeatPassword: string };
     standalone: true,
     imports: [
         JsonPipe,
-        FormsModule,
+        ReactiveFormsModule,
         AuthLayoutComponent,
         RouterModule,
         SpotifyRectangleComponent,
@@ -56,83 +53,63 @@ export class RegisterPage implements OnInit {
     private translator = inject(RegisterTranslator);
     private localStorage = inject(LocalStorageService);
     innerRouter = inject(InnerRoutingService);
-    isFormValid = false;
     dict = this.translator.dict;
     allIcons?: BackendIcon[];
     chosenIcon = signal<BackendIcon | undefined>(undefined);
     sanitizer = inject(DomSanitizer);
-    // TODO: Change this to use reactive forms.
-    person = {
-        name: signal(""),
-        email: signal(""),
-        password: signal(""),
-        username: signal(""),
-        repeatPassword: signal(""),
-        // Set -1 by default since all backend ids are positive.
-        profilePictureId: computed(() => this.chosenIcon()?.id ?? -1),
-    } satisfies {
-        [K in keyof RegisterFormFields]: Signal<RegisterFormFields[K]>;
-    };
 
-    personValidations = {
-        name: computed(() => this.validator.validateName(this.person.name())()),
-        email: computed(() =>
-            this.validator.validateEmail(this.person.email())()
-        ),
-        password: computed(() =>
-            this.validator.validatePassword(this.person.password())()
-        ),
-        repeatPassword: computed(() =>
-            this.validator.validateRepeatPassword(
-                this.person.password(),
-                this.person.repeatPassword()
-            )()
-        ),
-        username: computed(() =>
-            this.validator.validateUsername(this.person.username())()
-        ),
-    };
+    private schema = postAuthRegisterBody;
 
-    updateLanguage = this.translator.updateGlobalLanguage;
+    private builder = new FormBuilder().nonNullable;
 
-    ifFilled<T>(input: unknown, message: T) {
-        return !input ? undefined : message;
-    }
-
-    onFormChange() {
-        const errors = Object.values(this.personValidations);
-        const values = Object.values(this.person);
-
-        this.isFormValid =
-            (errors.length === 0 || errors.every((v) => v() === undefined)) &&
-            values.every((v) => v() !== "" && v() !== undefined);
-    }
-
-    async onSubmit() {
-        const person = {
-            password: this.person.password(),
-            email: this.person.email(),
-            profilePictureId: this.person.profilePictureId(),
-            name: this.person.name(),
-            username: this.person.username(),
-        } satisfies PostAuthRegisterBody;
-        const check = postAuthRegisterBody.safeParse(person);
-
-        if (!check.success) {
-            alert("Datos incorrectos.");
-            return;
+    person = this.builder.group(
+        {
+            profilePictureId: this.builder.control(
+                this.chosenIcon()?.id ?? -1,
+                [],
+                this.validator.Schema(this.schema.shape.profilePictureId)
+            ),
+            name: this.builder.control(
+                "",
+                [],
+                this.validator.Schema(this.schema.shape.name)
+            ),
+            username: this.builder.control(
+                "",
+                [],
+                this.validator.Schema(this.schema.shape.username)
+            ),
+            email: this.builder.control(
+                "",
+                [],
+                this.validator.Schema(this.schema.shape.email)
+            ),
+            password: this.builder.control(
+                "",
+                [],
+                this.validator.Schema(this.schema.shape.password)
+            ),
+            repeatPassword: this.builder.control(
+                "",
+                this.validateRepeatPassword()
+            ),
+        } satisfies { [K in keyof RegisterFormFields]: unknown },
+        {
+            asyncValidators: this.validator.Schema(this.schema),
         }
+    );
 
-        try {
-            const result = await postAuthRegister(person);
-            this.localStorage.setItem("userInfo", result.data);
-            this.innerRouter.navigate(["/"]);
-        } catch (e) {
-            if (e instanceof axios.AxiosError) {
+    private validateRepeatPassword() {
+        const thisBinding = this;
+        return function (): ValidationErrors | null {
+            if (!thisBinding.person) {
+                return null;
             }
-            console.error(e);
-            alert("Error al crear cuenta.");
-        }
+            return thisBinding.validator.validateRepeatPassword(
+                thisBinding.person.controls.password.value,
+                thisBinding.person.controls.repeatPassword.value
+            );
+        };
     }
 
     async ngOnInit(): Promise<void> {
@@ -150,5 +127,24 @@ export class RegisterPage implements OnInit {
         this.chosenIcon.set(
             this.allIcons.find((v) => v.filename === "default.svg")
         );
+    }
+
+    updateLanguage = this.translator.updateGlobalLanguage;
+
+    ifFilled<T>(input: unknown, message: T) {
+        return !input ? undefined : message;
+    }
+
+    async onSubmit() {
+        try {
+            const result = await postAuthRegister(this.person.getRawValue());
+            this.localStorage.setItem("userInfo", result.data);
+            this.innerRouter.navigate(["/"]);
+        } catch (e) {
+            if (e instanceof axios.AxiosError) {
+            }
+            console.error(e);
+            alert("Error al crear cuenta.");
+        }
     }
 }

@@ -1,5 +1,5 @@
 <form
-    (input)="this.onFormChange()"
+    [formGroup]="this.person"
     class="flex flex-col justify-center"
     (ngSubmit)="this.onSubmit()"
 >
@@ -37,7 +37,7 @@
                 <input
                     class="text-bold rounded border-none bg-transparent px-0 py-1 text-xl text-white"
                     type="text"
-                    [(ngModel)]="person.name"
+                    [formControl]="person.controls.name"
                     name="name"
                     [placeholder]="dict().namePlaceholder"
                 />
@@ -46,7 +46,7 @@
                     ><input
                         type="text"
                         name="username"
-                        [(ngModel)]="person.username"
+                        [formControl]="person.controls.username"
                         class="grow rounded border-none bg-transparent py-0 ps-0 text-inherit"
                         [placeholder]="dict().usernamePlaceholder"
                     />
@@ -61,8 +61,7 @@
                 <summary
                     class="flex cursor-pointer gap-1 rounded-full p-1 transition-colors hover:bg-neutral-800"
                 >
-                    @let correctName = !!person.name &&
-                    !personValidations.name();
+                    @let correctName = person.controls.name.valid;
                     <p
                         [ngClass]="{
                                 'flex gap-1 rounded-full px-2 font-bold transition-colors w-fit': true,
@@ -77,8 +76,7 @@
                         <app-info-circle></app-info-circle>
                         }
                     </p>
-                    @let correctUsername = !!this.person.username &&
-                    !this.personValidations.username();
+                    @let correctUsername = this.person.controls.username.valid;
                     <p
                         [ngClass]="{
                                 'flex gap-1 rounded-full px-2 font-bold transition-colors w-fit': true,
@@ -129,52 +127,53 @@
                 {{ dict().weNeedSomeDataToIdentifyYou }}
             </h2>
         </div>
+        @let emailControl = this.person.controls.email;
         <label>{{ dict().email }}</label>
         <input
             type="text"
-            [(ngModel)]="person.email"
+            [formControl]="emailControl"
             name="email"
             class="w-full rounded bg-inherit text-inherit"
         />
         <p
             class="min-h-4 text-xs text-red-500"
-            [class.invisible]="!this.personValidations.email()"
+            [class.invisible]="!emailControl.touched || emailControl.valid"
         >
-            {{ ifFilled(person.email(), this.personValidations.email()) }}
+            {{ dict().invalidEmail }}
         </p>
         <label>{{ dict().password }}</label>
+        @let passwordControl = person.controls.password ;
         <input
             type="password"
+            [formControl]="passwordControl"
             name="password"
-            [(ngModel)]="person.password"
             class="w-full rounded bg-inherit text-inherit"
         />
         <p
             class="min-h-4 text-xs text-red-500"
-            [class.invisible]="!this.personValidations.password()"
+            [class.invisible]="!passwordControl.touched || passwordControl.valid"
         >
-            {{ ifFilled(person.password(), this.personValidations.password()) }}
+            {{ dict().invalidPassword }}
         </p>
         <label>{{ dict().confirmPassword }}</label>
         <input
             type="password"
             name="repeatPassword"
-            [(ngModel)]="person.repeatPassword"
+            [formControl]="person.controls.repeatPassword"
             class="w-full rounded bg-inherit text-inherit"
         />
         <p
             class="min-h-4 text-xs text-red-500"
-            [class.invisible]="!this.personValidations.repeatPassword()"
+            [class.invisible]="this.person.controls.repeatPassword.valid"
         >
-            {{ ifFilled(person.repeatPassword(),
-            this.personValidations.repeatPassword()) }}
+            {{ dict().invalidRepeatPassword }}
         </p>
     </section>
     <!-- Submit -->
     <section class="mt-2 flex flex-col items-center">
         <button
             type="submit"
-            [disabled]="!this.isFormValid"
+            [disabled]="!this.person.valid"
             class="w-full scale-105 rounded-lg bg-fuchsia-500 p-2 px-4 text-lg font-extrabold text-neutral-800 transition-all disabled:scale-100 disabled:cursor-not-allowed disabled:hover:bg-neutral-800 disabled:hover:text-neutral-200"
         >
             {{ dict().createAccountButton }}
