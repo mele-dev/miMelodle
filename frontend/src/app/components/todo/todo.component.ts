@@ -5,7 +5,6 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './todo.component.html',
-  styleUrl: './todo.component.css'
 })
 export class TODOComponent {
 
