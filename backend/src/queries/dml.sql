@@ -111,3 +111,6 @@ RETURNING *;
 /* @name getRequestReceiver */
 SELECT "user2Id" FROM friendships f where (f."userId" = :selfId! and f."user2Id" = :friendId!)
    or (f."userId" = :friendId! and f."user2Id" = :selfId!);
+
+/* @name isItBlocked */
+SELECT * from blocks b where (b."blockedUserId" = :selfId! and b."userWhoBlocksId" = :friendId!);

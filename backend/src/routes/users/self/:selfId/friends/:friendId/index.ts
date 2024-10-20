@@ -13,6 +13,7 @@ import {
     getStatus,
     changeStatus,
     getRequestReceiver,
+    isItBlocked,
 } from "../../../../../../queries/dml.queries.js";
 import { runPreparedQuery } from "../../../../../../services/database.js";
 import { request } from "http";
@@ -73,6 +74,7 @@ export default (async (fastify, _opts) => {
                     "badRequest",
                     "notFound",
                     "unauthorized",
+                    "forbidden"
                 ]),
             },
             summary: "Sends a friend request",
@@ -83,7 +85,9 @@ export default (async (fastify, _opts) => {
                 request.params
             );
 
-            if (currentStatus.length === 0) {
+            const allowedToSend = await runPreparedQuery(isItBlocked, request.params)
+
+            if (currentStatus.length === 0 && allowedToSend.length === 0) {
                 const queryResult = await runPreparedQuery(
                     addNewFriend,
                     request.params
@@ -100,11 +104,18 @@ export default (async (fastify, _opts) => {
                     );
                 }
             }
-            if (currentStatus[0].status === "accepted") {
+            else if (currentStatus[0].status === "accepted") {
                 return sendError(
                     reply,
                     "badRequest",
                     "Already friends with this person."
+                )
+            }
+            else if (allowedToSend.length === 1) {
+                return sendError(
+                    reply,
+                    "forbidden",
+                    "You cannot send a friend request to a user who has blocked you."
                 )
             }
         },
