@@ -100,10 +100,14 @@ SELECT status FROM friendships f where (f."userId" = :selfId! and f."user2Id" = 
    or (f."userId" = :friendId! and f."user2Id" = :selfId!);
 
 /* @name blockUser */
-INSERT INTO blocks("userWhoBlocksId", "blockedUserId") values (:selfId!,:friendId!);
+INSERT INTO blocks("userWhoBlocksId", "blockedUserId") values (:selfId!,:friendId!) RETURNING *;
 
 /* @name unblockUser */
 DELETE
 FROM blocks
 WHERE "userWhoBlocksId" = :selfId! and "blockedUserId" = :friendId!
 RETURNING *;
+
+/* @name getRequestReceiver */
+SELECT "user2Id" FROM friendships f where (f."userId" = :selfId! and f."user2Id" = :friendId!)
+   or (f."userId" = :friendId! and f."user2Id" = :selfId!);

@@ -9,6 +9,7 @@ import { MelodleTagName } from "../../../../../../plugins/swagger.js";
 import { decorators } from "../../../../../../services/decorators.js";
 import {
     blockUser,
+    deleteFriend,
     getStatus,
     unblockUser,
 } from "../../../../../../queries/dml.queries.js";
@@ -41,9 +42,11 @@ export default (async (fastify, _opts) => {
                 request.params
             );
 
-            
             if (queryResult.length === 1) {
-                return sendOk(reply, 201, { message: 'User blocked successfully.' });
+                const eraseFriend = await runPreparedQuery(deleteFriend, request.params);
+                if (eraseFriend.length === 1){
+                    return sendOk(reply, 201, { message: 'User blocked successfully.' });
+                }
             } else {
                 return sendError(
                     reply,

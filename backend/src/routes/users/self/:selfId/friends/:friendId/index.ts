@@ -12,6 +12,7 @@ import {
     addNewFriend,
     getStatus,
     changeStatus,
+    getRequestReceiver,
 } from "../../../../../../queries/dml.queries.js";
 import { runPreparedQuery } from "../../../../../../services/database.js";
 import { request } from "http";
@@ -118,12 +119,13 @@ export default (async (fastify, _opts) => {
             }),
             tags: ["Friends"] satisfies MelodleTagName[],
             response: {
-                200: SafeType.Pick(friendSchema, ["status"]),
+                202: SafeType.Pick(friendSchema, ["status"]),
                 ...SafeType.CreateErrors([
                     "badRequest",
                     "notFound",
                     "preconditionRequired",
                     "unauthorized",
+                    "forbidden"
                 ]),
             },
             summary: "It accepts a friend request.",
@@ -134,16 +136,24 @@ export default (async (fastify, _opts) => {
                 request.params
             );
 
+            const requestReceiver = await runPreparedQuery(getRequestReceiver, request.params);
+
             if (
                 currentStatus[0].status === "pending" &&
-                request.body.status === "accepted"
+                request.body.status === "accepted" && request.params.selfId === requestReceiver[0].user2Id
             ) {
                 await runPreparedQuery(changeStatus, {
                     ...request.body,
                     ...request.params,
                 });
 
-                return sendOk(reply, 200, request.body);
+                return sendOk(reply, 202, request.body);
+            } else if (request.params.selfId !== requestReceiver[0].user2Id) {
+                return sendError(
+                    reply,
+                    "forbidden",
+                    "You are not allowed to accept this request."
+                );
             } else {
                 return sendError(
                     reply,
