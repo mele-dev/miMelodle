@@ -61,6 +61,7 @@ export class RegisterPage implements OnInit {
     allIcons?: BackendIcon[];
     chosenIcon = signal<BackendIcon | undefined>(undefined);
     sanitizer = inject(DomSanitizer);
+    // TODO: Change this to use reactive forms.
     person = {
         name: signal(""),
         email: signal(""),

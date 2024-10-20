@@ -1,4 +1,4 @@
-<form [formGroup]="person" class="flex flex-col justify-center">
+<form (ngSubmit)=this.onSubmit() [formGroup]="person" class="flex flex-col justify-center">
     <h1 class="font-sans">
         <span class="mb-2 block">{{ dict().welcomeTo }}</span>
         <span class="block text-8xl">

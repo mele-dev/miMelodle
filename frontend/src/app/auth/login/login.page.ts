@@ -7,15 +7,11 @@ import { InnerRoutingService } from "../../services/inner-routing.service";
 import { RouterModule } from "@angular/router";
 import {
     FormBuilder,
-    FormControl,
     ReactiveFormsModule,
-    Validators,
 } from "@angular/forms";
 import { JsonPipe } from "@angular/common";
-import { ɵElement } from "@angular/forms";
 import {
     postAuthLoginBody,
-    postAuthLoginBodyEmailRegExp,
 } from "../../../apiCodegen/backend-zod";
 import { postAuthLogin, PostAuthLoginBody } from "../../../apiCodegen/backend";
 import { LocalStorageService } from "../../services/local-storage.service";
