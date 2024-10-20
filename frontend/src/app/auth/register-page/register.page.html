@@ -1,169 +1,203 @@
-<div
-    class="flex min-h-dvh place-items-stretch overflow-y-scroll py-10 md:gap-10 md:px-10"
+<form
+    (input)="this.onFormChange()"
+    class="flex flex-col justify-center"
+    (ngSubmit)="this.onSubmit()"
 >
-    <div
-        class="rounded-2xl bg-gradient-to-r from-violet-500 to-fuchsia-500 md:flex-grow"
-    ></div>
-    <main class="grid min-w-[100vw] place-items-center md:min-w-fit">
-        <form
-            (input)="this.onFormChange()"
-            class="flex flex-col justify-center"
+    <h1 class="font-sans text-6xl">{{ dict().title }}</h1>
+    <div class="flex items-baseline justify-between">
+        <a
+            class="mb-8 w-fit cursor-pointer hover:underline"
+            [routerLink]="this.innerRouter.createLink('/auth/login')"
+            >{{ dict().existingAccount }}</a
         >
-            <h1 class="me-10 font-sans text-6xl">{{ dict().title }}</h1>
-            <p class="mb-8">
-                <a href="" class="hover:underline"
-                    >{{ dict().existingAccount }}</a
-                >
-            </p>
-            <div class="flex justify-center">
-                <h2 class="text-xl font-bold">
-                    {{ dict().howDoYouWantOthersToSeeYou }}
-                </h2>
-            </div>
-            <!-- Profile data -->
-            <div class="group relative z-10 mx-auto my-5">
-                <section
-                    class="flex w-96 gap-2 rounded-full border bg-neutral-950 p-3 pe-10"
-                >
-                    <div
-                        [innerHTML]="
+        <app-language-picker></app-language-picker>
+    </div>
+    <div class="flex justify-center">
+        <h2 class="text-xl font-bold">
+            {{ dict().howDoYouWantOthersToSeeYou }}
+        </h2>
+    </div>
+    <!-- Profile data -->
+    <div
+        tabindex="0"
+        class="group relative z-10 mx-auto my-5 cursor-pointer rounded-full"
+    >
+        <section
+            class="flex w-96 gap-2 rounded-full border bg-neutral-950 p-3 pe-10"
+        >
+            <div
+                [innerHTML]="
                         sanitizer.bypassSecurityTrustHtml(
-                            chosenIcon?.svg ?? ''
+                            chosenIcon()?.svg ?? ''
                         )
                     "
-                        class="row-span-4 aspect-square h-16 w-auto rounded-full border-none bg-white p-1 text-white shadow-inner"
-                    ></div>
-                    <div class="flex grow flex-col">
-                        <input
-                            class="text-bold rounded border-none bg-transparent px-0 py-1 text-xl text-white"
-                            type="text"
-                            (input)="this.onNameChange($event)"
-                            name="name"
-                            [placeholder]="dict().namePlaceholder"
-                        />
-                        <div class="flex w-full">
-                            <span>&#64;</span
-                            ><input
-                                type="text"
-                                name="username"
-                                class="grow rounded border-none bg-transparent py-0 ps-0 text-inherit"
-                                (input)="this.onUsernameChange($event)"
-                                [placeholder]="dict().usernamePlaceholder"
-                            />
-                        </div>
-                    </div>
-                </section>
-                @if (this.allIcons) {
-                <div
-                    class="invisible absolute -z-10 -mt-12 w-full max-w-96 -translate-y-3 rounded-b-lg border border-t-0 bg-neutral-950 p-4 pt-14 opacity-0 transition-all group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100"
-                >
-                    <div class="mb-2 flex flex-row gap-1">
-                        @if (!person.name) {
-                        <p class="text-red-500">
-                            {{ this.dict().mustComplete(dict().name)}}
-                        </p>
-                        } @else {
-                        <p
-                            class="flex gap-1 rounded-full bg-gradient-to-r from-purple-500 to-fuchsia-500 px-2 font-bold"
-                        >
-                            {{ this.dict().name }}
-                            <app-tick-circle-icon></app-tick-circle-icon>
-                        </p>
-                        }
-                        <!-- TODO: Finish username validation. -->
-                        @if (this.personValidations.username()) {
-                        <p class="text-red-500">
-                            {{ this.personValidations.username()!.title }}
-                        </p>
-                        }
-                    </div>
-                    <app-icon-picker
-                        [icons]="this.allIcons"
-                        [columns]="4"
-                        (OnIconChange)="this.onIconChange($event)"
-                    ></app-icon-picker>
-                </div>
-                }
-            </div>
-            <!-- Login data -->
-            <section class="mt-5">
-                <div class="flex justify-center">
-                    <h2 class="mb-2 text-xl font-bold">
-                        {{ dict().weNeedSomeDataToIdentifyYou }}
-                    </h2>
-                </div>
-                <h3>{{ dict().email }}</h3>
+                class="row-span-4 aspect-square h-16 w-auto rounded-full border-none bg-white p-1 text-white shadow-inner"
+            ></div>
+            <div class="flex grow flex-col">
                 <input
+                    class="text-bold rounded border-none bg-transparent px-0 py-1 text-xl text-white"
                     type="text"
-                    (input)="onEmailChange($event)"
-                    name="email"
-                    class="w-full rounded bg-inherit text-inherit"
+                    [(ngModel)]="person.name"
+                    name="name"
+                    [placeholder]="dict().namePlaceholder"
                 />
-                <p
-                    class="min-h-4 text-xs text-red-500"
-                    [class.invisible]="!this.personValidations.email()"
+                <div class="flex w-full">
+                    <span>&#64;</span
+                    ><input
+                        type="text"
+                        name="username"
+                        [(ngModel)]="person.username"
+                        class="grow rounded border-none bg-transparent py-0 ps-0 text-inherit"
+                        [placeholder]="dict().usernamePlaceholder"
+                    />
+                </div>
+            </div>
+        </section>
+        @if (this.allIcons) {
+        <div
+            class="invisible absolute -z-10 -mt-12 w-full max-w-96 -translate-y-3 rounded-b-lg border border-t-0 bg-neutral-950 p-4 pt-14 opacity-0 transition-all group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100"
+        >
+            <details class="group/details relative mb-2 w-full">
+                <summary
+                    class="flex cursor-pointer gap-1 rounded-full p-1 transition-colors hover:bg-neutral-800"
                 >
-                    {{ this.personValidations.email() }}
-                </p>
-                <h3>{{ dict().password }}</h3>
-                <input
-                    type="password"
-                    name="password"
-                    (input)="onPasswordChange($event); onRepeatPasswordChange()"
-                    class="w-full rounded bg-inherit text-inherit"
-                />
-                <p
-                    class="min-h-4 text-xs text-red-500"
-                    [class.invisible]="!this.personValidations.password()"
-                >
-                    {{ this.personValidations.password() }}
-                </p>
-                <h3>{{ dict().confirmPassword }}</h3>
-                <input
-                    type="password"
-                    name="repeatPassword"
-                    (input)="this.onRepeatPasswordChange($event)"
-                    class="w-full rounded bg-inherit text-inherit"
-                />
-                <p
-                    class="min-h-4 text-xs text-red-500"
-                    [class.invisible]="!this.personValidations.repeatPassword()"
-                >
-                    {{ this.personValidations.repeatPassword() }}
-                </p>
-            </section>
-            <!-- Submit -->
-            <section class="mt-2 flex flex-col items-center">
-                <button
-                    type=""
-                    [disabled]="!this.isFormValid"
-                    class="w-full scale-105 rounded-lg bg-gradient-to-r from-violet-500 to-fuchsia-500 p-2 px-4 text-lg font-extrabold text-neutral-800 transition-transform disabled:scale-100 disabled:cursor-not-allowed disabled:hover:from-gray-500 disabled:hover:to-neutral-500 disabled:hover:font-bold disabled:hover:text-neutral-200"
-                >
-                    {{ dict().createAccountButton }}
-                </button>
+                    @let correctName = !!person.name &&
+                    !personValidations.name();
+                    <p
+                        [ngClass]="{
+                                'flex gap-1 rounded-full px-2 font-bold transition-colors w-fit': true,
+                                'bg-red-500': !correctName,
+                                'bg-fuchsia-500': correctName,
+                            }"
+                    >
+                        <span> {{ dict().name }} </span>
+                        @if (correctName) {
+                        <app-tick-circle-icon></app-tick-circle-icon>
+                        } @else {
+                        <app-info-circle></app-info-circle>
+                        }
+                    </p>
+                    @let correctUsername = !!this.person.username &&
+                    !this.personValidations.username();
+                    <p
+                        [ngClass]="{
+                                'flex gap-1 rounded-full px-2 font-bold transition-colors w-fit': true,
+                                'bg-red-500': !correctUsername,
+                                'bg-fuchsia-500': correctUsername,
+                            }"
+                    >
+                        <span> {{ this.dict().username }} </span>
+                        @if (correctUsername) {
+                        <app-tick-circle-icon></app-tick-circle-icon>
+                        } @else {
+                        <app-info-circle></app-info-circle>
+                        }
+                    </p>
+                </summary>
                 <div
-                    class="flex w-full items-center py-2 text-xs text-neutral-400"
+                    class="absolute z-10 mt-2 w-full -translate-y-3 rounded-lg border bg-neutral-950 p-2 opacity-0 transition-all group-open/details:translate-y-0 group-open/details:opacity-100"
                 >
-                    <div class="grow border-b border-neutral-600"></div>
-                    <span class="mx-4">{{ dict().orRegister }}</span>
-                    <div class="grow border-b border-neutral-600"></div>
+                    <p class="text-pretty">{{ this.dict().invalidName }}</p>
+                    <div>
+                        <h4>{{ dict().invalidUsername.title }}</h4>
+                        <ul>
+                            @for (rule of dict().invalidUsername.rules; track
+                            rule) {
+                            <li class="ml-4">{{ rule }}</li>
+                            }
+                        </ul>
+                    </div>
                 </div>
-                <div class="flex w-full gap-2">
-                    <a
-                        type="button"
-                        href="https://localhost/backend/auth/login/spotify"
-                        class="flex w-full justify-center rounded-lg border border-neutral-800"
-                    >
-                        <app-spotify-rectangle></app-spotify-rectangle>
-                    </a>
-                    <a
-                        class="flex w-full justify-center rounded-lg border border-neutral-800"
-                        href=""
-                    >
-                        <app-google-rectangle></app-google-rectangle>
-                    </a>
-                </div>
+            </details>
+            <section>
+                <label class="hidden">
+                    {{ this.dict().iconDescription }}
+                </label>
+                <app-icon-picker
+                    [icons]="this.allIcons"
+                    [columns]="4"
+                    (OnIconChange)="this.chosenIcon.set($event)"
+                ></app-icon-picker>
             </section>
-        </form>
-    </main>
-</div>
+        </div>
+        }
+    </div>
+    <!-- Login data -->
+    <section class="mt-5">
+        <div class="flex justify-center">
+            <h2 class="mb-2 text-xl font-bold">
+                {{ dict().weNeedSomeDataToIdentifyYou }}
+            </h2>
+        </div>
+        <label>{{ dict().email }}</label>
+        <input
+            type="text"
+            [(ngModel)]="person.email"
+            name="email"
+            class="w-full rounded bg-inherit text-inherit"
+        />
+        <p
+            class="min-h-4 text-xs text-red-500"
+            [class.invisible]="!this.personValidations.email()"
+        >
+            {{ ifFilled(person.email(), this.personValidations.email()) }}
+        </p>
+        <label>{{ dict().password }}</label>
+        <input
+            type="password"
+            name="password"
+            [(ngModel)]="person.password"
+            class="w-full rounded bg-inherit text-inherit"
+        />
+        <p
+            class="min-h-4 text-xs text-red-500"
+            [class.invisible]="!this.personValidations.password()"
+        >
+            {{ ifFilled(person.password(), this.personValidations.password()) }}
+        </p>
+        <label>{{ dict().confirmPassword }}</label>
+        <input
+            type="password"
+            name="repeatPassword"
+            [(ngModel)]="person.repeatPassword"
+            class="w-full rounded bg-inherit text-inherit"
+        />
+        <p
+            class="min-h-4 text-xs text-red-500"
+            [class.invisible]="!this.personValidations.repeatPassword()"
+        >
+            {{ ifFilled(person.repeatPassword(),
+            this.personValidations.repeatPassword()) }}
+        </p>
+    </section>
+    <!-- Submit -->
+    <section class="mt-2 flex flex-col items-center">
+        <button
+            type="submit"
+            [disabled]="!this.isFormValid"
+            class="w-full scale-105 rounded-lg bg-fuchsia-500 p-2 px-4 text-lg font-extrabold text-neutral-800 transition-all disabled:scale-100 disabled:cursor-not-allowed disabled:hover:bg-neutral-800 disabled:hover:text-neutral-200"
+        >
+            {{ dict().createAccountButton }}
+        </button>
+        <div class="flex w-full items-center py-2 text-xs text-neutral-400">
+            <div class="grow border-b border-neutral-600"></div>
+            <span class="mx-4">{{ dict().orRegister }}</span>
+            <div class="grow border-b border-neutral-600"></div>
+        </div>
+        <div class="flex w-full gap-2">
+            <a
+                type="button"
+                href="https://localhost/backend/auth/login/spotify"
+                class="flex w-full justify-center rounded-lg border border-neutral-800"
+            >
+                <app-spotify-rectangle></app-spotify-rectangle>
+            </a>
+            <a
+                class="flex w-full justify-center rounded-lg border border-neutral-800"
+                href=""
+            >
+                <app-google-rectangle></app-google-rectangle>
+            </a>
+        </div>
+    </section>
+</form>

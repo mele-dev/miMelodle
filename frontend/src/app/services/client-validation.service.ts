@@ -1,21 +1,18 @@
-import { computed, Injectable } from "@angular/core";
+import { computed, inject, Injectable } from "@angular/core";
 import {
     postAuthLoginBody,
     postAuthLoginBodyEmailMax,
     postAuthLoginBodyEmailRegExp,
-    postAuthLoginBodyPasswordMax,
-    postAuthLoginBodyPasswordMin,
     postAuthRegisterBody,
-    postAuthRegisterBodyNameMax,
 } from "../../apiCodegen/backend-zod";
-import { validationTranslator } from "./client-validation.translation";
+import { ValidationTranslator } from "./client-validation.translation";
 
 @Injectable({
-    providedIn: "root",
+  providedIn: "any"
 })
 export class ClientValidationService {
-    dict = validationTranslator.dict;
-    constructor() {}
+    private translator = inject(ValidationTranslator);
+    dict = this.translator.dict;
 
     public validateEmail(email: string) {
         if (email.length > postAuthLoginBodyEmailMax) {

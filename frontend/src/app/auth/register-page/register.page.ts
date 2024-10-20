@@ -3,14 +3,14 @@ import {
     computed,
     inject,
     OnInit,
-    signal,
     Signal,
+    signal,
 } from "@angular/core";
-import { registerTranslations } from "./register.translations";
-import { JsonPipe } from "@angular/common";
+import { CommonModule, JsonPipe } from "@angular/common";
 import {
     getPublicIcons,
     getPublicIconsFilename,
+    postAuthRegister,
     PostAuthRegisterBody,
 } from "../../../apiCodegen/backend";
 import { DomSanitizer } from "@angular/platform-browser";
@@ -22,6 +22,16 @@ import { GoogleRectangleComponent } from "../../icons/google-rectangle/google-re
 import { BackendIcon } from "../../types/backend-icon";
 import { IconPickerComponent } from "./icon-picker/icon-picker.component";
 import { TickCircleIconComponent } from "../../icons/tick-circle-icon/tick-circle-icon.component";
+import { InfoCircleComponent } from "../../icons/info-circle/info-circle.component";
+import { postAuthRegisterBody } from "../../../apiCodegen/backend-zod";
+import axios from "axios";
+import { InnerRoutingService } from "../../services/inner-routing.service";
+import { RegisterTranslator } from "./register.translations";
+import { LanguagePickerComponent } from "../../components/language-picker/language-picker.component";
+import { AuthLayoutComponent } from "../auth-layout/auth-layout.component";
+import { LocalStorageService } from "../../services/local-storage.service";
+
+type RegisterFormFields = PostAuthRegisterBody & { repeatPassword: string };
 
 @Component({
     selector: "app-register-page",
@@ -29,82 +39,63 @@ import { TickCircleIconComponent } from "../../icons/tick-circle-icon/tick-circl
     imports: [
         JsonPipe,
         FormsModule,
+        AuthLayoutComponent,
         RouterModule,
         SpotifyRectangleComponent,
         GoogleRectangleComponent,
         IconPickerComponent,
         TickCircleIconComponent,
+        InfoCircleComponent,
+        CommonModule,
+        LanguagePickerComponent,
     ],
     templateUrl: "./register.page.html",
 })
 export class RegisterPage implements OnInit {
     private validator = inject(ClientValidationService);
+    private translator = inject(RegisterTranslator);
+    private localStorage = inject(LocalStorageService);
+    innerRouter = inject(InnerRoutingService);
     isFormValid = false;
-    dict = registerTranslations.dict;
+    dict = this.translator.dict;
     allIcons?: BackendIcon[];
-    chosenIcon?: BackendIcon;
+    chosenIcon = signal<BackendIcon | undefined>(undefined);
     sanitizer = inject(DomSanitizer);
-    person: PostAuthRegisterBody & { repeatPassword: string } = {
-        name: "",
-        email: "",
-        password: "",
-        username: "",
-        repeatPassword: "",
-        profilePictureId: -1,
+    person = {
+        name: signal(""),
+        email: signal(""),
+        password: signal(""),
+        username: signal(""),
+        repeatPassword: signal(""),
+        // Set -1 by default since all backend ids are positive.
+        profilePictureId: computed(() => this.chosenIcon()?.id ?? -1),
+    } satisfies {
+        [K in keyof RegisterFormFields]: Signal<RegisterFormFields[K]>;
     };
 
     personValidations = {
-        name: computed<string | undefined>(() => undefined),
-        email: computed<string | undefined>(() => undefined),
-        password: computed<string | undefined>(() => undefined),
-        repeatPassword: computed<string | undefined>(() => undefined),
-        username: computed(() => undefined) as ReturnType<
-            typeof this.validator.validateUsername
-        >,
+        name: computed(() => this.validator.validateName(this.person.name())()),
+        email: computed(() =>
+            this.validator.validateEmail(this.person.email())()
+        ),
+        password: computed(() =>
+            this.validator.validatePassword(this.person.password())()
+        ),
+        repeatPassword: computed(() =>
+            this.validator.validateRepeatPassword(
+                this.person.password(),
+                this.person.repeatPassword()
+            )()
+        ),
+        username: computed(() =>
+            this.validator.validateUsername(this.person.username())()
+        ),
     };
 
-    updateLanguage = registerTranslations.updateGlobalLanguage;
+    updateLanguage = this.translator.updateGlobalLanguage;
 
-    onEmailChange(email: Event) {
-        const target = email.target as HTMLInputElement;
-        this.personValidations.email = this.validator.validateEmail(
-            target.value
-        );
-        this.person.email = target.value;
-    }
-
-    onPasswordChange(password: Event) {
-        const target = password.target as HTMLInputElement;
-        this.personValidations.password = this.validator.validatePassword(
-            target.value
-        );
-        this.person.password = target.value;
-    }
-
-    onRepeatPasswordChange(repeatPassword?: Event) {
-        const target = repeatPassword?.target as HTMLInputElement | undefined;
-
-        this.personValidations.repeatPassword =
-            this.validator.validateRepeatPassword(
-                this.person.password ?? "",
-                target?.value ?? this.person.repeatPassword ?? ""
-            );
-
-        this.person.repeatPassword = target?.value ?? "";
-    }
-
-    onNameChange(name: Event) {
-        const target = name.target as HTMLInputElement;
-        this.personValidations.name = this.validator.validateName(target.value);
-        this.person.name = target.value;
-    }
-
-    onUsernameChange(username: Event) {
-        const target = username.target as HTMLInputElement;
-        this.personValidations.username = this.validator.validateUsername(
-            target.value
-        );
-        console.log(this.personValidations.username());
+    ifFilled<T>(input: unknown, message: T) {
+        return !input ? undefined : message;
     }
 
     onFormChange() {
@@ -113,11 +104,34 @@ export class RegisterPage implements OnInit {
 
         this.isFormValid =
             (errors.length === 0 || errors.every((v) => v() === undefined)) &&
-            values.every((v) => v !== "" && v !== undefined);
+            values.every((v) => v() !== "" && v() !== undefined);
     }
 
-    onIconChange(icon: BackendIcon) {
-        this.chosenIcon = icon;
+    async onSubmit() {
+        const person = {
+            password: this.person.password(),
+            email: this.person.email(),
+            profilePictureId: this.person.profilePictureId(),
+            name: this.person.name(),
+            username: this.person.username(),
+        } satisfies PostAuthRegisterBody;
+        const check = postAuthRegisterBody.safeParse(person);
+
+        if (!check.success) {
+            alert("Datos incorrectos.");
+            return;
+        }
+
+        try {
+            const result = await postAuthRegister(person);
+            this.localStorage.setItem("userInfo", result.data);
+            this.innerRouter.navigate(["/"]);
+        } catch (e) {
+            if (e instanceof axios.AxiosError) {
+            }
+            console.error(e);
+            alert("Error al crear cuenta.");
+        }
     }
 
     async ngOnInit(): Promise<void> {
@@ -132,8 +146,8 @@ export class RegisterPage implements OnInit {
             }))
         );
 
-        this.chosenIcon = this.allIcons.find(
-            (v) => v.filename === "default.svg"
+        this.chosenIcon.set(
+            this.allIcons.find((v) => v.filename === "default.svg")
         );
     }
 }

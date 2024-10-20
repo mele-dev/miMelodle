@@ -1,0 +1,71 @@
+<form [formGroup]="person" class="flex flex-col justify-center">
+    <h1 class="font-sans">
+        <span class="mb-2 block">{{ dict().welcomeTo }}</span>
+        <span class="block text-8xl">
+            @for (charAndIndex of splitMelodle; track charAndIndex.index) {
+            <span
+                class="inline-block motion-safe:animate-bounce"
+                style="animation-delay: {{ charAndIndex.index * 0.125 - 1 }}s;"
+                >{{ charAndIndex.value }}</span
+            >
+            }
+            <span>{{ dict().afterBouncyMelodle }}</span>
+        </span>
+    </h1>
+    <div class="flex items-baseline justify-between">
+        <a
+            class="w-fit cursor-pointer hover:underline"
+            [routerLink]="this.innerRouter.createLink('/auth/register')"
+            >{{ dict().registerLink }}</a
+        >
+        <app-language-picker></app-language-picker>
+    </div>
+    <!-- Login data -->
+    <section class="mt-5 flex min-w-96 flex-col gap-6">
+        <div class="flex w-full flex-col">
+            <label>{{ dict().emailOrUsername }}</label>
+            <input
+                type="text"
+                [formControl]="person.controls.email"
+                class="w-full rounded bg-inherit text-inherit"
+            />
+        </div>
+        <div class="flex w-full flex-col">
+            <label>{{ dict().password }}</label>
+            <input
+                type="password"
+                [formControl]="person.controls.password"
+                class="w-full rounded bg-inherit text-inherit"
+            />
+        </div>
+        <button
+            type="submit"
+            [disabled]="!this.person.valid"
+            class="w-full scale-105 rounded-lg bg-fuchsia-500 p-2 px-4 text-lg font-extrabold text-neutral-800 transition-all disabled:scale-100 disabled:cursor-not-allowed disabled:hover:bg-neutral-800 disabled:hover:text-neutral-200"
+        >
+            {{ dict().login }}
+        </button>
+    </section>
+    <section class="flex flex-col items-center">
+        <div class="flex w-full items-center py-2 text-xs text-neutral-400">
+            <div class="grow border-b border-neutral-600"></div>
+            <span class="mx-4">{{ dict().orLoginVia }}</span>
+            <div class="grow border-b border-neutral-600"></div>
+        </div>
+        <div class="flex w-full gap-2">
+            <a
+                type="button"
+                href="https://localhost/backend/auth/login/spotify"
+                class="flex w-full justify-center rounded-lg border border-neutral-800"
+            >
+                <app-spotify-rectangle></app-spotify-rectangle>
+            </a>
+            <a
+                class="flex w-full justify-center rounded-lg border border-neutral-800"
+                href=""
+            >
+                <app-google-rectangle></app-google-rectangle>
+            </a>
+        </div>
+    </section>
+</form>

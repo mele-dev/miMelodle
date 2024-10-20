@@ -1,6 +1,9 @@
-import { Translator } from "../../../utils/language";
+import { Injectable } from "@angular/core";
+import { validationDict } from "../../services/client-validation.translation";
+import { LanguageManagerService } from "../../services/language-manager.service";
+import { Translations, TranslatorService } from "../../services/translator.service";
 
-export const registerTranslations = new Translator({
+export const registerDict = {
     title: {
         en: "Join melodle",
         es: "Unirse a melodle",
@@ -20,6 +23,10 @@ export const registerTranslations = new Translator({
     usernameDescription: {
         en: "A username for others to search",
         es: "Un identificador para buscarte",
+    },
+    iconDescription: {
+        en: "Select your profile picture",
+        es: "Seleccione su foto de perfil",
     },
     namePlaceholder: {
         en: "Your name",
@@ -73,4 +80,14 @@ export const registerTranslations = new Translator({
         en: "Username",
         es: "Nombre de usuario",
     },
-} as const);
+    ...validationDict,
+} as const satisfies Translations;
+
+@Injectable({
+  providedIn: "root"
+})
+export class RegisterTranslator extends TranslatorService<typeof registerDict> {
+    public override getAllTranslations() {
+        return registerDict;
+    }
+}

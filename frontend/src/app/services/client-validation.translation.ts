@@ -1,3 +1,4 @@
+import { Injectable } from "@angular/core";
 import {
     postAuthLoginBodyEmailMax,
     postAuthLoginBodyPasswordMax,
@@ -6,9 +7,9 @@ import {
     postAuthRegisterBodyUsernameMax,
     postAuthRegisterBodyUsernameMin,
 } from "../../apiCodegen/backend-zod";
-import { Translator } from "../../utils/language";
+import { Translations, TranslatorService } from "./translator.service";
 
-export const validationTranslator = new Translator({
+export const validationDict = {
     wrongEmailLength: {
         en: `Max length is ${postAuthLoginBodyEmailMax}.`,
         es: `Máximo largo de ${postAuthLoginBodyEmailMax}.`,
@@ -26,23 +27,34 @@ export const validationTranslator = new Translator({
         es: "Las contraseñas no coinciden.",
     },
     invalidName: {
-        en: `Max name length is ${postAuthRegisterBodyNameMax}.` as const,
-        es: `Máximo largo de nombre: ${postAuthRegisterBodyNameMax}.` as const,
+        en: `A name must be between 1 and ${postAuthRegisterBodyNameMax} characters.` as const,
+        es: `Un nombre de usuario debe tener entre 1 y ${postAuthRegisterBodyNameMax} caracteres.` as const,
     },
     invalidUsername: {
         en: {
             title: "A username must:",
             rules: [
-                "Include only letters, digits, and '.', '-' or '_'",
+                "Include only letters, digits, '.', '-' or '_'.",
                 `Be between ${postAuthRegisterBodyUsernameMin} and ${postAuthRegisterBodyUsernameMax} characters.`,
             ],
         },
         es: {
             title: "Un nombre de usuario debe:",
             rules: [
-                "Incluir unicamente letras, dígitos, y '.', '-' o '_'",
+                "Incluir unicamente letras, dígitos, '.', '-' o '_'.",
                 `Tener entre ${postAuthRegisterBodyUsernameMin} y ${postAuthRegisterBodyUsernameMax} caracteres.`,
             ],
         },
     },
-} as const);
+} as const satisfies Translations;
+
+@Injectable({
+    providedIn: "root",
+})
+export class ValidationTranslator extends TranslatorService<
+    typeof validationDict
+> {
+    public override getAllTranslations() {
+        return validationDict;
+    }
+}
