@@ -9,7 +9,7 @@ const root: FastifyPluginAsync = async (fastify, _opts): Promise<void> => {
         schema: {
             response: {
                 200: SafeType.Object({
-                    root: SafeType.Literal(true),
+                    root: SafeType.Boolean(),
                     ping: SafeType.Literal("Pong!"),
                 }),
             },

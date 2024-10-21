@@ -1,0 +1,8 @@
+<select
+    [(ngModel)]="this.languageService.currentLanguage"
+    class="appearance-none rounded border-none bg-inherit text-inherit"
+>
+    @for (language of languageService.supportedLanguages; track language) {
+        <option [value]="language">{{ language }}</option>
+    }
+</select>

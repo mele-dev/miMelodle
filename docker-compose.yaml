@@ -24,6 +24,8 @@ services:
       - ./frontend/:/frontend
     build:
       context: ./frontend
+    depends_on:
+      - backend
   database:
     image: database
     container_name: database
