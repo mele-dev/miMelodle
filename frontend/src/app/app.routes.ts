@@ -3,13 +3,18 @@ import { RegisterPage } from "./auth/register-page/register.page";
 import { TODOComponent } from "./components/todo/todo.component";
 import { AuthLayoutComponent } from "./auth/auth-layout/auth-layout.component";
 import { LoginPage } from "./auth/login/login.page";
+import { NotFoundPage } from "./not-found/not-found.page";
 
-// Example routes
 export const routes = [
     {
         path: "auth",
         component: AuthLayoutComponent,
         children: [
+            {
+                path: "",
+                redirectTo: "login",
+                pathMatch: "full",
+            },
             {
                 path: "register",
                 component: RegisterPage,
@@ -25,6 +30,12 @@ export const routes = [
     {
         path: "",
         component: TODOComponent,
+    },
+    // WARN: This route must always come last, otherwise following pages will be
+    // ignored.
+    {
+      path: "**",
+      component: NotFoundPage,
     }
 ] as const satisfies Routes;
 

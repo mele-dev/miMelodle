@@ -25,7 +25,7 @@
                     "username": {
                         "pattern": "^[a-zA-Z0-9.-_]+$",
                         "minLength": 3,
-                        "maxLength": 30,
+                        "maxLength": 20,
                         "description": "The id to display to users. They must be unique, but the users can choose and change them.\n### Rules\n- Only accepts letters, digits and '.', '-', '_'.",
                         "type": "string"
                     },
@@ -82,7 +82,7 @@
                     },
                     "name": {
                         "minLength": 1,
-                        "maxLength": 40,
+                        "maxLength": 25,
                         "description": "The user's display name. It does not need to be unique.",
                         "type": "string"
                     }
@@ -158,13 +158,13 @@
                                         "username": {
                                             "pattern": "^[a-zA-Z0-9.-_]+$",
                                             "minLength": 3,
-                                            "maxLength": 30,
+                                            "maxLength": 20,
                                             "description": "The id to display to users. They must be unique, but the users can choose and change them.\n### Rules\n- Only accepts letters, digits and '.', '-', '_'.",
                                             "type": "string"
                                         },
                                         "name": {
                                             "minLength": 1,
-                                            "maxLength": 40,
+                                            "maxLength": 25,
                                             "description": "The user's display name. It does not need to be unique.",
                                             "type": "string"
                                         },
@@ -229,132 +229,13 @@
                                 "schema": {
                                     "type": "object",
                                     "properties": {
-                                        "root": {
-                                            "type": "boolean"
-                                        },
+                                        "root": { "type": "boolean" },
                                         "ping": {
                                             "type": "string",
                                             "enum": ["Pong!"]
                                         }
                                     },
                                     "required": ["root", "ping"]
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/debug/snapshot": {
-            "get": {
-                "summary": "Get current state of application.",
-                "tags": ["TODO Schema", "Debug"],
-                "security": [],
-                "responses": {
-                    "200": {
-                        "description": "Default Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "users": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "object",
-                                                "properties": {
-                                                    "name": {
-                                                        "minLength": 1,
-                                                        "maxLength": 40,
-                                                        "description": "The user's display name. It does not need to be unique.",
-                                                        "type": "string"
-                                                    },
-                                                    "email": {
-                                                        "pattern": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$",
-                                                        "maxLength": 254,
-                                                        "description": "The user's email.",
-                                                        "type": "string"
-                                                    },
-                                                    "username": {
-                                                        "pattern": "^[a-zA-Z0-9.-_]+$",
-                                                        "minLength": 3,
-                                                        "maxLength": 30,
-                                                        "description": "The id to display to users. They must be unique, but the users can choose and change them.\n### Rules\n- Only accepts letters, digits and '.', '-', '_'.",
-                                                        "type": "string"
-                                                    },
-                                                    "profilePictureId": {
-                                                        "description": "The id to the profile picture of the user. These pictures cannot be uploaded, we store the options manually.",
-                                                        "type": "integer"
-                                                    },
-                                                    "spotifyId": {
-                                                        "description": "The user's id to use to connect with spotify services. It is not stored within the database, but some requests need it to function.",
-                                                        "type": "string"
-                                                    }
-                                                },
-                                                "required": [
-                                                    "name",
-                                                    "email",
-                                                    "username",
-                                                    "profilePictureId"
-                                                ]
-                                            }
-                                        },
-                                        "friends": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "object",
-                                                "properties": {
-                                                    "friendUsername": {
-                                                        "pattern": "^[a-zA-Z0-9.-_]+$",
-                                                        "minLength": 3,
-                                                        "maxLength": 30,
-                                                        "description": "The id to display to users. They must be unique, but the users can choose and change them.\n### Rules\n- Only accepts letters, digits and '.', '-', '_'.",
-                                                        "type": "string"
-                                                    },
-                                                    "userUsername": {
-                                                        "pattern": "^[a-zA-Z0-9.-_]+$",
-                                                        "minLength": 3,
-                                                        "maxLength": 30,
-                                                        "description": "The id to display to users. They must be unique, but the users can choose and change them.\n### Rules\n- Only accepts letters, digits and '.', '-', '_'.",
-                                                        "type": "string"
-                                                    },
-                                                    "createdAt": {
-                                                        "format": "date-time",
-                                                        "type": "string"
-                                                    },
-                                                    "status": {
-                                                        "type": "string",
-                                                        "pattern": "^(pending|blocked|accepted)$"
-                                                    }
-                                                },
-                                                "required": [
-                                                    "friendUsername",
-                                                    "userUsername",
-                                                    "createdAt",
-                                                    "status"
-                                                ]
-                                            }
-                                        }
-                                    },
-                                    "required": ["users", "friends"]
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "put": {
-                "summary": "Reset the application state to a certain snapshot.",
-                "tags": ["TODO Schema", "Debug"],
-                "security": [],
-                "responses": {
-                    "200": {
-                        "description": "Default Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "string",
-                                    "enum": ["TODO!"]
                                 }
                             }
                         }
@@ -409,6 +290,7 @@
                             "application/json": {
                                 "schema": {
                                     "description": "notFound",
+                                    "additionalProperties": true,
                                     "type": "object",
                                     "properties": {
                                         "statusCode": {
@@ -480,6 +362,123 @@
                 }
             }
         },
+        "/debug/snapshot": {
+            "get": {
+                "summary": "Get current state of application.",
+                "tags": ["TODO Schema", "Debug"],
+                "security": [],
+                "responses": {
+                    "200": {
+                        "description": "Default Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "users": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "name": {
+                                                        "minLength": 1,
+                                                        "maxLength": 25,
+                                                        "description": "The user's display name. It does not need to be unique.",
+                                                        "type": "string"
+                                                    },
+                                                    "email": {
+                                                        "pattern": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$",
+                                                        "maxLength": 254,
+                                                        "description": "The user's email.",
+                                                        "type": "string"
+                                                    },
+                                                    "username": {
+                                                        "pattern": "^[a-zA-Z0-9.-_]+$",
+                                                        "minLength": 3,
+                                                        "maxLength": 20,
+                                                        "description": "The id to display to users. They must be unique, but the users can choose and change them.\n### Rules\n- Only accepts letters, digits and '.', '-', '_'.",
+                                                        "type": "string"
+                                                    },
+                                                    "profilePictureId": {
+                                                        "description": "The id to the profile picture of the user. These pictures cannot be uploaded, we store the options manually.",
+                                                        "type": "integer"
+                                                    },
+                                                    "spotifyId": {
+                                                        "description": "The user's id to use to connect with spotify services. It is not stored within the database, but some requests need it to function.",
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "name",
+                                                    "email",
+                                                    "username",
+                                                    "profilePictureId"
+                                                ]
+                                            }
+                                        },
+                                        "friends": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "friendUsername": {
+                                                        "pattern": "^[a-zA-Z0-9.-_]+$",
+                                                        "minLength": 3,
+                                                        "maxLength": 20,
+                                                        "description": "The id to display to users. They must be unique, but the users can choose and change them.\n### Rules\n- Only accepts letters, digits and '.', '-', '_'.",
+                                                        "type": "string"
+                                                    },
+                                                    "userUsername": {
+                                                        "pattern": "^[a-zA-Z0-9.-_]+$",
+                                                        "minLength": 3,
+                                                        "maxLength": 20,
+                                                        "description": "The id to display to users. They must be unique, but the users can choose and change them.\n### Rules\n- Only accepts letters, digits and '.', '-', '_'.",
+                                                        "type": "string"
+                                                    },
+                                                    "createdAt": {
+                                                        "format": "date-time",
+                                                        "type": "string"
+                                                    },
+                                                    "status": {
+                                                        "type": "string",
+                                                        "pattern": "^(pending|blocked|accepted)$"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "friendUsername",
+                                                    "userUsername",
+                                                    "createdAt",
+                                                    "status"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "required": ["users", "friends"]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "summary": "Reset the application state to a certain snapshot.",
+                "tags": ["TODO Schema", "Debug"],
+                "security": [],
+                "responses": {
+                    "200": {
+                        "description": "Default Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "enum": ["TODO!"]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/public/icons/{filename}": {
             "get": {
                 "summary": "Get a user icon.",
@@ -516,6 +515,7 @@
                             "application/json": {
                                 "schema": {
                                     "description": "notFound",
+                                    "additionalProperties": true,
                                     "type": "object",
                                     "properties": {
                                         "statusCode": {
@@ -644,13 +644,13 @@
                                                             "username": {
                                                                 "pattern": "^[a-zA-Z0-9.-_]+$",
                                                                 "minLength": 3,
-                                                                "maxLength": 30,
+                                                                "maxLength": 20,
                                                                 "description": "The id to display to users. They must be unique, but the users can choose and change them.\n### Rules\n- Only accepts letters, digits and '.', '-', '_'.",
                                                                 "type": "string"
                                                             },
                                                             "name": {
                                                                 "minLength": 1,
-                                                                "maxLength": 40,
+                                                                "maxLength": 25,
                                                                 "description": "The user's display name. It does not need to be unique.",
                                                                 "type": "string"
                                                             },
@@ -721,14 +721,14 @@
                                     "properties": {
                                         "name": {
                                             "minLength": 1,
-                                            "maxLength": 40,
+                                            "maxLength": 25,
                                             "description": "The user's display name. It does not need to be unique.",
                                             "type": "string"
                                         },
                                         "username": {
                                             "pattern": "^[a-zA-Z0-9.-_]+$",
                                             "minLength": 3,
-                                            "maxLength": 30,
+                                            "maxLength": 20,
                                             "description": "The id to display to users. They must be unique, but the users can choose and change them.\n### Rules\n- Only accepts letters, digits and '.', '-', '_'.",
                                             "type": "string"
                                         },
@@ -783,13 +783,13 @@
                                             "username": {
                                                 "pattern": "^[a-zA-Z0-9.-_]+$",
                                                 "minLength": 3,
-                                                "maxLength": 30,
+                                                "maxLength": 20,
                                                 "description": "The id to display to users. They must be unique, but the users can choose and change them.\n### Rules\n- Only accepts letters, digits and '.', '-', '_'.",
                                                 "type": "string"
                                             },
                                             "name": {
                                                 "minLength": 1,
-                                                "maxLength": 40,
+                                                "maxLength": 25,
                                                 "description": "The user's display name. It does not need to be unique.",
                                                 "type": "string"
                                             },
@@ -809,121 +809,6 @@
                                             "id"
                                         ]
                                     }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/auth/register": {
-            "post": {
-                "summary": "Create a user.",
-                "tags": ["Auth", "User CRUD", "User"],
-                "description": "Creates a new user with the given credentials if possible.",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "title": "userSchema",
-                                "type": "object",
-                                "properties": {
-                                    "username": {
-                                        "pattern": "^[a-zA-Z0-9.-_]+$",
-                                        "minLength": 3,
-                                        "maxLength": 30,
-                                        "description": "The id to display to users. They must be unique, but the users can choose and change them.\n### Rules\n- Only accepts letters, digits and '.', '-', '_'.",
-                                        "type": "string"
-                                    },
-                                    "profilePictureId": {
-                                        "description": "The id to the profile picture of the user. These pictures cannot be uploaded, we store the options manually.",
-                                        "type": "integer"
-                                    },
-                                    "email": {
-                                        "pattern": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$",
-                                        "maxLength": 254,
-                                        "description": "The user's email.",
-                                        "type": "string"
-                                    },
-                                    "password": {
-                                        "minLength": 3,
-                                        "maxLength": 20,
-                                        "description": "A password.",
-                                        "type": "string"
-                                    },
-                                    "name": {
-                                        "minLength": 1,
-                                        "maxLength": 40,
-                                        "description": "The user's display name. It does not need to be unique.",
-                                        "type": "string"
-                                    }
-                                },
-                                "required": [
-                                    "username",
-                                    "profilePictureId",
-                                    "email",
-                                    "password",
-                                    "name"
-                                ]
-                            },
-                            "example": {
-                                "username": "juanalopez1",
-                                "email": "juanaxlopez1@gmail.com",
-                                "name": "juana",
-                                "password": "Juana123!",
-                                "profilePictureId": 1
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "security": [],
-                "responses": {
-                    "200": {
-                        "description": "Default Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "jwtToken": {
-                                            "description": "The 'encrypted' jwt token. It is easily decryptable, so no sensitive information is stored there.",
-                                            "type": "string"
-                                        },
-                                        "id": {
-                                            "description": "A numeric identifier for a user. Generated by the backend, unique and unchangeable.",
-                                            "type": "integer"
-                                        }
-                                    },
-                                    "required": ["jwtToken", "id"]
-                                },
-                                "example": {
-                                    "jwtToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNzI3NDExODc4fQ.lCYmZF_REl8rYYj1UjJzacXrPCTyjVdA-KsR71xHwQw",
-                                    "id": 2
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "badRequest",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "description": "badRequest",
-                                    "type": "object",
-                                    "properties": {
-                                        "statusCode": {
-                                            "type": "number",
-                                            "enum": [400]
-                                        },
-                                        "error": { "type": "string" },
-                                        "message": { "type": "string" }
-                                    },
-                                    "required": [
-                                        "statusCode",
-                                        "error",
-                                        "message"
-                                    ]
                                 }
                             }
                         }
@@ -1012,6 +897,7 @@
                             "application/json": {
                                 "schema": {
                                     "description": "notFound",
+                                    "additionalProperties": true,
                                     "type": "object",
                                     "properties": {
                                         "statusCode": {
@@ -1033,14 +919,290 @@
                 }
             }
         },
-        "/auth/register/spotify/callback": {
+        "/auth/register": {
+            "post": {
+                "summary": "Create a user.",
+                "tags": ["Auth", "User CRUD", "User"],
+                "description": "Creates a new user with the given credentials if possible.",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "title": "userSchema",
+                                "type": "object",
+                                "properties": {
+                                    "username": {
+                                        "pattern": "^[a-zA-Z0-9.-_]+$",
+                                        "minLength": 3,
+                                        "maxLength": 20,
+                                        "description": "The id to display to users. They must be unique, but the users can choose and change them.\n### Rules\n- Only accepts letters, digits and '.', '-', '_'.",
+                                        "type": "string"
+                                    },
+                                    "profilePictureId": {
+                                        "description": "The id to the profile picture of the user. These pictures cannot be uploaded, we store the options manually.",
+                                        "type": "integer"
+                                    },
+                                    "email": {
+                                        "pattern": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$",
+                                        "maxLength": 254,
+                                        "description": "The user's email.",
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "minLength": 3,
+                                        "maxLength": 20,
+                                        "description": "A password.",
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "minLength": 1,
+                                        "maxLength": 25,
+                                        "description": "The user's display name. It does not need to be unique.",
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "username",
+                                    "profilePictureId",
+                                    "email",
+                                    "password",
+                                    "name"
+                                ]
+                            },
+                            "example": {
+                                "username": "juanalopez1",
+                                "email": "juanaxlopez1@gmail.com",
+                                "name": "juana",
+                                "password": "Juana123!",
+                                "profilePictureId": 1
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [],
+                "responses": {
+                    "200": {
+                        "description": "Default Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "jwtToken": {
+                                            "description": "The 'encrypted' jwt token. It is easily decryptable, so no sensitive information is stored there.",
+                                            "type": "string"
+                                        },
+                                        "id": {
+                                            "description": "A numeric identifier for a user. Generated by the backend, unique and unchangeable.",
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "required": ["jwtToken", "id"]
+                                },
+                                "example": {
+                                    "jwtToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNzI3NDExODc4fQ.lCYmZF_REl8rYYj1UjJzacXrPCTyjVdA-KsR71xHwQw",
+                                    "id": 2
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "badRequest",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "badRequest",
+                                    "additionalProperties": true,
+                                    "type": "object",
+                                    "properties": {
+                                        "statusCode": {
+                                            "type": "number",
+                                            "enum": [400]
+                                        },
+                                        "error": { "type": "string" },
+                                        "message": { "type": "string" }
+                                    },
+                                    "required": [
+                                        "statusCode",
+                                        "error",
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/debug/fake/user": {
             "get": {
-                "summary": "Register a user through a spotify callback.",
-                "tags": ["TODO Schema"],
-                "description": "The actual url you should use is this one removing /callback\n> !) Eventually this schema will change.",
+                "summary": "Returns random, believable credentials for a user.",
+                "tags": ["Debug", "User"],
+                "description": "All fake users have Fake123! as their password.",
+                "security": [],
+                "responses": {
+                    "200": {
+                        "description": "Default Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "title": "userSchema",
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {
+                                            "minLength": 1,
+                                            "maxLength": 25,
+                                            "description": "The user's display name. It does not need to be unique.",
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "pattern": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$",
+                                            "maxLength": 254,
+                                            "description": "The user's email.",
+                                            "type": "string"
+                                        },
+                                        "username": {
+                                            "pattern": "^[a-zA-Z0-9.-_]+$",
+                                            "minLength": 3,
+                                            "maxLength": 20,
+                                            "description": "The id to display to users. They must be unique, but the users can choose and change them.\n### Rules\n- Only accepts letters, digits and '.', '-', '_'.",
+                                            "type": "string"
+                                        },
+                                        "password": {
+                                            "minLength": 3,
+                                            "maxLength": 20,
+                                            "description": "A password.",
+                                            "type": "string"
+                                        },
+                                        "profilePictureId": {
+                                            "description": "The id to the profile picture of the user. These pictures cannot be uploaded, we store the options manually.",
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "required": [
+                                        "name",
+                                        "email",
+                                        "username",
+                                        "password",
+                                        "profilePictureId"
+                                    ]
+                                },
+                                "example": {
+                                    "name": "Mr. Austin Kling I",
+                                    "username": "Austin.Kling82",
+                                    "password": "Fake123!",
+                                    "email": "Austin.Kling98@yahoo.com",
+                                    "profilePictureId": 5
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/debug/fake/users": {
+            "post": {
+                "summary": "Create a certain number of fake users.",
+                "tags": ["Debug", "User"],
+                "description": "We do not check if the user already exists, so this route may error. On error, we roll back any changes.",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "amount": {
+                                        "description": "The amount of users to generate.",
+                                        "type": "integer"
+                                    }
+                                },
+                                "required": ["amount"]
+                            }
+                        }
+                    },
+                    "required": true
+                },
                 "security": [],
                 "responses": {
                     "201": {
+                        "description": "Default Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "title": "userSchema",
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "minLength": 1,
+                                                "maxLength": 25,
+                                                "description": "The user's display name. It does not need to be unique.",
+                                                "type": "string"
+                                            },
+                                            "email": {
+                                                "pattern": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$",
+                                                "maxLength": 254,
+                                                "description": "The user's email.",
+                                                "type": "string"
+                                            },
+                                            "username": {
+                                                "pattern": "^[a-zA-Z0-9.-_]+$",
+                                                "minLength": 3,
+                                                "maxLength": 20,
+                                                "description": "The id to display to users. They must be unique, but the users can choose and change them.\n### Rules\n- Only accepts letters, digits and '.', '-', '_'.",
+                                                "type": "string"
+                                            },
+                                            "password": {
+                                                "minLength": 3,
+                                                "maxLength": 20,
+                                                "description": "A password.",
+                                                "type": "string"
+                                            },
+                                            "profilePictureId": {
+                                                "description": "The id to the profile picture of the user. These pictures cannot be uploaded, we store the options manually.",
+                                                "type": "integer"
+                                            }
+                                        },
+                                        "required": [
+                                            "name",
+                                            "email",
+                                            "username",
+                                            "password",
+                                            "profilePictureId"
+                                        ]
+                                    }
+                                },
+                                "example": [
+                                    {
+                                        "name": "Mrs. Jeanette Bauch IV",
+                                        "username": "Jeanette_Bauch",
+                                        "password": "Fake123!",
+                                        "email": "Jeanette_Bauch@hotmail.com",
+                                        "profilePictureId": 5
+                                    },
+                                    {
+                                        "name": "Dr. Nathan Lemke Jr.",
+                                        "username": "Nathan.Lemke38",
+                                        "password": "Fake123!",
+                                        "email": "Nathan_Lemke@yahoo.com",
+                                        "profilePictureId": 8
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/login/spotify/callback": {
+            "get": {
+                "summary": "We will know what we need here when we get to down to implementation.",
+                "tags": ["Auth", "TODO Schema"],
+                "security": [],
+                "responses": {
+                    "200": {
                         "description": "Default Response",
                         "content": {
                             "application/json": {
@@ -1064,13 +1226,14 @@
                 }
             }
         },
-        "/auth/login/spotify/callback": {
+        "/auth/register/spotify/callback": {
             "get": {
-                "summary": "We will know what we need here when we get to down to implementation.",
-                "tags": ["Auth", "TODO Schema"],
+                "summary": "Register a user through a spotify callback.",
+                "tags": ["TODO Schema"],
+                "description": "The actual url you should use is this one removing /callback\n> !) Eventually this schema will change.",
                 "security": [],
                 "responses": {
-                    "200": {
+                    "201": {
                         "description": "Default Response",
                         "content": {
                             "application/json": {
@@ -1119,7 +1282,7 @@
                                         "username": {
                                             "pattern": "^[a-zA-Z0-9.-_]+$",
                                             "minLength": 3,
-                                            "maxLength": 30,
+                                            "maxLength": 20,
                                             "description": "The id to display to users. They must be unique, but the users can choose and change them.\n### Rules\n- Only accepts letters, digits and '.', '-', '_'.",
                                             "type": "string"
                                         },
@@ -1131,7 +1294,7 @@
                                         },
                                         "name": {
                                             "minLength": 1,
-                                            "maxLength": 40,
+                                            "maxLength": 25,
                                             "description": "The user's display name. It does not need to be unique.",
                                             "type": "string"
                                         },
@@ -1161,6 +1324,7 @@
                             "application/json": {
                                 "schema": {
                                     "description": "unauthorized",
+                                    "additionalProperties": true,
                                     "type": "object",
                                     "properties": {
                                         "statusCode": {
@@ -1194,7 +1358,7 @@
                                     "username": {
                                         "pattern": "^[a-zA-Z0-9.-_]+$",
                                         "minLength": 3,
-                                        "maxLength": 30,
+                                        "maxLength": 20,
                                         "description": "The id to display to users. They must be unique, but the users can choose and change them.\n### Rules\n- Only accepts letters, digits and '.', '-', '_'.",
                                         "type": "string"
                                     },
@@ -1206,7 +1370,7 @@
                                     },
                                     "name": {
                                         "minLength": 1,
-                                        "maxLength": 40,
+                                        "maxLength": 25,
                                         "description": "The user's display name. It does not need to be unique.",
                                         "type": "string"
                                     },
@@ -1261,7 +1425,7 @@
                                         "username": {
                                             "pattern": "^[a-zA-Z0-9.-_]+$",
                                             "minLength": 3,
-                                            "maxLength": 30,
+                                            "maxLength": 20,
                                             "description": "The id to display to users. They must be unique, but the users can choose and change them.\n### Rules\n- Only accepts letters, digits and '.', '-', '_'.",
                                             "type": "string"
                                         },
@@ -1273,7 +1437,7 @@
                                         },
                                         "name": {
                                             "minLength": 1,
-                                            "maxLength": 40,
+                                            "maxLength": 25,
                                             "description": "The user's display name. It does not need to be unique.",
                                             "type": "string"
                                         },
@@ -1305,6 +1469,7 @@
                             "application/json": {
                                 "schema": {
                                     "description": "unauthorized",
+                                    "additionalProperties": true,
                                     "type": "object",
                                     "properties": {
                                         "statusCode": {
@@ -1350,7 +1515,7 @@
                                         "username": {
                                             "pattern": "^[a-zA-Z0-9.-_]+$",
                                             "minLength": 3,
-                                            "maxLength": 30,
+                                            "maxLength": 20,
                                             "description": "The id to display to users. They must be unique, but the users can choose and change them.\n### Rules\n- Only accepts letters, digits and '.', '-', '_'.",
                                             "type": "string"
                                         }
@@ -1366,6 +1531,7 @@
                             "application/json": {
                                 "schema": {
                                     "description": "unauthorized",
+                                    "additionalProperties": true,
                                     "type": "object",
                                     "properties": {
                                         "statusCode": {
@@ -1390,6 +1556,7 @@
                             "application/json": {
                                 "schema": {
                                     "description": "notFound",
+                                    "additionalProperties": true,
                                     "type": "object",
                                     "properties": {
                                         "statusCode": {
@@ -1482,6 +1649,7 @@
                             "application/json": {
                                 "schema": {
                                     "description": "unauthorized",
+                                    "additionalProperties": true,
                                     "type": "object",
                                     "properties": {
                                         "statusCode": {
@@ -1608,6 +1776,7 @@
                             "application/json": {
                                 "schema": {
                                     "description": "unauthorized",
+                                    "additionalProperties": true,
                                     "type": "object",
                                     "properties": {
                                         "statusCode": {
@@ -1703,6 +1872,7 @@
                             "application/json": {
                                 "schema": {
                                     "description": "unauthorized",
+                                    "additionalProperties": true,
                                     "type": "object",
                                     "properties": {
                                         "statusCode": {
@@ -1727,6 +1897,7 @@
                             "application/json": {
                                 "schema": {
                                     "description": "notFound",
+                                    "additionalProperties": true,
                                     "type": "object",
                                     "properties": {
                                         "statusCode": {
@@ -1820,6 +1991,7 @@
                             "application/json": {
                                 "schema": {
                                     "description": "unauthorized",
+                                    "additionalProperties": true,
                                     "type": "object",
                                     "properties": {
                                         "statusCode": {
@@ -1844,6 +2016,7 @@
                             "application/json": {
                                 "schema": {
                                     "description": "notFound",
+                                    "additionalProperties": true,
                                     "type": "object",
                                     "properties": {
                                         "statusCode": {
@@ -1938,6 +2111,7 @@
                             "application/json": {
                                 "schema": {
                                     "description": "unauthorized",
+                                    "additionalProperties": true,
                                     "type": "object",
                                     "properties": {
                                         "statusCode": {
@@ -1989,14 +2163,14 @@
                                             },
                                             "name": {
                                                 "minLength": 1,
-                                                "maxLength": 40,
+                                                "maxLength": 25,
                                                 "description": "The user's display name. It does not need to be unique.",
                                                 "type": "string"
                                             },
                                             "username": {
                                                 "pattern": "^[a-zA-Z0-9.-_]+$",
                                                 "minLength": 3,
-                                                "maxLength": 30,
+                                                "maxLength": 20,
                                                 "description": "The id to display to users. They must be unique, but the users can choose and change them.\n### Rules\n- Only accepts letters, digits and '.', '-', '_'.",
                                                 "type": "string"
                                             },
@@ -2022,6 +2196,7 @@
                             "application/json": {
                                 "schema": {
                                     "description": "unauthorized",
+                                    "additionalProperties": true,
                                     "type": "object",
                                     "properties": {
                                         "statusCode": {
@@ -2165,6 +2340,7 @@
                             "application/json": {
                                 "schema": {
                                     "description": "unauthorized",
+                                    "additionalProperties": true,
                                     "type": "object",
                                     "properties": {
                                         "statusCode": {
@@ -2189,6 +2365,7 @@
                             "application/json": {
                                 "schema": {
                                     "description": "tooEarly",
+                                    "additionalProperties": true,
                                     "type": "object",
                                     "properties": {
                                         "statusCode": {
@@ -2354,6 +2531,7 @@
                             "application/json": {
                                 "schema": {
                                     "description": "unauthorized",
+                                    "additionalProperties": true,
                                     "type": "object",
                                     "properties": {
                                         "statusCode": {
@@ -2430,6 +2608,7 @@
                             "application/json": {
                                 "schema": {
                                     "description": "unauthorized",
+                                    "additionalProperties": true,
                                     "type": "object",
                                     "properties": {
                                         "statusCode": {
@@ -2454,6 +2633,7 @@
                             "application/json": {
                                 "schema": {
                                     "description": "notFound",
+                                    "additionalProperties": true,
                                     "type": "object",
                                     "properties": {
                                         "statusCode": {
@@ -2508,7 +2688,7 @@
                                         "username": {
                                             "pattern": "^[a-zA-Z0-9.-_]+$",
                                             "minLength": 3,
-                                            "maxLength": 30,
+                                            "maxLength": 20,
                                             "description": "The id to display to users. They must be unique, but the users can choose and change them.\n### Rules\n- Only accepts letters, digits and '.', '-', '_'.",
                                             "type": "string"
                                         }
@@ -2524,6 +2704,7 @@
                             "application/json": {
                                 "schema": {
                                     "description": "badRequest",
+                                    "additionalProperties": true,
                                     "type": "object",
                                     "properties": {
                                         "statusCode": {
@@ -2548,6 +2729,7 @@
                             "application/json": {
                                 "schema": {
                                     "description": "unauthorized",
+                                    "additionalProperties": true,
                                     "type": "object",
                                     "properties": {
                                         "statusCode": {
@@ -2572,6 +2754,7 @@
                             "application/json": {
                                 "schema": {
                                     "description": "notFound",
+                                    "additionalProperties": true,
                                     "type": "object",
                                     "properties": {
                                         "statusCode": {
@@ -2623,7 +2806,7 @@
                                         "username": {
                                             "pattern": "^[a-zA-Z0-9.-_]+$",
                                             "minLength": 3,
-                                            "maxLength": 30,
+                                            "maxLength": 20,
                                             "description": "The id to display to users. They must be unique, but the users can choose and change them.\n### Rules\n- Only accepts letters, digits and '.', '-', '_'.",
                                             "type": "string"
                                         }
@@ -2639,6 +2822,7 @@
                             "application/json": {
                                 "schema": {
                                     "description": "badRequest",
+                                    "additionalProperties": true,
                                     "type": "object",
                                     "properties": {
                                         "statusCode": {
@@ -2663,6 +2847,7 @@
                             "application/json": {
                                 "schema": {
                                     "description": "unauthorized",
+                                    "additionalProperties": true,
                                     "type": "object",
                                     "properties": {
                                         "statusCode": {
@@ -2687,6 +2872,7 @@
                             "application/json": {
                                 "schema": {
                                     "description": "notFound",
+                                    "additionalProperties": true,
                                     "type": "object",
                                     "properties": {
                                         "statusCode": {
@@ -2768,6 +2954,7 @@
                             "application/json": {
                                 "schema": {
                                     "description": "badRequest",
+                                    "additionalProperties": true,
                                     "type": "object",
                                     "properties": {
                                         "statusCode": {
@@ -2792,6 +2979,7 @@
                             "application/json": {
                                 "schema": {
                                     "description": "unauthorized",
+                                    "additionalProperties": true,
                                     "type": "object",
                                     "properties": {
                                         "statusCode": {
@@ -2816,6 +3004,7 @@
                             "application/json": {
                                 "schema": {
                                     "description": "notFound",
+                                    "additionalProperties": true,
                                     "type": "object",
                                     "properties": {
                                         "statusCode": {
@@ -2840,6 +3029,7 @@
                             "application/json": {
                                 "schema": {
                                     "description": "preconditionRequired",
+                                    "additionalProperties": true,
                                     "type": "object",
                                     "properties": {
                                         "statusCode": {
@@ -2926,13 +3116,13 @@
                                                             "username": {
                                                                 "pattern": "^[a-zA-Z0-9.-_]+$",
                                                                 "minLength": 3,
-                                                                "maxLength": 30,
+                                                                "maxLength": 20,
                                                                 "description": "The id to display to users. They must be unique, but the users can choose and change them.\n### Rules\n- Only accepts letters, digits and '.', '-', '_'.",
                                                                 "type": "string"
                                                             },
                                                             "name": {
                                                                 "minLength": 1,
-                                                                "maxLength": 40,
+                                                                "maxLength": 25,
                                                                 "description": "The user's display name. It does not need to be unique.",
                                                                 "type": "string"
                                                             },
@@ -2980,6 +3170,7 @@
                             "application/json": {
                                 "schema": {
                                     "description": "unauthorized",
+                                    "additionalProperties": true,
                                     "type": "object",
                                     "properties": {
                                         "statusCode": {
@@ -3149,6 +3340,7 @@
                             "application/json": {
                                 "schema": {
                                     "description": "unauthorized",
+                                    "additionalProperties": true,
                                     "type": "object",
                                     "properties": {
                                         "statusCode": {
@@ -3173,6 +3365,120 @@
                             "application/json": {
                                 "schema": {
                                     "description": "notFound",
+                                    "additionalProperties": true,
+                                    "type": "object",
+                                    "properties": {
+                                        "statusCode": {
+                                            "type": "number",
+                                            "enum": [404]
+                                        },
+                                        "error": { "type": "string" },
+                                        "message": { "type": "string" }
+                                    },
+                                    "required": [
+                                        "statusCode",
+                                        "error",
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/self/{selfId}/melodle/{gameId}/guessSong/attempts": {
+            "post": {
+                "summary": "Submit a guess for a melodle game.",
+                "tags": ["Melodle"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "guessedSongId": {
+                                        "description": "Identifier which can be used to fetch artist data from MusixMatch.",
+                                        "type": "string"
+                                    }
+                                },
+                                "required": ["guessedSongId"]
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "parameters": [
+                    {
+                        "schema": { "type": "integer" },
+                        "in": "path",
+                        "name": "selfId",
+                        "required": true,
+                        "description": "A numeric identifier for a user. Generated by the backend, unique and unchangeable."
+                    },
+                    {
+                        "schema": { "type": "integer" },
+                        "in": "path",
+                        "name": "gameId",
+                        "required": true,
+                        "description": "A unique identifier for a melodle game."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Default Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "correctArtist": { "type": "boolean" },
+                                        "correctBand": { "type": "boolean" },
+                                        "correctAlbum": { "type": "boolean" },
+                                        "won": { "type": "boolean" }
+                                    },
+                                    "required": [
+                                        "correctArtist",
+                                        "correctBand",
+                                        "correctAlbum",
+                                        "won"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "unauthorized",
+                                    "additionalProperties": true,
+                                    "type": "object",
+                                    "properties": {
+                                        "statusCode": {
+                                            "type": "number",
+                                            "enum": [401]
+                                        },
+                                        "error": { "type": "string" },
+                                        "message": { "type": "string" }
+                                    },
+                                    "required": [
+                                        "statusCode",
+                                        "error",
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "notFound",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "notFound",
+                                    "additionalProperties": true,
                                     "type": "object",
                                     "properties": {
                                         "statusCode": {
@@ -3266,6 +3572,7 @@
                             "application/json": {
                                 "schema": {
                                     "description": "unauthorized",
+                                    "additionalProperties": true,
                                     "type": "object",
                                     "properties": {
                                         "statusCode": {
@@ -3290,117 +3597,7 @@
                             "application/json": {
                                 "schema": {
                                     "description": "notFound",
-                                    "type": "object",
-                                    "properties": {
-                                        "statusCode": {
-                                            "type": "number",
-                                            "enum": [404]
-                                        },
-                                        "error": { "type": "string" },
-                                        "message": { "type": "string" }
-                                    },
-                                    "required": [
-                                        "statusCode",
-                                        "error",
-                                        "message"
-                                    ]
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/users/self/{selfId}/melodle/{gameId}/guessSong/attempts": {
-            "post": {
-                "summary": "Submit a guess for a melodle game.",
-                "tags": ["Melodle"],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "guessedSongId": {
-                                        "description": "Identifier which can be used to fetch artist data from MusixMatch.",
-                                        "type": "string"
-                                    }
-                                },
-                                "required": ["guessedSongId"]
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "parameters": [
-                    {
-                        "schema": { "type": "integer" },
-                        "in": "path",
-                        "name": "selfId",
-                        "required": true,
-                        "description": "A numeric identifier for a user. Generated by the backend, unique and unchangeable."
-                    },
-                    {
-                        "schema": { "type": "integer" },
-                        "in": "path",
-                        "name": "gameId",
-                        "required": true,
-                        "description": "A unique identifier for a melodle game."
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Default Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "correctArtist": { "type": "boolean" },
-                                        "correctBand": { "type": "boolean" },
-                                        "correctAlbum": { "type": "boolean" },
-                                        "won": { "type": "boolean" }
-                                    },
-                                    "required": [
-                                        "correctArtist",
-                                        "correctBand",
-                                        "correctAlbum",
-                                        "won"
-                                    ]
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "unauthorized",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "description": "unauthorized",
-                                    "type": "object",
-                                    "properties": {
-                                        "statusCode": {
-                                            "type": "number",
-                                            "enum": [401]
-                                        },
-                                        "error": { "type": "string" },
-                                        "message": { "type": "string" }
-                                    },
-                                    "required": [
-                                        "statusCode",
-                                        "error",
-                                        "message"
-                                    ]
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "notFound",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "description": "notFound",
+                                    "additionalProperties": true,
                                     "type": "object",
                                     "properties": {
                                         "statusCode": {

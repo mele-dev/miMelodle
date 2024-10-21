@@ -34,9 +34,39 @@ export const getResponse = zod.object({
 });
 
 /**
+ * @summary Get information about an artist
+ */
+export const getArtistsArtistMusixMatchIdParams = zod.object({
+    artistMusixMatchId: zod.string(),
+});
+
+export const getArtistsArtistMusixMatchIdResponse = zod.object({
+    name: zod.string(),
+    musixmatchArtistId: zod.string(),
+    imageUrl: zod.string().optional(),
+});
+
+/**
+ * We use a custom algorithm to determine which artists are most relevant, based off the query in the querystring.
+ * @summary Search for available artists.
+ */
+export const getArtistsSearchQueryQueryMax = 500;
+
+export const getArtistsSearchQueryParams = zod.object({
+    query: zod.string().max(getArtistsSearchQueryQueryMax),
+});
+
+export const getArtistsSearchResponseItem = zod.object({
+    musixmatchArtistId: zod.string(),
+    name: zod.string(),
+    imageUrl: zod.string().optional(),
+});
+export const getArtistsSearchResponse = zod.array(getArtistsSearchResponseItem);
+
+/**
  * @summary Get current state of application.
  */
-export const getDebugSnapshotResponseUsersItemNameMax = 40;
+export const getDebugSnapshotResponseUsersItemNameMax = 25;
 export const getDebugSnapshotResponseUsersItemEmailMax = 254;
 
 export const getDebugSnapshotResponseUsersItemEmailRegExp = new RegExp(
@@ -44,20 +74,20 @@ export const getDebugSnapshotResponseUsersItemEmailRegExp = new RegExp(
 );
 export const getDebugSnapshotResponseUsersItemUsernameMin = 3;
 
-export const getDebugSnapshotResponseUsersItemUsernameMax = 30;
+export const getDebugSnapshotResponseUsersItemUsernameMax = 20;
 
 export const getDebugSnapshotResponseUsersItemUsernameRegExp = new RegExp(
     "^[a-zA-Z0-9.-_]+$"
 );
 export const getDebugSnapshotResponseFriendsItemFriendUsernameMin = 3;
 
-export const getDebugSnapshotResponseFriendsItemFriendUsernameMax = 30;
+export const getDebugSnapshotResponseFriendsItemFriendUsernameMax = 20;
 
 export const getDebugSnapshotResponseFriendsItemFriendUsernameRegExp =
     new RegExp("^[a-zA-Z0-9.-_]+$");
 export const getDebugSnapshotResponseFriendsItemUserUsernameMin = 3;
 
-export const getDebugSnapshotResponseFriendsItemUserUsernameMax = 30;
+export const getDebugSnapshotResponseFriendsItemUserUsernameMax = 20;
 
 export const getDebugSnapshotResponseFriendsItemUserUsernameRegExp = new RegExp(
     "^[a-zA-Z0-9.-_]+$"
@@ -112,36 +142,6 @@ export const getDebugSnapshotResponse = zod.object({
 export const putDebugSnapshotResponse = zod.enum(["TODO!"]);
 
 /**
- * @summary Get information about an artist
- */
-export const getArtistsArtistMusixMatchIdParams = zod.object({
-    artistMusixMatchId: zod.string(),
-});
-
-export const getArtistsArtistMusixMatchIdResponse = zod.object({
-    name: zod.string(),
-    musixmatchArtistId: zod.string(),
-    imageUrl: zod.string().optional(),
-});
-
-/**
- * We use a custom algorithm to determine which artists are most relevant, based off the query in the querystring.
- * @summary Search for available artists.
- */
-export const getArtistsSearchQueryQueryMax = 500;
-
-export const getArtistsSearchQueryParams = zod.object({
-    query: zod.string().max(getArtistsSearchQueryQueryMax),
-});
-
-export const getArtistsSearchResponseItem = zod.object({
-    musixmatchArtistId: zod.string(),
-    name: zod.string(),
-    imageUrl: zod.string().optional(),
-});
-export const getArtistsSearchResponse = zod.array(getArtistsSearchResponseItem);
-
-/**
  * Get the svg for a certain user icon. The selection of user icons is fixed.
  * @summary Get a user icon.
  */
@@ -180,12 +180,12 @@ export const getLeaderboardsQueryParams = zod.object({
 
 export const getLeaderboardsResponseLeaderboardItemUsernameMin = 3;
 
-export const getLeaderboardsResponseLeaderboardItemUsernameMax = 30;
+export const getLeaderboardsResponseLeaderboardItemUsernameMax = 20;
 
 export const getLeaderboardsResponseLeaderboardItemUsernameRegExp = new RegExp(
     "^[a-zA-Z0-9.-_]+$"
 );
-export const getLeaderboardsResponseLeaderboardItemNameMax = 40;
+export const getLeaderboardsResponseLeaderboardItemNameMax = 25;
 
 export const getLeaderboardsResponse = zod.object({
     leaderboard: zod.array(
@@ -222,10 +222,10 @@ export const getUsersUserIdParams = zod.object({
     userId: zod.number(),
 });
 
-export const getUsersUserIdResponseNameMax = 40;
+export const getUsersUserIdResponseNameMax = 25;
 export const getUsersUserIdResponseUsernameMin = 3;
 
-export const getUsersUserIdResponseUsernameMax = 30;
+export const getUsersUserIdResponseUsernameMax = 20;
 
 export const getUsersUserIdResponseUsernameRegExp = new RegExp(
     "^[a-zA-Z0-9.-_]+$"
@@ -257,12 +257,12 @@ export const getUsersSearchQueryParams = zod.object({
 
 export const getUsersSearchResponseUsernameMin = 3;
 
-export const getUsersSearchResponseUsernameMax = 30;
+export const getUsersSearchResponseUsernameMax = 20;
 
 export const getUsersSearchResponseUsernameRegExp = new RegExp(
     "^[a-zA-Z0-9.-_]+$"
 );
-export const getUsersSearchResponseNameMax = 40;
+export const getUsersSearchResponseNameMax = 25;
 
 export const getUsersSearchResponseItem = zod.object({
     username: zod
@@ -277,50 +277,6 @@ export const getUsersSearchResponseItem = zod.object({
 export const getUsersSearchResponse = zod
     .array(getUsersSearchResponseItem)
     .max(50);
-
-/**
- * Creates a new user with the given credentials if possible.
- * @summary Create a user.
- */
-export const postAuthRegisterBodyUsernameMin = 3;
-
-export const postAuthRegisterBodyUsernameMax = 30;
-
-export const postAuthRegisterBodyUsernameRegExp = new RegExp(
-    "^[a-zA-Z0-9.-_]+$"
-);
-export const postAuthRegisterBodyEmailMax = 254;
-
-export const postAuthRegisterBodyEmailRegExp = new RegExp(
-    "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$"
-);
-export const postAuthRegisterBodyPasswordMin = 3;
-
-export const postAuthRegisterBodyPasswordMax = 20;
-export const postAuthRegisterBodyNameMax = 40;
-
-export const postAuthRegisterBody = zod.object({
-    username: zod
-        .string()
-        .min(postAuthRegisterBodyUsernameMin)
-        .max(postAuthRegisterBodyUsernameMax)
-        .regex(postAuthRegisterBodyUsernameRegExp),
-    profilePictureId: zod.number(),
-    email: zod
-        .string()
-        .max(postAuthRegisterBodyEmailMax)
-        .regex(postAuthRegisterBodyEmailRegExp),
-    password: zod
-        .string()
-        .min(postAuthRegisterBodyPasswordMin)
-        .max(postAuthRegisterBodyPasswordMax),
-    name: zod.string().min(1).max(postAuthRegisterBodyNameMax),
-});
-
-export const postAuthRegisterResponse = zod.object({
-    jwtToken: zod.string(),
-    id: zod.number(),
-});
 
 /**
  * @summary Fetch a user's jwt token.
@@ -356,6 +312,97 @@ export const postAuthLoginResponse = zod
     );
 
 /**
+ * Creates a new user with the given credentials if possible.
+ * @summary Create a user.
+ */
+export const postAuthRegisterBodyUsernameMin = 3;
+
+export const postAuthRegisterBodyUsernameMax = 20;
+
+export const postAuthRegisterBodyUsernameRegExp = new RegExp(
+    "^[a-zA-Z0-9.-_]+$"
+);
+export const postAuthRegisterBodyEmailMax = 254;
+
+export const postAuthRegisterBodyEmailRegExp = new RegExp(
+    "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$"
+);
+export const postAuthRegisterBodyPasswordMin = 3;
+
+export const postAuthRegisterBodyPasswordMax = 20;
+export const postAuthRegisterBodyNameMax = 25;
+
+export const postAuthRegisterBody = zod.object({
+    username: zod
+        .string()
+        .min(postAuthRegisterBodyUsernameMin)
+        .max(postAuthRegisterBodyUsernameMax)
+        .regex(postAuthRegisterBodyUsernameRegExp),
+    profilePictureId: zod.number(),
+    email: zod
+        .string()
+        .max(postAuthRegisterBodyEmailMax)
+        .regex(postAuthRegisterBodyEmailRegExp),
+    password: zod
+        .string()
+        .min(postAuthRegisterBodyPasswordMin)
+        .max(postAuthRegisterBodyPasswordMax),
+    name: zod.string().min(1).max(postAuthRegisterBodyNameMax),
+});
+
+export const postAuthRegisterResponse = zod.object({
+    jwtToken: zod.string(),
+    id: zod.number(),
+});
+
+/**
+ * All fake users have Fake123! as their password.
+ * @summary Returns random, believable credentials for a user.
+ */
+export const getDebugFakeUserResponseNameMax = 25;
+export const getDebugFakeUserResponseEmailMax = 254;
+
+export const getDebugFakeUserResponseEmailRegExp = new RegExp(
+    "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$"
+);
+export const getDebugFakeUserResponseUsernameMin = 3;
+
+export const getDebugFakeUserResponseUsernameMax = 20;
+
+export const getDebugFakeUserResponseUsernameRegExp = new RegExp(
+    "^[a-zA-Z0-9.-_]+$"
+);
+export const getDebugFakeUserResponsePasswordMin = 3;
+
+export const getDebugFakeUserResponsePasswordMax = 20;
+
+export const getDebugFakeUserResponse = zod.object({
+    name: zod.string().min(1).max(getDebugFakeUserResponseNameMax),
+    email: zod
+        .string()
+        .max(getDebugFakeUserResponseEmailMax)
+        .regex(getDebugFakeUserResponseEmailRegExp),
+    username: zod
+        .string()
+        .min(getDebugFakeUserResponseUsernameMin)
+        .max(getDebugFakeUserResponseUsernameMax)
+        .regex(getDebugFakeUserResponseUsernameRegExp),
+    password: zod
+        .string()
+        .min(getDebugFakeUserResponsePasswordMin)
+        .max(getDebugFakeUserResponsePasswordMax),
+    profilePictureId: zod.number(),
+});
+
+/**
+ * We do not check if the user already exists, so this route may error. On error, we roll back any changes.
+ * @summary Create a certain number of fake users.
+ */
+export const postDebugFakeUsersBody = zod.object({
+    amount: zod.number(),
+});
+
+/**
  * @summary We will know what we need here when we get to down to implementation.
  */
 export const getAuthLoginSpotifyCallbackResponse = zod.object({
@@ -373,7 +420,7 @@ export const getUsersSelfSelfIdParams = zod.object({
 
 export const getUsersSelfSelfIdResponseUsernameMin = 3;
 
-export const getUsersSelfSelfIdResponseUsernameMax = 30;
+export const getUsersSelfSelfIdResponseUsernameMax = 20;
 
 export const getUsersSelfSelfIdResponseUsernameRegExp = new RegExp(
     "^[a-zA-Z0-9.-_]+$"
@@ -383,7 +430,7 @@ export const getUsersSelfSelfIdResponseEmailMax = 254;
 export const getUsersSelfSelfIdResponseEmailRegExp = new RegExp(
     "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$"
 );
-export const getUsersSelfSelfIdResponseNameMax = 40;
+export const getUsersSelfSelfIdResponseNameMax = 25;
 
 export const getUsersSelfSelfIdResponse = zod.object({
     username: zod
@@ -409,7 +456,7 @@ export const putUsersSelfSelfIdParams = zod.object({
 
 export const putUsersSelfSelfIdBodyUsernameMin = 3;
 
-export const putUsersSelfSelfIdBodyUsernameMax = 30;
+export const putUsersSelfSelfIdBodyUsernameMax = 20;
 
 export const putUsersSelfSelfIdBodyUsernameRegExp = new RegExp(
     "^[a-zA-Z0-9.-_]+$"
@@ -419,7 +466,7 @@ export const putUsersSelfSelfIdBodyEmailMax = 254;
 export const putUsersSelfSelfIdBodyEmailRegExp = new RegExp(
     "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$"
 );
-export const putUsersSelfSelfIdBodyNameMax = 40;
+export const putUsersSelfSelfIdBodyNameMax = 25;
 export const putUsersSelfSelfIdBodyPasswordMin = 3;
 
 export const putUsersSelfSelfIdBodyPasswordMax = 20;
@@ -444,7 +491,7 @@ export const putUsersSelfSelfIdBody = zod.object({
 
 export const putUsersSelfSelfIdResponseUsernameMin = 3;
 
-export const putUsersSelfSelfIdResponseUsernameMax = 30;
+export const putUsersSelfSelfIdResponseUsernameMax = 20;
 
 export const putUsersSelfSelfIdResponseUsernameRegExp = new RegExp(
     "^[a-zA-Z0-9.-_]+$"
@@ -454,7 +501,7 @@ export const putUsersSelfSelfIdResponseEmailMax = 254;
 export const putUsersSelfSelfIdResponseEmailRegExp = new RegExp(
     "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$"
 );
-export const putUsersSelfSelfIdResponseNameMax = 40;
+export const putUsersSelfSelfIdResponseNameMax = 25;
 export const putUsersSelfSelfIdResponsePasswordMin = 3;
 
 export const putUsersSelfSelfIdResponsePasswordMax = 20;
@@ -487,7 +534,7 @@ export const deleteUsersSelfSelfIdParams = zod.object({
 
 export const deleteUsersSelfSelfIdResponseUsernameMin = 3;
 
-export const deleteUsersSelfSelfIdResponseUsernameMax = 30;
+export const deleteUsersSelfSelfIdResponseUsernameMax = 20;
 
 export const deleteUsersSelfSelfIdResponseUsernameRegExp = new RegExp(
     "^[a-zA-Z0-9.-_]+$"
@@ -648,10 +695,10 @@ export const getUsersSelfSelfIdFriendsParams = zod.object({
     selfId: zod.number(),
 });
 
-export const getUsersSelfSelfIdFriendsResponseNameMax = 40;
+export const getUsersSelfSelfIdFriendsResponseNameMax = 25;
 export const getUsersSelfSelfIdFriendsResponseUsernameMin = 3;
 
-export const getUsersSelfSelfIdFriendsResponseUsernameMax = 30;
+export const getUsersSelfSelfIdFriendsResponseUsernameMax = 20;
 
 export const getUsersSelfSelfIdFriendsResponseUsernameRegExp = new RegExp(
     "^[a-zA-Z0-9.-_]+$"
@@ -800,7 +847,7 @@ export const deleteUsersSelfSelfIdFriendsFriendIdParams = zod.object({
 
 export const deleteUsersSelfSelfIdFriendsFriendIdResponseUsernameMin = 3;
 
-export const deleteUsersSelfSelfIdFriendsFriendIdResponseUsernameMax = 30;
+export const deleteUsersSelfSelfIdFriendsFriendIdResponseUsernameMax = 20;
 
 export const deleteUsersSelfSelfIdFriendsFriendIdResponseUsernameRegExp =
     new RegExp("^[a-zA-Z0-9.-_]+$");
@@ -823,7 +870,7 @@ export const postUsersSelfSelfIdFriendsFriendIdParams = zod.object({
 
 export const postUsersSelfSelfIdFriendsFriendIdResponseUsernameMin = 3;
 
-export const postUsersSelfSelfIdFriendsFriendIdResponseUsernameMax = 30;
+export const postUsersSelfSelfIdFriendsFriendIdResponseUsernameMax = 20;
 
 export const postUsersSelfSelfIdFriendsFriendIdResponseUsernameRegExp =
     new RegExp("^[a-zA-Z0-9.-_]+$");
@@ -895,11 +942,11 @@ export const getUsersSelfSelfIdFriendsLeaderboardsQueryParams = zod.object({
 
 export const getUsersSelfSelfIdFriendsLeaderboardsResponseLeaderboardItemUsernameMin = 3;
 
-export const getUsersSelfSelfIdFriendsLeaderboardsResponseLeaderboardItemUsernameMax = 30;
+export const getUsersSelfSelfIdFriendsLeaderboardsResponseLeaderboardItemUsernameMax = 20;
 
 export const getUsersSelfSelfIdFriendsLeaderboardsResponseLeaderboardItemUsernameRegExp =
     new RegExp("^[a-zA-Z0-9.-_]+$");
-export const getUsersSelfSelfIdFriendsLeaderboardsResponseLeaderboardItemNameMax = 40;
+export const getUsersSelfSelfIdFriendsLeaderboardsResponseLeaderboardItemNameMax = 25;
 
 export const getUsersSelfSelfIdFriendsLeaderboardsResponse = zod.object({
     leaderboard: zod.array(
@@ -993,6 +1040,29 @@ export const getUsersSelfSelfIdMelodleGameIdResponse = zod.object({
 /**
  * @summary Submit a guess for a melodle game.
  */
+export const postUsersSelfSelfIdMelodleGameIdGuessSongAttemptsParams =
+    zod.object({
+        selfId: zod.number(),
+        gameId: zod.number(),
+    });
+
+export const postUsersSelfSelfIdMelodleGameIdGuessSongAttemptsBody = zod.object(
+    {
+        guessedSongId: zod.string(),
+    }
+);
+
+export const postUsersSelfSelfIdMelodleGameIdGuessSongAttemptsResponse =
+    zod.object({
+        correctArtist: zod.boolean(),
+        correctBand: zod.boolean(),
+        correctAlbum: zod.boolean(),
+        won: zod.boolean(),
+    });
+
+/**
+ * @summary Submit a guess for a melodle game.
+ */
 export const postUsersSelfSelfIdMelodleGameIdGuessLineAttemptsParams =
     zod.object({
         selfId: zod.number(),
@@ -1024,28 +1094,5 @@ export const postUsersSelfSelfIdMelodleGameIdGuessLineAttemptsResponse =
                 )
         ),
         input: zod.string(),
-        won: zod.boolean(),
-    });
-
-/**
- * @summary Submit a guess for a melodle game.
- */
-export const postUsersSelfSelfIdMelodleGameIdGuessSongAttemptsParams =
-    zod.object({
-        selfId: zod.number(),
-        gameId: zod.number(),
-    });
-
-export const postUsersSelfSelfIdMelodleGameIdGuessSongAttemptsBody = zod.object(
-    {
-        guessedSongId: zod.string(),
-    }
-);
-
-export const postUsersSelfSelfIdMelodleGameIdGuessSongAttemptsResponse =
-    zod.object({
-        correctArtist: zod.boolean(),
-        correctBand: zod.boolean(),
-        correctAlbum: zod.boolean(),
         won: zod.boolean(),
     });
