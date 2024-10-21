@@ -14,7 +14,11 @@ import {
     userSchema,
 } from "../../../../types/user.js";
 import { sendOk } from "../../../../utils/reply.js";
-import { spotifyCallbackGuard, spotifyCallbackSchema } from "../../../../types/spotify.js";
+import {
+    spotifyCallback,
+    spotifyCallbackGuard,
+    spotifyCallbackSchema,
+} from "../../../../types/spotify.js";
 
 export default (async (fastify) => {
     fastify.get("/callback", {
@@ -30,9 +34,9 @@ export default (async (fastify) => {
             },
             summary: "Register a user through a spotify callback.",
             description:
-                "The actual url you should use is this one removing /callback\n"
-                + "> !) Eventually this schema will change.",
-            tags: ["TODO Schema"] satisfies MelodleTagName[],
+                "The actual url you should use is this one removing /callback\n" +
+                "> !) Eventually this schema will change.",
+            tags: ["TODO Schema", "Auth"] satisfies MelodleTagName[],
             security: [],
         },
         async handler(request, reply) {
@@ -51,7 +55,7 @@ export default (async (fastify) => {
                 email: userInfo.data.email,
                 username: userInfo.data.display_name,
                 spotifyId: userInfo.data.id,
-            } satisfies Partial<Static<typeof spotifyCallbackSchema>>);
+            } satisfies Partial<spotifyCallback>);
 
             // TODO: Auto-generate username so that it cannot collide.
             const result = await runPreparedQuery(insertUserSpotify, {

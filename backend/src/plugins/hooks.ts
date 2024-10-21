@@ -2,6 +2,10 @@ import fastifyPlugin from "fastify-plugin";
 import { decorators } from "../services/decorators.js";
 import { typedEnv } from "../types/env.js";
 import { MelodleTagName } from "./swagger.js";
+import { Value } from "@sinclair/typebox/value";
+import schemaReferences from "../types/schemaReferences.js";
+import { TSchema } from "@sinclair/typebox";
+import { SafeType } from "../utils/typebox.js";
 
 export default fastifyPlugin(async (fastify) => {
     // No debug in production check.
@@ -46,5 +50,23 @@ export default fastifyPlugin(async (fastify) => {
         );
 
         await fastify.close();
+    });
+
+    // Coerce params into their appropriate types.
+    fastify.addHook("onRequest", async (request, reply) => {
+        // We know that, in a fastify schema, any type is either undefined or a
+        // valid schema. So we cast it to that.
+        const paramsSchema = reply.routeOptions.schema?.params as
+            | TSchema
+            | undefined;
+
+        if (paramsSchema) {
+            const parsedParams = Value.Convert(
+                paramsSchema,
+                schemaReferences,
+                request.params
+            );
+            request.params = parsedParams;
+        }
     });
 });
