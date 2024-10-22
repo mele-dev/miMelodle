@@ -1,6 +1,5 @@
 import {
     FastifyPluginAsyncTypebox,
-    Static,
 } from "@fastify/type-provider-typebox";
 import { MelodleTagName } from "../../../../plugins/swagger.js";
 import { decorators } from "../../../../services/decorators.js";
@@ -8,28 +7,22 @@ import * as spotifyApi from "../../../../apiCodegen/spotify.js";
 import {
     spotifyCallback,
     spotifyCallbackGuard,
-    spotifyCallbackSchema,
 } from "../../../../types/spotify.js";
 import { runPreparedQuery } from "../../../../services/database.js";
 import { loginUserSpotify } from "../../../../queries/dml.queries.js";
 import {
     JwtTokenContent,
-    jwtTokenSchema,
-    userSchema,
 } from "../../../../types/user.js";
-import { sendOk } from "../../../../utils/reply.js";
 import { SafeType } from "../../../../utils/typebox.js";
+import { typedEnv } from "../../../../types/env.js";
 
 export default (async (fastify) => {
     fastify.get("/callback", {
         onRequest: [decorators.noSecurity],
         schema: {
             response: {
-                200: SafeType.Object({
-                    jwtToken: jwtTokenSchema.properties.jwtToken,
-                    id: userSchema.properties.id,
-                }),
-                // TODO: Implement correct error handling.
+                // TODO: Ask about redirect schema.
+                300: SafeType.Any(),
                 ...SafeType.CreateErrors([]),
             },
             security: [],
@@ -50,6 +43,8 @@ export default (async (fastify) => {
 
             const parsedUserInfo = spotifyCallbackGuard.Decode({
                 spotifyId: userInfo.data.id,
+                email: userInfo.data.email,
+                username: userInfo.data.display_name,
             } satisfies Partial<spotifyCallback>);
 
             const result = await runPreparedQuery(
@@ -61,10 +56,9 @@ export default (async (fastify) => {
                 id: result[0].id,
             } satisfies JwtTokenContent);
 
-            return sendOk(reply, 200, {
-                jwtToken: token,
-                id: result[0].id,
-            });
+            return reply.redirect(
+                `https://${typedEnv.FRONT_URL}/auth/callback?selfId=${result[0].id}&jwtToken=${token}`
+            );
         },
     });
 }) satisfies FastifyPluginAsyncTypebox;

@@ -6,6 +6,8 @@ import { RegisterPage } from "./auth/register-page/register.page";
 import { TODOComponent } from "./components/todo/todo.component";
 import { NotFoundPage } from "./not-found/not-found.page";
 import { mustHaveAuthGuard } from "./guards/must-have-auth.guard";
+import { authCallbackGuardGuard } from "./guards/auth-callback-guard.guard";
+import { errorGuard } from "./guards/error.guard";
 
 export const routes = [
     {
@@ -26,6 +28,11 @@ export const routes = [
                 path: "login",
                 component: LoginPage,
                 title: "Log in",
+            },
+            {
+                path: "callback",
+                canActivate: [authCallbackGuardGuard],
+                component: TODOComponent,
             },
         ],
     },
@@ -53,6 +60,15 @@ export const routes = [
         path: "",
         redirectTo: "app",
         pathMatch: "full",
+    },
+    {
+        path: "TODO",
+        component: TODOComponent,
+    },
+    {
+        path: "errors",
+        canActivate: [errorGuard],
+        component: TODOComponent,
     },
     // WARN: This route must always come last, otherwise following pages will be
     // ignored.
