@@ -6,7 +6,7 @@ import { RegisterPage } from "./auth/register-page/register.page";
 import { TODOComponent } from "./components/todo/todo.component";
 import { NotFoundPage } from "./not-found/not-found.page";
 import { mustHaveAuthGuard } from "./guards/must-have-auth.guard";
-import { authCallbackGuardGuard } from "./guards/auth-callback-guard.guard";
+import { authCallbackGuard } from "./guards/auth-callback.guard";
 import { errorGuard } from "./guards/error.guard";
 
 export const routes = [
@@ -31,7 +31,7 @@ export const routes = [
             },
             {
                 path: "callback",
-                canActivate: [authCallbackGuardGuard],
+                canActivate: [authCallbackGuard],
                 component: TODOComponent,
             },
         ],
