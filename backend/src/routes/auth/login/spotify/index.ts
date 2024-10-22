@@ -1,6 +1,4 @@
-import {
-    FastifyPluginAsyncTypebox,
-} from "@fastify/type-provider-typebox";
+import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { MelodleTagName } from "../../../../plugins/swagger.js";
 import { decorators } from "../../../../services/decorators.js";
 import * as spotifyApi from "../../../../apiCodegen/spotify.js";
@@ -10,11 +8,9 @@ import {
 } from "../../../../types/spotify.js";
 import { runPreparedQuery } from "../../../../services/database.js";
 import { loginUserSpotify } from "../../../../queries/dml.queries.js";
-import {
-    JwtTokenContent,
-} from "../../../../types/user.js";
+import { JwtTokenContent } from "../../../../types/user.js";
 import { SafeType } from "../../../../utils/typebox.js";
-import { typedEnv } from "../../../../types/env.js";
+import { frontendPaths } from "../../../../services/urls.js";
 
 export default (async (fastify) => {
     fastify.get("/callback", {
@@ -57,7 +53,10 @@ export default (async (fastify) => {
             } satisfies JwtTokenContent);
 
             return reply.redirect(
-                `https://${typedEnv.FRONT_URL}/auth/callback?selfId=${result[0].id}&jwtToken=${token}`
+                frontendPaths.authCallback({
+                    selfId: result[0].id,
+                    jwtToken: token,
+                })
             );
         },
     });
