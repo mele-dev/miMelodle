@@ -140,8 +140,6 @@ export class RegisterPage implements OnInit {
         );
     }
 
-    updateLanguage = this.translator.updateGlobalLanguage;
-
     ifFilled<T>(input: unknown, message: T) {
         return !input ? undefined : message;
     }
@@ -150,7 +148,7 @@ export class RegisterPage implements OnInit {
         try {
             const result = await postAuthRegister(this.person.getRawValue());
             this.localStorage.setItem("userInfo", result.data);
-            this.safeRouter.navigate(["/"]);
+            this.safeRouter.navigate(["/app"]);
         } catch (e) {
             if (e instanceof axios.AxiosError) {
             }

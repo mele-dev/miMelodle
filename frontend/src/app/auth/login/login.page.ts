@@ -46,7 +46,7 @@ export class LoginPage {
         try {
             const result = await postAuthLogin(this.person.getRawValue());
             this.localStorage.setItem("userInfo", result.data);
-            this.safeRouter.navigate(["/"]);
+            this.safeRouter.navigate(["/app"]);
         } catch (e) {
             alert("Error al iniciar sesión.");
         }

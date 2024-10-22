@@ -31,10 +31,10 @@ const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
             ),
             tags: ["Auth"] satisfies MelodleTagName[],
             response: {
-                200: SafeType.Intersect([
-                    jwtTokenSchema,
-                    SafeType.Pick(userSchema, ["id"]),
-                ]),
+                200: SafeType.Object({
+                    ...jwtTokenSchema.properties,
+                    ...SafeType.Pick(userSchema, ["id"]).properties,
+                }),
                 ...SafeType.CreateErrors(["notFound"]),
             },
             summary: "Fetch a user's jwt token.",

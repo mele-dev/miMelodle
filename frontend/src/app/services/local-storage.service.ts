@@ -2,7 +2,7 @@ import { AbstractStorageService, StorageMap } from "./abstract-storage.service";
 import { postAuthLoginResponse } from "../../apiCodegen/backend-zod";
 import { Injectable } from "@angular/core";
 import { z } from "zod";
-import { supportedLanguages } from "./language-manager.service";
+import { supportedLanguages } from "../globalConstants";
 
 const localStorageMap = {
     userInfo: postAuthLoginResponse,
@@ -16,5 +16,5 @@ export class LocalStorageService extends AbstractStorageService<
     typeof localStorageMap
 > {
     public override readonly storageMap = localStorageMap;
-    protected override storage: Storage = localStorage;
+    protected override storage = localStorage;
 }
