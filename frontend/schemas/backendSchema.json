@@ -479,112 +479,6 @@
                 }
             }
         },
-        "/public/icons/{filename}": {
-            "get": {
-                "summary": "Get a user icon.",
-                "tags": ["Static"],
-                "description": "Get the svg for a certain user icon. The selection of user icons is fixed.",
-                "parameters": [
-                    {
-                        "schema": {
-                            "type": "string",
-                            "pattern": "^(abstract-1\\.svg|abstract-10\\.svg|abstract-11\\.svg|abstract-2\\.svg|abstract-3\\.svg|abstract-4\\.svg|abstract-5\\.svg|abstract-6\\.svg|abstract-7\\.svg|abstract-8\\.svg|abstract-9\\.svg|default\\.svg)$"
-                        },
-                        "in": "path",
-                        "name": "filename",
-                        "required": true
-                    }
-                ],
-                "security": [],
-                "responses": {
-                    "200": {
-                        "description": "Default Response",
-                        "content": {
-                            "image/svg+xml": {
-                                "schema": {
-                                    "description": "An svg file.",
-                                    "type": "string",
-                                    "format": "binary"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "notFound",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "description": "notFound",
-                                    "additionalProperties": true,
-                                    "type": "object",
-                                    "properties": {
-                                        "statusCode": {
-                                            "type": "number",
-                                            "enum": [404]
-                                        },
-                                        "error": { "type": "string" },
-                                        "message": { "type": "string" }
-                                    },
-                                    "required": [
-                                        "statusCode",
-                                        "error",
-                                        "message"
-                                    ]
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/public/icons": {
-            "get": {
-                "summary": "Get information about all user icons.",
-                "tags": ["Static"],
-                "security": [],
-                "responses": {
-                    "200": {
-                        "description": "Default Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "description": "Information to identify and describe an icon.",
-                                        "type": "object",
-                                        "properties": {
-                                            "id": {
-                                                "description": "Identifier for the icon.",
-                                                "type": "integer"
-                                            },
-                                            "filename": {
-                                                "description": "File name required to fetch the image from the route to get specific user icons.",
-                                                "type": "string"
-                                            }
-                                        },
-                                        "required": ["id", "filename"]
-                                    }
-                                },
-                                "example": [
-                                    { "id": 1, "filename": "abstract-1.svg" },
-                                    { "id": 2, "filename": "abstract-10.svg" },
-                                    { "id": 3, "filename": "abstract-11.svg" },
-                                    { "id": 4, "filename": "abstract-2.svg" },
-                                    { "id": 5, "filename": "abstract-3.svg" },
-                                    { "id": 6, "filename": "abstract-4.svg" },
-                                    { "id": 7, "filename": "abstract-5.svg" },
-                                    { "id": 8, "filename": "abstract-6.svg" },
-                                    { "id": 9, "filename": "abstract-7.svg" },
-                                    { "id": 10, "filename": "abstract-8.svg" },
-                                    { "id": 11, "filename": "abstract-9.svg" },
-                                    { "id": 12, "filename": "default.svg" }
-                                ]
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/leaderboards/": {
             "get": {
                 "summary": "Fetches global leaderboard information.",
@@ -689,6 +583,112 @@
                                     },
                                     "required": ["leaderboard"]
                                 }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/public/icons/{filename}": {
+            "get": {
+                "summary": "Get a user icon.",
+                "tags": ["Static"],
+                "description": "Get the svg for a certain user icon. The selection of user icons is fixed.",
+                "parameters": [
+                    {
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^(abstract-1\\.svg|abstract-10\\.svg|abstract-11\\.svg|abstract-2\\.svg|abstract-3\\.svg|abstract-4\\.svg|abstract-5\\.svg|abstract-6\\.svg|abstract-7\\.svg|abstract-8\\.svg|abstract-9\\.svg|default\\.svg)$"
+                        },
+                        "in": "path",
+                        "name": "filename",
+                        "required": true
+                    }
+                ],
+                "security": [],
+                "responses": {
+                    "200": {
+                        "description": "Default Response",
+                        "content": {
+                            "image/svg+xml": {
+                                "schema": {
+                                    "description": "An svg file.",
+                                    "type": "string",
+                                    "format": "binary"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "notFound",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "notFound",
+                                    "additionalProperties": true,
+                                    "type": "object",
+                                    "properties": {
+                                        "statusCode": {
+                                            "type": "number",
+                                            "enum": [404]
+                                        },
+                                        "error": { "type": "string" },
+                                        "message": { "type": "string" }
+                                    },
+                                    "required": [
+                                        "statusCode",
+                                        "error",
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/public/icons": {
+            "get": {
+                "summary": "Get information about all user icons.",
+                "tags": ["Static"],
+                "security": [],
+                "responses": {
+                    "200": {
+                        "description": "Default Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "description": "Information to identify and describe an icon.",
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "description": "Identifier for the icon.",
+                                                "type": "integer"
+                                            },
+                                            "filename": {
+                                                "description": "File name required to fetch the image from the route to get specific user icons.",
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": ["id", "filename"]
+                                    }
+                                },
+                                "example": [
+                                    { "id": 1, "filename": "abstract-1.svg" },
+                                    { "id": 2, "filename": "abstract-10.svg" },
+                                    { "id": 3, "filename": "abstract-11.svg" },
+                                    { "id": 4, "filename": "abstract-2.svg" },
+                                    { "id": 5, "filename": "abstract-3.svg" },
+                                    { "id": 6, "filename": "abstract-4.svg" },
+                                    { "id": 7, "filename": "abstract-5.svg" },
+                                    { "id": 8, "filename": "abstract-6.svg" },
+                                    { "id": 9, "filename": "abstract-7.svg" },
+                                    { "id": 10, "filename": "abstract-8.svg" },
+                                    { "id": 11, "filename": "abstract-9.svg" },
+                                    { "id": 12, "filename": "default.svg" }
+                                ]
                             }
                         }
                     }
@@ -816,6 +816,167 @@
                 }
             }
         },
+        "/debug/fake/user": {
+            "get": {
+                "summary": "Returns random, believable credentials for a user.",
+                "tags": ["Debug", "User"],
+                "description": "All fake users have Fake123! as their password.",
+                "security": [],
+                "responses": {
+                    "200": {
+                        "description": "Default Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "title": "userSchema",
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {
+                                            "minLength": 1,
+                                            "maxLength": 25,
+                                            "description": "The user's display name. It does not need to be unique.",
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "pattern": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$",
+                                            "maxLength": 254,
+                                            "description": "The user's email.",
+                                            "type": "string"
+                                        },
+                                        "username": {
+                                            "pattern": "^[a-zA-Z0-9.-_]+$",
+                                            "minLength": 3,
+                                            "maxLength": 20,
+                                            "description": "The id to display to users. They must be unique, but the users can choose and change them.\n### Rules\n- Only accepts letters, digits and '.', '-', '_'.",
+                                            "type": "string"
+                                        },
+                                        "password": {
+                                            "minLength": 3,
+                                            "maxLength": 20,
+                                            "description": "A password.",
+                                            "type": "string"
+                                        },
+                                        "profilePictureId": {
+                                            "description": "The id to the profile picture of the user. These pictures cannot be uploaded, we store the options manually.",
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "required": [
+                                        "name",
+                                        "email",
+                                        "username",
+                                        "password",
+                                        "profilePictureId"
+                                    ]
+                                },
+                                "example": {
+                                    "name": "Ms. Sharon Greenholt II",
+                                    "username": "Sharon_Greenholt67",
+                                    "password": "Fake123!",
+                                    "email": "Sharon.Greenholt@yahoo.com",
+                                    "profilePictureId": 11
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/debug/fake/users": {
+            "post": {
+                "summary": "Create a certain number of fake users.",
+                "tags": ["Debug", "User"],
+                "description": "We do not check if the user already exists, so this route may error. On error, we roll back any changes.",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "amount": {
+                                        "description": "The amount of users to generate.",
+                                        "type": "integer"
+                                    }
+                                },
+                                "required": ["amount"]
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [],
+                "responses": {
+                    "201": {
+                        "description": "Default Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "title": "userSchema",
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "minLength": 1,
+                                                "maxLength": 25,
+                                                "description": "The user's display name. It does not need to be unique.",
+                                                "type": "string"
+                                            },
+                                            "email": {
+                                                "pattern": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$",
+                                                "maxLength": 254,
+                                                "description": "The user's email.",
+                                                "type": "string"
+                                            },
+                                            "username": {
+                                                "pattern": "^[a-zA-Z0-9.-_]+$",
+                                                "minLength": 3,
+                                                "maxLength": 20,
+                                                "description": "The id to display to users. They must be unique, but the users can choose and change them.\n### Rules\n- Only accepts letters, digits and '.', '-', '_'.",
+                                                "type": "string"
+                                            },
+                                            "password": {
+                                                "minLength": 3,
+                                                "maxLength": 20,
+                                                "description": "A password.",
+                                                "type": "string"
+                                            },
+                                            "profilePictureId": {
+                                                "description": "The id to the profile picture of the user. These pictures cannot be uploaded, we store the options manually.",
+                                                "type": "integer"
+                                            }
+                                        },
+                                        "required": [
+                                            "name",
+                                            "email",
+                                            "username",
+                                            "password",
+                                            "profilePictureId"
+                                        ]
+                                    }
+                                },
+                                "example": [
+                                    {
+                                        "name": "Ms. Celia Hettinger PhD",
+                                        "username": "Celia_Hettinger94",
+                                        "password": "Fake123!",
+                                        "email": "Celia.Hettinger@hotmail.com",
+                                        "profilePictureId": 10
+                                    },
+                                    {
+                                        "name": "Miss Lorraine Pacocha DDS",
+                                        "username": "Lorraine.Pacocha",
+                                        "password": "Fake123!",
+                                        "email": "Lorraine_Pacocha@yahoo.com",
+                                        "profilePictureId": 4
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/auth/login": {
             "post": {
                 "summary": "Fetch a user's jwt token.",
@@ -858,35 +1019,17 @@
                             "application/json": {
                                 "schema": {
                                     "type": "object",
-                                    "allOf": [
-                                        {
-                                            "description": "A token which will serve to authenticate a user.",
-                                            "examples": [
-                                                {
-                                                    "jwtToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNzI3NDExODc4fQ.lCYmZF_REl8rYYj1UjJzacXrPCTyjVdA-KsR71xHwQw"
-                                                }
-                                            ],
-                                            "type": "object",
-                                            "properties": {
-                                                "jwtToken": {
-                                                    "description": "The 'encrypted' jwt token. It is easily decryptable, so no sensitive information is stored there.",
-                                                    "type": "string"
-                                                }
-                                            },
-                                            "required": ["jwtToken"]
+                                    "properties": {
+                                        "jwtToken": {
+                                            "description": "The 'encrypted' jwt token. It is easily decryptable, so no sensitive information is stored there.",
+                                            "type": "string"
                                         },
-                                        {
-                                            "title": "userSchema",
-                                            "type": "object",
-                                            "properties": {
-                                                "id": {
-                                                    "description": "A numeric identifier for a user. Generated by the backend, unique and unchangeable.",
-                                                    "type": "integer"
-                                                }
-                                            },
-                                            "required": ["id"]
+                                        "id": {
+                                            "description": "A numeric identifier for a user. Generated by the backend, unique and unchangeable.",
+                                            "type": "integer"
                                         }
-                                    ]
+                                    },
+                                    "required": ["jwtToken", "id"]
                                 }
                             }
                         }
@@ -1035,170 +1178,9 @@
                 }
             }
         },
-        "/debug/fake/user": {
-            "get": {
-                "summary": "Returns random, believable credentials for a user.",
-                "tags": ["Debug", "User"],
-                "description": "All fake users have Fake123! as their password.",
-                "security": [],
-                "responses": {
-                    "200": {
-                        "description": "Default Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "title": "userSchema",
-                                    "type": "object",
-                                    "properties": {
-                                        "name": {
-                                            "minLength": 1,
-                                            "maxLength": 25,
-                                            "description": "The user's display name. It does not need to be unique.",
-                                            "type": "string"
-                                        },
-                                        "email": {
-                                            "pattern": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$",
-                                            "maxLength": 254,
-                                            "description": "The user's email.",
-                                            "type": "string"
-                                        },
-                                        "username": {
-                                            "pattern": "^[a-zA-Z0-9.-_]+$",
-                                            "minLength": 3,
-                                            "maxLength": 20,
-                                            "description": "The id to display to users. They must be unique, but the users can choose and change them.\n### Rules\n- Only accepts letters, digits and '.', '-', '_'.",
-                                            "type": "string"
-                                        },
-                                        "password": {
-                                            "minLength": 3,
-                                            "maxLength": 20,
-                                            "description": "A password.",
-                                            "type": "string"
-                                        },
-                                        "profilePictureId": {
-                                            "description": "The id to the profile picture of the user. These pictures cannot be uploaded, we store the options manually.",
-                                            "type": "integer"
-                                        }
-                                    },
-                                    "required": [
-                                        "name",
-                                        "email",
-                                        "username",
-                                        "password",
-                                        "profilePictureId"
-                                    ]
-                                },
-                                "example": {
-                                    "name": "Mr. Austin Kling I",
-                                    "username": "Austin.Kling82",
-                                    "password": "Fake123!",
-                                    "email": "Austin.Kling98@yahoo.com",
-                                    "profilePictureId": 5
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/debug/fake/users": {
-            "post": {
-                "summary": "Create a certain number of fake users.",
-                "tags": ["Debug", "User"],
-                "description": "We do not check if the user already exists, so this route may error. On error, we roll back any changes.",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "amount": {
-                                        "description": "The amount of users to generate.",
-                                        "type": "integer"
-                                    }
-                                },
-                                "required": ["amount"]
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "security": [],
-                "responses": {
-                    "201": {
-                        "description": "Default Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "title": "userSchema",
-                                        "type": "object",
-                                        "properties": {
-                                            "name": {
-                                                "minLength": 1,
-                                                "maxLength": 25,
-                                                "description": "The user's display name. It does not need to be unique.",
-                                                "type": "string"
-                                            },
-                                            "email": {
-                                                "pattern": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$",
-                                                "maxLength": 254,
-                                                "description": "The user's email.",
-                                                "type": "string"
-                                            },
-                                            "username": {
-                                                "pattern": "^[a-zA-Z0-9.-_]+$",
-                                                "minLength": 3,
-                                                "maxLength": 20,
-                                                "description": "The id to display to users. They must be unique, but the users can choose and change them.\n### Rules\n- Only accepts letters, digits and '.', '-', '_'.",
-                                                "type": "string"
-                                            },
-                                            "password": {
-                                                "minLength": 3,
-                                                "maxLength": 20,
-                                                "description": "A password.",
-                                                "type": "string"
-                                            },
-                                            "profilePictureId": {
-                                                "description": "The id to the profile picture of the user. These pictures cannot be uploaded, we store the options manually.",
-                                                "type": "integer"
-                                            }
-                                        },
-                                        "required": [
-                                            "name",
-                                            "email",
-                                            "username",
-                                            "password",
-                                            "profilePictureId"
-                                        ]
-                                    }
-                                },
-                                "example": [
-                                    {
-                                        "name": "Mrs. Jeanette Bauch IV",
-                                        "username": "Jeanette_Bauch",
-                                        "password": "Fake123!",
-                                        "email": "Jeanette_Bauch@hotmail.com",
-                                        "profilePictureId": 5
-                                    },
-                                    {
-                                        "name": "Dr. Nathan Lemke Jr.",
-                                        "username": "Nathan.Lemke38",
-                                        "password": "Fake123!",
-                                        "email": "Nathan_Lemke@yahoo.com",
-                                        "profilePictureId": 8
-                                    }
-                                ]
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/auth/login/spotify/callback": {
             "get": {
-                "summary": "We will know what we need here when we get to down to implementation.",
+                "summary": "Login through spotify.",
                 "tags": ["Auth", "TODO Schema"],
                 "security": [],
                 "responses": {
@@ -1229,7 +1211,7 @@
         "/auth/register/spotify/callback": {
             "get": {
                 "summary": "Register a user through a spotify callback.",
-                "tags": ["TODO Schema"],
+                "tags": ["TODO Schema", "Auth"],
                 "description": "The actual url you should use is this one removing /callback\n> !) Eventually this schema will change.",
                 "security": [],
                 "responses": {
@@ -3387,119 +3369,6 @@
                 }
             }
         },
-        "/users/self/{selfId}/melodle/{gameId}/guessSong/attempts": {
-            "post": {
-                "summary": "Submit a guess for a melodle game.",
-                "tags": ["Melodle"],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "guessedSongId": {
-                                        "description": "Identifier which can be used to fetch artist data from MusixMatch.",
-                                        "type": "string"
-                                    }
-                                },
-                                "required": ["guessedSongId"]
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "parameters": [
-                    {
-                        "schema": { "type": "integer" },
-                        "in": "path",
-                        "name": "selfId",
-                        "required": true,
-                        "description": "A numeric identifier for a user. Generated by the backend, unique and unchangeable."
-                    },
-                    {
-                        "schema": { "type": "integer" },
-                        "in": "path",
-                        "name": "gameId",
-                        "required": true,
-                        "description": "A unique identifier for a melodle game."
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Default Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "correctArtist": { "type": "boolean" },
-                                        "correctBand": { "type": "boolean" },
-                                        "correctAlbum": { "type": "boolean" },
-                                        "won": { "type": "boolean" }
-                                    },
-                                    "required": [
-                                        "correctArtist",
-                                        "correctBand",
-                                        "correctAlbum",
-                                        "won"
-                                    ]
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "unauthorized",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "description": "unauthorized",
-                                    "additionalProperties": true,
-                                    "type": "object",
-                                    "properties": {
-                                        "statusCode": {
-                                            "type": "number",
-                                            "enum": [401]
-                                        },
-                                        "error": { "type": "string" },
-                                        "message": { "type": "string" }
-                                    },
-                                    "required": [
-                                        "statusCode",
-                                        "error",
-                                        "message"
-                                    ]
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "notFound",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "description": "notFound",
-                                    "additionalProperties": true,
-                                    "type": "object",
-                                    "properties": {
-                                        "statusCode": {
-                                            "type": "number",
-                                            "enum": [404]
-                                        },
-                                        "error": { "type": "string" },
-                                        "message": { "type": "string" }
-                                    },
-                                    "required": [
-                                        "statusCode",
-                                        "error",
-                                        "message"
-                                    ]
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/users/self/{selfId}/melodle/{gameId}/guessLine/attempts": {
             "post": {
                 "summary": "Submit a guess for a melodle game.",
@@ -3560,6 +3429,119 @@
                                     "required": [
                                         "guessLineHints",
                                         "input",
+                                        "won"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "unauthorized",
+                                    "additionalProperties": true,
+                                    "type": "object",
+                                    "properties": {
+                                        "statusCode": {
+                                            "type": "number",
+                                            "enum": [401]
+                                        },
+                                        "error": { "type": "string" },
+                                        "message": { "type": "string" }
+                                    },
+                                    "required": [
+                                        "statusCode",
+                                        "error",
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "notFound",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "notFound",
+                                    "additionalProperties": true,
+                                    "type": "object",
+                                    "properties": {
+                                        "statusCode": {
+                                            "type": "number",
+                                            "enum": [404]
+                                        },
+                                        "error": { "type": "string" },
+                                        "message": { "type": "string" }
+                                    },
+                                    "required": [
+                                        "statusCode",
+                                        "error",
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/self/{selfId}/melodle/{gameId}/guessSong/attempts": {
+            "post": {
+                "summary": "Submit a guess for a melodle game.",
+                "tags": ["Melodle"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "guessedSongId": {
+                                        "description": "Identifier which can be used to fetch artist data from MusixMatch.",
+                                        "type": "string"
+                                    }
+                                },
+                                "required": ["guessedSongId"]
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "parameters": [
+                    {
+                        "schema": { "type": "integer" },
+                        "in": "path",
+                        "name": "selfId",
+                        "required": true,
+                        "description": "A numeric identifier for a user. Generated by the backend, unique and unchangeable."
+                    },
+                    {
+                        "schema": { "type": "integer" },
+                        "in": "path",
+                        "name": "gameId",
+                        "required": true,
+                        "description": "A unique identifier for a melodle game."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Default Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "correctArtist": { "type": "boolean" },
+                                        "correctBand": { "type": "boolean" },
+                                        "correctAlbum": { "type": "boolean" },
+                                        "won": { "type": "boolean" }
+                                    },
+                                    "required": [
+                                        "correctArtist",
+                                        "correctBand",
+                                        "correctAlbum",
                                         "won"
                                     ]
                                 }

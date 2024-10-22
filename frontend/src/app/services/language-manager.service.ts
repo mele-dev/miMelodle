@@ -1,11 +1,11 @@
 import { effect, inject, Injectable, signal } from "@angular/core";
 import { z } from "zod";
-import { LocalStorageService } from "./local-storage.service";
+import {
+    LocalStorageService,
+} from "./local-storage.service";
+import { supportedLanguages } from "../globalConstants";
 
-export type Language =
-    (typeof LanguageManagerService.prototype.supportedLanguages)[number];
-
-export const supportedLanguages = ["en", "es"] as const;
+export type Language = (typeof supportedLanguages)[number];
 
 @Injectable({
     providedIn: "root",
@@ -22,12 +22,12 @@ export class LanguageManagerService {
             return local;
         }
 
-        const browserDefault = languageSchema.safeParse(
+        const generalBrowserLanguage = languageSchema.safeParse(
             navigator.language.split("-")[0]
         );
 
-        if (browserDefault.success) {
-            return browserDefault.data;
+        if (generalBrowserLanguage.success) {
+            return generalBrowserLanguage.data;
         }
 
         return "en";
@@ -38,8 +38,6 @@ export class LanguageManagerService {
     );
 
     constructor() {
-        this.currentLanguage.set(this.initializeLanguage());
-
         effect(() => {
             const lang = this.currentLanguage();
             document.documentElement.lang = lang;

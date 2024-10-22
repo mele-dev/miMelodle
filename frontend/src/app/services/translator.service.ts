@@ -20,9 +20,4 @@ export abstract class TranslatorService<
             [K in keyof TTranslations]: TTranslations[K][Language];
         };
     });
-
-    public updateGlobalLanguage(language: Language) {
-        this.languageService.currentLanguage.set(language);
-        localStorage.setItem("Language", language);
-    }
 }
