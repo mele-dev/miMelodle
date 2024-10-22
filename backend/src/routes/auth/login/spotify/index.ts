@@ -6,6 +6,7 @@ import { MelodleTagName } from "../../../../plugins/swagger.js";
 import { decorators } from "../../../../services/decorators.js";
 import * as spotifyApi from "../../../../apiCodegen/spotify.js";
 import {
+    spotifyCallback,
     spotifyCallbackGuard,
     spotifyCallbackSchema,
 } from "../../../../types/spotify.js";
@@ -32,8 +33,7 @@ export default (async (fastify) => {
                 ...SafeType.CreateErrors([]),
             },
             security: [],
-            summary:
-                "We will know what we need here when we get to down to implementation.",
+            summary: "Login through spotify.",
             tags: ["Auth", "TODO Schema"] satisfies MelodleTagName[],
         },
         async handler(request, reply) {
@@ -49,16 +49,13 @@ export default (async (fastify) => {
             });
 
             const parsedUserInfo = spotifyCallbackGuard.Decode({
-                email: userInfo.data.email,
-                username: userInfo.data.display_name,
                 spotifyId: userInfo.data.id,
-            } satisfies Partial<Static<typeof spotifyCallbackSchema>>);
+            } satisfies Partial<spotifyCallback>);
 
-            // TODO: Auto-generate username so that it cannot collide.
-            const result = await runPreparedQuery(loginUserSpotify, {
-                ...parsedUserInfo,
-                name: parsedUserInfo.username,
-            });
+            const result = await runPreparedQuery(
+                loginUserSpotify,
+                parsedUserInfo
+            );
 
             const token = fastify.jwt.sign({
                 id: result[0].id,
