@@ -5,6 +5,7 @@ import { LoginPage } from "./auth/login/login.page";
 import { RegisterPage } from "./auth/register-page/register.page";
 import { TODOComponent } from "./components/todo/todo.component";
 import { NotFoundPage } from "./not-found/not-found.page";
+import { mustHaveAuthGuard } from "./guards/must-have-auth.guard";
 
 export const routes = [
     {
@@ -30,7 +31,7 @@ export const routes = [
     },
     {
         path: "app",
-        // Component for layout (navbar)
+        canActivate: [mustHaveAuthGuard],
         component: TODOComponent,
         children: [
             {
@@ -50,7 +51,8 @@ export const routes = [
     },
     {
         path: "",
-        component: TODOComponent,
+        redirectTo: "app",
+        pathMatch: "full",
     },
     // WARN: This route must always come last, otherwise following pages will be
     // ignored.
