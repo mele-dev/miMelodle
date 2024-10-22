@@ -140,8 +140,6 @@ export class RegisterPage implements OnInit {
         );
     }
 
-    updateLanguage = this.translator.updateGlobalLanguage;
-
     ifFilled<T>(input: unknown, message: T) {
         return !input ? undefined : message;
     }

@@ -28,7 +28,7 @@ export abstract class AbstractStorageService<TMap extends StorageMap> {
 
             return parsedZod.data;
         } catch (error) {
-            console.warn(`Failed to parse JSON for key ${key}:`, error);
+            console.info(`Failed to parse JSON for key ${key}:`, error);
             return null;
         }
     }
