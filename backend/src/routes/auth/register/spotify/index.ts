@@ -1,7 +1,4 @@
-import {
-    FastifyPluginAsyncTypebox,
-    Static,
-} from "@fastify/type-provider-typebox";
+import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { SafeType } from "../../../../utils/typebox.js";
 import { MelodleTagName } from "../../../../plugins/swagger.js";
 import { decorators } from "../../../../services/decorators.js";
@@ -14,25 +11,27 @@ import {
     userSchema,
 } from "../../../../types/user.js";
 import { sendOk } from "../../../../utils/reply.js";
-import { spotifyCallbackGuard, spotifyCallbackSchema } from "../../../../types/spotify.js";
+import {
+    spotifyCallback,
+    spotifyCallbackGuard,
+} from "../../../../types/spotify.js";
+import { typedEnv } from "../../../../types/env.js";
+import { frontendPaths } from "../../../../services/urls.js";
 
 export default (async (fastify) => {
     fastify.get("/callback", {
         onRequest: [decorators.noSecurity],
         schema: {
             response: {
-                201: SafeType.Object({
-                    jwtToken: jwtTokenSchema.properties.jwtToken,
-                    id: userSchema.properties.id,
-                }),
+                300: SafeType.Any(),
                 // TODO: Implement correct error handling.
                 ...SafeType.CreateErrors([]),
             },
             summary: "Register a user through a spotify callback.",
             description:
-                "The actual url you should use is this one removing /callback\n"
-                + "> !) Eventually this schema will change.",
-            tags: ["TODO Schema"] satisfies MelodleTagName[],
+                "The actual url you should use is this one removing /callback\n" +
+                "> !) Eventually this schema will change.",
+            tags: ["TODO Schema", "Auth"] satisfies MelodleTagName[],
             security: [],
         },
         async handler(request, reply) {
@@ -51,7 +50,7 @@ export default (async (fastify) => {
                 email: userInfo.data.email,
                 username: userInfo.data.display_name,
                 spotifyId: userInfo.data.id,
-            } satisfies Partial<Static<typeof spotifyCallbackSchema>>);
+            } satisfies Partial<spotifyCallback>);
 
             // TODO: Auto-generate username so that it cannot collide.
             const result = await runPreparedQuery(insertUserSpotify, {
@@ -63,10 +62,18 @@ export default (async (fastify) => {
                 id: result[0].id,
             } satisfies JwtTokenContent);
 
-            return sendOk(reply, 201, {
-                jwtToken: token,
-                id: result[0].id,
-            });
+            return reply.redirect(
+                frontendPaths.authCallback({
+                    jwtToken: token,
+                    selfId: result[0].id,
+                })
+            );
+        },
+        async errorHandler(error, _request, reply) {
+            return reply.redirect(frontendPaths.errorCallback({
+                code: error.statusCode ?? 400,
+                "targetUrl": frontendPaths.register,
+            }))
         },
     });
 }) satisfies FastifyPluginAsyncTypebox;

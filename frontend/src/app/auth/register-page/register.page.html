@@ -1,0 +1,202 @@
+<form
+    [formGroup]="this.person"
+    class="flex flex-col justify-center"
+    (ngSubmit)="this.onSubmit()"
+>
+    <h1 class="font-sans text-6xl">{{ dict().title }}</h1>
+    <div class="flex items-baseline justify-between">
+        <a
+            class="mb-8 w-fit cursor-pointer hover:underline"
+            [routerLink]="this.safeRouter.createLink('/auth/login')"
+            >{{ dict().existingAccount }}</a
+        >
+        <app-language-picker></app-language-picker>
+    </div>
+    <div class="flex justify-center">
+        <h2 class="text-xl font-bold">
+            {{ dict().howDoYouWantOthersToSeeYou }}
+        </h2>
+    </div>
+    <!-- Profile data -->
+    <div
+        tabindex="0"
+        class="group relative z-10 mx-auto my-5 cursor-pointer rounded-full"
+    >
+        <section
+            class="flex w-96 gap-2 rounded-full border bg-neutral-950 p-3 pe-10"
+        >
+            <div
+                [innerHTML]="
+                        sanitizer.bypassSecurityTrustHtml(
+                            chosenIcon()?.svg ?? ''
+                        )
+                    "
+                class="row-span-4 aspect-square h-16 w-auto rounded-full border-none bg-white p-1 text-white shadow-inner"
+            ></div>
+            <div class="flex grow flex-col">
+                <input
+                    class="text-bold rounded border-none bg-transparent px-0 py-1 text-xl text-white"
+                    type="text"
+                    [formControl]="person.controls.name"
+                    name="name"
+                    [placeholder]="dict().namePlaceholder"
+                />
+                <div class="flex w-full">
+                    <span>&#64;</span
+                    ><input
+                        type="text"
+                        name="username"
+                        [formControl]="person.controls.username"
+                        class="grow rounded border-none bg-transparent py-0 ps-0 text-inherit"
+                        [placeholder]="dict().usernamePlaceholder"
+                    />
+                </div>
+            </div>
+        </section>
+        @if (this.allIcons) {
+        <div
+            class="invisible absolute -z-10 -mt-12 w-full max-w-96 -translate-y-3 rounded-b-lg border border-t-0 bg-neutral-950 p-4 pt-14 opacity-0 transition-all group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100"
+        >
+            <details class="group/details relative mb-2 w-full">
+                <summary
+                    class="flex cursor-pointer gap-1 rounded-full p-1 transition-colors hover:bg-neutral-800"
+                >
+                    @let correctName = person.controls.name.valid;
+                    <p
+                        [ngClass]="{
+                                'flex gap-1 rounded-full px-2 font-bold transition-colors w-fit': true,
+                                'bg-red-500': !correctName,
+                                'bg-fuchsia-500': correctName,
+                            }"
+                    >
+                        <span> {{ dict().name }} </span>
+                        @if (correctName) {
+                        <app-tick-circle-icon></app-tick-circle-icon>
+                        } @else {
+                        <app-info-circle></app-info-circle>
+                        }
+                    </p>
+                    @let correctUsername = this.person.controls.username.valid;
+                    <p
+                        [ngClass]="{
+                                'flex gap-1 rounded-full px-2 font-bold transition-colors w-fit': true,
+                                'bg-red-500': !correctUsername,
+                                'bg-fuchsia-500': correctUsername,
+                            }"
+                    >
+                        <span> {{ this.dict().username }} </span>
+                        @if (correctUsername) {
+                        <app-tick-circle-icon></app-tick-circle-icon>
+                        } @else {
+                        <app-info-circle></app-info-circle>
+                        }
+                    </p>
+                </summary>
+                <div
+                    class="absolute z-10 mt-2 w-full -translate-y-3 rounded-lg border bg-neutral-950 p-2 opacity-0 transition-all group-open/details:translate-y-0 group-open/details:opacity-100"
+                >
+                    <p class="text-pretty">{{ this.dict().invalidName }}</p>
+                    <div>
+                        <h4>{{ dict().invalidUsername.title }}</h4>
+                        <ul>
+                            @for (rule of dict().invalidUsername.rules; track
+                            rule) {
+                            <li class="ml-4">{{ rule }}</li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </details>
+            <section>
+                <label class="sr-only">
+                    {{ this.dict().iconDescription }}
+                </label>
+                <app-icon-picker
+                    [icons]="this.allIcons"
+                    [columns]="4"
+                    (OnIconChange)="this.chosenIcon.set($event)"
+                ></app-icon-picker>
+            </section>
+        </div>
+        }
+    </div>
+    <!-- Login data -->
+    <section class="mt-5">
+        <div class="flex justify-center">
+            <h2 class="mb-2 text-xl font-bold">
+                {{ dict().weNeedSomeDataToIdentifyYou }}
+            </h2>
+        </div>
+        @let emailControl = this.person.controls.email;
+        <label>{{ dict().email }}</label>
+        <input
+            type="text"
+            [formControl]="emailControl"
+            name="email"
+            class="w-full rounded bg-inherit text-inherit"
+        />
+        <p
+            class="min-h-4 text-xs text-red-500"
+            [class.invisible]="!emailControl.touched || emailControl.valid"
+        >
+            {{ dict().invalidEmail }}
+        </p>
+        <label>{{ dict().password }}</label>
+        @let passwordControl = person.controls.password ;
+        <input
+            type="password"
+            [formControl]="passwordControl"
+            name="password"
+            class="w-full rounded bg-inherit text-inherit"
+        />
+        <p
+            class="min-h-4 text-xs text-red-500"
+            [class.invisible]="!passwordControl.touched || passwordControl.valid"
+        >
+            {{ dict().invalidPassword }}
+        </p>
+        <label>{{ dict().confirmPassword }}</label>
+        <input
+            type="password"
+            name="repeatPassword"
+            [formControl]="person.controls.repeatPassword"
+            class="w-full rounded bg-inherit text-inherit"
+        />
+        <p
+            class="min-h-4 text-xs text-red-500"
+            [class.invisible]="this.person.controls.repeatPassword.valid"
+        >
+            {{ dict().invalidRepeatPassword }}
+        </p>
+    </section>
+    <!-- Submit -->
+    <section class="mt-2 flex flex-col items-center">
+        <button
+            type="submit"
+            [disabled]="!this.person.valid"
+            class="w-full scale-105 rounded-lg bg-fuchsia-500 p-2 px-4 text-lg font-extrabold text-neutral-800 shadow-xl shadow-fuchsia-500/50 transition-all disabled:scale-100 disabled:cursor-not-allowed disabled:shadow-none disabled:hover:bg-neutral-800 disabled:hover:text-neutral-200"
+        >
+            {{ dict().createAccountButton }}
+        </button>
+        <div class="flex w-full items-center py-2 text-xs text-neutral-400">
+            <div class="grow border-b border-neutral-600"></div>
+            <span class="mx-4">{{ dict().orRegister }}</span>
+            <div class="grow border-b border-neutral-600"></div>
+        </div>
+        <div class="flex w-full gap-2">
+            <a
+                type="button"
+                href="https://localhost/backend/auth/register/spotify"
+                class="flex w-full justify-center rounded-lg border border-neutral-800"
+            >
+                <app-spotify-rectangle></app-spotify-rectangle>
+            </a>
+            <a
+                class="flex w-full justify-center rounded-lg border border-neutral-800"
+                [routerLink]="this.safeRouter.createLink('/TODO')"
+            >
+                <app-google-rectangle></app-google-rectangle>
+            </a>
+        </div>
+    </section>
+</form>

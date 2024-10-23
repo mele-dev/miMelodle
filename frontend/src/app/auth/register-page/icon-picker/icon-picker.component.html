@@ -1,0 +1,11 @@
+<div class="grid grid-cols-4 gap-2">
+    @for (icon of icons(); track icon.id) {
+        <button
+            type="button"
+            [innerHTML]="this.sanitizer.bypassSecurityTrustHtml(icon.svg)"
+            class="box-border aspect-square w-full rounded-lg border-4 border-white bg-white p-2 transition-transform hover:scale-110"
+            [class.border-red-500]="this.selectedIcon?.id === icon.id"
+            (click)="OnIconChange.emit(icon)"
+        ></button>
+    }
+</div>

@@ -63,7 +63,7 @@ export const decorators = {
                     );
                 }
 
-                if (request.params.selfId != tokenContent.id) {
+                if (request.params.selfId !== tokenContent.id) {
                     return sendError(
                         reply,
                         "unauthorized",

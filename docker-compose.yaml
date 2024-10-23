@@ -14,6 +14,7 @@ services:
       - PGPASSWORD=${DB_PASSWORD}
       - PGHOST=${DB_HOST}
       - NODE_ENV=${NODE_ENV}
+      - FRONT_URL=${FRONT_URL}
     depends_on:
       - database
   frontend:
@@ -24,6 +25,8 @@ services:
       - ./frontend/:/frontend
     build:
       context: ./frontend
+    depends_on:
+      - backend
   database:
     image: database
     container_name: database
