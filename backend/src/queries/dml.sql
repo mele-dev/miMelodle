@@ -113,4 +113,7 @@ SELECT "user2Id" FROM friendships f where (f."userId" = :selfId! and f."user2Id"
    or (f."userId" = :friendId! and f."user2Id" = :selfId!);
 
 /* @name isItBlocked */
+SELECT * from blocks b where ((b."blockedUserId" = :selfId! and b."userWhoBlocksId" = :friendId!) or (b."blockedUserId" = :friendId! and b."userWhoBlocksId" = :selfId!));
+
+/* @name blockExists */
 SELECT * from blocks b where (b."blockedUserId" = :selfId! and b."userWhoBlocksId" = :friendId!);

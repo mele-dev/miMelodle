@@ -8,6 +8,7 @@ import {
 import { MelodleTagName } from "../../../../../../plugins/swagger.js";
 import { decorators } from "../../../../../../services/decorators.js";
 import {
+    blockExists,
     blockUser,
     deleteFriend,
     getStatus,
@@ -32,28 +33,41 @@ export default (async (fastify, _opts) => {
                     "badRequest",
                     "notFound",
                     "unauthorized",
+                    "forbidden"
                 ]),
             },
             summary: "Block a user.",
         },
         handler: async function (request, reply) {
-            const queryResult = await runPreparedQuery(
-                blockUser,
-                request.params
-            );
 
-            if (queryResult.length === 1) {
-                const eraseFriend = await runPreparedQuery(deleteFriend, request.params);
-                if (eraseFriend.length === 1){
-                    return sendOk(reply, 201, { message: 'User blocked successfully.' });
-                }
+            const alreadyBlocked = await runPreparedQuery(blockExists, request.params);
+
+            if (alreadyBlocked.length === 0){
+                const queryResult = await runPreparedQuery(
+                    blockUser,
+                    request.params
+                );
+    
+                if (queryResult.length === 1) {
+                    const eraseFriend = await runPreparedQuery(deleteFriend, request.params);
+                    if (eraseFriend.length === 1){
+                        return sendOk(reply, 201, { message: 'User blocked successfully.' });
+                    }
+                } else {
+                    return sendError(
+                        reply,
+                        "notFound",
+                        "Could not find target user."
+                    );
+                };
             } else {
                 return sendError(
                     reply,
-                    "notFound",
-                    "Could not find target user."
+                    "forbidden",
+                    "User already blocked."
                 );
-            };
+            }
+            
         },
     });
 

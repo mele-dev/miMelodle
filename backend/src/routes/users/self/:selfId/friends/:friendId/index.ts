@@ -74,49 +74,54 @@ export default (async (fastify, _opts) => {
                     "badRequest",
                     "notFound",
                     "unauthorized",
-                    "forbidden"
+                    "forbidden",
                 ]),
             },
             summary: "Sends a friend request",
         },
         handler: async function (request, reply) {
-            const currentStatus = await runPreparedQuery(
-                getStatus,
+            const allowedToSend = await runPreparedQuery(
+                isItBlocked,
                 request.params
             );
 
-            const allowedToSend = await runPreparedQuery(isItBlocked, request.params)
-
-            if (currentStatus.length === 0 && allowedToSend.length === 0) {
-                const queryResult = await runPreparedQuery(
-                    addNewFriend,
+            // primero chequeo que no este bloqueado
+            if (allowedToSend.length === 0) {
+                
+                const currentStatus = await runPreparedQuery(
+                    getStatus,
                     request.params
                 );
-                if (queryResult.length === 1) {
-                    return sendOk(reply, 201, {
-                        status: queryResult[0].status,
-                    });
-                } else {
+                // chequeo que ya no haya una solicitud pendiente
+                if (currentStatus.length === 0) {
+                    const queryResult = await runPreparedQuery(
+                        addNewFriend,
+                        request.params
+                    );
+                    if (queryResult.length === 1) {
+                        return sendOk(reply, 201, {
+                            status: queryResult[0].status,
+                        });
+                    } else {
+                        return sendError(
+                            reply,
+                            "notFound",
+                            "Could not find target user."
+                        );
+                    }
+                } else if (currentStatus[0].status === "accepted") {
                     return sendError(
                         reply,
-                        "notFound",
-                        "Could not find target user."
+                        "badRequest",
+                        "Already friends with this person."
                     );
                 }
-            }
-            else if (currentStatus[0].status === "accepted") {
-                return sendError(
-                    reply,
-                    "badRequest",
-                    "Already friends with this person."
-                )
-            }
-            else if (allowedToSend.length === 1) {
+            } else if (allowedToSend.length === 1) {
                 return sendError(
                     reply,
                     "forbidden",
-                    "You cannot send a friend request to a user who has blocked you."
-                )
+                    "You cannot send a friend request to a user who has blocked you or to someone you blocked."
+                );
             }
         },
     });
@@ -136,7 +141,7 @@ export default (async (fastify, _opts) => {
                     "notFound",
                     "preconditionRequired",
                     "unauthorized",
-                    "forbidden"
+                    "forbidden",
                 ]),
             },
             summary: "It accepts a friend request.",
@@ -147,11 +152,15 @@ export default (async (fastify, _opts) => {
                 request.params
             );
 
-            const requestReceiver = await runPreparedQuery(getRequestReceiver, request.params);
+            const requestReceiver = await runPreparedQuery(
+                getRequestReceiver,
+                request.params
+            );
 
             if (
                 currentStatus[0].status === "pending" &&
-                request.body.status === "accepted" && request.params.selfId === requestReceiver[0].user2Id
+                request.body.status === "accepted" &&
+                request.params.selfId === requestReceiver[0].user2Id
             ) {
                 await runPreparedQuery(changeStatus, {
                     ...request.body,
