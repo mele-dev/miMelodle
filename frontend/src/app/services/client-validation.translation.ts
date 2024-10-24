@@ -16,7 +16,7 @@ export const validationDict = {
     },
     invalidEmail: {
         en: "Invalid email.",
-        es: "Correo electrónico inválido.",
+        es: "Email inválido.",
     },
     invalidPassword: {
         en: `A password must have between ${postAuthRegisterBodyPasswordMin} and ${postAuthLoginBodyPasswordMax} characters.`,
@@ -45,6 +45,14 @@ export const validationDict = {
                 `Tener entre ${postAuthRegisterBodyUsernameMin} y ${postAuthRegisterBodyUsernameMax} caracteres.`,
             ],
         },
+    },
+    usernameTaken: {
+        en: "Username already exists",
+        es: "El nombre de usuario ya existe",
+    },
+    emailTaken: {
+        en: "There already is an account with this email.",
+        es: "Ya existe una cuenta con este email.",
     },
 } as const satisfies Translations;
 

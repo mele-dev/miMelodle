@@ -69,3 +69,9 @@ RETURNING id;
 SELECT u.id
   FROM users u
  WHERE u."spotifyId" = :spotifyId!;
+
+/* @name searchForUserEmailOrUsername */
+SELECT u.username, u.email
+  FROM users u
+ WHERE u.username = :username
+    OR u.email = :email;

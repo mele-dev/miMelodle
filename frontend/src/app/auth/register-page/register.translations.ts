@@ -63,14 +63,6 @@ export const registerDict = {
         en: "username",
         es: "nombre de usuario",
     },
-    Name: {
-        en: "Name",
-        es: "Nombre",
-    },
-    Username: {
-        en: "Username",
-        es: "Nombre de usuario",
-    },
     ...validationDict,
 } as const satisfies Translations;
 
