@@ -15,6 +15,7 @@ services:
       - PGHOST=${DB_HOST}
       - NODE_ENV=${NODE_ENV}
       - FRONT_URL=${FRONT_URL}
+      - MUSIXMATCH_KEY=${MUSIXMATCH_KEY}
     depends_on:
       - database
   frontend:

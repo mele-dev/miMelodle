@@ -11,6 +11,7 @@ const envSchema = SafeType.Object({
     PGPASSWORD: SafeType.String(),
     PGHOST: SafeType.String(),
     FRONT_URL: SafeType.String(),
+    MUSIXMATCH_KEY: SafeType.String(),
 });
 
 const filteredProperties = Object.entries(envSchema.properties).filter(
