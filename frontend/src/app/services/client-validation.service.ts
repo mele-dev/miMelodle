@@ -1,6 +1,6 @@
 import { inject, Injectable } from "@angular/core";
 import { ValidationTranslator } from "./client-validation.translation";
-import { AbstractControl, FormGroup, ValidationErrors } from "@angular/forms";
+import { AbstractControl, ValidationErrors } from "@angular/forms";
 import { z, ZodSchema } from "zod";
 import { getUsersCheck } from "../../apiCodegen/backend";
 
@@ -28,6 +28,7 @@ export class ClientValidationService {
             password: z.string(),
             repeatPassword: z.string(),
         });
+
         const value = schema.safeParse(group.getRawValue());
 
         if (!value.success) {
@@ -41,6 +42,7 @@ export class ClientValidationService {
         if (value.data.password !== value.data.repeatPassword) {
             return { differentRepeatedPassword: true };
         }
+
         return null;
     }
 
@@ -54,7 +56,7 @@ export class ClientValidationService {
 
             return { emailExists: result.data.emailExists };
         } catch {
-            return { serverError: true };
+           return { serverError: true };
         }
     }
 
@@ -65,6 +67,7 @@ export class ClientValidationService {
             if (!result.data.usernameExists) {
                 return null;
             }
+
             return { usernameExists: result.data.usernameExists };
         } catch {
             return { serverError: true };

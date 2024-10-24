@@ -8,9 +8,9 @@ import {
 } from "../../../apiCodegen/backend";
 import { DomSanitizer } from "@angular/platform-browser";
 import {
+    AbstractControl,
     FormBuilder,
     ReactiveFormsModule,
-    ValidationErrors,
 } from "@angular/forms";
 import { RouterModule } from "@angular/router";
 import { ClientValidationService } from "../../services/client-validation.service";
@@ -105,7 +105,7 @@ export class RegisterPage implements OnInit {
 
     private validateUsername() {
         const thisBinding = this;
-        return async function (control: { value: string }) {
+        return async function (control: AbstractControl) {
             const output =
                 (await thisBinding.validator.Schema(
                     thisBinding.schema.shape.username
@@ -140,10 +140,6 @@ export class RegisterPage implements OnInit {
         this.chosenIcon.set(
             this.allIcons.find((v) => v.filename === "default.svg")
         );
-    }
-
-    ifFilled<T>(input: unknown, message: T) {
-        return !input ? undefined : message;
     }
 
     async onSubmit() {

@@ -24,6 +24,54 @@
  */
 import axios from "axios";
 import type { AxiosRequestConfig, AxiosResponse } from "axios";
+export type PostUsersSelfSelfIdMelodleGameIdGuessSongAttempts404StatusCode =
+    (typeof PostUsersSelfSelfIdMelodleGameIdGuessSongAttempts404StatusCode)[keyof typeof PostUsersSelfSelfIdMelodleGameIdGuessSongAttempts404StatusCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const PostUsersSelfSelfIdMelodleGameIdGuessSongAttempts404StatusCode = {
+    NUMBER_404: 404,
+} as const;
+
+/**
+ * notFound
+ */
+export type PostUsersSelfSelfIdMelodleGameIdGuessSongAttempts404 = {
+    error: string;
+    message: string;
+    statusCode: PostUsersSelfSelfIdMelodleGameIdGuessSongAttempts404StatusCode;
+    [key: string]: unknown;
+};
+
+export type PostUsersSelfSelfIdMelodleGameIdGuessSongAttempts401StatusCode =
+    (typeof PostUsersSelfSelfIdMelodleGameIdGuessSongAttempts401StatusCode)[keyof typeof PostUsersSelfSelfIdMelodleGameIdGuessSongAttempts401StatusCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const PostUsersSelfSelfIdMelodleGameIdGuessSongAttempts401StatusCode = {
+    NUMBER_401: 401,
+} as const;
+
+/**
+ * unauthorized
+ */
+export type PostUsersSelfSelfIdMelodleGameIdGuessSongAttempts401 = {
+    error: string;
+    message: string;
+    statusCode: PostUsersSelfSelfIdMelodleGameIdGuessSongAttempts401StatusCode;
+    [key: string]: unknown;
+};
+
+export type PostUsersSelfSelfIdMelodleGameIdGuessSongAttempts200 = {
+    correctAlbum: boolean;
+    correctArtist: boolean;
+    correctBand: boolean;
+    won: boolean;
+};
+
+export type PostUsersSelfSelfIdMelodleGameIdGuessSongAttemptsBody = {
+    /** Identifier which can be used to fetch artist data from MusixMatch. */
+    guessedSongId: string;
+};
+
 export type PostUsersSelfSelfIdMelodleGameIdGuessLineAttempts404StatusCode =
     (typeof PostUsersSelfSelfIdMelodleGameIdGuessLineAttempts404StatusCode)[keyof typeof PostUsersSelfSelfIdMelodleGameIdGuessLineAttempts404StatusCode];
 
@@ -75,53 +123,89 @@ export type PostUsersSelfSelfIdMelodleGameIdGuessLineAttemptsBody = {
     guessedLine: string;
 };
 
-export type PostUsersSelfSelfIdMelodleGameIdGuessSongAttempts404StatusCode =
-    (typeof PostUsersSelfSelfIdMelodleGameIdGuessSongAttempts404StatusCode)[keyof typeof PostUsersSelfSelfIdMelodleGameIdGuessSongAttempts404StatusCode];
+export type GetUsersSelfSelfIdMelodleGameId404StatusCode =
+    (typeof GetUsersSelfSelfIdMelodleGameId404StatusCode)[keyof typeof GetUsersSelfSelfIdMelodleGameId404StatusCode];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const PostUsersSelfSelfIdMelodleGameIdGuessSongAttempts404StatusCode = {
+export const GetUsersSelfSelfIdMelodleGameId404StatusCode = {
     NUMBER_404: 404,
 } as const;
 
 /**
  * notFound
  */
-export type PostUsersSelfSelfIdMelodleGameIdGuessSongAttempts404 = {
+export type GetUsersSelfSelfIdMelodleGameId404 = {
     error: string;
     message: string;
-    statusCode: PostUsersSelfSelfIdMelodleGameIdGuessSongAttempts404StatusCode;
+    statusCode: GetUsersSelfSelfIdMelodleGameId404StatusCode;
     [key: string]: unknown;
 };
 
-export type PostUsersSelfSelfIdMelodleGameIdGuessSongAttempts401StatusCode =
-    (typeof PostUsersSelfSelfIdMelodleGameIdGuessSongAttempts401StatusCode)[keyof typeof PostUsersSelfSelfIdMelodleGameIdGuessSongAttempts401StatusCode];
+export type GetUsersSelfSelfIdMelodleGameId401StatusCode =
+    (typeof GetUsersSelfSelfIdMelodleGameId401StatusCode)[keyof typeof GetUsersSelfSelfIdMelodleGameId401StatusCode];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const PostUsersSelfSelfIdMelodleGameIdGuessSongAttempts401StatusCode = {
+export const GetUsersSelfSelfIdMelodleGameId401StatusCode = {
     NUMBER_401: 401,
 } as const;
 
 /**
  * unauthorized
  */
-export type PostUsersSelfSelfIdMelodleGameIdGuessSongAttempts401 = {
+export type GetUsersSelfSelfIdMelodleGameId401 = {
     error: string;
     message: string;
-    statusCode: PostUsersSelfSelfIdMelodleGameIdGuessSongAttempts401StatusCode;
+    statusCode: GetUsersSelfSelfIdMelodleGameId401StatusCode;
     [key: string]: unknown;
 };
 
-export type PostUsersSelfSelfIdMelodleGameIdGuessSongAttempts200 = {
-    correctAlbum: boolean;
-    correctArtist: boolean;
-    correctBand: boolean;
-    won: boolean;
+export type GetUsersSelfSelfIdMelodleGameId200ConfigFromArtistsItem = {
+    /** Identifier for an artist given by MusixMatch */
+    musixmatchArtistId: string;
 };
 
-export type PostUsersSelfSelfIdMelodleGameIdGuessSongAttemptsBody = {
+export type GetUsersSelfSelfIdMelodleGameId200Config = {
+    /** The artists we can choose from. If empty, it means this filter does not do anything. */
+    fromArtists: GetUsersSelfSelfIdMelodleGameId200ConfigFromArtistsItem[];
+    /** Unique identifier for a config. */
+    id: number;
+    /** @pattern ^(Guess Line|Guess Song)$ */
+    mode: string;
+    /** Whether to pick from any artist or only favorited ones. */
+    onlyFavoriteArtists: boolean;
+};
+
+export type GetUsersSelfSelfIdMelodleGameId200 = {
+    attempts: GetUsersSelfSelfIdMelodleGameId200Attempts;
+    config: GetUsersSelfSelfIdMelodleGameId200Config;
+    endingTime?: string;
+    /** A unique identifier for a melodle game. */
+    gameId: number;
+    /** @pattern ^(Guess Line|Guess Song)$ */
+    gameMode: string;
+    /** A numeric identifier for a user. Generated by the backend, unique and unchangeable. */
+    userId: number;
+    won?: boolean;
+};
+
+export type GetUsersSelfSelfIdMelodleGameId200AttemptsAnyOfTwoItem = {
+    guessedAt: string;
+    /**
+     * A line to match against the actual line of the song.
+     * @maxLength 1000
+     */
+    guessedLine: string;
+};
+
+export type GetUsersSelfSelfIdMelodleGameId200AttemptsAnyOfItem = {
+    guessedAt: string;
     /** Identifier which can be used to fetch artist data from MusixMatch. */
     guessedSongId: string;
 };
+
+export type GetUsersSelfSelfIdMelodleGameId200Attempts =
+    | GetUsersSelfSelfIdMelodleGameId200AttemptsAnyOfItem[]
+    | GetUsersSelfSelfIdMelodleGameId200AttemptsAnyOfTwoItem[];
 
 export type GetUsersSelfSelfIdFriendsLeaderboards401StatusCode =
     (typeof GetUsersSelfSelfIdFriendsLeaderboards401StatusCode)[keyof typeof GetUsersSelfSelfIdFriendsLeaderboards401StatusCode];
@@ -407,90 +491,6 @@ export type DeleteUsersSelfSelfIdFriendsFriendId200 = {
     username: string;
 };
 
-export type GetUsersSelfSelfIdMelodleGameId404StatusCode =
-    (typeof GetUsersSelfSelfIdMelodleGameId404StatusCode)[keyof typeof GetUsersSelfSelfIdMelodleGameId404StatusCode];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetUsersSelfSelfIdMelodleGameId404StatusCode = {
-    NUMBER_404: 404,
-} as const;
-
-/**
- * notFound
- */
-export type GetUsersSelfSelfIdMelodleGameId404 = {
-    error: string;
-    message: string;
-    statusCode: GetUsersSelfSelfIdMelodleGameId404StatusCode;
-    [key: string]: unknown;
-};
-
-export type GetUsersSelfSelfIdMelodleGameId401StatusCode =
-    (typeof GetUsersSelfSelfIdMelodleGameId401StatusCode)[keyof typeof GetUsersSelfSelfIdMelodleGameId401StatusCode];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetUsersSelfSelfIdMelodleGameId401StatusCode = {
-    NUMBER_401: 401,
-} as const;
-
-/**
- * unauthorized
- */
-export type GetUsersSelfSelfIdMelodleGameId401 = {
-    error: string;
-    message: string;
-    statusCode: GetUsersSelfSelfIdMelodleGameId401StatusCode;
-    [key: string]: unknown;
-};
-
-export type GetUsersSelfSelfIdMelodleGameId200ConfigFromArtistsItem = {
-    /** Identifier for an artist given by MusixMatch */
-    musixmatchArtistId: string;
-};
-
-export type GetUsersSelfSelfIdMelodleGameId200Config = {
-    /** The artists we can choose from. If empty, it means this filter does not do anything. */
-    fromArtists: GetUsersSelfSelfIdMelodleGameId200ConfigFromArtistsItem[];
-    /** Unique identifier for a config. */
-    id: number;
-    /** @pattern ^(Guess Line|Guess Song)$ */
-    mode: string;
-    /** Whether to pick from any artist or only favorited ones. */
-    onlyFavoriteArtists: boolean;
-};
-
-export type GetUsersSelfSelfIdMelodleGameId200 = {
-    attempts: GetUsersSelfSelfIdMelodleGameId200Attempts;
-    config: GetUsersSelfSelfIdMelodleGameId200Config;
-    endingTime?: string;
-    /** A unique identifier for a melodle game. */
-    gameId: number;
-    /** @pattern ^(Guess Line|Guess Song)$ */
-    gameMode: string;
-    /** A numeric identifier for a user. Generated by the backend, unique and unchangeable. */
-    userId: number;
-    won?: boolean;
-};
-
-export type GetUsersSelfSelfIdMelodleGameId200AttemptsAnyOfTwoItem = {
-    guessedAt: string;
-    /**
-     * A line to match against the actual line of the song.
-     * @maxLength 1000
-     */
-    guessedLine: string;
-};
-
-export type GetUsersSelfSelfIdMelodleGameId200AttemptsAnyOfItem = {
-    guessedAt: string;
-    /** Identifier which can be used to fetch artist data from MusixMatch. */
-    guessedSongId: string;
-};
-
-export type GetUsersSelfSelfIdMelodleGameId200Attempts =
-    | GetUsersSelfSelfIdMelodleGameId200AttemptsAnyOfItem[]
-    | GetUsersSelfSelfIdMelodleGameId200AttemptsAnyOfTwoItem[];
-
 export type PutUsersSelfSelfIdArtistsArtistMusixMatchIdFavorite404StatusCode =
     (typeof PutUsersSelfSelfIdArtistsArtistMusixMatchIdFavorite404StatusCode)[keyof typeof PutUsersSelfSelfIdArtistsArtistMusixMatchIdFavorite404StatusCode];
 
@@ -535,46 +535,6 @@ export type PutUsersSelfSelfIdArtistsArtistMusixMatchIdFavorite200 = {
 
 export type PutUsersSelfSelfIdArtistsArtistMusixMatchIdFavoriteBody = {
     isFavorite: boolean;
-};
-
-export type GetUsersSelfSelfIdFriends401StatusCode =
-    (typeof GetUsersSelfSelfIdFriends401StatusCode)[keyof typeof GetUsersSelfSelfIdFriends401StatusCode];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetUsersSelfSelfIdFriends401StatusCode = {
-    NUMBER_401: 401,
-} as const;
-
-/**
- * unauthorized
- */
-export type GetUsersSelfSelfIdFriends401 = {
-    error: string;
-    message: string;
-    statusCode: GetUsersSelfSelfIdFriends401StatusCode;
-    [key: string]: unknown;
-};
-
-export type GetUsersSelfSelfIdFriends200Item = {
-    /** A numeric identifier for a user. Generated by the backend, unique and unchangeable. */
-    id: number;
-    /**
-     * The user's display name. It does not need to be unique.
-     * @minLength 1
-     * @maxLength 25
-     */
-    name: string;
-    /** The id to the profile picture of the user. These pictures cannot be uploaded, we store the options manually. */
-    profilePictureId: number;
-    /**
-   * The id to display to users. They must be unique, but the users can choose and change them.
-### Rules
-- Only accepts letters, digits and '.', '-', '_'.
-   * @minLength 3
-   * @maxLength 20
-   * @pattern ^[a-zA-Z0-9.-_]+$
-   */
-    username: string;
 };
 
 export type GetUsersSelfSelfIdMelodleHistory401StatusCode =
@@ -715,6 +675,46 @@ export type PostUsersSelfSelfIdMelodleBody = {
     mode: string;
     /** Whether to pick from any artist or only favorited ones. */
     onlyFavoriteArtists: boolean;
+};
+
+export type GetUsersSelfSelfIdFriends401StatusCode =
+    (typeof GetUsersSelfSelfIdFriends401StatusCode)[keyof typeof GetUsersSelfSelfIdFriends401StatusCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetUsersSelfSelfIdFriends401StatusCode = {
+    NUMBER_401: 401,
+} as const;
+
+/**
+ * unauthorized
+ */
+export type GetUsersSelfSelfIdFriends401 = {
+    error: string;
+    message: string;
+    statusCode: GetUsersSelfSelfIdFriends401StatusCode;
+    [key: string]: unknown;
+};
+
+export type GetUsersSelfSelfIdFriends200Item = {
+    /** A numeric identifier for a user. Generated by the backend, unique and unchangeable. */
+    id: number;
+    /**
+     * The user's display name. It does not need to be unique.
+     * @minLength 1
+     * @maxLength 25
+     */
+    name: string;
+    /** The id to the profile picture of the user. These pictures cannot be uploaded, we store the options manually. */
+    profilePictureId: number;
+    /**
+   * The id to display to users. They must be unique, but the users can choose and change them.
+### Rules
+- Only accepts letters, digits and '.', '-', '_'.
+   * @minLength 3
+   * @maxLength 20
+   * @pattern ^[a-zA-Z0-9.-_]+$
+   */
+    username: string;
 };
 
 export type GetUsersSelfSelfIdConfigsSuggest401StatusCode =
@@ -1118,75 +1118,6 @@ export type GetUsersSelfSelfId200 = {
     username: string;
 };
 
-export type PostDebugFakeUsers201Item = {
-    /**
-     * The user's email.
-     * @maxLength 254
-     * @pattern ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$
-     */
-    email: string;
-    /**
-     * The user's display name. It does not need to be unique.
-     * @minLength 1
-     * @maxLength 25
-     */
-    name: string;
-    /**
-     * A password.
-     * @minLength 3
-     * @maxLength 20
-     */
-    password: string;
-    /** The id to the profile picture of the user. These pictures cannot be uploaded, we store the options manually. */
-    profilePictureId: number;
-    /**
-   * The id to display to users. They must be unique, but the users can choose and change them.
-### Rules
-- Only accepts letters, digits and '.', '-', '_'.
-   * @minLength 3
-   * @maxLength 20
-   * @pattern ^[a-zA-Z0-9.-_]+$
-   */
-    username: string;
-};
-
-export type PostDebugFakeUsersBody = {
-    /** The amount of users to generate. */
-    amount: number;
-};
-
-export type GetDebugFakeUser200 = {
-    /**
-     * The user's email.
-     * @maxLength 254
-     * @pattern ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$
-     */
-    email: string;
-    /**
-     * The user's display name. It does not need to be unique.
-     * @minLength 1
-     * @maxLength 25
-     */
-    name: string;
-    /**
-     * A password.
-     * @minLength 3
-     * @maxLength 20
-     */
-    password: string;
-    /** The id to the profile picture of the user. These pictures cannot be uploaded, we store the options manually. */
-    profilePictureId: number;
-    /**
-   * The id to display to users. They must be unique, but the users can choose and change them.
-### Rules
-- Only accepts letters, digits and '.', '-', '_'.
-   * @minLength 3
-   * @maxLength 20
-   * @pattern ^[a-zA-Z0-9.-_]+$
-   */
-    username: string;
-};
-
 export type PostAuthRegister400StatusCode =
     (typeof PostAuthRegister400StatusCode)[keyof typeof PostAuthRegister400StatusCode];
 
@@ -1284,6 +1215,75 @@ export type PostAuthLoginBody = {
     password: string;
 };
 
+export type PostDebugFakeUsers201Item = {
+    /**
+     * The user's email.
+     * @maxLength 254
+     * @pattern ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$
+     */
+    email: string;
+    /**
+     * The user's display name. It does not need to be unique.
+     * @minLength 1
+     * @maxLength 25
+     */
+    name: string;
+    /**
+     * A password.
+     * @minLength 3
+     * @maxLength 20
+     */
+    password: string;
+    /** The id to the profile picture of the user. These pictures cannot be uploaded, we store the options manually. */
+    profilePictureId: number;
+    /**
+   * The id to display to users. They must be unique, but the users can choose and change them.
+### Rules
+- Only accepts letters, digits and '.', '-', '_'.
+   * @minLength 3
+   * @maxLength 20
+   * @pattern ^[a-zA-Z0-9.-_]+$
+   */
+    username: string;
+};
+
+export type PostDebugFakeUsersBody = {
+    /** The amount of users to generate. */
+    amount: number;
+};
+
+export type GetDebugFakeUser200 = {
+    /**
+     * The user's email.
+     * @maxLength 254
+     * @pattern ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$
+     */
+    email: string;
+    /**
+     * The user's display name. It does not need to be unique.
+     * @minLength 1
+     * @maxLength 25
+     */
+    name: string;
+    /**
+     * A password.
+     * @minLength 3
+     * @maxLength 20
+     */
+    password: string;
+    /** The id to the profile picture of the user. These pictures cannot be uploaded, we store the options manually. */
+    profilePictureId: number;
+    /**
+   * The id to display to users. They must be unique, but the users can choose and change them.
+### Rules
+- Only accepts letters, digits and '.', '-', '_'.
+   * @minLength 3
+   * @maxLength 20
+   * @pattern ^[a-zA-Z0-9.-_]+$
+   */
+    username: string;
+};
+
 export type GetUsersCheck200 = {
     emailExists: boolean;
     usernameExists: boolean;
@@ -1351,56 +1351,47 @@ export type GetUsersUserId200 = {
     username: string;
 };
 
+export type GetLyricsTrackMusixMatchId200 = {
+    /** Copyright information for the lyrics, if available. */
+    copyright?: string;
+    /** Indicates if the lyrics contain explicit content. */
+    explicit: boolean;
+    /** The language in which the lyrics are written. */
+    language: string;
+    /** The full lyrics of the track. */
+    lyricsBody: string;
+    /** Identifier for the lyrics provided by MusixMatch. */
+    lyricsId: string;
+    /** Identifier for the track associated with these lyrics on MusixMatch. */
+    trackId: string;
+};
+
 /**
- * A leaderboard of melodle users.
+ * Information to identify and describe an icon.
  */
-export type GetLeaderboards200 = {
-    leaderboard: GetLeaderboards200LeaderboardItem[];
-};
-
-export type GetLeaderboards200LeaderboardItemAllOfTwo = {
-    /** Players' position ordered from higest to lowest score. */
-    rank: number;
-    /** Score calculated by user performance within their games. */
-    score: number;
-};
-
-export type GetLeaderboards200LeaderboardItemAllOf = {
-    /** A numeric identifier for a user. Generated by the backend, unique and unchangeable. */
-    id: number;
-    /**
-     * The user's display name. It does not need to be unique.
-     * @minLength 1
-     * @maxLength 25
-     */
-    name: string;
+export type GetPublicIcons200Item = {
     /** File name required to fetch the image from the route to get specific user icons. */
-    profilePictureFilename: string;
-    /**
-   * The id to display to users. They must be unique, but the users can choose and change them.
-### Rules
-- Only accepts letters, digits and '.', '-', '_'.
-   * @minLength 3
-   * @maxLength 20
-   * @pattern ^[a-zA-Z0-9.-_]+$
-   */
-    username: string;
+    filename: string;
+    /** Identifier for the icon. */
+    id: number;
 };
 
-export type GetLeaderboards200LeaderboardItem =
-    GetLeaderboards200LeaderboardItemAllOf &
-        GetLeaderboards200LeaderboardItemAllOfTwo;
+export type GetPublicIconsFilename404StatusCode =
+    (typeof GetPublicIconsFilename404StatusCode)[keyof typeof GetPublicIconsFilename404StatusCode];
 
-export type GetLeaderboardsParams = {
-    gameModes: string[];
-    /**
-     * States when a range starts.
-     */
-    start: number;
-    /**
-     * A number which defines range size.
-     */
-    amount: number;
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetPublicIconsFilename404StatusCode = {
+    NUMBER_404: 404,
+} as const;
+
+/**
+ * notFound
+ */
+export type GetPublicIconsFilename404 = {
+    error: string;
+    message: string;
+    statusCode: GetPublicIconsFilename404StatusCode;
+    [key: string]: unknown;
 };
 
 export type PutDebugSnapshot200 =
@@ -1468,6 +1459,58 @@ export type GetDebugSnapshot200 = {
     users: GetDebugSnapshot200UsersItem[];
 };
 
+export type GetLeaderboards200LeaderboardItemAllOfTwo = {
+    /** Players' position ordered from higest to lowest score. */
+    rank: number;
+    /** Score calculated by user performance within their games. */
+    score: number;
+};
+
+export type GetLeaderboards200LeaderboardItemAllOf = {
+    /** A numeric identifier for a user. Generated by the backend, unique and unchangeable. */
+    id: number;
+    /**
+     * The user's display name. It does not need to be unique.
+     * @minLength 1
+     * @maxLength 25
+     */
+    name: string;
+    /** File name required to fetch the image from the route to get specific user icons. */
+    profilePictureFilename: string;
+    /**
+   * The id to display to users. They must be unique, but the users can choose and change them.
+### Rules
+- Only accepts letters, digits and '.', '-', '_'.
+   * @minLength 3
+   * @maxLength 20
+   * @pattern ^[a-zA-Z0-9.-_]+$
+   */
+    username: string;
+};
+
+export type GetLeaderboards200LeaderboardItem =
+    GetLeaderboards200LeaderboardItemAllOf &
+        GetLeaderboards200LeaderboardItemAllOfTwo;
+
+/**
+ * A leaderboard of melodle users.
+ */
+export type GetLeaderboards200 = {
+    leaderboard: GetLeaderboards200LeaderboardItem[];
+};
+
+export type GetLeaderboardsParams = {
+    gameModes: string[];
+    /**
+     * States when a range starts.
+     */
+    start: number;
+    /**
+     * A number which defines range size.
+     */
+    amount: number;
+};
+
 export type GetArtistsSearch200Item = {
     /** Url to download the artist's portrait image, if available. */
     imageUrl?: string;
@@ -1478,6 +1521,19 @@ export type GetArtistsSearch200Item = {
 };
 
 export type GetArtistsSearchParams = {
+    query: string;
+};
+
+export type GetArtistsArtistName200Item = {
+    /** Url to download the artist's portrait image, if available. */
+    imageUrl?: string;
+    /** Identifier for an artist given by MusixMatch */
+    musixmatchArtistId: string;
+    /** Name of the artist, does not have to be unique. */
+    name: string;
+};
+
+export type GetArtistsArtistNameParams = {
     query: string;
 };
 
@@ -1506,34 +1562,6 @@ export type GetArtistsArtistMusixMatchId200 = {
     musixmatchArtistId: string;
     /** Name of the artist, does not have to be unique. */
     name: string;
-};
-
-/**
- * Information to identify and describe an icon.
- */
-export type GetPublicIcons200Item = {
-    /** File name required to fetch the image from the route to get specific user icons. */
-    filename: string;
-    /** Identifier for the icon. */
-    id: number;
-};
-
-export type GetPublicIconsFilename404StatusCode =
-    (typeof GetPublicIconsFilename404StatusCode)[keyof typeof GetPublicIconsFilename404StatusCode];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetPublicIconsFilename404StatusCode = {
-    NUMBER_404: 404,
-} as const;
-
-/**
- * notFound
- */
-export type GetPublicIconsFilename404 = {
-    error: string;
-    message: string;
-    statusCode: GetPublicIconsFilename404StatusCode;
-    [key: string]: unknown;
 };
 
 export type Get200Ping = (typeof Get200Ping)[keyof typeof Get200Ping];
@@ -1683,29 +1711,6 @@ export const get = <TData = AxiosResponse<Get200>>(
 };
 
 /**
- * Get the svg for a certain user icon. The selection of user icons is fixed.
- * @summary Get a user icon.
- */
-export const getPublicIconsFilename = <TData = AxiosResponse<Blob>>(
-    filename: string,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://localhost/backend/public/icons/${filename}`, {
-        responseType: "blob",
-        ...options,
-    });
-};
-
-/**
- * @summary Get information about all user icons.
- */
-export const getPublicIcons = <TData = AxiosResponse<GetPublicIcons200Item[]>>(
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://localhost/backend/public/icons`, options);
-};
-
-/**
  * @summary Get information about an artist
  */
 export const getArtistsArtistMusixMatchId = <
@@ -1721,6 +1726,22 @@ export const getArtistsArtistMusixMatchId = <
 };
 
 /**
+ * Search for artists based on the query provided in the querystring.
+ * @summary Search for artists by name
+ */
+export const getArtistsArtistName = <
+    TData = AxiosResponse<GetArtistsArtistName200Item[]>,
+>(
+    params: GetArtistsArtistNameParams,
+    options?: AxiosRequestConfig
+): Promise<TData> => {
+    return axios.get(`https://localhost/backend/artists/artistName`, {
+        ...options,
+        params: { ...params, ...options?.params },
+    });
+};
+
+/**
  * We use a custom algorithm to determine which artists are most relevant, based off the query in the querystring.
  * @summary Search for available artists.
  */
@@ -1731,6 +1752,19 @@ export const getArtistsSearch = <
     options?: AxiosRequestConfig
 ): Promise<TData> => {
     return axios.get(`https://localhost/backend/artists/search`, {
+        ...options,
+        params: { ...params, ...options?.params },
+    });
+};
+
+/**
+ * @summary Fetches global leaderboard information.
+ */
+export const getLeaderboards = <TData = AxiosResponse<GetLeaderboards200>>(
+    params: GetLeaderboardsParams,
+    options?: AxiosRequestConfig
+): Promise<TData> => {
+    return axios.get(`https://localhost/backend/leaderboards/`, {
         ...options,
         params: { ...params, ...options?.params },
     });
@@ -1759,16 +1793,42 @@ export const putDebugSnapshot = <TData = AxiosResponse<PutDebugSnapshot200>>(
 };
 
 /**
- * @summary Fetches global leaderboard information.
+ * Get the svg for a certain user icon. The selection of user icons is fixed.
+ * @summary Get a user icon.
  */
-export const getLeaderboards = <TData = AxiosResponse<GetLeaderboards200>>(
-    params: GetLeaderboardsParams,
+export const getPublicIconsFilename = <TData = AxiosResponse<Blob>>(
+    filename: string,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(`https://localhost/backend/leaderboards/`, {
+    return axios.get(`https://localhost/backend/public/icons/${filename}`, {
+        responseType: "blob",
         ...options,
-        params: { ...params, ...options?.params },
     });
+};
+
+/**
+ * @summary Get information about all user icons.
+ */
+export const getPublicIcons = <TData = AxiosResponse<GetPublicIcons200Item[]>>(
+    options?: AxiosRequestConfig
+): Promise<TData> => {
+    return axios.get(`https://localhost/backend/public/icons`, options);
+};
+
+/**
+ * This endpoint retrieves the lyrics for a given track using its Musixmatch ID
+ * @summary Get lyrics for a specific track
+ */
+export const getLyricsTrackMusixMatchId = <
+    TData = AxiosResponse<GetLyricsTrackMusixMatchId200>,
+>(
+    trackMusixMatchId: string,
+    options?: AxiosRequestConfig
+): Promise<TData> => {
+    return axios.get(
+        `https://localhost/backend/lyrics/${trackMusixMatchId}`,
+        options
+    );
 };
 
 /**
@@ -1809,6 +1869,33 @@ export const getUsersCheck = <TData = AxiosResponse<GetUsersCheck200>>(
 };
 
 /**
+ * All fake users have Fake123! as their password.
+ * @summary Returns random, believable credentials for a user.
+ */
+export const getDebugFakeUser = <TData = AxiosResponse<GetDebugFakeUser200>>(
+    options?: AxiosRequestConfig
+): Promise<TData> => {
+    return axios.get(`https://localhost/backend/debug/fake/user`, options);
+};
+
+/**
+ * We do not check if the user already exists, so this route may error. On error, we roll back any changes.
+ * @summary Create a certain number of fake users.
+ */
+export const postDebugFakeUsers = <
+    TData = AxiosResponse<PostDebugFakeUsers201Item[]>,
+>(
+    postDebugFakeUsersBody: PostDebugFakeUsersBody,
+    options?: AxiosRequestConfig
+): Promise<TData> => {
+    return axios.post(
+        `https://localhost/backend/debug/fake/users`,
+        postDebugFakeUsersBody,
+        options
+    );
+};
+
+/**
  * @summary Fetch a user's jwt token.
  */
 export const postAuthLogin = <TData = AxiosResponse<PostAuthLogin200>>(
@@ -1833,33 +1920,6 @@ export const postAuthRegister = <TData = AxiosResponse<PostAuthRegister200>>(
     return axios.post(
         `https://localhost/backend/auth/register`,
         postAuthRegisterBody,
-        options
-    );
-};
-
-/**
- * All fake users have Fake123! as their password.
- * @summary Returns random, believable credentials for a user.
- */
-export const getDebugFakeUser = <TData = AxiosResponse<GetDebugFakeUser200>>(
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://localhost/backend/debug/fake/user`, options);
-};
-
-/**
- * We do not check if the user already exists, so this route may error. On error, we roll back any changes.
- * @summary Create a certain number of fake users.
- */
-export const postDebugFakeUsers = <
-    TData = AxiosResponse<PostDebugFakeUsers201Item[]>,
->(
-    postDebugFakeUsersBody: PostDebugFakeUsersBody,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.post(
-        `https://localhost/backend/debug/fake/users`,
-        postDebugFakeUsersBody,
         options
     );
 };
@@ -2022,6 +2082,21 @@ export const getUsersSelfSelfIdConfigsSuggest = <
 };
 
 /**
+ * @summary Get all friends from a user.
+ */
+export const getUsersSelfSelfIdFriends = <
+    TData = AxiosResponse<GetUsersSelfSelfIdFriends200Item[]>,
+>(
+    selfId: number,
+    options?: AxiosRequestConfig
+): Promise<TData> => {
+    return axios.get(
+        `https://localhost/backend/users/self/${selfId}/friends`,
+        options
+    );
+};
+
+/**
  * @summary Start a new melodle game.
  */
 export const postUsersSelfSelfIdMelodle = <
@@ -2054,21 +2129,6 @@ export const getUsersSelfSelfIdMelodleHistory = <
 };
 
 /**
- * @summary Get all friends from a user.
- */
-export const getUsersSelfSelfIdFriends = <
-    TData = AxiosResponse<GetUsersSelfSelfIdFriends200Item[]>,
->(
-    selfId: number,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(
-        `https://localhost/backend/users/self/${selfId}/friends`,
-        options
-    );
-};
-
-/**
  * @summary Update whether a given artist is within you favorite ones.
  */
 export const putUsersSelfSelfIdArtistsArtistMusixMatchIdFavorite = <
@@ -2082,22 +2142,6 @@ export const putUsersSelfSelfIdArtistsArtistMusixMatchIdFavorite = <
     return axios.put(
         `https://localhost/backend/users/self/${selfId}/artists/${artistMusixMatchId}/favorite`,
         putUsersSelfSelfIdArtistsArtistMusixMatchIdFavoriteBody,
-        options
-    );
-};
-
-/**
- * @summary Get information about a melodle game.
- */
-export const getUsersSelfSelfIdMelodleGameId = <
-    TData = AxiosResponse<GetUsersSelfSelfIdMelodleGameId200>,
->(
-    selfId: number,
-    gameId: number,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(
-        `https://localhost/backend/users/self/${selfId}/melodle/${gameId}`,
         options
     );
 };
@@ -2178,19 +2222,17 @@ export const getUsersSelfSelfIdFriendsLeaderboards = <
 };
 
 /**
- * @summary Submit a guess for a melodle game.
+ * @summary Get information about a melodle game.
  */
-export const postUsersSelfSelfIdMelodleGameIdGuessSongAttempts = <
-    TData = AxiosResponse<PostUsersSelfSelfIdMelodleGameIdGuessSongAttempts200>,
+export const getUsersSelfSelfIdMelodleGameId = <
+    TData = AxiosResponse<GetUsersSelfSelfIdMelodleGameId200>,
 >(
     selfId: number,
     gameId: number,
-    postUsersSelfSelfIdMelodleGameIdGuessSongAttemptsBody: PostUsersSelfSelfIdMelodleGameIdGuessSongAttemptsBody,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.post(
-        `https://localhost/backend/users/self/${selfId}/melodle/${gameId}/guessSong/attempts`,
-        postUsersSelfSelfIdMelodleGameIdGuessSongAttemptsBody,
+    return axios.get(
+        `https://localhost/backend/users/self/${selfId}/melodle/${gameId}`,
         options
     );
 };
@@ -2213,26 +2255,49 @@ export const postUsersSelfSelfIdMelodleGameIdGuessLineAttempts = <
     );
 };
 
+/**
+ * @summary Submit a guess for a melodle game.
+ */
+export const postUsersSelfSelfIdMelodleGameIdGuessSongAttempts = <
+    TData = AxiosResponse<PostUsersSelfSelfIdMelodleGameIdGuessSongAttempts200>,
+>(
+    selfId: number,
+    gameId: number,
+    postUsersSelfSelfIdMelodleGameIdGuessSongAttemptsBody: PostUsersSelfSelfIdMelodleGameIdGuessSongAttemptsBody,
+    options?: AxiosRequestConfig
+): Promise<TData> => {
+    return axios.post(
+        `https://localhost/backend/users/self/${selfId}/melodle/${gameId}/guessSong/attempts`,
+        postUsersSelfSelfIdMelodleGameIdGuessSongAttemptsBody,
+        options
+    );
+};
+
 export type GetAuthRegisterSpotifyResult = AxiosResponse<void>;
 export type GetAuthLoginSpotifyResult = AxiosResponse<void>;
 export type GetResult = AxiosResponse<Get200>;
-export type GetPublicIconsFilenameResult = AxiosResponse<Blob>;
-export type GetPublicIconsResult = AxiosResponse<GetPublicIcons200Item[]>;
 export type GetArtistsArtistMusixMatchIdResult =
     AxiosResponse<GetArtistsArtistMusixMatchId200>;
+export type GetArtistsArtistNameResult = AxiosResponse<
+    GetArtistsArtistName200Item[]
+>;
 export type GetArtistsSearchResult = AxiosResponse<GetArtistsSearch200Item[]>;
+export type GetLeaderboardsResult = AxiosResponse<GetLeaderboards200>;
 export type GetDebugSnapshotResult = AxiosResponse<GetDebugSnapshot200>;
 export type PutDebugSnapshotResult = AxiosResponse<PutDebugSnapshot200>;
-export type GetLeaderboardsResult = AxiosResponse<GetLeaderboards200>;
+export type GetPublicIconsFilenameResult = AxiosResponse<Blob>;
+export type GetPublicIconsResult = AxiosResponse<GetPublicIcons200Item[]>;
+export type GetLyricsTrackMusixMatchIdResult =
+    AxiosResponse<GetLyricsTrackMusixMatchId200>;
 export type GetUsersUserIdResult = AxiosResponse<GetUsersUserId200>;
 export type GetUsersSearchResult = AxiosResponse<GetUsersSearch200Item[]>;
 export type GetUsersCheckResult = AxiosResponse<GetUsersCheck200>;
-export type PostAuthLoginResult = AxiosResponse<PostAuthLogin200>;
-export type PostAuthRegisterResult = AxiosResponse<PostAuthRegister200>;
 export type GetDebugFakeUserResult = AxiosResponse<GetDebugFakeUser200>;
 export type PostDebugFakeUsersResult = AxiosResponse<
     PostDebugFakeUsers201Item[]
 >;
+export type PostAuthLoginResult = AxiosResponse<PostAuthLogin200>;
+export type PostAuthRegisterResult = AxiosResponse<PostAuthRegister200>;
 export type GetAuthLoginSpotifyCallbackResult = AxiosResponse<unknown>;
 export type GetAuthRegisterSpotifyCallbackResult = AxiosResponse<unknown>;
 export type GetUsersSelfSelfIdResult = AxiosResponse<GetUsersSelfSelfId200>;
@@ -2251,18 +2316,16 @@ export type PutUsersSelfSelfIdConfigsMelodleConfigIdResult =
 export type GetUsersSelfSelfIdConfigsSuggestResult = AxiosResponse<
     GetUsersSelfSelfIdConfigsSuggest200Item[]
 >;
+export type GetUsersSelfSelfIdFriendsResult = AxiosResponse<
+    GetUsersSelfSelfIdFriends200Item[]
+>;
 export type PostUsersSelfSelfIdMelodleResult =
     AxiosResponse<PostUsersSelfSelfIdMelodle200>;
 export type GetUsersSelfSelfIdMelodleHistoryResult = AxiosResponse<
     GetUsersSelfSelfIdMelodleHistory200Item[]
 >;
-export type GetUsersSelfSelfIdFriendsResult = AxiosResponse<
-    GetUsersSelfSelfIdFriends200Item[]
->;
 export type PutUsersSelfSelfIdArtistsArtistMusixMatchIdFavoriteResult =
     AxiosResponse<PutUsersSelfSelfIdArtistsArtistMusixMatchIdFavorite200>;
-export type GetUsersSelfSelfIdMelodleGameIdResult =
-    AxiosResponse<GetUsersSelfSelfIdMelodleGameId200>;
 export type DeleteUsersSelfSelfIdFriendsFriendIdResult =
     AxiosResponse<DeleteUsersSelfSelfIdFriendsFriendId200>;
 export type PostUsersSelfSelfIdFriendsFriendIdResult =
@@ -2271,7 +2334,9 @@ export type PutUsersSelfSelfIdFriendsFriendIdResult =
     AxiosResponse<PutUsersSelfSelfIdFriendsFriendId200>;
 export type GetUsersSelfSelfIdFriendsLeaderboardsResult =
     AxiosResponse<GetUsersSelfSelfIdFriendsLeaderboards200>;
-export type PostUsersSelfSelfIdMelodleGameIdGuessSongAttemptsResult =
-    AxiosResponse<PostUsersSelfSelfIdMelodleGameIdGuessSongAttempts200>;
+export type GetUsersSelfSelfIdMelodleGameIdResult =
+    AxiosResponse<GetUsersSelfSelfIdMelodleGameId200>;
 export type PostUsersSelfSelfIdMelodleGameIdGuessLineAttemptsResult =
     AxiosResponse<PostUsersSelfSelfIdMelodleGameIdGuessLineAttempts200>;
+export type PostUsersSelfSelfIdMelodleGameIdGuessSongAttemptsResult =
+    AxiosResponse<PostUsersSelfSelfIdMelodleGameIdGuessSongAttempts200>;
