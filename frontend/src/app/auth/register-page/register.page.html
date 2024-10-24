@@ -146,7 +146,7 @@
         />
         <p
             class="min-h-4 text-xs text-red-500"
-            [class.invisible]="!emailControl.touched"
+            [class.invisible]="emailControl.pristine || emailControl.valid"
         >
             @if (this.person.controls.email.hasError("emailExists")) {
             <span> {{this.dict().emailTaken }} </span>
@@ -164,7 +164,7 @@
         />
         <p
             class="min-h-4 text-xs text-red-500"
-            [class.invisible]="!passwordControl.touched || passwordControl.valid"
+            [class.invisible]="passwordControl.pristine || passwordControl.valid"
         >
             {{ dict().invalidPassword }}
         </p>
