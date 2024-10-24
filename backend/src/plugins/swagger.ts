@@ -24,7 +24,7 @@ const asciiArt = String.raw`(
 export const tags = [
     {
         name: "TODO Schema",
-        description: "Endpoints whose schema we have yet to do."
+        description: "Endpoints whose schema we have yet to do.",
     },
     {
         name: "User CRUD",
@@ -54,8 +54,11 @@ export const tags = [
     },
     {
         name: "Artists",
-        description:
-            "Endpoints about fetching information from artists."
+        description: "Endpoints about fetching information from artists.",
+    },
+    {
+        name: "Lyrics",
+        description: "Endpoints related to obtaining tracks lyrics.",
     },
     {
         name: "Friends",
@@ -67,11 +70,12 @@ export const tags = [
     },
     {
         name: "Game configs",
-        "description": "Enspoints to manipulate your game configurations.",
-        },
+        description: "Enspoints to manipulate your game configurations.",
+    },
     {
         name: "Leaderboards",
-        description: "Ranking lists showing best players depending on every gamemode.",
+        description:
+            "Ranking lists showing best players depending on every gamemode.",
     },
     {
         name: "Other",

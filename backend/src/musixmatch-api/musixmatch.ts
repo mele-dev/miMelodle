@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from "axios";
+import { typedEnv } from "../types/env.js";
 
-const apiKey = "";
+const apiKey = typedEnv.MUSIXMATCH_KEY;
 const url = "https://api.musixmatch.com/ws/1.1";
 
 interface MusixmatchResponse<T> {
@@ -13,7 +14,7 @@ class MusixmatchAPI {
     private apiKey: string;
     private baseUrl: string;
 
-    constructor(apiKey: string) {
+    constructor() {
         this.apiKey = apiKey;
         this.baseUrl = url;
     }
@@ -86,6 +87,11 @@ class MusixmatchAPI {
             page_size: "1",
             s_artist_rating: "desc",
         });
+    }
+
+    /* buscar artista por id */
+    public async getArtistById(artistId: string): Promise<any> {
+        return this.request("/artist.get", { artist_id: artistId });
     }
 }
 
