@@ -43,11 +43,13 @@ class MusixmatchAPI {
     }
 
     /* este metodo nos sirve para traernos la letra por un track id */
+    // TODO: no esta tipado aun
     public async getLyricsByTrackId(trackId: string): Promise<any> {
         return this.request("/track.lyrics.get", { track_id: trackId });
     }
 
     /* traer una cancion por el nombre de la cancion y artista */
+    // TODO: no esta tipado aun
     public async searchTrack(track: string, artist: string): Promise<any> {
         return this.request("/track.search", {
             q_track: track,
@@ -58,21 +60,25 @@ class MusixmatchAPI {
     }
 
     /* traerte la info de una cancion por su id (INFO, no la letra...) */
+    // TODO: no esta tipado aun
     public async getTrackById(trackId: string): Promise<any> {
         return this.request("/track.get", { track_id: trackId });
     }
 
     /* info de un album por su id */
+    // TODO: no esta tipado aun
     public async getAlbumById(albumId: string): Promise<any> {
         return this.request("/album.get", { album_id: albumId });
     }
 
     /* tracklist de un album */
+    // TODO: no esta tipado aun
     public async getTracksByAlbumId(albumId: string): Promise<any> {
         return this.request("/album.tracks.get", { album_id: albumId });
     }
 
     /* top tracks de un artista */
+    // TODO: no esta tipado aun
     public async getArtistTopTracks(artistId: string): Promise<any> {
         return this.request("/artist.top.get", {
             artist_id: artistId,
