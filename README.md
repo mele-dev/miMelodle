@@ -48,3 +48,4 @@ clasificación y compararse con sus amigos.
   - Muy probablemente el diagrama físico y mer se encuentren desactualizados
     cuando los vea. Utilize alguna herramienta de autogeneración para verlos,
     nosotros hacemos eso; solo los actualizamos para entregas de bases de datos.
+  - Tenemos un [diagrama de rutas](./docs/rutas-melodle.png).
