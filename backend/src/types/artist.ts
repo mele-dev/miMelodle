@@ -1,3 +1,4 @@
+import { Static } from "@sinclair/typebox";
 import { SafeType } from "../utils/typebox.js";
 
 export const artistSchema = SafeType.Object(
@@ -8,19 +9,36 @@ export const artistSchema = SafeType.Object(
                 "unique and unchangeable.",
         }),
         musixmatchArtistId: SafeType.String({
-            description:
-                "Identifier for an artist given by MusixMatch"
+            description: "Identifier for an artist given by MusixMatch",
         }),
         name: SafeType.String({
-            description:
-                "Name of the artist, does not have to be unique."
+            description: "Name of the artist, does not have to be unique.",
         }),
-        imageUrl: SafeType.Optional(SafeType.String({
-            description: "Url to download the artist's portrait image, if available."
-        })),
+        imageUrl: SafeType.Optional(
+            SafeType.String({
+                description:
+                    "Url to download the artist's portrait image, if available.",
+            })
+        ),
     },
     {
         $id: "ArtistSchema",
         title: "artistSchema",
     }
 );
+
+export const musixMatchArtistSchema = SafeType.Object({
+    artist: SafeType.Object({
+        artist_id: SafeType.String(),
+        artist_name: SafeType.String(),
+        artist_image_url: SafeType.String(),
+    }),
+});
+
+export const musixMatchArtistListSchema = SafeType.Object({
+    artist_list: SafeType.Array(musixMatchArtistSchema),
+});
+
+export type Artist = Static<typeof artistSchema>;
+export type MusixMatchArtist = Static<typeof musixMatchArtistSchema>;
+export type MusixMatchArtistList = Static<typeof musixMatchArtistListSchema>;

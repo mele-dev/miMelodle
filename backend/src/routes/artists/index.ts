@@ -32,7 +32,7 @@ const artist: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
             const artist = {
                 musixmatchArtistId: response.artist.artist_id,
                 name: response.artist.artist_name,
-                imageUrl: response.artist.artist_image_url, // Asegúrate de que este campo exista en la respuesta
+                imageUrl: response.artist.artist_image_url,
             };
 
             return reply.send(artist);
@@ -44,8 +44,7 @@ const artist: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
         schema: {
             security: [],
             querystring: SafeType.Object({
-                /* supongo que maximo 20 el largo del nombre de un artista?? */
-                query: SafeType.String({ maxLength: 20 }),
+                query: SafeType.String({ maxLength: 200 }),
             }),
             response: {
                 200: SafeType.Array(
@@ -66,12 +65,12 @@ const artist: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
             const { query } = request.query;
             const musixmatch = new MusixmatchAPI();
 
-            const response = await musixmatch.searchArtist(query);
+            const response = await musixmatch.artistQuery(query);
 
             const artists = response.artist_list.map((artist: any) => ({
                 musixmatchArtistId: artist.artist.artist_id,
                 name: artist.artist.artist_name,
-                imageUrl: artist.artist.artist_image_url, // Asegúrate de que la API devuelva este campo
+                imageUrl: artist.artist.artist_image_url,
             }));
 
             return reply.send(artists);
