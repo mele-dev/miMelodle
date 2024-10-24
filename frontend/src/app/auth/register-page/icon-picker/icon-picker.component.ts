@@ -1,7 +1,8 @@
-import { Component, inject, input, OnInit, output } from "@angular/core";
+import { Component, inject, input, model } from "@angular/core";
 import { BackendIcon } from "../../../types/backend-icon";
 import { JsonPipe } from "@angular/common";
 import { DomSanitizer } from "@angular/platform-browser";
+import { FormsModule } from "@angular/forms";
 
 type Enumerate<
     N extends number,
@@ -18,20 +19,12 @@ type IntRange<F extends number, T extends number> = Exclude<
 @Component({
     selector: "app-icon-picker",
     standalone: true,
-    imports: [JsonPipe],
+    imports: [JsonPipe, FormsModule],
     templateUrl: "./icon-picker.component.html",
 })
-export class IconPickerComponent implements OnInit {
+export class IconPickerComponent {
     sanitizer = inject(DomSanitizer);
     icons = input.required<BackendIcon[]>();
     columns = input.required<IntRange<1, 13>>();
-    OnIconChange = output<BackendIcon>();
-    selectedIcon: BackendIcon | undefined = undefined;
-
-    ngOnInit(): void {
-        // TODO: Make two way binding work.
-        this.OnIconChange.subscribe((icon) => {
-            this.selectedIcon = icon;
-        });
-    }
+    selectedIcon = model<BackendIcon>();
 }

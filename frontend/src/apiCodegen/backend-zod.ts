@@ -47,6 +47,25 @@ export const getArtistsArtistMusixMatchIdResponse = zod.object({
 });
 
 /**
+ * Search for artists based on the query provided in the querystring.
+ * @summary Search for artists by name
+ */
+export const getArtistsArtistNameQueryQueryMax = 200;
+
+export const getArtistsArtistNameQueryParams = zod.object({
+    query: zod.string().max(getArtistsArtistNameQueryQueryMax),
+});
+
+export const getArtistsArtistNameResponseItem = zod.object({
+    musixmatchArtistId: zod.string(),
+    name: zod.string(),
+    imageUrl: zod.string().optional(),
+});
+export const getArtistsArtistNameResponse = zod.array(
+    getArtistsArtistNameResponseItem
+);
+
+/**
  * We use a custom algorithm to determine which artists are most relevant, based off the query in the querystring.
  * @summary Search for available artists.
  */
@@ -62,6 +81,58 @@ export const getArtistsSearchResponseItem = zod.object({
     imageUrl: zod.string().optional(),
 });
 export const getArtistsSearchResponse = zod.array(getArtistsSearchResponseItem);
+
+/**
+ * @summary Fetches global leaderboard information.
+ */
+export const getLeaderboardsQueryGameModesItemRegExp = new RegExp(
+    "^(Guess Line|Guess Song)$"
+);
+export const getLeaderboardsQueryAmountMax = 50;
+
+export const getLeaderboardsQueryParams = zod.object({
+    gameModes: zod.array(
+        zod.string().regex(getLeaderboardsQueryGameModesItemRegExp)
+    ),
+    start: zod.number(),
+    amount: zod.number().max(getLeaderboardsQueryAmountMax),
+});
+
+export const getLeaderboardsResponseLeaderboardItemUsernameMin = 3;
+
+export const getLeaderboardsResponseLeaderboardItemUsernameMax = 20;
+
+export const getLeaderboardsResponseLeaderboardItemUsernameRegExp = new RegExp(
+    "^[a-zA-Z0-9.-_]+$"
+);
+export const getLeaderboardsResponseLeaderboardItemNameMax = 25;
+
+export const getLeaderboardsResponse = zod.object({
+    leaderboard: zod.array(
+        zod
+            .object({
+                id: zod.number(),
+                username: zod
+                    .string()
+                    .min(getLeaderboardsResponseLeaderboardItemUsernameMin)
+                    .max(getLeaderboardsResponseLeaderboardItemUsernameMax)
+                    .regex(
+                        getLeaderboardsResponseLeaderboardItemUsernameRegExp
+                    ),
+                name: zod
+                    .string()
+                    .min(1)
+                    .max(getLeaderboardsResponseLeaderboardItemNameMax),
+                profilePictureFilename: zod.string(),
+            })
+            .and(
+                zod.object({
+                    score: zod.number(),
+                    rank: zod.number(),
+                })
+            )
+    ),
+});
 
 /**
  * @summary Get current state of application.
@@ -142,58 +213,6 @@ export const getDebugSnapshotResponse = zod.object({
 export const putDebugSnapshotResponse = zod.enum(["TODO!"]);
 
 /**
- * @summary Fetches global leaderboard information.
- */
-export const getLeaderboardsQueryGameModesItemRegExp = new RegExp(
-    "^(Guess Line|Guess Song)$"
-);
-export const getLeaderboardsQueryAmountMax = 50;
-
-export const getLeaderboardsQueryParams = zod.object({
-    gameModes: zod.array(
-        zod.string().regex(getLeaderboardsQueryGameModesItemRegExp)
-    ),
-    start: zod.number(),
-    amount: zod.number().max(getLeaderboardsQueryAmountMax),
-});
-
-export const getLeaderboardsResponseLeaderboardItemUsernameMin = 3;
-
-export const getLeaderboardsResponseLeaderboardItemUsernameMax = 20;
-
-export const getLeaderboardsResponseLeaderboardItemUsernameRegExp = new RegExp(
-    "^[a-zA-Z0-9.-_]+$"
-);
-export const getLeaderboardsResponseLeaderboardItemNameMax = 25;
-
-export const getLeaderboardsResponse = zod.object({
-    leaderboard: zod.array(
-        zod
-            .object({
-                id: zod.number(),
-                username: zod
-                    .string()
-                    .min(getLeaderboardsResponseLeaderboardItemUsernameMin)
-                    .max(getLeaderboardsResponseLeaderboardItemUsernameMax)
-                    .regex(
-                        getLeaderboardsResponseLeaderboardItemUsernameRegExp
-                    ),
-                name: zod
-                    .string()
-                    .min(1)
-                    .max(getLeaderboardsResponseLeaderboardItemNameMax),
-                profilePictureFilename: zod.string(),
-            })
-            .and(
-                zod.object({
-                    score: zod.number(),
-                    rank: zod.number(),
-                })
-            )
-    ),
-});
-
-/**
  * Get the svg for a certain user icon. The selection of user icons is fixed.
  * @summary Get a user icon.
  */
@@ -213,6 +232,23 @@ export const getPublicIconsResponseItem = zod.object({
     filename: zod.string(),
 });
 export const getPublicIconsResponse = zod.array(getPublicIconsResponseItem);
+
+/**
+ * This endpoint retrieves the lyrics for a given track using its Musixmatch ID
+ * @summary Get lyrics for a specific track
+ */
+export const getLyricsTrackMusixMatchIdParams = zod.object({
+    trackMusixMatchId: zod.string(),
+});
+
+export const getLyricsTrackMusixMatchIdResponse = zod.object({
+    lyricsId: zod.string(),
+    trackId: zod.string(),
+    lyricsBody: zod.string(),
+    explicit: zod.boolean(),
+    language: zod.string(),
+    copyright: zod.string().optional(),
+});
 
 /**
  * Authentication is not needed to see public user information.
@@ -277,6 +313,39 @@ export const getUsersSearchResponseItem = zod.object({
 export const getUsersSearchResponse = zod
     .array(getUsersSearchResponseItem)
     .max(50);
+
+/**
+ * @summary Check if some user data already exists
+ */
+export const getUsersCheckQueryUsernameMin = 3;
+
+export const getUsersCheckQueryUsernameMax = 20;
+
+export const getUsersCheckQueryUsernameRegExp = new RegExp("^[a-zA-Z0-9.-_]+$");
+export const getUsersCheckQueryEmailMax = 254;
+
+export const getUsersCheckQueryEmailRegExp = new RegExp(
+    "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$"
+);
+
+export const getUsersCheckQueryParams = zod.object({
+    username: zod
+        .string()
+        .min(getUsersCheckQueryUsernameMin)
+        .max(getUsersCheckQueryUsernameMax)
+        .regex(getUsersCheckQueryUsernameRegExp)
+        .optional(),
+    email: zod
+        .string()
+        .max(getUsersCheckQueryEmailMax)
+        .regex(getUsersCheckQueryEmailRegExp)
+        .optional(),
+});
+
+export const getUsersCheckResponse = zod.object({
+    usernameExists: zod.boolean(),
+    emailExists: zod.boolean(),
+});
 
 /**
  * All fake users have Fake123! as their password.
@@ -393,14 +462,6 @@ export const postAuthRegisterBody = zod.object({
 });
 
 export const postAuthRegisterResponse = zod.object({
-    jwtToken: zod.string(),
-    id: zod.number(),
-});
-
-/**
- * @summary Login through spotify.
- */
-export const getAuthLoginSpotifyCallbackResponse = zod.object({
     jwtToken: zod.string(),
     id: zod.number(),
 });

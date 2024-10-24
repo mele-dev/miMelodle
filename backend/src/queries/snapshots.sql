@@ -1,5 +1,5 @@
 /* @name getUsersSnapshot */
-SELECT username, email, "passwordHash", "spotifyId", "profilePictureId", name
+SELECT username, email, "spotifyId", "profilePictureId", name
   FROM users;
 
 /* @name getFriendsSnapshot */
