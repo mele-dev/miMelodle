@@ -67,13 +67,11 @@ const artist: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
 
             const response = await musixmatch.artistQuery(query);
 
-            const artists = response.artist_list.map(
-                (artist: MusixMatchArtist) => ({
-                    musixmatchArtistId: artist.artist.artist_id,
-                    name: artist.artist.artist_name,
-                    imageUrl: artist.artist.artist_image_url,
-                })
-            );
+            const artists = response.artist_list.map((artist) => ({
+                musixmatchArtistId: artist.artist.artist_id,
+                name: artist.artist.artist_name,
+                imageUrl: artist.artist.artist_image_url,
+            }));
 
             return reply.send(artists);
         },
