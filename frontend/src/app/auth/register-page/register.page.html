@@ -35,19 +35,23 @@
             ></div>
             <div class="flex grow flex-col">
                 <input
-                    class="text-bold rounded border-none bg-transparent px-0 py-1 text-xl text-white"
+                    class="text-bold rounded px-0 py-1 text-xl text-white"
+                    [class.border-transparent]="person.controls.name.pristine || person.controls.name.valid"
+                    hlmInput
                     type="text"
                     [formControl]="person.controls.name"
                     name="name"
                     [placeholder]="dict().namePlaceholder"
                 />
-                <div class="flex w-full">
+                <div class="flex w-full items-baseline">
                     <span>&#64;</span
                     ><input
                         type="text"
+                        hlmInput
                         name="username"
                         [formControl]="person.controls.username"
-                        class="grow rounded border-none bg-transparent py-0 ps-0 text-inherit"
+                        class="grow rounded bg-transparent ps-0 text-base text-foreground h-[1.5em]"
+                        [class.border-transparent]="person.controls.username.pristine || person.controls.username.valid"
                         [placeholder]="dict().usernamePlaceholder"
                     />
                 </div>
@@ -130,6 +134,7 @@
         @let emailControl = this.person.controls.email;
         <label>{{ dict().email }}</label>
         <input
+            hlmInput
             type="text"
             [formControl]="emailControl"
             name="email"
