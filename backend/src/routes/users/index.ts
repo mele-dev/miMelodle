@@ -1,10 +1,17 @@
-import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
+import {
+    FastifyPluginAsyncTypebox,
+    Static,
+    TSchema,
+} from "@fastify/type-provider-typebox";
 import { SafeType } from "../../utils/typebox.js";
-import { userSchema } from "../../types/user.js";
+import { User, userSchema } from "../../types/user.js";
 import { MelodleTagName } from "../../plugins/swagger.js";
 import { decorators } from "../../services/decorators.js";
 import { friendSchema } from "../../types/user.js";
 import { typedEnv } from "../../types/env.js";
+import { runPreparedQuery } from "../../services/database.js";
+import { searchForUserEmailOrUsername } from "../../queries/dml.queries.js";
+import { sendOk } from "../../utils/reply.js";
 
 const users: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
     fastify.get("/:userId", {
@@ -64,6 +71,44 @@ const users: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
 
         async handler(_request, reply) {
             return reply.notImplemented();
+        },
+    });
+
+    const checkSchema = SafeType.Partial(
+        SafeType.Pick(userSchema, ["username", "email"])
+    );
+
+    fastify.get("/check", {
+        onRequest: [decorators.noSecurity],
+        schema: {
+            security: [],
+            querystring: checkSchema,
+            response: {
+                200: SafeType.Object({
+                    usernameExists: SafeType.Boolean(),
+                    emailExists: SafeType.Boolean(),
+                } satisfies Record<
+                    `${keyof Static<typeof checkSchema>}Exists`,
+                    TSchema
+                >),
+            },
+            tags: ["User"] satisfies MelodleTagName[],
+            summary: "Check if some user data already exists",
+        },
+        async handler(request, reply) {
+            const result = await runPreparedQuery(
+                searchForUserEmailOrUsername,
+                request.query
+            );
+
+            return sendOk(reply, 200, {
+                usernameExists: result.some(
+                    (row) => row.username === request.query.username
+                ),
+                emailExists: result.some(
+                    (row) => row.email === request.query.email
+                ),
+            });
         },
     });
 };

@@ -8,9 +8,9 @@ import {
 } from "../../../apiCodegen/backend";
 import { DomSanitizer } from "@angular/platform-browser";
 import {
+    AbstractControl,
     FormBuilder,
     ReactiveFormsModule,
-    ValidationErrors,
 } from "@angular/forms";
 import { RouterModule } from "@angular/router";
 import { ClientValidationService } from "../../services/client-validation.service";
@@ -48,7 +48,11 @@ type RegisterFormFields = PostAuthRegisterBody & { repeatPassword: string };
         InfoCircleComponent,
         CommonModule,
         LanguagePickerComponent,
+<<<<<<< HEAD
         HlmInputDirective,
+=======
+    MinusCircleIconComponent
+>>>>>>> main
     ],
     templateUrl: "./register.page.html",
 })
@@ -78,42 +82,42 @@ export class RegisterPage implements OnInit {
                 [],
                 this.validator.Schema(this.schema.shape.name)
             ),
-            username: this.builder.control(
-                "",
-                [],
-                this.validator.Schema(this.schema.shape.username)
-            ),
-            email: this.builder.control(
-                "",
-                [],
-                this.validator.Schema(this.schema.shape.email)
-            ),
+            username: this.builder.control("", [], this.validateUsername()),
+            email: this.builder.control("", [], [this.validateEmail()]),
             password: this.builder.control(
                 "",
                 [],
                 this.validator.Schema(this.schema.shape.password)
             ),
-            repeatPassword: this.builder.control(
-                "",
-                this.validateRepeatPassword()
-            ),
+            repeatPassword: "",
         } satisfies { [K in keyof RegisterFormFields]: unknown },
         {
-            validators: this.validateRepeatPassword(),
+            validators: this.validator.validateRepeatPassword,
             asyncValidators: this.validator.Schema(this.schema),
         }
     );
 
-    private validateRepeatPassword() {
+    private validateEmail() {
         const thisBinding = this;
-        return function (): ValidationErrors | null {
-            if (!thisBinding.person) {
-                return null;
-            }
-            return thisBinding.validator.validateRepeatPassword(
-                thisBinding.person.controls.password.value,
-                thisBinding.person.controls.repeatPassword.value
+        return async function (control: { value: string }) {
+            return (
+                (await thisBinding.validator.Schema(
+                    thisBinding.schema.shape.email
+                )(control)) ??
+                (await thisBinding.validator.validateUniqueEmail(control))
             );
+        };
+    }
+
+    private validateUsername() {
+        const thisBinding = this;
+        return async function (control: AbstractControl) {
+            const output =
+                (await thisBinding.validator.Schema(
+                    thisBinding.schema.shape.username
+                )(control)) ??
+                (await thisBinding.validator.validateUniqueUsername(control));
+            return output;
         };
     }
 
@@ -142,10 +146,6 @@ export class RegisterPage implements OnInit {
         this.chosenIcon.set(
             this.allIcons.find((v) => v.filename === "default.svg")
         );
-    }
-
-    ifFilled<T>(input: unknown, message: T) {
-        return !input ? undefined : message;
     }
 
     async onSubmit() {

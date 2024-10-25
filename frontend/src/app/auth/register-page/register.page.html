@@ -80,20 +80,25 @@
                         <app-info-circle></app-info-circle>
                         }
                     </p>
-                    @let correctUsername = this.person.controls.username.valid;
+                    @let usernameStatus = this.person.controls.username.status;
                     <p
                         [ngClass]="{
                                 'flex gap-1 rounded-full px-2 font-bold transition-colors w-fit': true,
-                                'bg-red-500': !correctUsername,
-                                'bg-fuchsia-500': correctUsername,
+                                'bg-red-500': usernameStatus === 'INVALID',
+                                'bg-fuchsia-500': usernameStatus === 'VALID',
+                                'bg-purple-500': usernameStatus === 'PENDING',
                             }"
                     >
                         <span> {{ this.dict().username }} </span>
-                        @if (correctUsername) {
+                        @switch (usernameStatus) { @case("VALID") {
                         <app-tick-circle-icon></app-tick-circle-icon>
-                        } @else {
+                        } @case ("INVALID") {
                         <app-info-circle></app-info-circle>
-                        }
+                        } @case ("PENDING") {
+                        <app-minus-circle-icon
+                            class="animate-spin"
+                        ></app-minus-circle-icon>
+                        }}
                     </p>
                 </summary>
                 <div
@@ -105,10 +110,14 @@
                         <ul>
                             @for (rule of dict().invalidUsername.rules; track
                             rule) {
-                            <li class="ml-4">{{ rule }}</li>
+                            <li class="ms-4">{{ rule }}</li>
                             }
                         </ul>
                     </div>
+                    @if
+                    (this.person.controls.username.hasError("usernameExists")) {
+                    <p class="text-red-500">{{ this.dict().usernameTaken }}</p>
+                    }
                 </div>
             </details>
             <section>
@@ -118,7 +127,7 @@
                 <app-icon-picker
                     [icons]="this.allIcons"
                     [columns]="4"
-                    (OnIconChange)="this.chosenIcon.set($event)"
+                    (selectedIconChange)="this.chosenIcon.set($event)"
                 ></app-icon-picker>
             </section>
         </div>
@@ -144,7 +153,11 @@
             class="min-h-4 text-xs text-red-500"
             [class.invisible]="emailControl.pristine || emailControl.valid"
         >
-            {{ dict().invalidEmail }}
+            @if (this.person.controls.email.hasError("emailExists")) {
+            <span> {{this.dict().emailTaken }} </span>
+            } @else if (this.person.controls.email.invalid) {
+            <span>{{this.dict().invalidEmail}}</span>
+            }
         </p>
         <label>{{ dict().password }}</label>
         @let passwordControl = person.controls.password ;
@@ -169,7 +182,7 @@
         />
         <p
             class="min-h-4 text-xs text-red-500"
-            [class.invisible]="this.person.controls.repeatPassword.valid"
+            [class.invisible]="!this.person.hasError('differentRepeatedPassword')"
         >
             {{ dict().invalidRepeatPassword }}
         </p>
