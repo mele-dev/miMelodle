@@ -21,21 +21,23 @@
         <app-language-picker></app-language-picker>
     </div>
     <!-- Login data -->
-    <section class="mt-5 flex min-w-96 flex-col gap-6">
+    <section class="mt-5 flex min-w-96 flex-col gap-4">
         <div class="flex w-full flex-col">
             <label>{{ dict().emailOrUsername }}</label>
             <input
+                hlmInput
                 type="text"
                 [formControl]="person.controls.email"
-                class="w-full rounded bg-inherit text-inherit"
+                class="w-full rounded bg-inherit text-foreground"
             />
         </div>
         <div class="flex w-full flex-col">
             <label>{{ dict().password }}</label>
             <input
+                hlmInput
                 type="password"
                 [formControl]="person.controls.password"
-                class="w-full rounded bg-inherit text-inherit"
+                class="w-full rounded bg-inherit text-foreground"
             />
         </div>
         <button

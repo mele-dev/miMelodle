@@ -3,10 +3,11 @@ import forms from "@tailwindcss/forms";
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-    content: ["./src/**/*.{html,ts}"],
+    presets: [require("@spartan-ng/ui-core/hlm-tailwind-preset")],
+    content: ["./src/**/*.{html,ts}", "./libs/ui/**/*.{html,ts}"],
     darkMode: "selector",
     theme: {
         extend: {},
     },
-    plugins: [typography, forms],
+    plugins: [typography, forms({ strategy: "class" })],
 };

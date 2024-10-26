@@ -27,7 +27,12 @@ import { RegisterTranslator } from "./register.translations";
 import { LanguagePickerComponent } from "../../components/language-picker/language-picker.component";
 import { AuthLayoutComponent } from "../auth-layout/auth-layout.component";
 import { LocalStorageService } from "../../services/local-storage.service";
+import { HlmInputDirective } from "@spartan-ng/ui-input-helm";
+import { HlmLabelDirective } from "@spartan-ng/ui-label-helm";
 import { MinusCircleIconComponent } from "../../icons/minus-circle-icon/minus-circle-icon.component";
+import { HlmIconComponent } from "@spartan-ng/ui-icon-helm";
+import { provideIcons } from "@ng-icons/core";
+import { lucideAlertCircle } from "@ng-icons/lucide";
 
 type RegisterFormFields = PostAuthRegisterBody & { repeatPassword: string };
 
@@ -37,6 +42,7 @@ type RegisterFormFields = PostAuthRegisterBody & { repeatPassword: string };
     imports: [
         JsonPipe,
         ReactiveFormsModule,
+        HlmLabelDirective,
         AuthLayoutComponent,
         RouterModule,
         SpotifyRectangleComponent,
@@ -46,8 +52,11 @@ type RegisterFormFields = PostAuthRegisterBody & { repeatPassword: string };
         InfoCircleComponent,
         CommonModule,
         LanguagePickerComponent,
-    MinusCircleIconComponent
+        HlmInputDirective,
+        MinusCircleIconComponent,
+        HlmIconComponent,
     ],
+    providers: [provideIcons({ lucideAlertCircle })],
     templateUrl: "./register.page.html",
 })
 export class RegisterPage implements OnInit {
