@@ -3,6 +3,7 @@ import { CommonModule, JsonPipe } from "@angular/common";
 import {
     getPublicIcons,
     getPublicIconsFilename,
+    PostAuthLogin404,
     postAuthRegister,
     PostAuthRegisterBody,
 } from "../../../apiCodegen/backend";
@@ -33,6 +34,7 @@ import { MinusCircleIconComponent } from "../../icons/minus-circle-icon/minus-ci
 import { HlmIconComponent } from "@spartan-ng/ui-icon-helm";
 import { provideIcons } from "@ng-icons/core";
 import { lucideAlertCircle } from "@ng-icons/lucide";
+import { toast } from "ngx-sonner";
 
 type RegisterFormFields = PostAuthRegisterBody & { repeatPassword: string };
 
@@ -157,10 +159,8 @@ export class RegisterPage implements OnInit {
             this.localStorage.setItem("userInfo", result.data);
             this.safeRouter.navigate(["/app"]);
         } catch (e) {
-            if (e instanceof axios.AxiosError) {
-            }
             console.error(e);
-            alert("Error al crear cuenta.");
+            toast("Error al crear cuenta.");
         }
     }
 }

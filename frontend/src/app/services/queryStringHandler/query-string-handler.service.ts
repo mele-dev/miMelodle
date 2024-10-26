@@ -2,6 +2,7 @@ import { inject, Injectable } from "@angular/core";
 import { QueryParamsService } from "../query-params.service";
 import { QueryStringHandlerTranslator } from "./query-string-handler.translations";
 import { z } from "zod";
+import { toast } from "ngx-sonner";
 
 export const queryStringErrorSchema = z.enum([
     "spotify_taken",
@@ -18,7 +19,7 @@ export class QueryStringHandlerService {
     private readonly _dict = inject(QueryStringHandlerTranslator).dict;
 
     private _handleUnknownError(error: string) {
-        alert("Unknown error from backend: " + error);
+        toast("Unknown error from backend: " + error);
     }
 
     listen() {
@@ -30,7 +31,7 @@ export class QueryStringHandlerService {
                 );
 
                 if (parsedEnum.success) {
-                    alert(this._dict()[parsedEnum.data]);
+                    toast(this._dict()[parsedEnum.data]);
                 } else {
                     this._handleUnknownError(error.errorEnum);
                 }

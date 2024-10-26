@@ -61,7 +61,7 @@ export default (async (fastify) => {
         },
         async errorHandler(_error, _request, reply) {
             return reply.redirect(
-                `${frontendPaths.register}?${frontendPaths.generalSearchParams({ errorEnum: "no_user_spotify" })}`
+                `${frontendPaths.login}?${frontendPaths.generalSearchParams({ errorEnum: "no_user_spotify" })}`
             );
         },
     });
