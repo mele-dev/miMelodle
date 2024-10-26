@@ -1,5 +1,7 @@
-import { Component } from "@angular/core";
+import { Component, inject, OnInit } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
+import { QueryParamsService } from "./services/query-params.service";
+import { QueryStringHandlerService } from "./services/queryStringHandler/query-string-handler.service";
 
 @Component({
     selector: "app-root",
@@ -8,6 +10,11 @@ import { RouterOutlet } from "@angular/router";
     templateUrl: "./app.component.html",
     styleUrl: "./app.component.css",
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
     title = "frontend";
+    queryStringHandler = inject(QueryStringHandlerService);
+
+    async ngOnInit() {
+      this.queryStringHandler.listen();
+    }
 }

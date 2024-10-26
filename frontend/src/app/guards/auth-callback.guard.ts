@@ -15,7 +15,7 @@ export const authCallbackGuard: CanActivateFn = async (route, _state) => {
     ]);
 
     if (!parsed.success) {
-        console.error(parsed.error)
+        console.error(parsed.error);
         alert("Error al realizar acción. Redirigiendo a login... (TODO)");
         safeRouter.navigate(["/auth/"]);
         return false;
