@@ -4,7 +4,7 @@ import { SafeRoutingService } from "../services/safe-routing.service";
 import { LocalStorageService } from "../services/local-storage.service";
 import { QueryParamsService } from "../services/query-params.service";
 import { toast } from "ngx-sonner";
-import { AuthCallbackGuardTranslator } from "./auth-callback-translations";
+import { AuthCallbackGuardTranslator } from "./auth-callback.translations";
 
 export const authCallbackGuard: CanActivateFn = async (route, _state) => {
     const paramsService = inject(QueryParamsService);

@@ -7,14 +7,14 @@ import { TODOComponent } from "./components/todo/todo.component";
 import { NotFoundPage } from "./not-found/not-found.page";
 import { mustHaveAuthGuard } from "./guards/must-have-auth.guard";
 import { authCallbackGuard } from "./guards/auth-callback.guard";
-import { queryParamsGuardGuard } from "./guards/query-params-guard.guard";
 import { AppLayoutPage } from "./app-layout/app-layout.page";
+import { authGuard } from "./guards/auth.guard";
 
 export const routes = [
     {
         path: "auth",
         component: AuthLayoutComponent,
-        canActivate: [queryParamsGuardGuard],
+        canActivate: [authGuard],
         children: [
             {
                 path: "",
