@@ -1,5 +1,5 @@
 <!-- TODO: Make this not be ugly AF. -->
-<nav class="w-full backdrop-blur-lg">
+<nav class="w-full backdrop-blur-lg text-xl">
     <div class="container flex w-full items-baseline justify-between px-4 py-2">
         <div class="flex flex-grow items-baseline gap-4">
             <button
@@ -23,7 +23,7 @@
         <h1 class="flex flex-grow justify-center text-2xl">
             <span class="-translate-x-1/2"> Popdle </span>
         </h1>
-        <div class="flex flex-grow items-center justify-end gap-2">
+        <div class="flex flex-grow items-baseline justify-end gap-2">
             <div class="flex flex-grow items-baseline justify-end gap-2">
                 <a [routerLink]="this.safeRouter.createLink('/app/profile')">
                     {{ this.dict().profile }}
@@ -31,6 +31,9 @@
                 <app-language-picker></app-language-picker>
             </div>
             <hlm-icon size="base" name="lucideBell"></hlm-icon>
+            <button type="button" (click)="this.logOut()">
+                <hlm-icon name="lucideLogOut"></hlm-icon>
+            </button>
         </div>
     </div>
 </nav>

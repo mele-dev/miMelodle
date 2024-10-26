@@ -5,16 +5,23 @@ import { LanguagePickerComponent } from "../language-picker/language-picker.comp
 import { AppNavbarTranslator } from "./app-navbar.translations";
 import { HlmIconModule } from "@spartan-ng/ui-icon-helm";
 import { provideIcons } from "@ng-icons/core";
-import { lucideBell } from "@ng-icons/lucide";
+import { lucideBell, lucideLogOut } from "@ng-icons/lucide";
+import { LocalStorageService } from "../../services/local-storage.service";
 
 @Component({
     selector: "app-app-navbar",
     standalone: true,
     imports: [RouterLink, LanguagePickerComponent, HlmIconModule],
-    providers: [provideIcons({ lucideBell })],
+    providers: [provideIcons({ lucideBell, lucideLogOut })],
     templateUrl: "./app-navbar.component.html",
 })
 export class AppNavbarComponent {
     dict = inject(AppNavbarTranslator).dict;
     safeRouter = inject(SafeRoutingService);
+    private readonly _localStorage = inject(LocalStorageService);
+
+    logOut() {
+        this._localStorage.removeItem("userInfo");
+        this.safeRouter.navigate(["/auth"]);
+    }
 }
