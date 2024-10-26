@@ -1,3 +1,4 @@
+import { URLSearchParams } from "url";
 import { typedEnv } from "../types/env.js";
 
 export const frontendPaths = {
@@ -10,4 +11,17 @@ export const frontendPaths = {
     auth: `https://${typedEnv.FRONT_URL}/auth`,
     login: `https://${typedEnv.FRONT_URL}/auth/login`,
     register: `https://${typedEnv.FRONT_URL}/auth/register`,
+
+    generalSearchParams(params: {
+        errorMessage?: string;
+        errorEnum?: "spotify_taken" | "invalid_credentials" | "no_user_spotify";
+    }) {
+        const paramsBuilder = new URLSearchParams();
+
+        for (const [key, val] of Object.entries(params)) {
+            paramsBuilder.append(key, val);
+        }
+
+        return paramsBuilder.toString();
+    },
 } as const;

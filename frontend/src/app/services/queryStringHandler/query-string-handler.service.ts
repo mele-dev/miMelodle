@@ -6,6 +6,7 @@ import { z } from "zod";
 export const queryStringErrorSchema = z.enum([
     "spotify_taken",
     "invalid_credentials",
+    "no_user_spotify",
 ]);
 export type QueryStringErrorEnum = z.infer<typeof queryStringErrorSchema>;
 
