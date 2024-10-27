@@ -75,3 +75,18 @@ SELECT u.username, u.email
   FROM users u
  WHERE u.username = :username
     OR u.email = :email;
+
+/* @name searchUser */
+  WITH similarity     AS (
+      SELECT u.*, similarity(u.username, :username!) AS "rank!" FROM users u
+  ),
+       filtered_users AS (
+      SELECT *
+        FROM similarity
+       WHERE "rank!" >= :rankThreshold!
+  )
+SELECT u.*, pp.filename AS "profilePictureFilename", CEIL(COUNT(*) OVER () / :pageSize!::FLOAT) AS "totalPages!"
+  FROM filtered_users u
+           INNER JOIN "profilePictures" pp ON u."profilePictureId" = pp.id
+ ORDER BY "rank!" DESC, levenshtein(u.username, :username!)
+ LIMIT :pageSize! OFFSET :pageSize!::INT * :page!::INT;

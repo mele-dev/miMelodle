@@ -4,6 +4,10 @@ CREATE SCHEMA public;
 
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
+CREATE EXTENSION IF NOT EXISTS fuzzystrmatch;
+
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
+
 CREATE TABLE "profilePictures" (
     id         SERIAL PRIMARY KEY,
     "filename" TEXT UNIQUE NOT NULL
@@ -11,7 +15,7 @@ CREATE TABLE "profilePictures" (
 
 CREATE DOMAIN email_domain AS VARCHAR(254) CHECK ( value ~ '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$' );
 
-CREATE DOMAIN username_domain AS VARCHAR(50) CHECK ( LENGTH(value) >= 3 );
+CREATE DOMAIN username_domain AS VARCHAR(50) CHECK ( LENGTH(value) >= 3 AND value ~ '^[a-zA-Z0-9\.-_]+$' );
 
 CREATE OR REPLACE FUNCTION get_default_profile_picture() RETURNS BIGINT AS $$
 DECLARE
@@ -31,10 +35,12 @@ CREATE TABLE users (
     "passwordHash"     TEXT                                     NULL,
     "spotifyId"        TEXT UNIQUE                              NULL,
     "profilePictureId" BIGINT REFERENCES "profilePictures" (id) NOT NULL DEFAULT get_default_profile_picture(),
-    -- same as username_domain for now, we'll discuss it later.
-    name               username_domain                          NOT NULL,
-    CHECK ( "passwordHash" IS NOT NULL OR "spotifyId" IS NOT NULL )
+    name               VARCHAR(25)                              NOT NULL,
+    CHECK ( ("passwordHash" IS NOT NULL OR "spotifyId" IS NOT NULL) AND LENGTH(name) >= 1 )
 );
+
+-- Optimize username for fuzzy searching.
+CREATE INDEX users_username_trgm_idx ON users USING gin (username gin_trgm_ops);
 
 CREATE TYPE "friendshipStatus" AS ENUM ('pending', 'accepted', 'blocked');
 
