@@ -1,14 +1,14 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { SafeType } from "../../../../../../utils/typebox.js";
 import {
-    friendRelationShipSchema,
+    usersRelationShipSchema,
     friendSchema,
     userSchema,
 } from "../../../../../../types/user.js";
 import { MelodleTagName } from "../../../../../../plugins/swagger.js";
 import { decorators } from "../../../../../../services/decorators.js";
 import {
-    blockExists,
+    blockAlreadyExists,
     blockUser,
     deleteFriend,
     getStatus,
@@ -25,33 +25,40 @@ export default (async (fastify, _opts) => {
     fastify.post("", {
         onRequest: [decorators.authenticateSelf()],
         schema: {
-            params: friendRelationShipSchema,
+            params: usersRelationShipSchema,
             tags: ["Blocks"] satisfies MelodleTagName[],
             response: {
-                201: SafeType.Object({message: SafeType.Literal('User blocked successfully.')}),
+                201: SafeType.Object({ blocked: SafeType.Boolean() }),
                 ...SafeType.CreateErrors([
                     "badRequest",
                     "notFound",
                     "unauthorized",
-                    "forbidden"
+                    "forbidden",
                 ]),
             },
             summary: "Block a user.",
         },
         handler: async function (request, reply) {
+            const alreadyBlocked = await runPreparedQuery(
+                blockAlreadyExists,
+                request.params
+            );
 
-            const alreadyBlocked = await runPreparedQuery(blockExists, request.params);
-
-            if (alreadyBlocked.length === 0){
+            if (alreadyBlocked.length === 0) {
                 const queryResult = await runPreparedQuery(
                     blockUser,
                     request.params
                 );
-    
+
                 if (queryResult.length === 1) {
-                    const eraseFriend = await runPreparedQuery(deleteFriend, request.params);
-                    if (eraseFriend.length === 1){
-                        return sendOk(reply, 201, { message: 'User blocked successfully.' });
+                    const eraseFriend = await runPreparedQuery(
+                        deleteFriend,
+                        request.params
+                    );
+                    if (eraseFriend.length === 1) {
+                        return sendOk(reply, 201, {
+                            blocked: true,
+                        });
                     }
                 } else {
                     return sendError(
@@ -59,22 +66,17 @@ export default (async (fastify, _opts) => {
                         "notFound",
                         "Could not find target user."
                     );
-                };
+                }
             } else {
-                return sendError(
-                    reply,
-                    "forbidden",
-                    "User already blocked."
-                );
+                return sendError(reply, "forbidden", "User already blocked.");
             }
-            
         },
     });
 
     fastify.delete("", {
         onRequest: [decorators.authenticateSelf()],
         schema: {
-            params: friendRelationShipSchema,
+            params: usersRelationShipSchema,
             tags: ["Blocks"] satisfies MelodleTagName[],
             response: {
                 204: SafeType.Object({
@@ -89,12 +91,11 @@ export default (async (fastify, _opts) => {
             summary: "Unblock a user.",
         },
         handler: async function (request, reply) {
-
             const queryResult = await runPreparedQuery(
                 unblockUser,
                 request.params
             );
-            
+
             switch (queryResult.length) {
                 case 0:
                     return sendError(

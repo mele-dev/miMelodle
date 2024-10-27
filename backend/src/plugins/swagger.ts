@@ -79,7 +79,7 @@ export const tags = [
     },
     {
         name: "Blocks",
-        description: "User blocks related endpoints.",
+        description: "Endpoints related to blocking users.",
     },
 ] as const satisfies {
     name: string;

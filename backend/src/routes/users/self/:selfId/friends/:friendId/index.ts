@@ -1,7 +1,7 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { SafeType } from "../../../../../../utils/typebox.js";
 import {
-    friendRelationShipSchema,
+    usersRelationShipSchema,
     friendSchema,
     userSchema,
 } from "../../../../../../types/user.js";
@@ -13,7 +13,7 @@ import {
     getStatus,
     changeStatus,
     getRequestReceiver,
-    isItBlocked,
+    isUserBlocked,
 } from "../../../../../../queries/dml.queries.js";
 import { runPreparedQuery } from "../../../../../../services/database.js";
 import { request } from "http";
@@ -25,7 +25,7 @@ export default (async (fastify, _opts) => {
     fastify.delete("", {
         onRequest: [decorators.authenticateSelf()],
         schema: {
-            params: friendRelationShipSchema,
+            params: usersRelationShipSchema,
             response: {
                 204: SafeType.Object({
                     message: SafeType.Literal("Deleted friend successfully!"),
@@ -58,7 +58,7 @@ export default (async (fastify, _opts) => {
                         message: "Deleted friend successfully!",
                     });
                 default:
-                    throw "Something went wrong, could not delete.";
+                    throw "Something went wrong, probably deleted more than 1 user.";
             }
         },
     });
@@ -66,7 +66,7 @@ export default (async (fastify, _opts) => {
     fastify.post("", {
         onRequest: [decorators.authenticateSelf()],
         schema: {
-            params: friendRelationShipSchema,
+            params: usersRelationShipSchema,
             tags: ["Friends"] satisfies MelodleTagName[],
             response: {
                 201: SafeType.Pick(friendSchema, ["status"]),
@@ -81,7 +81,7 @@ export default (async (fastify, _opts) => {
         },
         handler: async function (request, reply) {
             const allowedToSend = await runPreparedQuery(
-                isItBlocked,
+                isUserBlocked,
                 request.params
             );
 
@@ -129,7 +129,7 @@ export default (async (fastify, _opts) => {
     fastify.put("", {
         onRequest: [decorators.authenticateSelf()],
         schema: {
-            params: friendRelationShipSchema,
+            params: usersRelationShipSchema,
             body: SafeType.Object({
                 status: SafeType.StringEnum(["accepted"]),
             }),

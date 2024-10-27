@@ -93,10 +93,12 @@ export const selfIdSchema = SafeType.Object({
     selfId: userSchema.properties.id,
 });
 
-export const friendRelationShipSchema = SafeType.Object({
+
+export const usersRelationShipSchema = SafeType.Object({
     ...selfIdSchema.properties,
-    friendId: userSchema.properties.id,
+    targetUserId: userSchema.properties.id,
 });
+
 
 /** Use this schema to assert the contents of the jwt token. */
 export const jwtTokenContentSchema = SafeType.Pick(userSchema, ["id"]);
