@@ -1,0 +1,39 @@
+<!-- TODO: Make this not be ugly AF. -->
+<nav class="w-full backdrop-blur-lg text-xl">
+    <div class="container flex w-full items-baseline justify-between px-4 py-2">
+        <div class="flex flex-grow items-baseline gap-4">
+            <button
+                class="rounded-2xl border-2 border-white bg-fuchsia-500 px-4 py-2 text-2xl font-extrabold transition-all hover:scale-110"
+            >
+                {{ this.dict().play }}
+            </button>
+            <div class="flex gap-3 text-xl">
+                <a [routerLink]="this.safeRouter.createLink('/app/home')">{{
+                    this.dict().home
+                }}</a>
+                <a
+                    [routerLink]="
+                        this.safeRouter.createLink('/app/leaderboards')
+                    "
+                >
+                    {{ this.dict().leaderboards }}</a
+                >
+            </div>
+        </div>
+        <h1 class="flex flex-grow justify-center text-2xl">
+            <span class="-translate-x-1/2"> Popdle </span>
+        </h1>
+        <div class="flex flex-grow items-baseline justify-end gap-2">
+            <div class="flex flex-grow items-baseline justify-end gap-2">
+                <a [routerLink]="this.safeRouter.createLink('/app/profile')">
+                    {{ this.dict().profile }}
+                </a>
+                <app-language-picker></app-language-picker>
+            </div>
+            <hlm-icon size="base" name="lucideBell"></hlm-icon>
+            <button type="button" (click)="this.logOut()">
+                <hlm-icon name="lucideLogOut"></hlm-icon>
+            </button>
+        </div>
+    </div>
+</nav>

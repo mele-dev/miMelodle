@@ -7,12 +7,14 @@ import { TODOComponent } from "./components/todo/todo.component";
 import { NotFoundPage } from "./not-found/not-found.page";
 import { mustHaveAuthGuard } from "./guards/must-have-auth.guard";
 import { authCallbackGuard } from "./guards/auth-callback.guard";
-import { errorGuard } from "./guards/error.guard";
+import { AppLayoutPage } from "./app-layout/app-layout.page";
+import { authGuard } from "./guards/auth.guard";
 
 export const routes = [
     {
         path: "auth",
         component: AuthLayoutComponent,
+        canActivate: [authGuard],
         children: [
             {
                 path: "",
@@ -39,7 +41,7 @@ export const routes = [
     {
         path: "app",
         canActivate: [mustHaveAuthGuard],
-        component: TODOComponent,
+        component: AppLayoutPage,
         children: [
             {
                 path: "",
@@ -54,6 +56,18 @@ export const routes = [
                 path: "profile",
                 component: TODOComponent,
             },
+            {
+                path: "leaderboards",
+                component: TODOComponent,
+            },
+            {
+                path: "melodle/guess_line/:gameId",
+                component: TODOComponent,
+            },
+            {
+                path: "melodle/guess_song/:gameId",
+                component: TODOComponent,
+            },
         ],
     },
     {
@@ -63,11 +77,6 @@ export const routes = [
     },
     {
         path: "TODO",
-        component: TODOComponent,
-    },
-    {
-        path: "errors",
-        canActivate: [errorGuard],
         component: TODOComponent,
     },
     // WARN: This route must always come last, otherwise following pages will be

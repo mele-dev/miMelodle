@@ -11,6 +11,9 @@ import { postAuthLoginBody } from "../../../apiCodegen/backend-zod";
 import { postAuthLogin, PostAuthLoginBody } from "../../../apiCodegen/backend";
 import { LocalStorageService } from "../../services/local-storage.service";
 import { ClientValidationService } from "../../services/client-validation.service";
+import { HlmInputModule } from "@spartan-ng/ui-input-helm";
+import { toast } from "ngx-sonner";
+import axios from "axios";
 
 @Component({
     selector: "app-login",
@@ -22,6 +25,7 @@ import { ClientValidationService } from "../../services/client-validation.servic
         RouterModule,
         ReactiveFormsModule,
         JsonPipe,
+        HlmInputModule,
     ],
     templateUrl: "./login.page.html",
 })
@@ -48,7 +52,13 @@ export class LoginPage {
             this.localStorage.setItem("userInfo", result.data);
             this.safeRouter.navigate(["/app"]);
         } catch (e) {
-            alert("Error al iniciar sesión.");
+            if (axios.isAxiosError(e) && e.status === 404) {
+                toast("Datos incorrectos.");
+                return;
+            }
+
+            console.error(e);
+            toast("Error al iniciar sesión.");
         }
     }
 
