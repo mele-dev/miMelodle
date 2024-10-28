@@ -68,7 +68,7 @@ export default (async (fastify, _opts) => {
                     );
                 }
             } else {
-                return sendError(reply, "forbidden", "User already blocked.");
+                return sendError(reply, "badRequest", "User already blocked or user has blocked you.");
             }
         },
     });
@@ -79,9 +79,7 @@ export default (async (fastify, _opts) => {
             params: usersRelationShipSchema,
             tags: ["Blocks"] satisfies MelodleTagName[],
             response: {
-                204: SafeType.Object({
-                    message: SafeType.Literal("Unblocked successfully!"),
-                }),
+                200: SafeType.Object({ blocked: SafeType.Boolean() }),
                 ...SafeType.CreateErrors([
                     "badRequest",
                     "notFound",
@@ -104,8 +102,8 @@ export default (async (fastify, _opts) => {
                         "Could not find relationship with user."
                     );
                 case 1:
-                    return sendOk(reply, 204, {
-                        message: "Unblocked successfully!",
+                    return sendOk(reply, 200, {
+                        blocked: false,
                     });
                 default:
                     throw "Something went wrong";

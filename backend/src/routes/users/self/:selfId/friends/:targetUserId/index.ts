@@ -11,7 +11,7 @@ import {
     deleteFriend,
     addNewFriend,
     getStatus,
-    changeStatus,
+    acceptRequest,
     getRequestReceiver,
     isUserBlocked,
 } from "../../../../../../queries/dml.queries.js";
@@ -87,13 +87,12 @@ export default (async (fastify, _opts) => {
 
             // primero chequeo que no este bloqueado
             if (allowedToSend.length === 0) {
-                
                 const currentStatus = await runPreparedQuery(
                     getStatus,
                     request.params
                 );
                 // chequeo que ya no haya una solicitud pendiente
-                if (currentStatus.length === 0) {
+                if (currentStatus[0].status !== 'pending') {
                     const queryResult = await runPreparedQuery(
                         addNewFriend,
                         request.params
@@ -109,11 +108,11 @@ export default (async (fastify, _opts) => {
                             "Could not find target user."
                         );
                     }
-                } else if (currentStatus[0].status === "accepted") {
+                } else  {
                     return sendError(
                         reply,
                         "badRequest",
-                        "Already friends with this person."
+                        "Relationship already created."
                     );
                 }
             } else if (allowedToSend.length === 1) {
@@ -122,7 +121,7 @@ export default (async (fastify, _opts) => {
                     "forbidden",
                     "You cannot send a friend request to a user who has blocked you or to someone you blocked."
                 );
-            }
+            } 
         },
     });
 
@@ -130,12 +129,9 @@ export default (async (fastify, _opts) => {
         onRequest: [decorators.authenticateSelf()],
         schema: {
             params: usersRelationShipSchema,
-            body: SafeType.Object({
-                status: SafeType.StringEnum(["accepted"]),
-            }),
             tags: ["Friends"] satisfies MelodleTagName[],
             response: {
-                202: SafeType.Pick(friendSchema, ["status"]),
+                200: SafeType.Pick(friendSchema, ["status"]),
                 ...SafeType.CreateErrors([
                     "badRequest",
                     "notFound",
@@ -159,15 +155,13 @@ export default (async (fastify, _opts) => {
 
             if (
                 currentStatus[0].status === "pending" &&
-                request.body.status === "accepted" &&
                 request.params.selfId === requestReceiver[0].user2Id
             ) {
-                await runPreparedQuery(changeStatus, {
-                    ...request.body,
+                await runPreparedQuery(acceptRequest, {
                     ...request.params,
                 });
 
-                return sendOk(reply, 202, request.body);
+                return sendOk(reply, 200, { status: "accepted" });
             } else if (request.params.selfId !== requestReceiver[0].user2Id) {
                 return sendError(
                     reply,

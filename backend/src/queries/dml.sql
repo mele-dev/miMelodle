@@ -91,9 +91,9 @@ insert into friendships ("userId", "user2Id")
 values (:selfId!, :targetUserId!)
 RETURNING status;
 
-/* @name changeStatus */
+/* @name acceptRequest */
 update friendships f
-set status = :status!
+set status = 'accepted'
 where (f."userId" = :selfId! and f."user2Id" = :targetUserId!)
    or (f."userId" = :targetUserId! and f."user2Id" = :selfId!);
 

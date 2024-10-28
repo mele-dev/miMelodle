@@ -37,10 +37,10 @@ CREATE TABLE friendships (
 );
 
 CREATE TABLE blocks (
-    id         SERIAL PRIMARY KEY,
     "userWhoBlocksId"    BIGINT REFERENCES users (id)        NOT NULL,
     "blockedUserId"    BIGINT REFERENCES users (id)        NOT NULL,
-    "createdAt" timestamptz       DEFAULT NOW()     NOT NULL
+    "createdAt" timestamptz       DEFAULT NOW()     NOT NULL,
+    PRIMARY KEY ("userWhoBlocksId", "blockedUserId")
 );
 
 CREATE TABLE artists (
