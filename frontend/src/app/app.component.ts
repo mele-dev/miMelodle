@@ -1,5 +1,6 @@
-import { Component } from "@angular/core";
+import { Component, inject, OnInit } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
+import { QueryStringHandlerService } from "./services/queryStringHandler/query-string-handler.service";
 import { HlmToasterComponent } from "@spartan-ng/ui-sonner-helm";
 
 @Component({
@@ -9,6 +10,11 @@ import { HlmToasterComponent } from "@spartan-ng/ui-sonner-helm";
     templateUrl: "./app.component.html",
     styleUrl: "./app.component.css",
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
     title = "frontend";
+    queryStringHandler = inject(QueryStringHandlerService);
+
+    async ngOnInit() {
+      this.queryStringHandler.listen();
+    }
 }

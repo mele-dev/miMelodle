@@ -3,6 +3,7 @@ import { inject } from "@angular/core";
 import { SafeRoutingService } from "../services/safe-routing.service";
 import { LocalStorageService } from "../services/local-storage.service";
 import { QueryParamsService } from "../services/query-params.service";
+import { toast } from "ngx-sonner";
 
 export const authCallbackGuard: CanActivateFn = async (route, _state) => {
     const paramsService = inject(QueryParamsService);
@@ -15,8 +16,8 @@ export const authCallbackGuard: CanActivateFn = async (route, _state) => {
     ]);
 
     if (!parsed.success) {
-        console.error(parsed.error)
-        alert("Error al realizar acción. Redirigiendo a login... (TODO)");
+        console.error(parsed.error);
+        toast("Error al realizar acción. Redirigiendo a login... (TODO)");
         safeRouter.navigate(["/auth/"]);
         return false;
     }

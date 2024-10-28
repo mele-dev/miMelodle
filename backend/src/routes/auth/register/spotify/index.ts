@@ -4,18 +4,14 @@ import { MelodleTagName } from "../../../../plugins/swagger.js";
 import { decorators } from "../../../../services/decorators.js";
 import * as spotifyApi from "../../../../apiCodegen/spotify.js";
 import { runPreparedQuery } from "../../../../services/database.js";
-import { insertUserSpotify } from "../../../../queries/dml.queries.js";
+import { insertUserSpotify, loginUserSpotify } from "../../../../queries/dml.queries.js";
 import {
     JwtTokenContent,
-    jwtTokenSchema,
-    userSchema,
 } from "../../../../types/user.js";
-import { sendOk } from "../../../../utils/reply.js";
 import {
     spotifyCallback,
     spotifyCallbackGuard,
 } from "../../../../types/spotify.js";
-import { typedEnv } from "../../../../types/env.js";
 import { frontendPaths } from "../../../../services/urls.js";
 
 export default (async (fastify) => {
@@ -69,11 +65,11 @@ export default (async (fastify) => {
                 })
             );
         },
-        async errorHandler(error, _request, reply) {
-            return reply.redirect(frontendPaths.errorCallback({
-                code: error.statusCode ?? 400,
-                "targetUrl": frontendPaths.register,
-            }))
+
+        async errorHandler(_error, _request, reply) {
+            return reply.redirect(
+                `${frontendPaths.register}?${frontendPaths.generalSearchParams({ errorEnum: "spotify_taken" })}`
+            );
         },
     });
 }) satisfies FastifyPluginAsyncTypebox;

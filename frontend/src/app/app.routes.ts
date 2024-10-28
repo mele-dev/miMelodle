@@ -7,12 +7,13 @@ import { TODOComponent } from "./components/todo/todo.component";
 import { NotFoundPage } from "./not-found/not-found.page";
 import { mustHaveAuthGuard } from "./guards/must-have-auth.guard";
 import { authCallbackGuard } from "./guards/auth-callback.guard";
-import { errorGuard } from "./guards/error.guard";
+import { queryParamsGuardGuard } from "./guards/query-params-guard.guard";
 
 export const routes = [
     {
         path: "auth",
         component: AuthLayoutComponent,
+        canActivate: [queryParamsGuardGuard],
         children: [
             {
                 path: "",
@@ -63,11 +64,6 @@ export const routes = [
     },
     {
         path: "TODO",
-        component: TODOComponent,
-    },
-    {
-        path: "errors",
-        canActivate: [errorGuard],
         component: TODOComponent,
     },
     // WARN: This route must always come last, otherwise following pages will be
