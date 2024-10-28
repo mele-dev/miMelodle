@@ -11,6 +11,7 @@ import { postAuthLoginBody } from "../../../apiCodegen/backend-zod";
 import { postAuthLogin, PostAuthLoginBody } from "../../../apiCodegen/backend";
 import { LocalStorageService } from "../../services/local-storage.service";
 import { ClientValidationService } from "../../services/client-validation.service";
+import { HlmInputModule } from "@spartan-ng/ui-input-helm";
 
 @Component({
     selector: "app-login",
@@ -22,6 +23,7 @@ import { ClientValidationService } from "../../services/client-validation.servic
         RouterModule,
         ReactiveFormsModule,
         JsonPipe,
+        HlmInputModule,
     ],
     templateUrl: "./login.page.html",
 })

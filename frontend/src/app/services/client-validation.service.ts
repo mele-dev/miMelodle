@@ -22,14 +22,14 @@ export class ClientValidationService {
      * Group is expected to be a formgroup with repeatPassword and password
      */
     public validateRepeatPassword(
-        group: AbstractControl
+        group: { value: unknown }
     ): ValidationErrors | null {
         const schema = z.object({
             password: z.string(),
             repeatPassword: z.string(),
         });
 
-        const value = schema.safeParse(group.getRawValue());
+        const value = schema.safeParse(group.value);
 
         if (!value.success) {
             console.error(
