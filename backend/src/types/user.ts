@@ -11,9 +11,9 @@ export const userSchema = SafeType.Object(
                 "unique and unchangeable.",
         }),
         username: SafeType.String({
-            pattern: /^[a-zA-Z0-9.-_]+$/.source,
+            pattern: /^[a-zA-Z0-9\.-_]+$/.source,
             minLength: 3,
-            maxLength: 20,
+            maxLength: 50,
             description:
                 "The id to display to users. They must be unique, but the " +
                 "users can choose and change them.\n" +

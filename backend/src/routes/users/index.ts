@@ -10,8 +10,12 @@ import { decorators } from "../../services/decorators.js";
 import { friendSchema } from "../../types/user.js";
 import { typedEnv } from "../../types/env.js";
 import { runPreparedQuery } from "../../services/database.js";
-import { searchForUserEmailOrUsername } from "../../queries/dml.queries.js";
+import {
+    searchForUserEmailOrUsername,
+    searchUser,
+} from "../../queries/dml.queries.js";
 import { sendOk } from "../../utils/reply.js";
+import { queryStringSchema } from "../../types/querystring.js";
 
 const users: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
     fastify.get("/:userId", {
@@ -42,35 +46,52 @@ const users: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
         onRequest: [decorators.noSecurity],
         schema: {
             security: [],
-            querystring: SafeType.Object({
-                query: SafeType.String({
-                    minLength: 3,
-                    maxLength: 100,
-                    description:
-                        "Query to be used to search for users in the database.",
-                }),
-            }),
+            querystring: SafeType.Pick(queryStringSchema, [
+                "query",
+                "pageSize",
+                "page",
+            ]),
             tags: ["User"] satisfies MelodleTagName[],
             response: {
-                200: SafeType.Array(
-                    SafeType.Pick(userSchema, [
-                        "username",
-                        "name",
-                        "profilePictureFilename",
-                        "id",
-                    ]),
-                    {
-                        maxItems: 50,
+                200: SafeType.Object({
+                    matches: SafeType.Array(
+                        SafeType.Object({
+                            ...SafeType.Pick(userSchema, [
+                                "username",
+                                "name",
+                                "profilePictureFilename",
+                                "id",
+                                "profilePictureId",
+                            ]).properties,
+                            rank: SafeType.Number({
+                                description:
+                                    "Similarity ranking, from 0 to 1, 1 meaning equal.",
+                            }),
+                        }),
+                        {
+                            description:
+                                "An array of near-matches, sorted from most relevant to least.",
+                        }
+                    ),
+                    totalPages: SafeType.Number({
                         description:
-                            "An array of near-matches, sorted from most relevant to least.",
-                    }
-                ),
+                            "The total number of pages found with current sent query and page size.",
+                    }),
+                }),
             },
             summary: "Search users through their public information.",
         },
+        async handler(request, reply) {
+            const result = await runPreparedQuery(searchUser, {
+                ...request.query,
+                username: request.query.query,
+                rankThreshold: 0.15,
+            });
 
-        async handler(_request, reply) {
-            return reply.notImplemented();
+            return sendOk(reply, 200, {
+                matches: result,
+                totalPages: result[0]?.totalPages ?? 0,
+            });
         },
     });
 
