@@ -8,6 +8,7 @@ import { NotFoundPage } from "./not-found/not-found.page";
 import { mustHaveAuthGuard } from "./guards/must-have-auth.guard";
 import { authCallbackGuard } from "./guards/auth-callback.guard";
 import { queryParamsGuardGuard } from "./guards/query-params-guard.guard";
+import { AppLayoutPage } from "./app-layout/app-layout.page";
 
 export const routes = [
     {
@@ -40,7 +41,7 @@ export const routes = [
     {
         path: "app",
         canActivate: [mustHaveAuthGuard],
-        component: TODOComponent,
+        component: AppLayoutPage,
         children: [
             {
                 path: "",
@@ -53,6 +54,18 @@ export const routes = [
             },
             {
                 path: "profile",
+                component: TODOComponent,
+            },
+            {
+                path: "leaderboards",
+                component: TODOComponent,
+            },
+            {
+                path: "melodle/guess_line/:gameId",
+                component: TODOComponent,
+            },
+            {
+                path: "melodle/guess_song/:gameId",
                 component: TODOComponent,
             },
         ],

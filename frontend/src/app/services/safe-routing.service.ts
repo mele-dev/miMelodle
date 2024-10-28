@@ -16,6 +16,7 @@ export class SafeRoutingService {
         this.router.navigate(paths, extras);
     }
 
+
     public createLink<TRoute extends AllMelodlePaths>(path: TRoute) {
         return path;
     }
