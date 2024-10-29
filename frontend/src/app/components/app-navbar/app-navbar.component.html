@@ -44,21 +44,21 @@
                     <br />
                     <div class="grid gap-2">
                         @for (
-                            item of this.friendsService.friendRequest;
+                            user of this.friendsService.friendRequest();
                             track $index
                         ) {
-                            <div class="grid grid-cols-3 items-center gap-4">
-                                <div
-                                    [innerHTML]="
-                                        sanitizer.bypassSecurityTrustHtml(
-                                            chosenIcon()?.svg ?? ''
-                                        )
-                                    "
-                                    class="row-span-4 aspect-square h-16 w-auto rounded-full border-none bg-white p-1 text-white shadow-inner"
-                                ></div>
-                                <label hlmLabel class="font-bold" for="username"
-                                    >&commat;Pepinho</label
-                                >
+                            <div class="flex items-baseline gap-2">
+                                <div>
+                                    <span>&#64;</span
+                                    ><label
+                                        hlmLabel
+                                        class="font-bold"
+                                        for="username"
+                                        >{{ user.username }}</label
+                                    >
+                                </div>
+                                <button type="button" variant="ghost" hlmBtn>Decline</button>
+                                <button type="button" hlmBtn>Accept</button>
                             </div>
                         }
                     </div>

@@ -1,9 +1,7 @@
 import {
     computed,
-    effect,
     inject,
     Injectable,
-    OnInit,
     signal,
 } from "@angular/core";
 import {
@@ -19,23 +17,23 @@ export type Friend = GetUsersSelfSelfIdFriends200Item & {
 @Injectable({
     providedIn: "root",
 })
-export class FriendsService implements OnInit {
+export class FriendsService {
     private _friends = signal<Friend[]>([]);
     public friendRequest = computed(() => {
         return this._friends().filter((f) => f.status === "pending");
     });
     private _localStorage = inject(LocalStorageService);
 
-    constructor() {}
-
-    async ngOnInit() {
+    public async reloadUsers() {
         const userId = this._localStorage.getItem("userInfo")?.id;
 
         if (userId === undefined) {
             return;
         }
 
+        console.log("userid:", userId)
         const result = await getUsersSelfSelfIdFriends(userId);
+        console.log(result.data);
 
         this._friends.set(result.data as Friend[]);
     }
