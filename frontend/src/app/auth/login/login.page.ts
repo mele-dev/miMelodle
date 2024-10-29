@@ -38,7 +38,7 @@ export class LoginPage {
 
     person = new FormBuilder().nonNullable.group(
         {
-            email: "",
+            emailOrUsername: "",
             password: "",
         } satisfies { [K in keyof PostAuthLoginBody]: unknown },
         {
@@ -53,12 +53,17 @@ export class LoginPage {
             this.safeRouter.navigate(["/app"]);
         } catch (e) {
             if (axios.isAxiosError(e) && e.status === 404) {
-                toast("Datos incorrectos.");
+                toast(this.dict().badLogin);
                 return;
             }
 
             console.error(e);
-            toast("Error al iniciar sesión.");
+            toast(this.dict().loginError, {
+                action: {
+                    label: this.dict().retry,
+                    onClick: this.onSubmit,
+                },
+            });
         }
     }
 

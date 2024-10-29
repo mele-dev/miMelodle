@@ -21,10 +21,16 @@ const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
         onRequest: [decorators.noSecurity],
         schema: {
             body: SafeType.WithExamples(
-                SafeType.Pick(userSchema, ["email", "password"]),
+                SafeType.Object({
+                    password: userSchema.properties.password,
+                    emailOrUsername: SafeType.Union([
+                        userSchema.properties.email,
+                        userSchema.properties.username,
+                    ]),
+                }),
                 [
                     {
-                        email: "juanaxlopez1@gmail.com",
+                        emailOrUsername: "juanaxlopez1@gmail.com",
                         password: "Juana123!",
                     },
                 ]

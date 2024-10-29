@@ -5,7 +5,7 @@ SELECT *
 /* @name loginUser */
 SELECT id
   FROM users
- WHERE email = :email!
+ WHERE email = :emailOrUsername! or username = :emailOrUsername!
    AND check_password("passwordHash", :password!);
 
 /* @name insertUser */
