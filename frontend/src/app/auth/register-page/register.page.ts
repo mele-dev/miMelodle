@@ -62,11 +62,11 @@ type RegisterFormFields = PostAuthRegisterBody & { repeatPassword: string };
     templateUrl: "./register.page.html",
 })
 export class RegisterPage implements OnInit {
-    private validator = inject(ClientValidationService);
-    private translator = inject(RegisterTranslator);
-    private localStorage = inject(LocalStorageService);
+    private _validator = inject(ClientValidationService);
+    private _translator = inject(RegisterTranslator);
+    private _localStorage = inject(LocalStorageService);
     safeRouter = inject(SafeRoutingService);
-    dict = this.translator.dict;
+    dict = this._translator.dict;
     allIcons?: BackendIcon[];
     chosenIcon = signal<BackendIcon | undefined>(undefined);
     sanitizer = inject(DomSanitizer);
@@ -80,36 +80,48 @@ export class RegisterPage implements OnInit {
             profilePictureId: this.builder.control(
                 this.chosenIcon()?.id ?? -1,
                 [],
-                this.validator.Schema(this.schema.shape.profilePictureId)
+                this._validator.Schema(this.schema.shape.profilePictureId)
             ),
             name: this.builder.control(
                 "",
                 [],
-                this.validator.Schema(this.schema.shape.name)
+                this._validator.Schema(this.schema.shape.name)
             ),
             username: this.builder.control("", [], this.validateUsername()),
             email: this.builder.control("", [], [this.validateEmail()]),
             password: this.builder.control(
                 "",
                 [],
-                this.validator.Schema(this.schema.shape.password)
+                this._validator.Schema(this.schema.shape.password)
             ),
-            repeatPassword: "",
+            repeatPassword: this.builder.control("", [
+                this.validateRepeatPassword,
+            ]),
         } satisfies { [K in keyof RegisterFormFields]: unknown },
         {
-            validators: this.validator.validateRepeatPassword,
-            asyncValidators: this.validator.Schema(this.schema),
+            asyncValidators: this._validator.Schema(this.schema),
         }
     );
+
+    private validateRepeatPassword() {
+        if (!this) {
+            return null;
+        }
+        const value = this.person.getRawValue();
+        if (value.password !== value.repeatPassword) {
+            return { differentRepeatedPassword: true };
+        }
+        return null;
+    }
 
     private validateEmail() {
         const thisBinding = this;
         return async function (control: { value: string }) {
             return (
-                (await thisBinding.validator.Schema(
+                (await thisBinding._validator.Schema(
                     thisBinding.schema.shape.email
                 )(control)) ??
-                (await thisBinding.validator.validateUniqueEmail(control))
+                (await thisBinding._validator.validateUniqueEmail(control))
             );
         };
     }
@@ -118,10 +130,10 @@ export class RegisterPage implements OnInit {
         const thisBinding = this;
         return async function (control: AbstractControl) {
             const output =
-                (await thisBinding.validator.Schema(
+                (await thisBinding._validator.Schema(
                     thisBinding.schema.shape.username
                 )(control)) ??
-                (await thisBinding.validator.validateUniqueUsername(control));
+                (await thisBinding._validator.validateUniqueUsername(control));
             return output;
         };
     }
@@ -156,7 +168,7 @@ export class RegisterPage implements OnInit {
     async onSubmit() {
         try {
             const result = await postAuthRegister(this.person.getRawValue());
-            this.localStorage.setItem("userInfo", result.data);
+            this._localStorage.setItem("userInfo", result.data);
             this.safeRouter.navigate(["/app"]);
         } catch (e) {
             console.error(e);

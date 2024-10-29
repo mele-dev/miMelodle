@@ -190,7 +190,7 @@
         />
         <p
             class="min-h-4 text-xs text-red-500"
-            [class.invisible]="!this.person.hasError('differentRepeatedPassword')"
+            [class.invisible]="this.person.controls.repeatPassword.valid"
         >
             {{ dict().invalidRepeatPassword }}
         </p>
