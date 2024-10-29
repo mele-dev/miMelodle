@@ -44,32 +44,33 @@ export default (async (fastify, _opts) => {
                 request.params
             );
 
-            if (alreadyBlocked.length === 0) {
-                const queryResult = await runPreparedQuery(
-                    blockUser,
-                    request.params
+            if (alreadyBlocked.length > 0) {
+                return sendError(
+                    reply,
+                    "badRequest",
+                    "User already blocked or user has blocked you."
                 );
-
-                if (queryResult.length === 1) {
-                    const eraseFriend = await runPreparedQuery(
-                        deleteFriend,
-                        request.params
-                    );
-                    if (eraseFriend.length === 1) {
-                        return sendOk(reply, 201, {
-                            blocked: true,
-                        });
-                    }
-                } else {
-                    return sendError(
-                        reply,
-                        "notFound",
-                        "Could not find target user."
-                    );
-                }
-            } else {
-                return sendError(reply, "badRequest", "User already blocked or user has blocked you.");
             }
+
+            const queryResult = await runPreparedQuery(
+                blockUser,
+                request.params
+            );
+
+            if (queryResult.length === 0) {
+                return sendError(
+                    reply,
+                    "notFound",
+                    "Could not find target user."
+                );
+            }
+
+            const eraseFriend = await runPreparedQuery(
+                deleteFriend,
+                request.params
+            );
+
+            return sendOk(reply, 201, { blocked: true });
         },
     });
 

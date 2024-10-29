@@ -58,7 +58,7 @@ export default (async (fastify, _opts) => {
                         message: "Deleted friend successfully!",
                     });
                 default:
-                    throw "Something went wrong, probably deleted more than 1 user.";
+                    throw `Something went wrong, deleted ${queryResult.length} users.`;
             }
         },
     });
@@ -80,48 +80,41 @@ export default (async (fastify, _opts) => {
             summary: "Sends a friend request",
         },
         handler: async function (request, reply) {
-            const allowedToSend = await runPreparedQuery(
+            const isBlocked = await runPreparedQuery(
                 isUserBlocked,
                 request.params
             );
-
-            // primero chequeo que no este bloqueado
-            if (allowedToSend.length === 0) {
-                const currentStatus = await runPreparedQuery(
-                    getStatus,
-                    request.params
-                );
-                // chequeo que ya no haya una solicitud pendiente
-                if (currentStatus.length === 0 || currentStatus[0].status !== 'pending') {
-                    const queryResult = await runPreparedQuery(
-                        addNewFriend,
-                        request.params
-                    );
-                    if (queryResult.length === 1) {
-                        return sendOk(reply, 201, {
-                            status: queryResult[0].status,
-                        });
-                    } else {
-                        return sendError(
-                            reply,
-                            "notFound",
-                            "Could not find target user."
-                        );
-                    }
-                } else  {
-                    return sendError(
-                        reply,
-                        "badRequest",
-                        "Relationship already created."
-                    );
-                }
-            } else if (allowedToSend.length === 1) {
+            if (isBlocked.length > 0) {
                 return sendError(
                     reply,
                     "forbidden",
                     "You cannot send a friend request to a user who has blocked you or to someone you blocked."
                 );
-            } 
+            }
+
+            const currentStatus = await runPreparedQuery(
+                getStatus,
+                request.params
+            );
+            if (currentStatus.length > 0) {
+                return sendError(
+                    reply,
+                    "badRequest",
+                    "Relationship already created."
+                );
+            }
+
+            const queryResult = await runPreparedQuery(
+                addNewFriend,
+                request.params
+            );
+            if (queryResult.length === 1) {
+                return sendOk(reply, 201, {
+                    status: queryResult[0].status,
+                });
+            }
+
+            return sendError(reply, "notFound", "Could not find target user.");
         },
     });
 
