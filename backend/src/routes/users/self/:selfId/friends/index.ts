@@ -19,16 +19,18 @@ const friendsRoutes: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
             tags: ["Friends"] satisfies MelodleTagName[],
             summary: "Get all friends from a user.",
             response: {
-                200: SafeType.Array(SafeType.Intersect([
-                    SafeType.Pick(userSchema, [
-                        "id",
-                        "name",
-                        "username",
-                        "profilePictureId",
-                        "profilePictureFilename",
-                    ]),
-                    SafeType.Pick(friendSchema, ["status"]),
-                ])),
+                200: SafeType.Array(
+                    SafeType.Intersect([
+                        SafeType.Pick(userSchema, [
+                            "id",
+                            "name",
+                            "username",
+                            "profilePictureId",
+                            "profilePictureFilename",
+                        ]),
+                        SafeType.Pick(friendSchema, ["status"]),
+                    ])
+                ),
                 ...SafeType.CreateErrors(["unauthorized"]),
             },
         },
@@ -46,18 +48,16 @@ const friendsRoutes: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                         username: row.username2,
                         profilePictureId: row.profilePictureId2,
                         profilePictureFilename: row.profilePictureFilename2,
-                        status: row.status
-                    }
+                        status: row.status,
+                    };
                 }
                 return {
+                    id: row.userId,
+                    name: row.name1,
+                    username: row.username1,
+                    profilePictureId: row.profilePictureId1,
+                    profilePictureFilename: row.profilePictureFilename1,
                     status: row.status,
-                    ...{
-                        id: row.userId,
-                        name: row.name1,
-                        username: row.username1,
-                        profilePictureId: row.profilePictureId1,
-                        profilePictureFilename: row.profilePictureFilename1,
-                    },
                 };
             });
 
