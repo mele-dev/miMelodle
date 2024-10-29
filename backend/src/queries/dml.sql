@@ -4,9 +4,10 @@ FROM users;
 
 /* @name loginUser */
 SELECT id
-FROM users
-WHERE email = :email!
-  AND check_password("passwordHash", :password!);
+  FROM users
+ WHERE email = :emailOrUsername! or username = :emailOrUsername!
+   AND check_password("passwordHash", :password!);
+>>>>>>> main
 
 /* @name insertUser */
 INSERT
@@ -45,6 +46,7 @@ FROM users u
          INNER JOIN public."profilePictures" pp ON pp.id = u."profilePictureId"
 where u.id = :selfId!;
 
+
 /* @name insertIcon */
 INSERT
 INTO "profilePictures" (filename)
@@ -58,6 +60,7 @@ COMMIT;
 
 /* @name rollbackTransaction */
 ROLLBACK;
+
 
 /* @name getSelfFriends */
 SELECT f."user2Id",
@@ -131,3 +134,36 @@ where ((b."blockedUserId" = :selfId! and b."userWhoBlocksId" = :targetUserId!) o
 SELECT *
 from blocks b
 where (b."blockedUserId" = :selfId! and b."userWhoBlocksId" = :targetUserId!);
+
+/* @name insertUserSpotify */
+   INSERT
+     INTO users (username, email, "passwordHash", "spotifyId", "profilePictureId", name)
+   VALUES (:username!, :email!, default, :spotifyId!, default, :name!)
+RETURNING id;
+
+/* @name loginUserSpotify */
+SELECT u.id
+  FROM users u
+ WHERE u."spotifyId" = :spotifyId!;
+
+/* @name searchForUserEmailOrUsername */
+SELECT u.username, u.email
+  FROM users u
+ WHERE u.username = :username
+    OR u.email = :email;
+
+/* @name searchUser */
+  WITH similarity     AS (
+      SELECT u.*, similarity(u.username, :username!) AS "rank!" FROM users u
+  ),
+       filtered_users AS (
+      SELECT *
+        FROM similarity
+       WHERE "rank!" >= :rankThreshold!
+  )
+SELECT u.*, pp.filename AS "profilePictureFilename", CEIL(COUNT(*) OVER () / :pageSize!::FLOAT) AS "totalPages!"
+  FROM filtered_users u
+           INNER JOIN "profilePictures" pp ON u."profilePictureId" = pp.id
+ ORDER BY "rank!" DESC, levenshtein(u.username, :username!)
+ LIMIT :pageSize! OFFSET :pageSize!::INT * :page!::INT;
+
