@@ -94,25 +94,16 @@ export class RegisterPage implements OnInit {
                 [],
                 this._validator.Schema(this.schema.shape.password)
             ),
-            repeatPassword: this.builder.control("", [
-                this.validateRepeatPassword,
-            ]),
+            repeatPassword: "",
         } satisfies { [K in keyof RegisterFormFields]: unknown },
         {
+            validators: this._validator.mustMatch("nonRepeatedPassword", [
+                "repeatPassword",
+                "password",
+            ] satisfies (keyof RegisterFormFields)[]),
             asyncValidators: this._validator.Schema(this.schema),
         }
     );
-
-    private validateRepeatPassword() {
-        if (!this) {
-            return null;
-        }
-        const value = this.person.getRawValue();
-        if (value.password !== value.repeatPassword) {
-            return { differentRepeatedPassword: true };
-        }
-        return null;
-    }
 
     private validateEmail() {
         const thisBinding = this;
