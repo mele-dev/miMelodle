@@ -21,20 +21,26 @@ const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
         onRequest: [decorators.noSecurity],
         schema: {
             body: SafeType.WithExamples(
-                SafeType.Pick(userSchema, ["email", "password"]),
+                SafeType.Object({
+                    password: userSchema.properties.password,
+                    emailOrUsername: SafeType.Union([
+                        userSchema.properties.email,
+                        userSchema.properties.username,
+                    ]),
+                }),
                 [
                     {
-                        email: "juanaxlopez1@gmail.com",
+                        emailOrUsername: "juanaxlopez1@gmail.com",
                         password: "Juana123!",
                     },
                 ]
             ),
             tags: ["Auth"] satisfies MelodleTagName[],
             response: {
-                200: SafeType.Intersect([
-                    jwtTokenSchema,
-                    SafeType.Pick(userSchema, ["id"]),
-                ]),
+                200: SafeType.Object({
+                    ...jwtTokenSchema.properties,
+                    ...SafeType.Pick(userSchema, ["id"]).properties,
+                }),
                 ...SafeType.CreateErrors(["notFound"]),
             },
             summary: "Fetch a user's jwt token.",

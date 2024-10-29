@@ -1,0 +1,10 @@
+<div class="grid grid-cols-4 gap-2">
+    @for (icon of icons(); track icon.id) {
+        <button
+            type="button"
+            [innerHTML]="this.sanitizer.bypassSecurityTrustHtml(icon.svg)"
+            class="aspect-square w-full rounded-lg bg-white p-2 transition-transform hover:scale-110"
+            (click)="this.selectedIcon.set(icon)"
+        ></button>
+    }
+</div>

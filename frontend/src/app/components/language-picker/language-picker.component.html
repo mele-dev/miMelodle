@@ -1,0 +1,12 @@
+<brn-select [(ngModel)]="this.languageService.currentLanguage" class="group/language">
+    <hlm-select-trigger class="text-base">
+        <hlm-select-value />
+    </hlm-select-trigger>
+    <hlm-select-content class="min-w-20">
+        @for (language of languageService.supportedLanguages; track language) {
+            <hlm-option [value]="language">
+                {{ language }}
+            </hlm-option>
+        }
+    </hlm-select-content>
+</brn-select>
