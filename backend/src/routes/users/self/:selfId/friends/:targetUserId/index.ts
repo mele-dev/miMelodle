@@ -92,7 +92,7 @@ export default (async (fastify, _opts) => {
                     request.params
                 );
                 // chequeo que ya no haya una solicitud pendiente
-                if (currentStatus[0].status !== 'pending') {
+                if (currentStatus.length === 0 || currentStatus[0].status !== 'pending') {
                     const queryResult = await runPreparedQuery(
                         addNewFriend,
                         request.params
