@@ -4,6 +4,7 @@ import {
     usersRelationShipSchema,
     friendSchema,
     userSchema,
+    selfIdSchema,
 } from "../../../../../../types/user.js";
 import { MelodleTagName } from "../../../../../../plugins/swagger.js";
 import { decorators } from "../../../../../../services/decorators.js";
@@ -20,6 +21,7 @@ import { sendError, sendOk } from "../../../../../../utils/reply.js";
 import { run } from "node:test";
 import { parseBody } from "got";
 import fastify from "fastify";
+import TargetUserId from "../../friends/:targetUserId/index.js";
 
 export default (async (fastify, _opts) => {
     fastify.post("", {
@@ -39,6 +41,15 @@ export default (async (fastify, _opts) => {
             summary: "Block a user.",
         },
         handler: async function (request, reply) {
+
+            if (request.params.targetUserId === request.params.selfId){
+                return sendError(
+                    reply,
+                    "badRequest",
+                    "You can't block yourself."
+                );
+            }
+
             const alreadyBlocked = await runPreparedQuery(
                 blockAlreadyExists,
                 request.params
