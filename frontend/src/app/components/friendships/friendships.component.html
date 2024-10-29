@@ -1,0 +1,33 @@
+<div class="space-y-2">
+    <h4 class="font-medium leading-none">
+        {{ this.dict().friendRequests }}
+    </h4>
+</div>
+<br />
+<div class="grid gap-2">
+    @for (user of this.friendsService.friendRequests(); track $index) {
+        <div class="flex items-baseline gap-2">
+            <div>
+                <span>&#64;</span
+                ><label hlmLabel class="font-bold" for="username">{{
+                    user.username
+                }}</label>
+            </div>
+            <button
+                type="button"
+                variant="ghost"
+                hlmBtn
+                (click)="this.declineFriendRequest(user)"
+            >
+                Decline
+            </button>
+            <button
+                type="button"
+                hlmBtn
+                (click)="this.acceptFriendRequest(user)"
+            >
+                Accept
+            </button>
+        </div>
+    }
+</div>

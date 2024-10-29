@@ -80,23 +80,51 @@ SELECT f."user2Id"
     OR "userId" = :selfId!;
 
 /* @name deleteFriend */
+     WITH target AS (
+         SELECT *
+           FROM users u
+          WHERE u.id = :targetUserId!
+          LIMIT 1
+     )
    DELETE
      FROM friendships f
     WHERE (f."userId" = :selfId! AND f."user2Id" = :targetUserId!)
        OR (f."userId" = :targetUserId! AND f."user2Id" = :selfId!)
-RETURNING *;
+RETURNING (
+    SELECT username
+      FROM target
+) AS "targetUsername!";
 
 /* @name addNewFriend */
+     WITH target AS (
+         SELECT *
+           FROM users u
+          WHERE u.id = :targetUserId!
+          LIMIT 1
+     )
    INSERT
      INTO friendships ("userId", "user2Id")
    VALUES (:selfId!, :targetUserId!)
-RETURNING status;
+RETURNING status, (
+    SELECT username
+      FROM target
+) AS "targetUsername!";
 
 /* @name acceptRequest */
-UPDATE friendships f
-   SET status = 'accepted'
- WHERE (f."userId" = :selfId! AND f."user2Id" = :targetUserId!)
-    OR (f."userId" = :targetUserId! AND f."user2Id" = :selfId!);
+     WITH target AS (
+         SELECT *
+           FROM users u
+          WHERE u.id = :targetUserId!
+          LIMIT 1
+     )
+   UPDATE friendships f
+      SET status = 'accepted'
+    WHERE (f."userId" = :selfId! AND f."user2Id" = :targetUserId!)
+       OR (f."userId" = :targetUserId! AND f."user2Id" = :selfId!)
+RETURNING status, (
+    SELECT username
+      FROM target
+) AS "targetUsername!";
 
 /* @name getStatus */
 SELECT status

@@ -3,7 +3,6 @@ import { SafeType } from "../../../../../../utils/typebox.js";
 import {
     usersRelationShipSchema,
     friendSchema,
-    userSchema,
 } from "../../../../../../types/user.js";
 import { MelodleTagName } from "../../../../../../plugins/swagger.js";
 import { decorators } from "../../../../../../services/decorators.js";
@@ -15,11 +14,8 @@ import {
     getRequestReceiver,
     isUserBlocked,
 } from "../../../../../../queries/dml.queries.js";
-import { runPreparedQuery } from "../../../../../../services/database.js";
-import { request } from "http";
+import { query, runPreparedQuery } from "../../../../../../services/database.js";
 import { sendError, sendOk } from "../../../../../../utils/reply.js";
-import { run } from "node:test";
-import { parseBody } from "got";
 
 export default (async (fastify, _opts) => {
     fastify.delete("", {
@@ -27,9 +23,7 @@ export default (async (fastify, _opts) => {
         schema: {
             params: usersRelationShipSchema,
             response: {
-                204: SafeType.Object({
-                    message: SafeType.Literal("Deleted friend successfully!"),
-                }),
+                200: SafeType.Pick(friendSchema, ["username"]),
                 ...SafeType.CreateErrors([
                     "badRequest",
                     "notFound",
@@ -54,8 +48,9 @@ export default (async (fastify, _opts) => {
                         "Could not find relationship with user."
                     );
                 case 1:
-                    return sendOk(reply, 204, {
-                        message: "Deleted friend successfully!",
+                    fastify.log.info(queryResult[0]);
+                    return sendOk(reply, 200, {
+                        username: queryResult[0].targetUsername,
                     });
                 default:
                     throw `Something went wrong, deleted ${queryResult.length} users.`;
@@ -69,7 +64,7 @@ export default (async (fastify, _opts) => {
             params: usersRelationShipSchema,
             tags: ["Friends"] satisfies MelodleTagName[],
             response: {
-                201: SafeType.Pick(friendSchema, ["status"]),
+                201: SafeType.Pick(friendSchema, ["status", "username"]),
                 ...SafeType.CreateErrors([
                     "badRequest",
                     "notFound",
@@ -84,6 +79,7 @@ export default (async (fastify, _opts) => {
                 isUserBlocked,
                 request.params
             );
+
             if (isBlocked.length > 0) {
                 return sendError(
                     reply,
@@ -111,6 +107,7 @@ export default (async (fastify, _opts) => {
             if (queryResult.length === 1) {
                 return sendOk(reply, 201, {
                     status: queryResult[0].status,
+                    username: queryResult[0].targetUsername,
                 });
             }
 
@@ -124,7 +121,7 @@ export default (async (fastify, _opts) => {
             params: usersRelationShipSchema,
             tags: ["Friends"] satisfies MelodleTagName[],
             response: {
-                200: SafeType.Pick(friendSchema, ["status"]),
+                200: SafeType.Pick(friendSchema, ["status", "username"]),
                 ...SafeType.CreateErrors([
                     "badRequest",
                     "notFound",
@@ -150,24 +147,29 @@ export default (async (fastify, _opts) => {
                 currentStatus[0].status === "pending" &&
                 request.params.selfId === requestReceiver[0].user2Id
             ) {
-                await runPreparedQuery(acceptRequest, {
+                const result = await runPreparedQuery(acceptRequest, {
                     ...request.params,
                 });
 
-                return sendOk(reply, 200, { status: "accepted" });
-            } else if (request.params.selfId !== requestReceiver[0].user2Id) {
+                return sendOk(reply, 200, {
+                    status: result[0].status,
+                    username: result[0].targetUsername,
+                });
+            }
+
+            if (request.params.selfId !== requestReceiver[0].user2Id) {
                 return sendError(
                     reply,
                     "forbidden",
                     "You are not allowed to accept this request."
                 );
-            } else {
-                return sendError(
-                    reply,
-                    "badRequest",
-                    "Current or submitted status is invalid."
-                );
             }
+
+            return sendError(
+                reply,
+                "badRequest",
+                "Current or submitted status is invalid."
+            );
         },
     });
 }) satisfies FastifyPluginAsyncTypebox;

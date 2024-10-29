@@ -4,7 +4,7 @@ import {
     TranslatorService,
 } from "../../services/translator.service";
 
-export const registerDict = {
+export const navbarDict = {
     play: {
         en: "Play",
         es: "Jugar",
@@ -21,15 +21,19 @@ export const registerDict = {
         en: "Profile",
         es: "Perfil",
     },
+    friendRequests: {
+        en: "Friend Requests",
+        es: "Solicitudes de amistad",
+    },
 } as const satisfies Translations;
 
 @Injectable({
     providedIn: "root",
 })
 export class AppNavbarTranslator extends TranslatorService<
-    typeof registerDict
+    typeof navbarDict
 > {
     public override getAllTranslations() {
-        return registerDict;
+        return navbarDict;
     }
 }

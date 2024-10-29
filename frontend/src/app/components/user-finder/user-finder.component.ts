@@ -26,6 +26,7 @@ import {
     HlmSubMenuComponent,
 } from "@spartan-ng/ui-menu-helm";
 import { BrnMenuTriggerDirective } from "@spartan-ng/ui-menu-brain";
+import { FriendsService } from "../../services/friends.service";
 
 type SearchedUser = GetUsersSearch200["matches"][number];
 
@@ -59,6 +60,7 @@ export class UserFinderComponent {
     matchedUsers = signal<SearchedUser[] & { svg: string }[]>([]);
     private _icons = inject(IconCacheService);
     sanitizer = inject(DomSanitizer);
+    private _friends = inject(FriendsService);
 
     constructor() {
         effect(
@@ -98,7 +100,11 @@ export class UserFinderComponent {
         );
     }
 
-    addFriend(user: SearchedUser) {
-        toast(`${user.name} has been sent a friend request.`);
+    async sendFriendRequest(user: SearchedUser) {
+        return await this._friends.sendFriendRequest(user.id);
+    }
+
+    async deleteFriendship(user: SearchedUser) {
+        return await this._friends.deleteFriend(user.id);
     }
 }
