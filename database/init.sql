@@ -39,18 +39,25 @@ CREATE TABLE users (
     CHECK ( ("passwordHash" IS NOT NULL OR "spotifyId" IS NOT NULL) AND LENGTH(name) >= 1 )
 );
 
+CREATE TYPE "friendshipStatus" AS ENUM ('pending', 'accepted');
+
+CREATE TABLE friendships (
+    id         SERIAL PRIMARY KEY,
+    "userId"    BIGINT REFERENCES users (id)        NOT NULL,
+    "user2Id"  BIGINT REFERENCES users (id)        NOT NULL,
+    "createdAt" timestamptz       DEFAULT NOW()     NOT NULL,
+    status     "friendshipStatus" DEFAULT 'pending' NOT NULL,
+    CHECK ( "userId" <> friendships."user2Id" )
+);
+
 -- Optimize username for fuzzy searching.
 CREATE INDEX users_username_trgm_idx ON users USING gin (username gin_trgm_ops);
 
-CREATE TYPE "friendshipStatus" AS ENUM ('pending', 'accepted', 'blocked');
-
-CREATE TABLE friendships (
-    id          SERIAL PRIMARY KEY,
-    "userId"    BIGINT REFERENCES users (id)         NOT NULL,
-    "friendId"  BIGINT REFERENCES users (id)         NOT NULL,
-    "createdAt" timestamptz        DEFAULT NOW()     NOT NULL,
-    status      "friendshipStatus" DEFAULT 'pending' NOT NULL,
-    CHECK ( "userId" <> friendships."friendId" )
+CREATE TABLE blocks (
+    "userWhoBlocksId"    BIGINT REFERENCES users (id)        NOT NULL,
+    "blockedUserId"    BIGINT REFERENCES users (id)        NOT NULL,
+    "createdAt" timestamptz       DEFAULT NOW()     NOT NULL,
+    PRIMARY KEY ("userWhoBlocksId", "blockedUserId")
 );
 
 CREATE TABLE artists (

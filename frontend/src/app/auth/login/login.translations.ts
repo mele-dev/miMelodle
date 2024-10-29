@@ -14,8 +14,8 @@ export const loginDict = {
         es: "!",
     },
     emailOrUsername: {
-        en: "Email or username (TODO: username)",
-        es: "Email o nombre de usuario (TODO: username)",
+        en: "Email or username",
+        es: "Email o nombre de usuario",
     },
     password: {
         en: "Password",
@@ -32,6 +32,18 @@ export const loginDict = {
     login: {
         en: "Log in",
         es: "Iniciar sesión",
+    },
+    loginError: {
+        en: "Error while attempting login.",
+        es: "Error al iniciar sesión.",
+    },
+    badLogin: {
+        en: "Invalid data.",
+        es: "Datos incorrectos.",
+    },
+    retry: {
+        en: "Retry",
+        es: "Reintentar",
     },
 } as const satisfies Translations;
 

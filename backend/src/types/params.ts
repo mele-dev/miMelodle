@@ -9,7 +9,7 @@ export const ParamsSchema = SafeType.Object({
     userId: userSchema.properties.id,
     selfId: userSchema.properties.id,
     filename: profilePictureSchema.properties.id,
-    friendId: userSchema.properties.id,
+    targetUserId: userSchema.properties.id,
     gameMode: MelodleGameSchema.properties.gameMode,
     optionalGameMode: SafeType.Optional(MelodleGameSchema.properties.gameMode),
     artistMusixMatchId: artistSchema.properties.musixmatchArtistId,
