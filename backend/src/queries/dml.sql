@@ -5,8 +5,8 @@ SELECT *
 /* @name loginUser */
 SELECT id
   FROM users
- WHERE email = :emailOrUsername! or username = :emailOrUsername!
-   AND check_password("passwordHash", :password!);
+ WHERE email = :emailOrUsername!
+    OR username = :emailOrUsername! AND check_password("passwordHash", :password!);
 
 /* @name insertUser */
    INSERT
@@ -58,6 +58,81 @@ COMMIT;
 
 /* @name rollbackTransaction */
 ROLLBACK;
+
+/* @name getSelfFriends */
+SELECT f."user2Id"
+     , f."userId"
+     , f.status
+     , u.name       AS name1
+     , u2.name      AS name2
+     , u.username   AS username1
+     , u2.username  AS username2
+     , pp.id        AS "profilePictureId1"
+     , pp2.id       AS "profilePictureId2"
+     , pp.filename  AS "profilePictureFilename1"
+     , pp2.filename AS "profilePictureFilename2"
+  FROM friendships f
+           INNER JOIN public.users u2 ON u2.id = f."user2Id"
+           INNER JOIN public.users u ON u.id = f."userId"
+           INNER JOIN public."profilePictures" pp ON pp.id = u."profilePictureId"
+           INNER JOIN public."profilePictures" pp2 ON pp2.id = u2."profilePictureId"
+ WHERE "user2Id" = :selfId!
+    OR "userId" = :selfId!;
+
+/* @name deleteFriend */
+   DELETE
+     FROM friendships f
+    WHERE (f."userId" = :selfId! AND f."user2Id" = :targetUserId!)
+       OR (f."userId" = :targetUserId! AND f."user2Id" = :selfId!)
+RETURNING *;
+
+/* @name addNewFriend */
+   INSERT
+     INTO friendships ("userId", "user2Id")
+   VALUES (:selfId!, :targetUserId!)
+RETURNING status;
+
+/* @name acceptRequest */
+UPDATE friendships f
+   SET status = 'accepted'
+ WHERE (f."userId" = :selfId! AND f."user2Id" = :targetUserId!)
+    OR (f."userId" = :targetUserId! AND f."user2Id" = :selfId!);
+
+/* @name getStatus */
+SELECT status
+  FROM friendships f
+ WHERE (f."userId" = :selfId! AND f."user2Id" = :targetUserId!)
+    OR (f."userId" = :targetUserId! AND f."user2Id" = :selfId!);
+
+/* @name blockUser */
+   INSERT
+     INTO blocks("userWhoBlocksId", "blockedUserId")
+   VALUES (:selfId!, :targetUserId!)
+RETURNING *;
+
+/* @name unblockUser */
+   DELETE
+     FROM blocks
+    WHERE "userWhoBlocksId" = :selfId!
+      AND "blockedUserId" = :targetUserId!
+RETURNING *;
+
+/* @name getRequestReceiver */
+SELECT "user2Id"
+  FROM friendships f
+ WHERE (f."userId" = :selfId! AND f."user2Id" = :targetUserId!)
+    OR (f."userId" = :targetUserId! AND f."user2Id" = :selfId!);
+
+/* @name isUserBlocked */
+SELECT *
+  FROM blocks b
+ WHERE ((b."blockedUserId" = :selfId! AND b."userWhoBlocksId" = :targetUserId!) OR
+        (b."blockedUserId" = :targetUserId! AND b."userWhoBlocksId" = :selfId!));
+
+/* @name blockAlreadyExists */
+SELECT *
+  FROM blocks b
+ WHERE (b."blockedUserId" = :selfId! AND b."userWhoBlocksId" = :targetUserId!);
 
 /* @name insertUserSpotify */
    INSERT
