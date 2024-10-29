@@ -9,6 +9,7 @@ import { mustHaveAuthGuard } from "./guards/must-have-auth.guard";
 import { authCallbackGuard } from "./guards/auth-callback.guard";
 import { AppLayoutPage } from "./app-layout/app-layout.page";
 import { authGuard } from "./guards/auth.guard";
+import { HomePage } from "./home/home.page";
 
 export const routes = [
     {
@@ -50,7 +51,7 @@ export const routes = [
             },
             {
                 path: "home",
-                component: TODOComponent,
+                component: HomePage,
             },
             {
                 path: "profile",
