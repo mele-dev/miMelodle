@@ -1,8 +1,6 @@
 import { effect, inject, Injectable, signal } from "@angular/core";
 import { z } from "zod";
-import {
-    LocalStorageService,
-} from "./local-storage.service";
+import { LocalStorageService } from "./local-storage.service";
 import { supportedLanguages } from "../globalConstants";
 
 export type Language = (typeof supportedLanguages)[number];
