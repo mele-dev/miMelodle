@@ -36,32 +36,7 @@
                     <hlm-icon size="base" name="lucideBellPlus"></hlm-icon>
                 </button>
                 <div hlmPopoverContent *brnPopoverContent="let ctx">
-                    <div class="space-y-2">
-                        <h4 class="font-medium leading-none">
-                            {{ this.dict().friendRequests }}
-                        </h4>
-                    </div>
-                    <br />
-                    <div class="grid gap-2">
-                        @for (
-                            user of this.friendsService.friendRequest();
-                            track $index
-                        ) {
-                            <div class="flex items-baseline gap-2">
-                                <div>
-                                    <span>&#64;</span
-                                    ><label
-                                        hlmLabel
-                                        class="font-bold"
-                                        for="username"
-                                        >{{ user.username }}</label
-                                    >
-                                </div>
-                                <button type="button" variant="ghost" hlmBtn>Decline</button>
-                                <button type="button" hlmBtn>Accept</button>
-                            </div>
-                        }
-                    </div>
+                    <app-friendships></app-friendships>
                 </div>
             </brn-popover>
 

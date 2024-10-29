@@ -19,8 +19,8 @@ import {
 } from "@spartan-ng/ui-popover-helm";
 import { DomSanitizer } from "@angular/platform-browser";
 import { BackendIcon } from "../../types/backend-icon";
-import { FriendsService } from "../../services/friends.service";
 import { HlmButtonModule } from "@spartan-ng/ui-button-helm";
+import { FriendshipsComponent } from "../friendships/friendships.component";
 
 @Component({
     selector: "app-app-navbar",
@@ -36,24 +36,20 @@ import { HlmButtonModule } from "@spartan-ng/ui-button-helm";
         HlmPopoverCloseDirective,
         HlmPopoverContentDirective,
         HlmButtonModule,
+    FriendshipsComponent
     ],
     providers: [provideIcons({ lucideBell, lucideLogOut, lucideBellPlus })],
     templateUrl: "./app-navbar.component.html",
 })
-export class AppNavbarComponent implements OnInit {
+export class AppNavbarComponent {
     dict = inject(AppNavbarTranslator).dict;
     safeRouter = inject(SafeRoutingService);
     chosenIcon = signal<BackendIcon | undefined>(undefined);
     sanitizer = inject(DomSanitizer);
     private readonly _localStorage = inject(LocalStorageService);
-    public friendsService = inject(FriendsService);
 
     logOut() {
         this._localStorage.removeItem("userInfo");
         this.safeRouter.navigate(["/auth"]);
-    }
-
-    async ngOnInit() {
-        await this.friendsService.reloadUsers();
     }
 }

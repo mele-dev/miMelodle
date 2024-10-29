@@ -36,9 +36,21 @@
                     <hlm-menu>
                         <hlm-menu-label> Actions </hlm-menu-label>
                         <hlm-menu-separator />
-                        <button type="button" (click)="this.addFriend(user)" hlmMenuItem>Add friend</button>
+                        <button
+                            type="button"
+                            (click)="this.sendFriendRequest(user)"
+                            hlmMenuItem
+                        >
+                            Add friend
+                        </button>
                         <button type="button" hlmMenuItem>Block</button>
-                        <button type="button" hlmMenuItem>Remove friend</button>
+                        <button
+                            type="button"
+                            hlmMenuItem
+                            (click)="this.deleteFriendship(user)"
+                        >
+                            Remove friend
+                        </button>
                     </hlm-menu>
                 </ng-template>
             </hlm-td>

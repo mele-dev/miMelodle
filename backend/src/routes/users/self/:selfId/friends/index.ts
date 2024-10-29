@@ -20,16 +20,17 @@ const friendsRoutes: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
             summary: "Get all friends from a user.",
             response: {
                 200: SafeType.Array(
-                    SafeType.Intersect([
-                        SafeType.Pick(userSchema, [
+                    SafeType.Object({
+                        ...SafeType.Pick(userSchema, [
                             "id",
                             "name",
                             "username",
                             "profilePictureId",
                             "profilePictureFilename",
-                        ]),
-                        SafeType.Pick(friendSchema, ["status"]),
-                    ])
+                        ]).properties,
+                        ...SafeType.Pick(friendSchema, ["status"]).properties,
+                        selfIsRequestSender: SafeType.Boolean(),
+                    })
                 ),
                 ...SafeType.CreateErrors(["unauthorized"]),
             },
@@ -49,6 +50,7 @@ const friendsRoutes: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                         profilePictureId: row.profilePictureId2,
                         profilePictureFilename: row.profilePictureFilename2,
                         status: row.status,
+                        selfIsRequestSender: true,
                     };
                 }
                 return {
@@ -58,6 +60,7 @@ const friendsRoutes: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                     profilePictureId: row.profilePictureId1,
                     profilePictureFilename: row.profilePictureFilename1,
                     status: row.status,
+                    selfIsRequestSender: false,
                 };
             });
 
