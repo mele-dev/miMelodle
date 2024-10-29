@@ -33,6 +33,18 @@ export const loginDict = {
         en: "Log in",
         es: "Iniciar sesión",
     },
+    loginError: {
+        en: "Error while attempting login.",
+        es: "Error al iniciar sesión.",
+    },
+    badLogin: {
+        en: "Invalid data.",
+        es: "Datos incorrectos.",
+    },
+    retry: {
+        en: "Retry",
+        es: "Reintentar",
+    },
 } as const satisfies Translations;
 
 @Injectable({
