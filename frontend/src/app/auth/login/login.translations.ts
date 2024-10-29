@@ -14,8 +14,8 @@ export const loginDict = {
         es: "!",
     },
     emailOrUsername: {
-        en: "Email or username (TODO: username)",
-        es: "Email o nombre de usuario (TODO: username)",
+        en: "Email or username",
+        es: "Email o nombre de usuario",
     },
     password: {
         en: "Password",

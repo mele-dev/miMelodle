@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import {
-    postAuthLoginBodyEmailMax,
+    postAuthLoginBodyEmailOrUsernameMaxOne,
     postAuthLoginBodyPasswordMax,
     postAuthRegisterBodyNameMax,
     postAuthRegisterBodyPasswordMin,
@@ -11,8 +11,8 @@ import { Translations, TranslatorService } from "./translator.service";
 
 export const validationDict = {
     wrongEmailLength: {
-        en: `Max length is ${postAuthLoginBodyEmailMax}.`,
-        es: `El máximo es de ${postAuthLoginBodyEmailMax} caracteres.`,
+        en: `Max length is ${postAuthLoginBodyEmailOrUsernameMaxOne}.`,
+        es: `El máximo es de ${postAuthLoginBodyEmailOrUsernameMaxOne} caracteres.`,
     },
     invalidEmail: {
         en: "Invalid email.",

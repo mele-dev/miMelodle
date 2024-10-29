@@ -38,7 +38,7 @@ export class LoginPage {
 
     person = new FormBuilder().nonNullable.group(
         {
-            email: "",
+            emailOrUsername: "",
             password: "",
         } satisfies { [K in keyof PostAuthLoginBody]: unknown },
         {
