@@ -21,7 +21,7 @@ export type Friend = GetUsersSelfSelfIdFriends200Item & {
 })
 export class FriendsService implements OnInit {
     private _friends = signal<Friend[]>([]);
-    private _friendRequest = computed(() => {
+    public friendRequest = computed(() => {
         return this._friends().filter((f) => f.status === "pending");
     });
     private _localStorage = inject(LocalStorageService);

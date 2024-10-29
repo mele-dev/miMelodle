@@ -1,5 +1,5 @@
 <!-- TODO: Make this not be ugly AF. -->
-<nav class="w-full backdrop-blur-lg text-xl">
+<nav class="w-full text-xl backdrop-blur-lg">
     <div class="container flex w-full items-baseline justify-between px-4 py-2">
         <div class="flex flex-grow items-baseline gap-4">
             <button
@@ -30,6 +30,41 @@
                 </a>
                 <app-language-picker></app-language-picker>
             </div>
+
+            <brn-popover sideOffset="5" closeDelay="100">
+                <button brnPopoverTrigger>
+                    <hlm-icon size="base" name="lucideBellPlus"></hlm-icon>
+                </button>
+                <div hlmPopoverContent *brnPopoverContent="let ctx">
+                    <div class="space-y-2">
+                        <h4 class="font-medium leading-none">
+                            {{ this.dict().friendRequests }}
+                        </h4>
+                    </div>
+                    <br />
+                    <div class="grid gap-2">
+                        @for (
+                            item of this.friendsService.friendRequest;
+                            track $index
+                        ) {
+                            <div class="grid grid-cols-3 items-center gap-4">
+                                <div
+                                    [innerHTML]="
+                                        sanitizer.bypassSecurityTrustHtml(
+                                            chosenIcon()?.svg ?? ''
+                                        )
+                                    "
+                                    class="row-span-4 aspect-square h-16 w-auto rounded-full border-none bg-white p-1 text-white shadow-inner"
+                                ></div>
+                                <label hlmLabel class="font-bold" for="username"
+                                    >&commat;Pepinho</label
+                                >
+                            </div>
+                        }
+                    </div>
+                </div>
+            </brn-popover>
+
             <hlm-icon size="base" name="lucideBell"></hlm-icon>
             <button type="button" (click)="this.logOut()">
                 <hlm-icon name="lucideLogOut"></hlm-icon>

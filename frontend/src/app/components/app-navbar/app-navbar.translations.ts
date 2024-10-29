@@ -21,6 +21,10 @@ export const registerDict = {
         en: "Profile",
         es: "Perfil",
     },
+    friendRequests: {
+        en: "Friend Requests",
+        es: "Solicitudes de amistad",
+    },
 } as const satisfies Translations;
 
 @Injectable({
