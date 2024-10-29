@@ -23,10 +23,9 @@ const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
             body: SafeType.WithExamples(
                 SafeType.Object({
                     password: userSchema.properties.password,
-                    emailOrUsername: SafeType.Union([
-                        userSchema.properties.email,
-                        userSchema.properties.username,
-                    ]),
+                    emailOrUsername: SafeType.String({
+                        maxLength: userSchema.properties.email.maxLength,
+                    }),
                 }),
                 [
                     {
@@ -61,7 +60,7 @@ const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 id: result[0].id,
             } satisfies JwtTokenContent);
 
-            return sendOk(reply, 200, { jwtToken: token, id: result[0].id })
+            return sendOk(reply, 200, { jwtToken: token, id: result[0].id });
         },
     });
 };
