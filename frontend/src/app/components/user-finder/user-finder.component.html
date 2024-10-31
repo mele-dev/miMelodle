@@ -1,4 +1,9 @@
-<h1 class="mb-5 font-semibold text-neutral-500">{{ this.dict().title }}</h1>
+<h1 class="mb-5">
+    <span class="font-semibold text-neutral-300">
+        {{ this.dict().title[0] }}
+    </span>
+    <span class="text-neutral-400">{{ this.dict().title[1] }}</span>
+</h1>
 
 <input
     hlmInput
@@ -36,7 +41,7 @@
                     <button
                         hlmBtn
                         type="button"
-                  size="sm"
+                        size="sm"
                         [brnMenuTriggerFor]="userMenu"
                         variant="ghost"
                     >

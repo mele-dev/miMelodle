@@ -33,6 +33,7 @@ import { provideIcons } from "@ng-icons/core";
 import { lucideMoreHorizontal } from "@ng-icons/lucide";
 import { LocalStorageService } from "../../services/local-storage.service";
 import { SelfService } from "../../services/self.service";
+import { HlmPaginationModule } from "@spartan-ng/ui-pagination-helm";
 
 type SearchedUser = GetUsersSearch200["matches"][number];
 
@@ -69,12 +70,13 @@ export class UserFinderComponent {
     private _icons = inject(IconCacheService);
     sanitizer = inject(DomSanitizer);
     private _friends = inject(FriendsService);
-    private _localStorage = inject(LocalStorageService);
     private _self = inject(SelfService);
 
     constructor() {
         effect(
             async () => {
+                // TODO: Change dropdown menu behaviour depending on whether
+                // they are a friend or not.
                 const filter = this.userFilter();
                 const self = await this._self.waitForUserInfoSnapshot();
 

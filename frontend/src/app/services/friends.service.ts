@@ -24,6 +24,7 @@ export class FriendsService {
             (f) => f.status === "pending" && !f.selfIsRequestSender
         );
     });
+    public friends = this._friends.asReadonly();
     private _localStorage = inject(LocalStorageService);
     dict = inject(FriendsTranslator).dict;
 

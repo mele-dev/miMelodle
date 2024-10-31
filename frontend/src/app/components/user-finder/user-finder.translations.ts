@@ -10,8 +10,8 @@ const translations = {
         es: "Error al buscar usuarios.",
     },
     title: {
-        en: "Search users",
-        es: "Buscar usuarios",
+        en: ["Search users", "by username."],
+        es: ["Buscar usuarios", "por nombre de usuario."],
     },
     usernamePlaceholder: {
     en: "The.username-from_someone.else",
