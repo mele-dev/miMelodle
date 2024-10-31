@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { typedEnv } from "../types/env.js";
 import { MusixMatchArtist, MusixMatchArtistList } from "../types/artist.js";
+import { MusixMatchTrack, MusixMatchTrackList } from "../types/track.js";
 
 const url = "https://api.musixmatch.com/ws/1.1";
 
@@ -10,7 +11,7 @@ interface MusixmatchResponse<T> {
     };
 }
 
-class MusixmatchAPI {
+export class MusixmatchAPI {
     private apiKey: string;
     private baseUrl: string;
 
@@ -22,7 +23,7 @@ class MusixmatchAPI {
     private async request<T>(
         endpoint: string,
         /* uso record para asegurar que el tipado de k/v siempre sea string string */
-        params: Record<string, string>
+        params: Record<string, string | number | boolean>
     ): Promise<T> {
         try {
             const url = `${this.baseUrl}${endpoint}`;
@@ -98,6 +99,16 @@ class MusixmatchAPI {
     /* buscar artista por id */
     public async getArtistById(artistId: string): Promise<MusixMatchArtist> {
         return this.request("/artist.get", { artist_id: artistId });
+    }
+
+    public async getArtistCharts(opts: {
+        page: number,
+        page_size: number,
+        chart_name: "top" | "hot" | "mxmweekly" | "mxmweekly_new",
+        country?: string,
+        f_has_lyrics?: boolean,
+    }) {
+        return this.request<MusixMatchTrackList>("/chart.tracks.get", opts);
     }
 }
 

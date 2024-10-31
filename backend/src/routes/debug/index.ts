@@ -1,4 +1,7 @@
-import { FastifyPluginAsyncTypebox, TSchema } from "@fastify/type-provider-typebox";
+import {
+    FastifyPluginAsyncTypebox,
+    TSchema,
+} from "@fastify/type-provider-typebox";
 import { typedEnv } from "../../types/env.js";
 import { SafeType } from "../../utils/typebox.js";
 import { MelodleTagName } from "../../plugins/swagger.js";
@@ -13,6 +16,8 @@ import {
 } from "../../queries/snapshots.queries.js";
 import { friendSchema, User, userSchema } from "../../types/user.js";
 import { sendOk } from "../../utils/reply.js";
+import MusixmatchAPI from "../../musixmatch-api/musixmatch.js";
+import { musixMatchTrackListSchema } from "../../types/track.js";
 
 export default (async (fastify) => {
     if (typedEnv.NODE_ENV === "development") {
@@ -90,4 +95,24 @@ export default (async (fastify) => {
             },
         });
     }
+
+    fastify.post("/playground", {
+        onRequest: [decorators.noSecurity],
+        schema: {
+            security: [],
+            tags: ["Debug"] satisfies MelodleTagName[],
+        },
+        async handler(request, reply) {
+            const api = new MusixmatchAPI();
+            const result = await api.getArtistCharts({
+                page: 0,
+                page_size: 100,
+                chart_name: "mxmweekly",
+                country: "uy",
+                f_has_lyrics: true,
+            });
+
+            return result;
+        },
+    });
 }) satisfies FastifyPluginAsyncTypebox;
