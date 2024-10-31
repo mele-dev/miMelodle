@@ -25,7 +25,7 @@ export default (async (fastify) => {
             description: undefined,
             tags: ["Melodle"] satisfies MelodleTagName[],
         },
-        async handler(_request, reply) {
+        async handler(request, reply) {
             return reply.notImplemented();
         },
     });

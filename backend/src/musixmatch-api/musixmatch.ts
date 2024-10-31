@@ -101,14 +101,14 @@ export class MusixmatchAPI {
         return this.request("/artist.get", { artist_id: artistId });
     }
 
-    public async getArtistCharts(opts: {
+    public async getTrackCharts(opts: {
         page: number,
         page_size: number,
         chart_name: "top" | "hot" | "mxmweekly" | "mxmweekly_new",
         country?: string,
         f_has_lyrics?: boolean,
     }) {
-        return this.request<MusixMatchTrackList>("/chart.tracks.get", opts);
+        return this.request<MusixMatchTrackList | []>("/chart.tracks.get", opts);
     }
 }
 

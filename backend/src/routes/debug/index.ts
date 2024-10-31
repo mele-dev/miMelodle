@@ -18,6 +18,7 @@ import { friendSchema, User, userSchema } from "../../types/user.js";
 import { sendOk } from "../../utils/reply.js";
 import MusixmatchAPI from "../../musixmatch-api/musixmatch.js";
 import { musixMatchTrackListSchema } from "../../types/track.js";
+import { getRandomPopularSong } from "../../services/game.js";
 
 export default (async (fastify) => {
     if (typedEnv.NODE_ENV === "development") {
@@ -103,16 +104,10 @@ export default (async (fastify) => {
             tags: ["Debug"] satisfies MelodleTagName[],
         },
         async handler(request, reply) {
-            const api = new MusixmatchAPI();
-            const result = await api.getArtistCharts({
-                page: 0,
-                page_size: 100,
-                chart_name: "mxmweekly",
-                country: "uy",
-                f_has_lyrics: true,
-            });
-
-            return result;
+            return await getRandomPopularSong({
+                "songPoolSize": 1000,
+                "bias": "more popular"
+            })
         },
     });
 }) satisfies FastifyPluginAsyncTypebox;
