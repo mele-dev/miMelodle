@@ -1,10 +1,11 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { SafeType } from "../../utils/typebox.js";
 import { ParamsSchema } from "../../types/params.js";
-import { artistSchema, MusixMatchArtist } from "../../types/artist.js";
+import { artistSchema } from "../../types/artist.js";
 import { MelodleTagName } from "../../plugins/swagger.js";
 import { decorators } from "../../services/decorators.js";
 import MusixmatchAPI from "../../musixmatch-api/musixmatch.js";
+import { sendOk } from "../../utils/reply.js";
 
 const artist: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
     fastify.get("/:artistMusixMatchId", {
@@ -73,7 +74,7 @@ const artist: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 imageUrl: artist.artist.artist_image_url,
             }));
 
-            return reply.send(artists);
+            return sendOk(reply, 200, artists);
         },
     });
 

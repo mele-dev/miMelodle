@@ -36,18 +36,19 @@ const lyric: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
             const musixmatch = new MusixmatchAPI();
 
             const response =
-                await musixmatch.getLyricsByTrackId(trackMusixMatchId);
+                await musixmatch.getTrackLyrics({ "track_id": trackMusixMatchId });
 
             if (response.lyrics) {
-                const trackLyricsInfo = {
-                    lyricsId: response.lyrics.lyricsId,
-                    trackId: response.lyrics.trackId,
-                    lyricsBody: response.lyrics.lyricsBody,
-                    explicit: response.lyrics.explicit,
-                    language: response.lyrics.language,
-                    copyright: response.lyrics.copyright,
-                };
-                return reply.send(trackLyricsInfo);
+                // FIXME
+                //const trackLyricsInfo = {
+                //    lyricsId: response.lyrics.lyrics_id,
+                //    trackId: response.lyrics.trackId,
+                //    lyricsBody: response.lyrics.lyricsBody,
+                //    explicit: response.lyrics.explicit,
+                //    language: response.lyrics.language,
+                //    copyright: response.lyrics.copyright,
+                //};
+                //return reply.send(trackLyricsInfo);
             } else {
                 return reply.notFound("Lyrics not found for this track ID.");
             }

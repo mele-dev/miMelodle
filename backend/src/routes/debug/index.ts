@@ -104,10 +104,14 @@ export default (async (fastify) => {
             tags: ["Debug"] satisfies MelodleTagName[],
         },
         async handler(request, reply) {
-            return await getRandomPopularSong({
+            console.info("to query");
+            const result = await getRandomPopularSong({
                 "songPoolSize": 1000,
                 "bias": "more popular"
             })
+            console.info("queried");
+
+            return result;
         },
     });
 }) satisfies FastifyPluginAsyncTypebox;

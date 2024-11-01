@@ -8,8 +8,9 @@ import MusixmatchAPI from "../musixmatch-api/musixmatch.js";
 export async function getRandomPopularSong(opts: {
     songPoolSize: number;
     bias: "less popular" | "more popular" | "random";
+    baseUrl?: string;
 }) {
-    const api = new MusixmatchAPI();
+    const api = new MusixmatchAPI(opts.baseUrl);
     const pageSize = 100;
 
     let index = randomInt(0, opts.songPoolSize);
@@ -27,12 +28,16 @@ export async function getRandomPopularSong(opts: {
             // We ask for page size other than 1, since there is a hard limit
             // of 100 on the page you can request.
             page_size: pageSize,
-            f_has_lyrics: true,
+            f_has_lyrics: 1,
             chart_name: "mxmweekly",
         });
 
         // If we are past the last page (musixmatch returns empty array).
         if (Array.isArray(result) || result.track_list.length === 0) {
+            console.info("Returned array", result);
+            if (index === 0) {
+                throw "No songs available.";
+            }
             // Search for a lower index via binary search.
             index = Math.floor(index / 2);
             continue;
