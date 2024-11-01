@@ -150,10 +150,11 @@ WHERE "userWhoBlocksId" = :selfId!
 RETURNING (SELECT username
            FROM target) AS "targetUsername!";
 
-/* @name getUsersBlocked */
-SELECT u.*
+/* @name getBlockedUsers */
+SELECT u.*, pP.filename as "profilePictureFilename"
 FROM users u
-JOIN blocks b ON u.id = b."blockedUserId"
+         JOIN blocks b ON u.id = b."blockedUserId"
+         inner join public."profilePictures" pP on pP.id = u."profilePictureId"
 WHERE b."userWhoBlocksId" = :selfId;
 
 /* @name getRequestReceiver */

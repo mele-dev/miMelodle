@@ -10,8 +10,8 @@ import { decorators } from "../../../../../services/decorators.js";
 import { sendOk } from "../../../../../utils/reply.js";
 import { runPreparedQuery } from "../../../../../services/database.js";
 import {
+    getBlockedUsers,
     getSelfFriends,
-    getUsersBlocked,
 } from "../../../../../queries/dml.queries.js";
 
 export default (async (fastify, _opts) => {
@@ -20,7 +20,7 @@ export default (async (fastify, _opts) => {
         schema: {
             params: selfIdSchema,
             tags: ["Blocking"] satisfies MelodleTagName[],
-            summary: "Get all blocked users from another.",
+            summary: "Get every user currently blocked by self.",
             response: {
                 200: SafeType.Array(
                     SafeType.Object({
@@ -29,6 +29,7 @@ export default (async (fastify, _opts) => {
                             "name",
                             "username",
                             "profilePictureId",
+                            "profilePictureFilename"
                         ]).properties,
                     })
                 ),
@@ -37,20 +38,11 @@ export default (async (fastify, _opts) => {
         },
         async handler(request, reply) {
             const queryResult = await runPreparedQuery(
-                getUsersBlocked,
+                getBlockedUsers,
                 request.params
             );
 
-            const output = queryResult.map((row) => {
-                return {
-                    id: row.id,
-                    name: row.name,
-                    username: row.username,
-                    profilePictureId: row.profilePictureId,
-                };
-            });
-
-            return sendOk(reply, 200, output);
+            return sendOk(reply, 200, queryResult);
         },
     });
 }) satisfies FastifyPluginAsyncTypebox;
