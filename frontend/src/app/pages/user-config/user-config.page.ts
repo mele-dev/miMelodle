@@ -1,4 +1,4 @@
-import { Component, inject } from "@angular/core";
+import { Component, inject, input } from "@angular/core";
 import { DomSanitizer } from "@angular/platform-browser";
 import { HlmBadgeDirective } from "@spartan-ng/ui-badge-helm";
 import { HlmButtonDirective } from "@spartan-ng/ui-button-helm";
@@ -17,6 +17,7 @@ import {
     HlmTabsContentDirective,
     HlmTabsListComponent,
     HlmTabsTriggerDirective,
+    HlmTabsPaginatedListComponent,
 } from "@spartan-ng/ui-tabs-helm";
 
 @Component({
@@ -27,6 +28,7 @@ import {
         HlmTabsListComponent,
         HlmTabsTriggerDirective,
         HlmTabsContentDirective,
+        HlmTabsPaginatedListComponent,
 
         HlmCardContentDirective,
         HlmCardDescriptionDirective,
@@ -43,5 +45,11 @@ import {
     templateUrl: "./user-config.page.html",
 })
 export class UserConfigPage {
+    activeTab = input("Tab 0");
+
+    lotsOfTabs = Array.from({ length: 30 })
+        .fill(0)
+        .map((_, index) => `Tab ${index}`);
+
     sanitizer = inject(DomSanitizer);
 }

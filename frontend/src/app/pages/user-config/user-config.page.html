@@ -1,28 +1,36 @@
 <hlm-tabs
     tab="account"
-    class="mx-auto flex max-w-3xl flex-row space-x-2"
+    class="mx-auto flex w-[100rem] max-w-3xl flex-row space-x-2"
     orientation="vertical"
 >
     <hlm-tabs-list orientation="vertical" aria-label="tabs example">
-        <button class="w-full" hlmTabsTrigger="profile">Edit Profile</button>
+        <button class="w-full" hlmTabsTrigger="profile">User config</button>
         <button class="w-full" hlmTabsTrigger="password">Password</button>
         <button class="w-full" hlmTabsTrigger="danger">Danger Zone</button>
     </hlm-tabs-list>
-    <div hlmTabsContent="profile">
+    <div hlmTabsContent="profile" class="w-full">
         <section brnCard>
-            <div
-                [innerHTML]="
-                        this.sanitizer.bypassSecurityTrustHtml('abstract-10.svg')
+            <div class="flex justify-center">
+                <div
+                    [innerHTML]="
+                        this.sanitizer.bypassSecurityTrustHtml('El SVG')
                     "
-                class="aspect-square h-10 w-10 rounded-full bg-white p-1"
-            ></div>
+                    class="aspect-square h-40 w-40 rounded-full bg-white p-1"
+                ></div>
+            </div>
 
-            <div hlmCardHeader>
-                <h3 hlmCardTitle>Edit Profile</h3>
-                <p hlmCardDescription>
-                    Make changes to your account here. Click save when you're
-                    done.
-                </p>
+            <div class="flex items-center justify-center space-y-1.5 p-6">
+                <h3>
+                    <span
+                        class="text-lg font-semibold leading-none tracking-tight"
+                        >name</span
+                    >
+                    <span> | </span>
+                    <span
+                        class="text-lg font-semibold leading-none tracking-tight"
+                        >username</span
+                    >
+                </h3>
             </div>
             <p hlmCardContent>
                 <label class="my-4 block" hlmLabel>
