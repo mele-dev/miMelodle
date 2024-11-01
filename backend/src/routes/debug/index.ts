@@ -16,8 +16,6 @@ import {
 } from "../../queries/snapshots.queries.js";
 import { friendSchema, User, userSchema } from "../../types/user.js";
 import { sendOk } from "../../utils/reply.js";
-import MusixmatchAPI from "../../musixmatch-api/musixmatch.js";
-import { musixMatchTrackListSchema } from "../../types/track.js";
 import { getRandomPopularSong } from "../../services/game.js";
 
 export default (async (fastify) => {
@@ -104,12 +102,10 @@ export default (async (fastify) => {
             tags: ["Debug"] satisfies MelodleTagName[],
         },
         async handler(request, reply) {
-            console.info("to query");
             const result = await getRandomPopularSong({
                 "songPoolSize": 1000,
                 "bias": "more popular"
             })
-            console.info("queried");
 
             return result;
         },
