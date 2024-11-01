@@ -28,7 +28,7 @@ export default (async (fastify, _opts) => {
         onRequest: [decorators.authenticateSelf()],
         schema: {
             params: usersRelationShipSchema,
-            tags: ["Blocks"] satisfies MelodleTagName[],
+            tags: ["Blocking"] satisfies MelodleTagName[],
             response: {
                 201: SafeType.Object({ blocked: SafeType.Boolean() }),
                 ...SafeType.CreateErrors([
@@ -41,8 +41,7 @@ export default (async (fastify, _opts) => {
             summary: "Block a user.",
         },
         handler: async function (request, reply) {
-
-            if (request.params.targetUserId === request.params.selfId){
+            if (request.params.targetUserId === request.params.selfId) {
                 return sendError(
                     reply,
                     "badRequest",
@@ -89,9 +88,12 @@ export default (async (fastify, _opts) => {
         onRequest: [decorators.authenticateSelf()],
         schema: {
             params: usersRelationShipSchema,
-            tags: ["Blocks"] satisfies MelodleTagName[],
+            tags: ["Blocking"] satisfies MelodleTagName[],
             response: {
-                200: SafeType.Object({ blocked: SafeType.Boolean() }),
+                200: SafeType.Object({
+                    blocked: SafeType.Boolean(),
+                    username: SafeType.String(),
+                }),
                 ...SafeType.CreateErrors([
                     "badRequest",
                     "notFound",
@@ -116,6 +118,7 @@ export default (async (fastify, _opts) => {
                 case 1:
                     return sendOk(reply, 200, {
                         blocked: false,
+                        username: queryResult[0].targetUsername
                     });
                 default:
                     throw "Something went wrong";
