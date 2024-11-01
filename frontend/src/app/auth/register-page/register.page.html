@@ -35,7 +35,7 @@
             ></div>
             <div class="flex grow flex-col justify-center gap-[0.1rem]">
                 <input
-                    class="text-bold rounded px-0 py-1 text-xl text-white h-[1.5em]"
+                    class="text-bold h-[1.5em] rounded px-0 py-1 text-xl text-white"
                     [class.border-transparent]="person.controls.name.pristine || person.controls.name.valid"
                     hlmInput
                     type="text"
@@ -50,7 +50,7 @@
                         hlmInput
                         name="username"
                         [formControl]="person.controls.username"
-                        class="text-foreground h-[1.5em] grow rounded bg-transparent ps-0 text-base"
+                        class="h-[1.5em] grow rounded bg-transparent ps-0 text-base text-foreground"
                         [class.border-transparent]="person.controls.username.pristine || person.controls.username.valid"
                         [placeholder]="dict().usernamePlaceholder"
                     />
@@ -176,7 +176,7 @@
         />
         <p
             class="min-h-4 text-xs text-red-500"
-            [class.invisible]="passwordControl.pristine || passwordControl.valid"
+            [class.invisible]="passwordControl.pristine || !passwordControl.hasError('schemaError')"
         >
             {{ dict().invalidPassword }}
         </p>
@@ -190,7 +190,7 @@
         />
         <p
             class="min-h-4 text-xs text-red-500"
-            [class.invisible]="!this.person.hasError('differentRepeatedPassword')"
+            [class.invisible]="!this.person.hasError('nonRepeatedPassword')"
         >
             {{ dict().invalidRepeatPassword }}
         </p>
