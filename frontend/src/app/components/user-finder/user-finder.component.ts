@@ -27,6 +27,7 @@ import {
 } from "@spartan-ng/ui-menu-helm";
 import { BrnMenuTriggerDirective } from "@spartan-ng/ui-menu-brain";
 import { FriendsService } from "../../services/friends.service";
+import { BlockingService } from "../../services/blocking.service";
 
 type SearchedUser = GetUsersSearch200["matches"][number];
 
@@ -61,6 +62,7 @@ export class UserFinderComponent {
     private _icons = inject(IconCacheService);
     sanitizer = inject(DomSanitizer);
     private _friends = inject(FriendsService);
+    private _blocking = inject(BlockingService);
 
     constructor() {
         effect(
@@ -106,5 +108,9 @@ export class UserFinderComponent {
 
     async deleteFriendship(user: SearchedUser) {
         return await this._friends.deleteFriend(user.id);
+    }
+
+    async block(user: SearchedUser){
+        return await this._blocking.blockUser(user.id);
     }
 }

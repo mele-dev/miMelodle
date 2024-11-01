@@ -133,10 +133,15 @@ SELECT status
     OR (f."userId" = :targetUserId! AND f."user2Id" = :selfId!);
 
 /* @name blockUser */
+WITH target AS (SELECT *
+                FROM users u
+                WHERE u.id = :targetUserId!
+                LIMIT 1)
    INSERT
      INTO blocks("userWhoBlocksId", "blockedUserId")
    VALUES (:selfId!, :targetUserId!)
-RETURNING *;
+RETURNING (SELECT username
+           FROM target) AS "targetUsername!";
 
 /* @name unblockUser */
 WITH target AS (SELECT *

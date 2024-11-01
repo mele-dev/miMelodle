@@ -1,8 +1,12 @@
 import { inject, Injectable, signal } from "@angular/core";
 import { boolean } from "zod";
 import { LocalStorageService } from "./local-storage.service";
-import { deleteUsersSelfSelfIdBlocksTargetUserId } from "../../apiCodegen/backend";
-import { deleteUsersSelfSelfIdBlocksTargetUserIdParams } from "../../apiCodegen/backend-zod";
+import {
+    deleteUsersSelfSelfIdBlockingTargetUserId,
+    getUsersSelfSelfIdBlocking,
+    GetUsersSelfSelfIdBlocking200Item,
+    postUsersSelfSelfIdBlockingTargetUserId,
+} from "../../apiCodegen/backend";
 import { toast } from "ngx-sonner";
 import { BlockingTranslationService } from "./blocking-translation.service";
 
@@ -10,7 +14,8 @@ import { BlockingTranslationService } from "./blocking-translation.service";
     providedIn: "root",
 })
 export class BlockingService {
-    private _usersBlocked = signal([]);
+    private _blockedUsers = signal<GetUsersSelfSelfIdBlocking200Item[]>([]);
+    public blockedUsers = this._blockedUsers.asReadonly();
     private _localStorage = inject(LocalStorageService);
     dict = inject(BlockingTranslationService).dict;
 
@@ -21,9 +26,9 @@ export class BlockingService {
             return;
         }
 
-        const result = await getUsersSelfSelfIdFriends(userId);
+        const result = await getUsersSelfSelfIdBlocking(userId);
 
-        this._usersBlocked.set(result.data as []);
+        this._blockedUsers.set(result.data as []);
     }
 
     public async unblockUser(targetId: number) {
@@ -35,17 +40,44 @@ export class BlockingService {
         }
 
         try {
-            const result = await deleteUsersSelfSelfIdBlocksTargetUserId(
+            const result = await deleteUsersSelfSelfIdBlockingTargetUserId(
                 userId,
                 targetId
             );
 
             await this.reloadList();
 
-            toast(this.dict().unblockSuccess("cambiar aca"));
+            toast(this.dict().unblockSuccess(result.data.username));
             return true;
         } catch {
             toast(this.dict().unblockError);
+            return false;
+        }
+    }
+
+    public async blockUser(targetId: number){
+        const selfId = this._localStorage.getItem("userInfo")?.id;
+        console.log('AAAAAAA')
+
+        if (selfId === undefined) {
+            window.location.reload();
+            return false;
+        }
+
+        try {
+            const result = await postUsersSelfSelfIdBlockingTargetUserId(
+                selfId,
+                targetId
+            );
+                console.log('AAAAAAA DPS DE LA QUERY')
+
+            await this.reloadList();
+
+            toast(this.dict().blockSuccess(result.data.username));
+
+            return true;
+        } catch {
+            toast(this.dict().blockError);
             return false;
         }
     }

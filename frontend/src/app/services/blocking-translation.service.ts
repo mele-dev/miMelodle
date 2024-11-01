@@ -10,6 +10,18 @@ export const blockingDict = {
     en: (user: string) => `User ${user} unblocked successfully!.` as const,
     es : (user: string) => `Usuario ${user} desbloqueado con éxito!` as const,
   },
+  blockError: {
+    en: "Couldn't block user.",
+    es: 'No se pudo bloquear al usuario.',
+  },
+  blockSuccess:{
+    en: (user: string) => `User ${user} blocked successfully!.` as const,
+    es : (user: string) => `Usuario ${user} bloqueado con éxito!` as const,
+  },
+  title: {
+    en: "Users blocked",
+    es: "Usuarios bloqueados"
+  }
 } as const satisfies Translations;
 
 @Injectable({
