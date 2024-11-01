@@ -1,6 +1,6 @@
 import { inject, Injectable } from "@angular/core";
 import { ValidationTranslator } from "./client-validation.translation";
-import { AbstractControl, ValidationErrors } from "@angular/forms";
+import { AbstractControl, FormGroup, ValidationErrors } from "@angular/forms";
 import { z, ZodSchema } from "zod";
 import { getUsersCheck } from "../../apiCodegen/backend";
 
@@ -13,7 +13,10 @@ export class ClientValidationService {
 
     public Schema(schema: ZodSchema) {
         return async function (control: { value: unknown }) {
-            return (await schema.safeParseAsync(control.value)).error ?? null;
+            return (await schema.safeParseAsync(control.value)).error ===
+                undefined
+                ? null
+                : { schemaError: true };
         };
     }
 
@@ -21,9 +24,9 @@ export class ClientValidationService {
      * @param group
      * Group is expected to be a formgroup with repeatPassword and password
      */
-    public validateRepeatPassword(
-        group: { value: unknown }
-    ): ValidationErrors | null {
+    public validateRepeatPassword(group: {
+        value: unknown;
+    }): ValidationErrors | null {
         const schema = z.object({
             password: z.string(),
             repeatPassword: z.string(),
@@ -56,7 +59,7 @@ export class ClientValidationService {
 
             return { emailExists: result.data.emailExists };
         } catch {
-           return { serverError: true };
+            return { serverError: true };
         }
     }
 
@@ -72,5 +75,47 @@ export class ClientValidationService {
         } catch {
             return { serverError: true };
         }
+    }
+
+    public mustMatch<TErrorName extends string>(
+        errorName: TErrorName,
+        siblingsToMatch: string[]
+    ) {
+        return function (group: AbstractControl) {
+            if (!(group instanceof FormGroup)) {
+                return { isNotFormGroup: true };
+            }
+
+            const children = group.controls;
+
+            const relevantChildren = siblingsToMatch.map(
+                (key) => children[key]
+            );
+
+            const allElementsMatch = relevantChildren.every(
+                (child) => child.value === relevantChildren[0].value
+            );
+
+            // Set error to group and children in error case;
+            if (!allElementsMatch) {
+                const error = { [errorName]: true } as Record<TErrorName, true>;
+
+                for (const child of relevantChildren) {
+                    child.setErrors({ ...child.errors, ...error });
+                }
+
+                return error;
+            }
+
+            // Clean error in happy case
+            for (const child of relevantChildren) {
+                const errors = { ...child.errors };
+                delete errors[errorName];
+
+                child.setErrors(Object.keys(errors).length ? errors : null);
+            }
+
+            return null;
+        };
     }
 }
