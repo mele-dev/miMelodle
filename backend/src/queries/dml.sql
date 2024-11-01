@@ -139,11 +139,22 @@ SELECT status
 RETURNING *;
 
 /* @name unblockUser */
-   DELETE
-     FROM blocks
-    WHERE "userWhoBlocksId" = :selfId!
-      AND "blockedUserId" = :targetUserId!
-RETURNING *;
+WITH target AS (SELECT *
+                FROM users u
+                WHERE u.id = :targetUserId!
+                LIMIT 1)
+DELETE
+FROM blocks
+WHERE "userWhoBlocksId" = :selfId!
+  AND "blockedUserId" = :targetUserId!
+RETURNING (SELECT username
+           FROM target) AS "targetUsername!";
+
+/* @name getUsersBlocked */
+SELECT u.*
+FROM users u
+JOIN blocks b ON u.id = b."blockedUserId"
+WHERE b."userWhoBlocksId" = :selfId;
 
 /* @name getRequestReceiver */
 SELECT "user2Id"
