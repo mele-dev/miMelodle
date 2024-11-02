@@ -23,21 +23,21 @@ import {
     MusixMatchResponse,
     RawMusixMatchResponse,
 } from "./musixmatch-response.js";
+import { nextMusixMatchToken } from "./musixmatch-token.js";
 
 const url = "https://api.musixmatch.com/ws/1.1";
 
 export class MusixmatchAPI {
-    private apiKey: string;
+    private apiKey?: string;
     private baseUrl: string;
 
     constructor(apiKey?: string) {
-        this.apiKey = apiKey || typedEnv.MUSIXMATCH_KEY;
+        this.apiKey = apiKey;
         this.baseUrl = url;
     }
 
     private async request<T extends TSchema>(
         endpoint: string,
-        /* uso record para asegurar que el tipado de k/v siempre sea string string */
         params: Partial<MusixMatchQueryParams>,
         schema: T
     ): Promise<MusixMatchResponse<T>> {
@@ -48,7 +48,7 @@ export class MusixmatchAPI {
                     params: {
                         /* le paso la apiKey como primer parametro, desp los que
                          * estan definidios en el objeto params */
-                        apikey: this.apiKey,
+                        apikey: this.apiKey ?? nextMusixMatchToken(),
                         ...params,
                     },
                 });

@@ -105,20 +105,12 @@ export default (async (fastify) => {
             tags: ["Debug"] satisfies MelodleTagName[],
         },
         async handler(_request, reply) {
-            const api = new MusixmatchAPI();
-            const ladrones = await api.searchTrack({
-                f_artist_id: 33091389,
-                page: 0,
-                page_size: 100,
+            const result = await getRandomPopularSong({
+                songPoolSize: 2000,
+                bias: "more popular",
             });
 
-            if (!ladrones.parse()) {
-                return reply.code(400).send(ladrones.headers);
-            }
-
-            const result = await api.getMusicGenres();
-
-            return result.parse() ? result.body : result.headers;
+            return result;
         },
     });
 }) satisfies FastifyPluginAsyncTypebox;
