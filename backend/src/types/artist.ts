@@ -1,4 +1,3 @@
-import { Static } from "@sinclair/typebox";
 import { SafeType } from "../utils/typebox.js";
 
 export const artistSchema = SafeType.Object(
@@ -26,19 +25,3 @@ export const artistSchema = SafeType.Object(
         title: "artistSchema",
     }
 );
-
-export const musixMatchArtistSchema = SafeType.Object({
-    artist: SafeType.Object({
-        artist_id: SafeType.Number(),
-        artist_name: SafeType.String(),
-        artist_image_url: SafeType.String(),
-    }),
-});
-
-export const musixMatchArtistListSchema = SafeType.Object({
-    artist_list: SafeType.Array(musixMatchArtistSchema),
-});
-
-export type Artist = Static<typeof artistSchema>;
-export type MusixMatchArtist = Static<typeof musixMatchArtistSchema>;
-export type MusixMatchArtistList = Static<typeof musixMatchArtistListSchema>;

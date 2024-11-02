@@ -1,5 +1,6 @@
 import {
     FastifyPluginAsyncTypebox,
+    FormatRegistry,
     TSchema,
 } from "@fastify/type-provider-typebox";
 import { typedEnv } from "../../types/env.js";
@@ -18,6 +19,7 @@ import { friendSchema, User, userSchema } from "../../types/user.js";
 import { sendOk } from "../../utils/reply.js";
 import { getRandomPopularSong } from "../../services/game.js";
 import MusixmatchAPI from "../../musixmatch-api/musixmatch.js";
+import { Value } from "@sinclair/typebox/value";
 
 export default (async (fastify) => {
     if (typedEnv.NODE_ENV === "development") {
@@ -102,20 +104,21 @@ export default (async (fastify) => {
             security: [],
             tags: ["Debug"] satisfies MelodleTagName[],
         },
-        async handler(request, reply) {
+        async handler(_request, reply) {
             const api = new MusixmatchAPI();
-            const result = await api.getTrackCharts({
-                page: 100,
-                chart_name: "mxmweekly",
+            const ladrones = await api.searchTrack({
+                f_artist_id: 33091389,
+                page: 0,
                 page_size: 100,
-                f_has_lyrics: 1,
             });
 
-            if (result.message.header.status_code === 200) {
-                result.message.
+            if (!ladrones.parse()) {
+                return reply.code(400).send(ladrones.headers);
             }
 
-            return result;
+            const result = await api.getMusicGenres();
+
+            return result.parse() ? result.body : result.headers;
         },
     });
 }) satisfies FastifyPluginAsyncTypebox;

@@ -2,7 +2,9 @@ import { Static, String } from "@sinclair/typebox";
 import { SafeType } from "../utils/typebox.js";
 
 export function createMusixMatchBooleanSchema(description?: string) {
-    return SafeType.Integer({ minimum: 0, maximum: 1, description });
+    return SafeType.Optional(
+        SafeType.Integer({ minimum: 0, maximum: 1, description })
+    );
 }
 
 function createMusixMatchSortingSchema(descriptionPrefix?: string) {
@@ -197,28 +199,28 @@ export type PickMusixMatchQueryParams<
 export const commonMusixMatchResponseProperties = SafeType.Object({
     script_tracking_url: SafeType.String(),
     pixel_tracking_url: SafeType.String(),
-    html_tracking_url: SafeType.String(),
+    html_tracking_url: SafeType.Optional(SafeType.String()),
     updated_time: SafeType.String({ format: "date-time" }),
     restricted: createMusixMatchBooleanSchema(),
     instrumental: createMusixMatchBooleanSchema(),
     explicit: createMusixMatchBooleanSchema(),
-    writer_list: SafeType.Unknown(),
-    publisher_list: SafeType.Unknown(),
-    lyrics_id: SafeType.Number(),
+    writer_list: SafeType.Optional(SafeType.Unknown()),
+    publisher_list: SafeType.Optional(SafeType.Unknown()),
+    lyrics_id: SafeType.Optional(SafeType.Number()),
     lyrics_body: SafeType.String(),
     lyrics_copyright: SafeType.String(),
-    lyrics_language: SafeType.String(),
-    lyrics_language_description: SafeType.String(),
-    backlink_url: SafeType.String(),
+    lyrics_language: SafeType.Optional(SafeType.String()),
+    lyrics_language_description: SafeType.Optional(SafeType.String()),
+    backlink_url: SafeType.Optional(SafeType.String()),
     can_edit: createMusixMatchBooleanSchema(),
     check_validation_overrideable: createMusixMatchBooleanSchema(),
     locked: createMusixMatchBooleanSchema(),
-    action_requested: SafeType.String(),
+    action_requested: SafeType.Optional(SafeType.String()),
     verified: createMusixMatchBooleanSchema(),
     snippet_id: SafeType.Integer(),
     snippet_language: SafeType.String(),
     snippet_body: SafeType.String(),
-    subtitle_id: SafeType.Integer(),
+    subtitle_id: SafeType.Optional(SafeType.Integer()),
     published_status: createMusixMatchBooleanSchema(),
     subtitle_body: SafeType.String(),
     subtitle_avg_count: SafeType.Integer(),
@@ -236,8 +238,8 @@ export const commonMusixMatchResponseProperties = SafeType.Object({
         description: "The language of the translated lyrics (ISO 639-1).",
     }),
     artist_id: SafeType.Integer(),
-    artist_fq_id: SafeType.String(),
-    artist_mbid: SafeType.String(),
+    artist_fq_id: SafeType.Optional(SafeType.String()),
+    artist_mbid: SafeType.Optional(SafeType.String()),
     artist_name: SafeType.String(),
     artist_name_translation_list: SafeType.Unknown(),
     artist_comment: SafeType.String(),
@@ -246,23 +248,25 @@ export const commonMusixMatchResponseProperties = SafeType.Object({
         SafeType.Object({ artist_alias: SafeType.String() })
     ),
     artist_rating: SafeType.Integer(),
-    artist_twitter_url: SafeType.String(),
-    artist_website_url: SafeType.String(),
-    artist_instagram_url: SafeType.String(),
-    artist_tiktok_url: SafeType.String(),
-    artist_facebook_url: SafeType.String(),
-    artist_youtube_url: SafeType.String(),
-    artist_vanity_url: SafeType.String(),
-    artist_edit_url: SafeType.String(),
-    artist_share_url: SafeType.String(),
-    externals_ids: SafeType.Partial(
-        SafeType.Object(
-            {
-                spotify: SafeType.Array(SafeType.String()),
-                itunes: SafeType.Array(SafeType.String()),
-                amazon_music: SafeType.Array(SafeType.String()),
-            },
-            { additionalProperties: true }
+    artist_twitter_url: SafeType.Optional(SafeType.String()),
+    artist_website_url: SafeType.Optional(SafeType.String()),
+    artist_instagram_url: SafeType.Optional(SafeType.String()),
+    artist_tiktok_url: SafeType.Optional(SafeType.String()),
+    artist_facebook_url: SafeType.Optional(SafeType.String()),
+    artist_youtube_url: SafeType.Optional(SafeType.String()),
+    artist_vanity_url: SafeType.Optional(SafeType.String()),
+    artist_edit_url: SafeType.Optional(SafeType.String()),
+    artist_share_url: SafeType.Optional(SafeType.String()),
+    externals_ids: SafeType.Optional(
+        SafeType.Partial(
+            SafeType.Object(
+                {
+                    spotify: SafeType.Array(SafeType.String()),
+                    itunes: SafeType.Array(SafeType.String()),
+                    amazon_music: SafeType.Array(SafeType.String()),
+                },
+                { additionalProperties: true }
+            )
         )
     ),
     begin_date_year: SafeType.String(),
@@ -270,42 +274,51 @@ export const commonMusixMatchResponseProperties = SafeType.Object({
     end_date_year: SafeType.String(),
     end_date: SafeType.String(),
     music_genre: SafeType.Object({
-        musix_genre_id: SafeType.Integer(),
+        music_genre_id: SafeType.Integer(),
         music_genre_parent_id: SafeType.Integer(),
         music_genre_name: SafeType.String(),
         music_genre_name_extended: SafeType.String(),
-        music_genre_vanity: SafeType.String(),
+        music_genre_vanity: SafeType.Union([
+            SafeType.String(),
+            SafeType.Null(),
+        ]),
     }),
     managed: createMusixMatchBooleanSchema(),
     album_id: SafeType.Integer(),
     album_mbid: SafeType.String(),
     album_name: SafeType.String(),
     album_rating: SafeType.Integer(),
-    album_track_count: SafeType.Integer(),
-    album_release_date: SafeType.String({ format: "date" }),
-    album_release_type: SafeType.String(),
+    album_track_count: SafeType.Optional(SafeType.Integer()),
+    album_release_date: SafeType.String(),
+    album_release_type: SafeType.Optional(SafeType.String()),
     album_pline: SafeType.String(),
     album_copyright: SafeType.String(),
     album_label: SafeType.String(),
-    album_vanity_id: SafeType.String(),
-    album_edit_url: SafeType.String(),
-    album_coverart_100x100: SafeType.String(),
-    album_coverart_350x350: SafeType.String(),
-    album_coverart_500x500: SafeType.String(),
-    album_coverart_800x800: SafeType.String(),
+    album_vanity_id: SafeType.Optional(SafeType.String()),
+    album_edit_url: SafeType.Optional(SafeType.String()),
+    album_coverart_100x100: SafeType.Optional(SafeType.String()),
+    album_coverart_350x350: SafeType.Optional(SafeType.String()),
+    album_coverart_500x500: SafeType.Optional(SafeType.String()),
+    album_coverart_800x800: SafeType.Optional(SafeType.String()),
     track_id: SafeType.Integer(),
-    track_mbid: SafeType.Integer(),
-    track_isrc: SafeType.String(),
-    commontrack_isrcs: SafeType.Array(SafeType.Array(SafeType.String())),
-    track_spotify_id: SafeType.String(),
-    commontrack_spotify_ids: SafeType.Array(SafeType.String()),
-    commontrack_itunes_ids: SafeType.Array(SafeType.String()),
-    track_soundcloud_id: SafeType.String(),
-    track_xboxmusic_id: SafeType.String(),
+    track_mbid: SafeType.Optional(SafeType.Integer()),
+    track_isrc: SafeType.Optional(SafeType.String()),
+    commontrack_isrcs: SafeType.Optional(
+        SafeType.Array(SafeType.Array(SafeType.String()))
+    ),
+    track_spotify_id: SafeType.Optional(SafeType.String()),
+    commontrack_spotify_ids: SafeType.Optional(
+        SafeType.Array(SafeType.String())
+    ),
+    commontrack_itunes_ids: SafeType.Optional(
+        SafeType.Array(SafeType.String())
+    ),
+    track_soundcloud_id: SafeType.Optional(SafeType.String()),
+    track_xboxmusic_id: SafeType.Optional(SafeType.String()),
     track_name: SafeType.String(),
     track_name_translation_list: SafeType.Unknown(),
     track_rating: SafeType.Integer(),
-    track_length: SafeType.Integer(),
+    track_length: SafeType.Optional(SafeType.Integer()),
     commontrack_id: SafeType.Integer(),
     has_lyrics: createMusixMatchBooleanSchema(),
     has_lyrics_crowd: createMusixMatchBooleanSchema(),
@@ -315,8 +328,10 @@ export const commonMusixMatchResponseProperties = SafeType.Object({
     num_favourite: SafeType.Integer(),
     track_share_url: SafeType.String(),
     track_edit_url: SafeType.String(),
-    commontrack_vanity_id: SafeType.Integer(),
-    first_release_date: SafeType.String({ format: "date-time" }),
+    commontrack_vanity_id: SafeType.Optional(SafeType.Integer()),
+    first_release_date: SafeType.Optional(
+        SafeType.String({ format: "date-time" })
+    ),
 });
 
 export const musixMatchLyricsSchema = SafeType.Object({
@@ -489,7 +504,7 @@ export const musixMatchArtistSchema = SafeType.Object({
             "end_date_year",
             "end_date",
         ]).properties,
-        primary_genres: musixMatchGenresSchema,
+        primary_genres: SafeType.Optional(musixMatchGenresSchema),
         secondary_genres: SafeType.Optional(musixMatchGenresSchema),
         artist_credits: SafeType.Unknown(),
     }),
@@ -591,6 +606,10 @@ export const musixMatchTrackSchema = SafeType.Object({
 });
 
 export type MusixMatchTrack = Static<typeof musixMatchTrackSchema>;
+
+export const musixMatchTrackListSchema = SafeType.Object({
+    track_list: SafeType.Array(musixMatchTrackSchema),
+});
 
 export const MusixMatchStatusCode = SafeType.Union([
     SafeType.Literal(200),

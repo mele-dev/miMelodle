@@ -32,7 +32,7 @@ export async function getRandomPopularSong(opts: {
             chart_name: "mxmweekly",
         });
 
-        const body = result.message.body;
+        const body = result.expect().body;
 
         // If we are past the last page (musixmatch returns empty array).
         if (Array.isArray(body) || body.track_list.length === 0) {

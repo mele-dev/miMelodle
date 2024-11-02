@@ -8,8 +8,7 @@ import {
     TString,
     Type,
     SchemaOptions,
-    UnsafeOptions,
-    TEnum,
+    FormatRegistry,
 } from "@sinclair/typebox";
 import { Value } from "@sinclair/typebox/value";
 import schemaReferences from "../types/schemaReferences.js";
@@ -20,7 +19,30 @@ import {
     CommonErrorToCode,
     FastifyError,
 } from "./reply.js";
-import { TypeCompiler } from "@sinclair/typebox/compiler";
+
+export const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+// Initialize formats
+export const formatsMap = {
+    email: (val) => emailPattern.test(val),
+    "date-time": (val) => {
+        const date = new Date(val);
+        return !isNaN(date.getTime()) && val.includes("T");
+    },
+    date: (val) => {
+        const date = new Date(val);
+        return (
+            !isNaN(date.getTime()) &&
+            val.includes("-") &&
+            !val.includes("T") &&
+            /^\d{4}-\d{2}-\d{2}$/.test(val)
+        );
+    },
+} as const satisfies Record<string, (val: string) => boolean>;
+
+for (const [key, val] of Object.entries(formatsMap)) {
+    FormatRegistry.Set(key, val);
+}
 
 // Redeclarations
 const safeTypeOverrides = {

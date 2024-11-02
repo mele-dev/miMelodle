@@ -1,7 +1,8 @@
 import { Static } from "@sinclair/typebox";
-import { SafeType } from "../utils/typebox.js";
+import { emailPattern, SafeType } from "../utils/typebox.js";
 import { profilePictureSchema } from "./public.js";
 import { artistSchema } from "./artist.js";
+
 
 export const userSchema = SafeType.Object(
     {
@@ -21,7 +22,7 @@ export const userSchema = SafeType.Object(
                 "- Only accepts letters, digits and '.', '-', '_'.",
         }),
         email: SafeType.String({
-            pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.source,
+            pattern: emailPattern.source,
             maxLength: 254,
             description: "The user's email.",
         }),
@@ -93,12 +94,10 @@ export const selfIdSchema = SafeType.Object({
     selfId: userSchema.properties.id,
 });
 
-
 export const usersRelationShipSchema = SafeType.Object({
     ...selfIdSchema.properties,
     targetUserId: userSchema.properties.id,
 });
-
 
 /** Use this schema to assert the contents of the jwt token. */
 export const jwtTokenContentSchema = SafeType.Pick(userSchema, ["id"]);

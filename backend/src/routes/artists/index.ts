@@ -5,7 +5,7 @@ import { artistSchema } from "../../types/artist.js";
 import { MelodleTagName } from "../../plugins/swagger.js";
 import { decorators } from "../../services/decorators.js";
 import MusixmatchAPI from "../../musixmatch-api/musixmatch.js";
-import { sendOk } from "../../utils/reply.js";
+import { sendError, sendOk } from "../../utils/reply.js";
 import { musixMatchArtistSchema } from "../../types/musixmatch.js";
 
 const artist: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
@@ -17,7 +17,10 @@ const artist: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
             summary: "Get information about an artist",
             response: {
                 200: musixMatchArtistSchema.properties.artist,
-                ...SafeType.CreateErrors(["notFound"]),
+                ...SafeType.CreateErrors([
+                    "notFound",
+                    "unavailableForLegalReasons",
+                ]),
             },
             tags: ["Artists"] satisfies MelodleTagName[],
         },
@@ -28,7 +31,15 @@ const artist: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 artist_id: request.params.artistMusixMatchId,
             });
 
-            return sendOk(reply, 200, response.message.body.artist);
+            if (!response.parse()) {
+                return sendError(
+                    reply,
+                    "unavailableForLegalReasons",
+                    "Error while calling musixmatch."
+                );
+            }
+
+            return sendOk(reply, 200, response.body.artist);
         },
     });
 
@@ -41,7 +52,7 @@ const artist: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
             }),
             response: {
                 200: SafeType.Array(musixMatchArtistSchema.properties.artist),
-                ...SafeType.CreateErrors([]),
+                ...SafeType.CreateErrors(["misdirectedRequest"]),
             },
             summary: "Search for artists by name",
             description:
@@ -55,7 +66,11 @@ const artist: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 q_artist: request.query.query,
             });
 
-            const artists = response.message.body.artist_list.map(
+            if (!response.parse()) {
+                return sendError(reply, "misdirectedRequest");
+            }
+
+            const artists = response.body.artist_list.map(
                 (artist) => artist.artist
             );
 
