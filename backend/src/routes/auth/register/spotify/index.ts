@@ -43,9 +43,9 @@ export default (async (fastify) => {
             });
 
             const parsedUserInfo = spotifyCallbackGuard.Decode({
-                email: userInfo.data.email,
-                username: userInfo.data.display_name,
-                spotifyId: userInfo.data.id,
+                email: userInfo.email,
+                username: userInfo.display_name,
+                spotifyId: userInfo.id,
             } satisfies Partial<spotifyCallback>);
 
             // TODO: Auto-generate username so that it cannot collide.

@@ -1,6 +1,5 @@
 import {
     FastifyPluginAsyncTypebox,
-    FormatRegistry,
     TSchema,
 } from "@fastify/type-provider-typebox";
 import { typedEnv } from "../../types/env.js";
@@ -17,9 +16,9 @@ import {
 } from "../../queries/snapshots.queries.js";
 import { friendSchema, User, userSchema } from "../../types/user.js";
 import { sendOk } from "../../utils/reply.js";
-import { getRandomPopularSong } from "../../services/game.js";
-import MusixmatchAPI from "../../musixmatch-api/musixmatch.js";
-import { Value } from "@sinclair/typebox/value";
+import { getTrack, search } from "../../apiCodegen/spotify.js";
+import { isAxiosError } from "axios";
+import QueryString from "qs";
 
 export default (async (fastify) => {
     if (typedEnv.NODE_ENV === "development") {
@@ -105,12 +104,24 @@ export default (async (fastify) => {
             tags: ["Debug"] satisfies MelodleTagName[],
         },
         async handler(_request, reply) {
-            const result = await getRandomPopularSong({
-                songPoolSize: 2000,
-                bias: "more popular",
-            });
+            try {
+                const result = await search(
+                    {
+                        type: ["track"],
+                        "q": "a",
+                        "limit": 1,
+                        offset: 250
+                    },
+                );
 
-            return result;
+                return { ...result.tracks, "items": [] };
+            } catch (e) {
+                if (isAxiosError(e)) {
+                    return reply.code(200).send(e.response?.data);
+                }
+
+                return e;
+            }
         },
     });
 }) satisfies FastifyPluginAsyncTypebox;

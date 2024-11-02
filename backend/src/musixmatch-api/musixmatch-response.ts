@@ -100,6 +100,7 @@ export class MusixMatchResponse<TTSchema extends TSchema> {
         errorMessage: string = "Asserted ok when status is not 200."
     ): MusixMatchResponse<TTSchema> & { body: Static<TTSchema> } {
         if (!this.isOk()) {
+            console.info(this);
             throw new Error(errorMessage, {
                 cause: this,
             });

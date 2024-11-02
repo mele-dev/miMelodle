@@ -1,5 +1,4 @@
 import axios, { AxiosResponse } from "axios";
-import { typedEnv } from "../types/env.js";
 import {
     musixMatchAlbumListSchema,
     musixMatchAlbumSchema,

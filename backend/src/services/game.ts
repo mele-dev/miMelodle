@@ -22,14 +22,12 @@ export async function getRandomPopularSong(opts: {
     while (true) {
         const pageIndex = Math.floor(index / pageSize);
         const withinPageIndex = index % pageSize;
-
-        const result = await api.getTrackCharts({
+ 
+        // TODO: FIX getting error when calling this.
+        const result = await api.searchTrack({
             page: pageIndex,
-            // We ask for page size other than 1, since there is a hard limit
-            // of 100 on the page you can request.
             page_size: pageSize,
             f_has_lyrics: 1,
-            chart_name: "mxmweekly",
         });
 
         const body = result.expect().body;

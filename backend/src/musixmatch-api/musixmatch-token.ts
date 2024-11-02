@@ -1,10 +1,17 @@
 import { typedEnv } from "../types/env.js";
 
-const tokensMap = {
-    cr: ["b587fc7ee98849bfc1b44830a63d0dc4"],
+type Developer = "cr" | "juan" | "ines";
+
+const tokensMap: Record<Developer, string[]> = {
+    cr: [
+        //"b52091f915524eae8cb88c4df3e51dc0",
+         "b587fc7ee98849bfc1b44830a63d0dc4",
+    ],
     juan: [],
-    ines: ["b7607e8396657e88bf3317f583588585"],
-} satisfies Record<"cr" | "juan" | "ines", string[]>;
+    ines: [
+         "b7607e8396657e88bf3317f583588585"
+    ],
+};
 
 const allTokens = Object.values(tokensMap).flat();
 

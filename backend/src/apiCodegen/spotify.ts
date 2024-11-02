@@ -12,8 +12,7 @@ Need help? See our <a href="https://developer.spotify.com/documentation/web-api/
 
  * OpenAPI spec version: 1.0.0
  */
-import axios from "axios";
-import type { AxiosRequestConfig, AxiosResponse } from "axios";
+import { customInstance } from "../spotify/spotify-mutator.js";
 export type GetAvailableMarkets200 = {
     markets?: string[];
 };
@@ -933,16 +932,16 @@ export type UnauthorizedResponse = {
     error: ErrorObject;
 };
 
-export interface ExplicitContentSettingsObject {
+export type ExplicitContentSettingsObject = {
     /** When `true`, indicates that explicit content should not be played.
      */
     filter_enabled?: boolean;
     /** When `true`, indicates that the explicit content setting is locked and can't be changed by the user.
      */
     filter_locked?: boolean;
-}
+};
 
-export interface ImageObject {
+export type ImageObject = {
     /**
    * The image height in pixels.
 
@@ -958,9 +957,9 @@ export interface ImageObject {
    * @nullable
    */
     width: number | null;
-}
+};
 
-export interface FollowersObject {
+export type FollowersObject = {
     /**
    * This will always be set to null, as the Web API does not support it at the moment.
 
@@ -970,15 +969,15 @@ export interface FollowersObject {
     /** The total number of followers.
      */
     total?: number;
-}
+};
 
-export interface ExternalUrlObject {
+export type ExternalUrlObject = {
     /** The [Spotify URL](/documentation/web-api/concepts/spotify-uris-ids) for the object.
      */
     spotify?: string;
-}
+};
 
-export interface ExternalIdObject {
+export type ExternalIdObject = {
     /** [International Article Number](http://en.wikipedia.org/wiki/International_Article_Number_%28EAN%29)
      */
     ean?: string;
@@ -988,30 +987,30 @@ export interface ExternalIdObject {
     /** [Universal Product Code](http://en.wikipedia.org/wiki/Universal_Product_Code)
      */
     upc?: string;
-}
+};
 
-export interface NarratorObject {
+export type NarratorObject = {
     /** The name of the Narrator.
      */
     name?: string;
-}
+};
 
-export interface AuthorObject {
+export type AuthorObject = {
     /** The name of the author.
      */
     name?: string;
-}
+};
 
-export interface CopyrightObject {
+export type CopyrightObject = {
     /** The copyright text for this content.
      */
     text?: string;
     /** The type of copyright: `C` = the copyright, `P` = the sound recording (performance) copyright.
      */
     type?: string;
-}
+};
 
-export interface ContextObject {
+export type ContextObject = {
     /** External URLs for this context. */
     external_urls?: ExternalUrlObject;
     /** A link to the Web API endpoint providing full details of the track. */
@@ -1022,7 +1021,7 @@ export interface ContextObject {
     /** The [Spotify URI](/documentation/web-api/concepts/spotify-uris-ids) for the context.
      */
     uri?: string;
-}
+};
 
 export type AlbumObjectAllOf = {
     /** The artists of the album. Each artist object includes a link in `href` to more detailed information about the artist.
@@ -1076,7 +1075,7 @@ export const ChapterBaseReleaseDatePrecision = {
     day: "day",
 } as const;
 
-export interface ChapterBase {
+export type ChapterBase = {
     /**
    * A URL to a 30 second preview (MP3 format) of the chapter. `null` if not available.
 
@@ -1140,7 +1139,7 @@ export interface ChapterBase {
     /** The [Spotify URI](/documentation/web-api/concepts/spotify-uris-ids) for the chapter.
      */
     uri: string;
-}
+};
 
 export type SimplifiedChapterObjectAllOf = { [key: string]: unknown };
 
@@ -1226,7 +1225,7 @@ export const AlbumBaseAlbumType = {
     compilation: "compilation",
 } as const;
 
-export interface AlbumBase {
+export type AlbumBase = {
     /** The type of the album.
      */
     album_type: AlbumBaseAlbumType;
@@ -1265,7 +1264,7 @@ export interface AlbumBase {
     /** The [Spotify URI](/documentation/web-api/concepts/spotify-uris-ids) for the album.
      */
     uri: string;
-}
+};
 
 export type SimplifiedAudiobookObjectAllOf = { [key: string]: unknown };
 
@@ -1290,7 +1289,7 @@ export const AudiobookBaseType = {
     audiobook: "audiobook",
 } as const;
 
-export interface AudiobookBase {
+export type AudiobookBase = {
     /** The author(s) for the audiobook.
      */
     authors: AuthorObject[];
@@ -1348,7 +1347,7 @@ export interface AudiobookBase {
     /** The [Spotify URI](/documentation/web-api/concepts/spotify-uris-ids) for the audiobook.
      */
     uri: string;
-}
+};
 
 export type AudiobookObject = AudiobookBase & AudiobookObjectAllOf;
 
@@ -1375,7 +1374,7 @@ export const ShowBaseType = {
     show: "show",
 } as const;
 
-export interface ShowBase {
+export type ShowBase = {
     /** A list of the countries in which the show can be played, identified by their [ISO 3166-1 alpha-2](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) code.
      */
     available_markets: string[];
@@ -1427,16 +1426,16 @@ export interface ShowBase {
     /** The [Spotify URI](/documentation/web-api/concepts/spotify-uris-ids) for the show.
      */
     uri: string;
-}
+};
 
-export interface ResumePointObject {
+export type ResumePointObject = {
     /** Whether or not the episode has been fully played by the user.
      */
     fully_played?: boolean;
     /** The user's most recent position in the episode in milliseconds.
      */
     resume_position_ms?: number;
-}
+};
 
 /**
  * The object type.
@@ -1464,7 +1463,7 @@ export const EpisodeBaseReleaseDatePrecision = {
     day: "day",
 } as const;
 
-export interface EpisodeBase {
+export type EpisodeBase = {
     /**
    * A URL to a 30 second preview (MP3 format) of the episode. `null` if not available.
 
@@ -1531,7 +1530,7 @@ export interface EpisodeBase {
     /** The [Spotify URI](/documentation/web-api/concepts/spotify-uris-ids) for the episode.
      */
     uri: string;
-}
+};
 
 export type SimplifiedEpisodeObjectAllOf = { [key: string]: unknown };
 
@@ -1564,7 +1563,7 @@ export const TrackObjectType = {
  */
 export type TrackObjectLinkedFrom = { [key: string]: unknown };
 
-export interface TrackObject {
+export type TrackObject = {
     /** The album on which the track appears. The album object includes a link in `href` to full information about the album.
      */
     album?: SimplifiedAlbumObject;
@@ -1628,9 +1627,9 @@ export interface TrackObject {
     /** The [Spotify URI](/documentation/web-api/concepts/spotify-uris-ids) for the track.
      */
     uri?: string;
-}
+};
 
-export interface CategoryObject {
+export type CategoryObject = {
     /** A link to the Web API endpoint returning full details of the category.
      */
     href: string;
@@ -1643,7 +1642,7 @@ export interface CategoryObject {
     /** The name of the category.
      */
     name: string;
-}
+};
 
 export type PlaylistOwnerObjectAllOf = {
     /**
@@ -1668,7 +1667,7 @@ export const PlaylistUserObjectType = {
     user: "user",
 } as const;
 
-export interface PlaylistUserObject {
+export type PlaylistUserObject = {
     /** Known public external URLs for this user.
      */
     external_urls?: ExternalUrlObject;
@@ -1687,18 +1686,18 @@ export interface PlaylistUserObject {
     /** The [Spotify URI](/documentation/web-api/concepts/spotify-uris-ids) for this user.
      */
     uri?: string;
-}
+};
 
-export interface PlaylistTracksRefObject {
+export type PlaylistTracksRefObject = {
     /** A link to the Web API endpoint where full details of the playlist's tracks can be retrieved.
      */
     href?: string;
     /** Number of tracks in the playlist.
      */
     total?: number;
-}
+};
 
-export interface SimplifiedPlaylistObject {
+export type SimplifiedPlaylistObject = {
     /** `true` if the owner allows other users to modify the playlist.
      */
     collaborative?: boolean;
@@ -1738,9 +1737,9 @@ export interface SimplifiedPlaylistObject {
     /** The [Spotify URI](/documentation/web-api/concepts/spotify-uris-ids) for the playlist.
      */
     uri?: string;
-}
+};
 
-export interface PlaylistObject {
+export type PlaylistObject = {
     /** `true` if the owner allows other users to modify the playlist.
      */
     collaborative?: boolean;
@@ -1785,9 +1784,9 @@ export interface PlaylistObject {
     /** The [Spotify URI](/documentation/web-api/concepts/spotify-uris-ids) for the playlist.
      */
     uri?: string;
-}
+};
 
-export interface SavedShowObject {
+export type SavedShowObject = {
     /** The date and time the show was saved.
 Timestamps are returned in ISO 8601 format as Coordinated Universal Time (UTC) with a zero offset: YYYY-MM-DDTHH:MM:SSZ.
 If the time is imprecise (for example, the date/time of an album release), an additional field indicates the precision; see for example, release_date in an album object.
@@ -1795,18 +1794,18 @@ If the time is imprecise (for example, the date/time of an album release), an ad
     added_at?: string;
     /** Information about the show. */
     show?: SimplifiedShowObject;
-}
+};
 
-export interface SavedEpisodeObject {
+export type SavedEpisodeObject = {
     /** The date and time the episode was saved.
 Timestamps are returned in ISO 8601 format as Coordinated Universal Time (UTC) with a zero offset: YYYY-MM-DDTHH:MM:SSZ.
  */
     added_at?: string;
     /** Information about the episode. */
     episode?: EpisodeObject;
-}
+};
 
-export interface SavedTrackObject {
+export type SavedTrackObject = {
     /** The date and time the track was saved.
 Timestamps are returned in ISO 8601 format as Coordinated Universal Time (UTC) with a zero offset: YYYY-MM-DDTHH:MM:SSZ.
 If the time is imprecise (for example, the date/time of an album release), an additional field indicates the precision; see for example, release_date in an album object.
@@ -1814,9 +1813,9 @@ If the time is imprecise (for example, the date/time of an album release), an ad
     added_at?: string;
     /** Information about the track. */
     track?: TrackObject;
-}
+};
 
-export interface SavedAlbumObject {
+export type SavedAlbumObject = {
     /** The date and time the album was saved
 Timestamps are returned in ISO 8601 format as Coordinated Universal Time (UTC) with a zero offset: YYYY-MM-DDTHH:MM:SSZ.
 If the time is imprecise (for example, the date/time of an album release), an additional field indicates the precision; see for example, release_date in an album object.
@@ -1824,9 +1823,9 @@ If the time is imprecise (for example, the date/time of an album release), an ad
     added_at?: string;
     /** Information about the album. */
     album?: AlbumObject;
-}
+};
 
-export interface RecommendationSeedObject {
+export type RecommendationSeedObject = {
     /** The number of tracks available after min\_\* and max\_\* filters have been applied.
      */
     afterFilteringSize?: number;
@@ -1845,16 +1844,16 @@ export interface RecommendationSeedObject {
     /** The entity type of this seed. One of `artist`, `track` or `genre`.
      */
     type?: string;
-}
+};
 
-export interface RecommendationsObject {
+export type RecommendationsObject = {
     /** An array of recommendation seed objects.
      */
     seeds: RecommendationSeedObject[];
     /** An array of track object (simplified) ordered according to the parameters supplied.
      */
     tracks: TrackObject[];
-}
+};
 
 export type PagingSimplifiedChapterObjectAllOf = {
     items?: SimplifiedChapterObject[];
@@ -1899,7 +1898,7 @@ export type PagingSavedTrackObjectAllOf = {
     items?: SavedTrackObject[];
 };
 
-export interface SimplifiedTrackObject {
+export type SimplifiedTrackObject = {
     /** The artists who performed the track. Each artist object includes a link in `href` to more detailed information about the artist. */
     artists?: SimplifiedArtistObject[];
     /** A list of the countries in which the track can be played, identified by their [ISO 3166-1 alpha-2](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) code.
@@ -1947,7 +1946,7 @@ export interface SimplifiedTrackObject {
     /** The [Spotify URI](/documentation/web-api/concepts/spotify-uris-ids) for the track.
      */
     uri?: string;
-}
+};
 
 export type PagingSimplifiedTrackObjectAllOf = {
     items?: SimplifiedTrackObject[];
@@ -1980,7 +1979,7 @@ export type PagingPlaylistObjectAllOf = {
     items?: SimplifiedPlaylistObject[];
 };
 
-export interface PagingObject {
+export type PagingObject = {
     /** A link to the Web API endpoint returning the full result of the request
      */
     href: string;
@@ -2005,7 +2004,7 @@ export interface PagingObject {
     /** The total number of items available to return.
      */
     total: number;
-}
+};
 
 export type PagingArtistObject = PagingObject & PagingArtistObjectAllOf;
 
@@ -2032,12 +2031,12 @@ export type PagingSavedTrackObject = PagingObject & PagingSavedTrackObjectAllOf;
 
 export type PagingPlaylistObject = PagingObject & PagingPlaylistObjectAllOf;
 
-export interface PagingFeaturedPlaylistObject {
+export type PagingFeaturedPlaylistObject = {
     /** The localized message of a playlist.
      */
     message?: string;
     playlists?: PagingPlaylistObject;
-}
+};
 
 export type CursorPagingSimplifiedArtistObjectAllOf = {
     items?: ArtistObject[];
@@ -2047,14 +2046,14 @@ export type CursorPagingPlayHistoryObjectAllOf = {
     items?: PlayHistoryObject[];
 };
 
-export interface CursorObject {
+export type CursorObject = {
     /** The cursor to use as key to find the next page of items. */
     after?: string;
     /** The cursor to use as key to find the previous page of items. */
     before?: string;
-}
+};
 
-export interface CursorPagingObject {
+export type CursorPagingObject = {
     /** The cursors used to find the next set of items. */
     cursors?: CursorObject;
     /** A link to the Web API endpoint returning the full result of the request. */
@@ -2065,7 +2064,7 @@ export interface CursorPagingObject {
     next?: string;
     /** The total number of items available to return. */
     total?: number;
-}
+};
 
 export type CursorPagingSimplifiedArtistObject = CursorPagingObject &
     CursorPagingSimplifiedArtistObjectAllOf;
@@ -2073,7 +2072,7 @@ export type CursorPagingSimplifiedArtistObject = CursorPagingObject &
 export type CursorPagingPlayHistoryObject = CursorPagingObject &
     CursorPagingPlayHistoryObjectAllOf;
 
-export interface DeviceObject {
+export type DeviceObject = {
     /**
      * The device ID. This ID is unique and persistent to some extent. However, this is not guaranteed and any cached `device_id` should periodically be cleared out and refetched as necessary.
      * @nullable
@@ -2098,7 +2097,7 @@ export interface DeviceObject {
      * @nullable
      */
     volume_percent?: number | null;
-}
+};
 
 /**
  * The object type.
@@ -2145,7 +2144,7 @@ export type Tempo = number;
  */
 export type TimeSignature = number;
 
-export interface AudioFeaturesObject {
+export type AudioFeaturesObject = {
     /**
    * A confidence measure from 0.0 to 1.0 of whether the track is acoustic. 1.0 represents high confidence the track is acoustic.
 
@@ -2198,9 +2197,9 @@ export interface AudioFeaturesObject {
    * @maximum 1
    */
     valence?: number;
-}
+};
 
-export interface SegmentObject {
+export type SegmentObject = {
     /**
    * The confidence, from 0.0 to 1.0, of the reliability of the segmentation. Segments of the song which are difficult to logically segment (e.g: noise) may correspond to low values in this field.
 
@@ -2235,7 +2234,7 @@ For completeness however, the first dimension represents the average loudness of
 The actual timbre of the segment is best described as a linear combination of these 12 basis functions weighted by the coefficient values: timbre = c1 x b1 + c2 x b2 + ... + c12 x b12, where c1 to c12 represent the 12 coefficients and b1 to b12 the 12 basis functions as displayed below. Timbre vectors are best used in comparison with each other.
  */
     timbre?: number[];
-}
+};
 
 /**
  * Indicates the modality (major or minor) of a section, the type of scale from which its melodic content is derived. This field will contain a 0 for "minor", a 1 for "major", or a -1 for no result. Note that the major key (e.g. C major) could more likely be confused with the minor key at 3 semitones lower (e.g. A minor) as both keys carry the same pitches.
@@ -2250,7 +2249,7 @@ export const SectionObjectMode = {
     NUMBER_1: 1,
 } as const;
 
-export interface SectionObject {
+export type SectionObject = {
     /**
      * The confidence, from 0.0 to 1.0, of the reliability of the section's "designation".
      * @minimum 0
@@ -2294,9 +2293,9 @@ export interface SectionObject {
      * @maximum 1
      */
     time_signature_confidence?: number;
-}
+};
 
-export interface TimeIntervalObject {
+export type TimeIntervalObject = {
     /**
      * The confidence, from 0.0 to 1.0, of the reliability of the interval.
      * @minimum 0
@@ -2307,7 +2306,7 @@ export interface TimeIntervalObject {
     duration?: number;
     /** The starting point (in seconds) of the time interval. */
     start?: number;
-}
+};
 
 export type AudioAnalysisObjectTrack = {
     /** The number of channels used for analysis. If 1, all channels are summed together to mono before analysis. */
@@ -2392,7 +2391,7 @@ export type AudioAnalysisObjectMeta = {
     timestamp?: number;
 };
 
-export interface AudioAnalysisObject {
+export type AudioAnalysisObject = {
     /** The time intervals of the bars throughout the track. A bar (or measure) is a segment of time defined as a given number of beats. */
     bars?: TimeIntervalObject[];
     /** The time intervals of beats throughout the track. A beat is the basic time unit of a piece of music; for example, each tick of a metronome. Beats are typically multiples of tatums. */
@@ -2405,7 +2404,7 @@ export interface AudioAnalysisObject {
     /** A tatum represents the lowest regular pulse train that a listener intuitively infers from the timing of perceived musical events (segments). */
     tatums?: TimeIntervalObject[];
     track?: AudioAnalysisObjectTrack;
-}
+};
 
 /**
  * The object type.
@@ -2419,7 +2418,7 @@ export const PublicUserObjectType = {
     user: "user",
 } as const;
 
-export interface PublicUserObject {
+export type PublicUserObject = {
     /**
    * The name displayed on the user's profile. `null` if not available.
 
@@ -2447,9 +2446,9 @@ export interface PublicUserObject {
     /** The [Spotify URI](/documentation/web-api/concepts/spotify-uris-ids) for this user.
      */
     uri?: string;
-}
+};
 
-export interface PrivateUserObject {
+export type PrivateUserObject = {
     /** The country of the user, as set in the user's account profile. An [ISO 3166-1 alpha-2 country code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2). _This field is only available when the current user has granted access to the [user-read-private](/documentation/web-api/concepts/scopes/#list-of-scopes) scope._
      */
     country?: string;
@@ -2483,9 +2482,9 @@ export interface PrivateUserObject {
     /** The [Spotify URI](/documentation/web-api/concepts/spotify-uris-ids) for the user.
      */
     uri?: string;
-}
+};
 
-export interface ErrorObject {
+export type ErrorObject = {
     /** A short description of the cause of the error.
      */
     message: string;
@@ -2496,9 +2495,9 @@ export interface ErrorObject {
    * @maximum 599
    */
     status: number;
-}
+};
 
-export interface DisallowsObject {
+export type DisallowsObject = {
     /** Interrupting playback. Optional field. */
     interrupting_playback?: boolean;
     /** Pausing. Optional field. */
@@ -2519,14 +2518,14 @@ export interface DisallowsObject {
     toggling_shuffle?: boolean;
     /** Transfering playback between devices. Optional field. */
     transferring_playback?: boolean;
-}
+};
 
 /**
  * The currently playing track or episode. Can be `null`.
  */
 export type CurrentlyPlayingContextObjectItem = TrackObject | EpisodeObject;
 
-export interface CurrentlyPlayingContextObject {
+export type CurrentlyPlayingContextObject = {
     /** Allows to update the user interface based on which playback actions are available within the current context.
      */
     actions?: DisallowsObject;
@@ -2550,7 +2549,7 @@ export interface CurrentlyPlayingContextObject {
     shuffle_state?: boolean;
     /** Unix Millisecond Timestamp when playback state was last changed (play, pause, skip, scrub, new song, etc.). */
     timestamp?: number;
-}
+};
 
 export type QueueObjectQueueItem = TrackObject | EpisodeObject;
 
@@ -2559,19 +2558,19 @@ export type QueueObjectQueueItem = TrackObject | EpisodeObject;
  */
 export type QueueObjectCurrentlyPlaying = TrackObject | EpisodeObject;
 
-export interface QueueObject {
+export type QueueObject = {
     /** The currently playing track or episode. Can be `null`. */
     currently_playing?: QueueObjectCurrentlyPlaying;
     /** The tracks or episodes in the queue. Can be empty. */
     queue?: QueueObjectQueueItem[];
-}
+};
 
 /**
  * Information about the track or episode.
  */
 export type PlaylistTrackObjectTrack = TrackObject | EpisodeObject;
 
-export interface PlaylistTrackObject {
+export type PlaylistTrackObject = {
     /** The date and time the track or episode was added. _**Note**: some very old playlists may return `null` in this field._
      */
     added_at?: string;
@@ -2583,16 +2582,16 @@ export interface PlaylistTrackObject {
     is_local?: boolean;
     /** Information about the track or episode. */
     track?: PlaylistTrackObjectTrack;
-}
+};
 
-export interface PlayHistoryObject {
+export type PlayHistoryObject = {
     /** The context the track was played from. */
     context?: ContextObject;
     /** The date and time the track was played. */
     played_at?: string;
     /** The track the user listened to. */
     track?: TrackObject;
-}
+};
 
 /**
  * The object type.
@@ -2606,7 +2605,7 @@ export const SimplifiedArtistObjectType = {
     artist: "artist",
 } as const;
 
-export interface SimplifiedArtistObject {
+export type SimplifiedArtistObject = {
     /** Known external URLs for this artist.
      */
     external_urls?: ExternalUrlObject;
@@ -2625,7 +2624,7 @@ export interface SimplifiedArtistObject {
     /** The [Spotify URI](/documentation/web-api/concepts/spotify-uris-ids) for the artist.
      */
     uri?: string;
-}
+};
 
 /**
  * The object type.
@@ -2639,7 +2638,7 @@ export const ArtistObjectType = {
     artist: "artist",
 } as const;
 
-export interface ArtistObject {
+export type ArtistObject = {
     /** Known external URLs for this artist.
      */
     external_urls?: ExternalUrlObject;
@@ -2670,9 +2669,9 @@ export interface ArtistObject {
     /** The [Spotify URI](/documentation/web-api/concepts/spotify-uris-ids) for the artist.
      */
     uri?: string;
-}
+};
 
-export interface ChapterRestrictionObject {
+export type ChapterRestrictionObject = {
     /** The reason for the restriction. Supported values:
 - `market` - The content item is not available in the given market.
 - `product` - The content item is not available for the user's subscription type.
@@ -2683,9 +2682,9 @@ Additional reasons may be added in the future.
 **Note**: If you use this field, make sure that your application safely handles unknown values.
  */
     reason?: string;
-}
+};
 
-export interface EpisodeRestrictionObject {
+export type EpisodeRestrictionObject = {
     /** The reason for the restriction. Supported values:
 - `market` - The content item is not available in the given market.
 - `product` - The content item is not available for the user's subscription type.
@@ -2695,7 +2694,7 @@ Additional reasons may be added in the future.
 **Note**: If you use this field, make sure that your application safely handles unknown values.
  */
     reason?: string;
-}
+};
 
 /**
  * The reason for the restriction. Albums may be restricted if the content is not available in a given market, to the user's subscription type, or when the user's account is set to not play explicit content.
@@ -2712,14 +2711,14 @@ export const AlbumRestrictionObjectReason = {
     explicit: "explicit",
 } as const;
 
-export interface AlbumRestrictionObject {
+export type AlbumRestrictionObject = {
     /** The reason for the restriction. Albums may be restricted if the content is not available in a given market, to the user's subscription type, or when the user's account is set to not play explicit content.
 Additional reasons may be added in the future.
  */
     reason?: AlbumRestrictionObjectReason;
-}
+};
 
-export interface TrackRestrictionObject {
+export type TrackRestrictionObject = {
     /** The reason for the restriction. Supported values:
 - `market` - The content item is not available in the given market.
 - `product` - The content item is not available for the user's subscription type.
@@ -2729,9 +2728,9 @@ Additional reasons may be added in the future.
 **Note**: If you use this field, make sure that your application safely handles unknown values.
  */
     reason?: string;
-}
+};
 
-export interface LinkedTrackObject {
+export type LinkedTrackObject = {
     /** Known external URLs for this track.
      */
     external_urls?: ExternalUrlObject;
@@ -2747,7 +2746,9 @@ export interface LinkedTrackObject {
     /** The [Spotify URI](/documentation/web-api/concepts/spotify-uris-ids) for the track.
      */
     uri?: string;
-}
+};
+
+type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1];
 
 /**
  * Get Spotify catalog information for a single album.
@@ -2755,15 +2756,19 @@ export interface LinkedTrackObject {
  * @summary Get Album
 
  */
-export const getAnAlbum = <TData = AxiosResponse<OneAlbumResponse>>(
+export const getAnAlbum = (
     id: string,
     params?: GetAnAlbumParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/albums/${id}`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<OneAlbumResponse>(
+        {
+            url: `https://api.spotify.com/v1/albums/${id}`,
+            method: "GET",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -2772,14 +2777,14 @@ export const getAnAlbum = <TData = AxiosResponse<OneAlbumResponse>>(
  * @summary Get Several Albums
 
  */
-export const getMultipleAlbums = <TData = AxiosResponse<ManyAlbumsResponse>>(
+export const getMultipleAlbums = (
     params: GetMultipleAlbumsParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/albums`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<ManyAlbumsResponse>(
+        { url: `https://api.spotify.com/v1/albums`, method: "GET", params },
+        options
+    );
 };
 
 /**
@@ -2789,17 +2794,19 @@ Optional parameters can be used to limit the number of tracks returned.
  * @summary Get Album Tracks
 
  */
-export const getAnAlbumsTracks = <
-    TData = AxiosResponse<PagingSimplifiedTrackObjectResponse>,
->(
+export const getAnAlbumsTracks = (
     id: string,
     params?: GetAnAlbumsTracksParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/albums/${id}/tracks`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<PagingSimplifiedTrackObjectResponse>(
+        {
+            url: `https://api.spotify.com/v1/albums/${id}/tracks`,
+            method: "GET",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -2808,11 +2815,14 @@ export const getAnAlbumsTracks = <
  * @summary Get Artist
 
  */
-export const getAnArtist = <TData = AxiosResponse<OneArtistResponse>>(
+export const getAnArtist = (
     id: string,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/artists/${id}`, options);
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<OneArtistResponse>(
+        { url: `https://api.spotify.com/v1/artists/${id}`, method: "GET" },
+        options
+    );
 };
 
 /**
@@ -2821,14 +2831,14 @@ export const getAnArtist = <TData = AxiosResponse<OneArtistResponse>>(
  * @summary Get Several Artists
 
  */
-export const getMultipleArtists = <TData = AxiosResponse<ManyArtistsResponse>>(
+export const getMultipleArtists = (
     params: GetMultipleArtistsParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/artists`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<ManyArtistsResponse>(
+        { url: `https://api.spotify.com/v1/artists`, method: "GET", params },
+        options
+    );
 };
 
 /**
@@ -2837,17 +2847,19 @@ export const getMultipleArtists = <TData = AxiosResponse<ManyArtistsResponse>>(
  * @summary Get Artist's Albums
 
  */
-export const getAnArtistsAlbums = <
-    TData = AxiosResponse<PagingArtistDiscographyAlbumObjectResponse>,
->(
+export const getAnArtistsAlbums = (
     id: string,
     params?: GetAnArtistsAlbumsParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/artists/${id}/albums`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<PagingArtistDiscographyAlbumObjectResponse>(
+        {
+            url: `https://api.spotify.com/v1/artists/${id}/albums`,
+            method: "GET",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -2856,17 +2868,19 @@ export const getAnArtistsAlbums = <
  * @summary Get Artist's Top Tracks
 
  */
-export const getAnArtistsTopTracks = <
-    TData = AxiosResponse<ManyTracksResponse>,
->(
+export const getAnArtistsTopTracks = (
     id: string,
     params?: GetAnArtistsTopTracksParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/artists/${id}/top-tracks`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<ManyTracksResponse>(
+        {
+            url: `https://api.spotify.com/v1/artists/${id}/top-tracks`,
+            method: "GET",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -2875,14 +2889,15 @@ export const getAnArtistsTopTracks = <
  * @summary Get Artist's Related Artists
 
  */
-export const getAnArtistsRelatedArtists = <
-    TData = AxiosResponse<ManyArtistsResponse>,
->(
+export const getAnArtistsRelatedArtists = (
     id: string,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(
-        `https://api.spotify.com/v1/artists/${id}/related-artists`,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<ManyArtistsResponse>(
+        {
+            url: `https://api.spotify.com/v1/artists/${id}/related-artists`,
+            method: "GET",
+        },
         options
     );
 };
@@ -2894,15 +2909,19 @@ unique Spotify ID.
  * @summary Get Show
 
  */
-export const getAShow = <TData = AxiosResponse<OneShowResponse>>(
+export const getAShow = (
     id: string,
     params?: GetAShowParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/shows/${id}`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<OneShowResponse>(
+        {
+            url: `https://api.spotify.com/v1/shows/${id}`,
+            method: "GET",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -2911,16 +2930,14 @@ export const getAShow = <TData = AxiosResponse<OneShowResponse>>(
  * @summary Get Several Shows
 
  */
-export const getMultipleShows = <
-    TData = AxiosResponse<ManySimplifiedShowsResponse>,
->(
+export const getMultipleShows = (
     params: GetMultipleShowsParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/shows`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<ManySimplifiedShowsResponse>(
+        { url: `https://api.spotify.com/v1/shows`, method: "GET", params },
+        options
+    );
 };
 
 /**
@@ -2929,17 +2946,19 @@ export const getMultipleShows = <
  * @summary Get Show Episodes
 
  */
-export const getAShowsEpisodes = <
-    TData = AxiosResponse<PagingSimplifiedEpisodeObjectResponse>,
->(
+export const getAShowsEpisodes = (
     id: string,
     params?: GetAShowsEpisodesParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/shows/${id}/episodes`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<PagingSimplifiedEpisodeObjectResponse>(
+        {
+            url: `https://api.spotify.com/v1/shows/${id}/episodes`,
+            method: "GET",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -2949,15 +2968,19 @@ unique Spotify ID.
  * @summary Get Episode
 
  */
-export const getAnEpisode = <TData = AxiosResponse<OneEpisodeResponse>>(
+export const getAnEpisode = (
     id: string,
     params?: GetAnEpisodeParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/episodes/${id}`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<OneEpisodeResponse>(
+        {
+            url: `https://api.spotify.com/v1/episodes/${id}`,
+            method: "GET",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -2966,16 +2989,14 @@ export const getAnEpisode = <TData = AxiosResponse<OneEpisodeResponse>>(
  * @summary Get Several Episodes
 
  */
-export const getMultipleEpisodes = <
-    TData = AxiosResponse<ManyEpisodesResponse>,
->(
+export const getMultipleEpisodes = (
     params: GetMultipleEpisodesParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/episodes`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<ManyEpisodesResponse>(
+        { url: `https://api.spotify.com/v1/episodes`, method: "GET", params },
+        options
+    );
 };
 
 /**
@@ -2984,15 +3005,19 @@ export const getMultipleEpisodes = <
  * @summary Get an Audiobook
 
  */
-export const getAnAudiobook = <TData = AxiosResponse<OneAudiobookResponse>>(
+export const getAnAudiobook = (
     id: string,
     params?: GetAnAudiobookParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/audiobooks/${id}`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<OneAudiobookResponse>(
+        {
+            url: `https://api.spotify.com/v1/audiobooks/${id}`,
+            method: "GET",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -3001,16 +3026,14 @@ export const getAnAudiobook = <TData = AxiosResponse<OneAudiobookResponse>>(
  * @summary Get Several Audiobooks
 
  */
-export const getMultipleAudiobooks = <
-    TData = AxiosResponse<ManyAudiobooksResponse>,
->(
+export const getMultipleAudiobooks = (
     params: GetMultipleAudiobooksParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/audiobooks`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<ManyAudiobooksResponse>(
+        { url: `https://api.spotify.com/v1/audiobooks`, method: "GET", params },
+        options
+    );
 };
 
 /**
@@ -3019,17 +3042,19 @@ export const getMultipleAudiobooks = <
  * @summary Get Audiobook Chapters
 
  */
-export const getAudiobookChapters = <
-    TData = AxiosResponse<PagingSimplifiedChapterObjectResponse>,
->(
+export const getAudiobookChapters = (
     id: string,
     params?: GetAudiobookChaptersParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/audiobooks/${id}/chapters`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<PagingSimplifiedChapterObjectResponse>(
+        {
+            url: `https://api.spotify.com/v1/audiobooks/${id}/chapters`,
+            method: "GET",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -3038,16 +3063,18 @@ export const getAudiobookChapters = <
  * @summary Get User's Saved Audiobooks
 
  */
-export const getUsersSavedAudiobooks = <
-    TData = AxiosResponse<PagingSimplifiedAudiobookObjectResponse>,
->(
+export const getUsersSavedAudiobooks = (
     params?: GetUsersSavedAudiobooksParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/me/audiobooks`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<PagingSimplifiedAudiobookObjectResponse>(
+        {
+            url: `https://api.spotify.com/v1/me/audiobooks`,
+            method: "GET",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -3056,14 +3083,18 @@ export const getUsersSavedAudiobooks = <
  * @summary Save Audiobooks for Current User
 
  */
-export const saveAudiobooksUser = <TData = AxiosResponse<void>>(
+export const saveAudiobooksUser = (
     params: SaveAudiobooksUserParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.put(`https://api.spotify.com/v1/me/audiobooks`, undefined, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<void>(
+        {
+            url: `https://api.spotify.com/v1/me/audiobooks`,
+            method: "PUT",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -3072,14 +3103,18 @@ export const saveAudiobooksUser = <TData = AxiosResponse<void>>(
  * @summary Remove User's Saved Audiobooks
 
  */
-export const removeAudiobooksUser = <TData = AxiosResponse<void>>(
+export const removeAudiobooksUser = (
     params: RemoveAudiobooksUserParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.delete(`https://api.spotify.com/v1/me/audiobooks`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<void>(
+        {
+            url: `https://api.spotify.com/v1/me/audiobooks`,
+            method: "DELETE",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -3088,16 +3123,18 @@ export const removeAudiobooksUser = <TData = AxiosResponse<void>>(
  * @summary Check User's Saved Audiobooks
 
  */
-export const checkUsersSavedAudiobooks = <
-    TData = AxiosResponse<ArrayOfBooleansResponse>,
->(
+export const checkUsersSavedAudiobooks = (
     params: CheckUsersSavedAudiobooksParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/me/audiobooks/contains`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<ArrayOfBooleansResponse>(
+        {
+            url: `https://api.spotify.com/v1/me/audiobooks/contains`,
+            method: "GET",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -3106,15 +3143,19 @@ export const checkUsersSavedAudiobooks = <
  * @summary Get a Chapter
 
  */
-export const getAChapter = <TData = AxiosResponse<OneChapterResponse>>(
+export const getAChapter = (
     id: string,
     params?: GetAChapterParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/chapters/${id}`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<OneChapterResponse>(
+        {
+            url: `https://api.spotify.com/v1/chapters/${id}`,
+            method: "GET",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -3123,14 +3164,14 @@ export const getAChapter = <TData = AxiosResponse<OneChapterResponse>>(
  * @summary Get Several Chapters
 
  */
-export const getSeveralChapters = <TData = AxiosResponse<ManyChaptersResponse>>(
+export const getSeveralChapters = (
     params: GetSeveralChaptersParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/chapters`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<ManyChaptersResponse>(
+        { url: `https://api.spotify.com/v1/chapters`, method: "GET", params },
+        options
+    );
 };
 
 /**
@@ -3140,15 +3181,19 @@ unique Spotify ID.
  * @summary Get Track
 
  */
-export const getTrack = <TData = AxiosResponse<OneTrackResponse>>(
+export const getTrack = (
     id: string,
     params?: GetTrackParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/tracks/${id}`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<OneTrackResponse>(
+        {
+            url: `https://api.spotify.com/v1/tracks/${id}`,
+            method: "GET",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -3157,14 +3202,14 @@ export const getTrack = <TData = AxiosResponse<OneTrackResponse>>(
  * @summary Get Several Tracks
 
  */
-export const getSeveralTracks = <TData = AxiosResponse<ManyTracksResponse>>(
+export const getSeveralTracks = (
     params: GetSeveralTracksParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/tracks`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<ManyTracksResponse>(
+        { url: `https://api.spotify.com/v1/tracks`, method: "GET", params },
+        options
+    );
 };
 
 /**
@@ -3174,14 +3219,14 @@ that match a keyword string. Audiobooks are only available within the US, UK, Ca
  * @summary Search for Item
 
  */
-export const search = <TData = AxiosResponse<SearchItemsResponse>>(
+export const search = (
     params: SearchParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/search`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<SearchItemsResponse>(
+        { url: `https://api.spotify.com/v1/search`, method: "GET", params },
+        options
+    );
 };
 
 /**
@@ -3191,12 +3236,13 @@ current user's username).
  * @summary Get Current User's Profile
 
  */
-export const getCurrentUsersProfile = <
-    TData = AxiosResponse<OnePrivateUserResponse>,
->(
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/me`, options);
+export const getCurrentUsersProfile = (
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<OnePrivateUserResponse>(
+        { url: `https://api.spotify.com/v1/me`, method: "GET" },
+        options
+    );
 };
 
 /**
@@ -3205,15 +3251,19 @@ export const getCurrentUsersProfile = <
  * @summary Get Playlist
 
  */
-export const getPlaylist = <TData = AxiosResponse<OnePlaylistResponse>>(
+export const getPlaylist = (
     playlistId: string,
     params?: GetPlaylistParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/playlists/${playlistId}`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<OnePlaylistResponse>(
+        {
+            url: `https://api.spotify.com/v1/playlists/${playlistId}`,
+            method: "GET",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -3223,14 +3273,18 @@ course, own the playlist.)
  * @summary Change Playlist Details
 
  */
-export const changePlaylistDetails = <TData = AxiosResponse<void>>(
+export const changePlaylistDetails = (
     playlistId: string,
     changePlaylistDetailsBody: ChangePlaylistDetailsBody,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.put(
-        `https://api.spotify.com/v1/playlists/${playlistId}`,
-        changePlaylistDetailsBody,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<void>(
+        {
+            url: `https://api.spotify.com/v1/playlists/${playlistId}`,
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            data: changePlaylistDetailsBody,
+        },
         options
     );
 };
@@ -3241,19 +3295,18 @@ export const changePlaylistDetails = <TData = AxiosResponse<void>>(
  * @summary Get Playlist Items
 
  */
-export const getPlaylistsTracks = <
-    TData = AxiosResponse<PagingPlaylistTrackObjectResponse>,
->(
+export const getPlaylistsTracks = (
     playlistId: string,
     params?: GetPlaylistsTracksParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(
-        `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<PagingPlaylistTrackObjectResponse>(
         {
-            ...options,
-            params: { ...params, ...options?.params },
-        }
+            url: `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
+            method: "GET",
+            params,
+        },
+        options
     );
 };
 
@@ -3263,21 +3316,21 @@ export const getPlaylistsTracks = <
  * @summary Add Items to Playlist
 
  */
-export const addTracksToPlaylist = <
-    TData = AxiosResponse<PlaylistSnapshotIdResponse>,
->(
+export const addTracksToPlaylist = (
     playlistId: string,
     addTracksToPlaylistBody: AddTracksToPlaylistBody,
     params?: AddTracksToPlaylistParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.post(
-        `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
-        addTracksToPlaylistBody,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<PlaylistSnapshotIdResponse>(
         {
-            ...options,
-            params: { ...params, ...options?.params },
-        }
+            url: `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            data: addTracksToPlaylistBody,
+            params,
+        },
+        options
     );
 };
 
@@ -3293,21 +3346,21 @@ These operations can't be applied together in a single request.
  * @summary Update Playlist Items
 
  */
-export const reorderOrReplacePlaylistsTracks = <
-    TData = AxiosResponse<PlaylistSnapshotIdResponse>,
->(
+export const reorderOrReplacePlaylistsTracks = (
     playlistId: string,
     reorderOrReplacePlaylistsTracksBody: ReorderOrReplacePlaylistsTracksBody,
     params?: ReorderOrReplacePlaylistsTracksParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.put(
-        `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
-        reorderOrReplacePlaylistsTracksBody,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<PlaylistSnapshotIdResponse>(
         {
-            ...options,
-            params: { ...params, ...options?.params },
-        }
+            url: `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            data: reorderOrReplacePlaylistsTracksBody,
+            params,
+        },
+        options
     );
 };
 
@@ -3317,16 +3370,19 @@ export const reorderOrReplacePlaylistsTracks = <
  * @summary Remove Playlist Items
 
  */
-export const removeTracksPlaylist = <
-    TData = AxiosResponse<PlaylistSnapshotIdResponse>,
->(
+export const removeTracksPlaylist = (
     playlistId: string,
     removeTracksPlaylistBody: RemoveTracksPlaylistBody,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.delete(
-        `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
-        { data: removeTracksPlaylistBody, ...options }
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<PlaylistSnapshotIdResponse>(
+        {
+            url: `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            data: removeTracksPlaylistBody,
+        },
+        options
     );
 };
 
@@ -3337,16 +3393,18 @@ user.
  * @summary Get Current User's Playlists
 
  */
-export const getAListOfCurrentUsersPlaylists = <
-    TData = AxiosResponse<PagedPlaylistsResponse>,
->(
+export const getAListOfCurrentUsersPlaylists = (
     params?: GetAListOfCurrentUsersPlaylistsParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/me/playlists`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<PagedPlaylistsResponse>(
+        {
+            url: `https://api.spotify.com/v1/me/playlists`,
+            method: "GET",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -3355,16 +3413,14 @@ export const getAListOfCurrentUsersPlaylists = <
  * @summary Get User's Saved Albums
 
  */
-export const getUsersSavedAlbums = <
-    TData = AxiosResponse<PagingSavedAlbumObjectResponse>,
->(
+export const getUsersSavedAlbums = (
     params?: GetUsersSavedAlbumsParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/me/albums`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<PagingSavedAlbumObjectResponse>(
+        { url: `https://api.spotify.com/v1/me/albums`, method: "GET", params },
+        options
+    );
 };
 
 /**
@@ -3373,18 +3429,20 @@ export const getUsersSavedAlbums = <
  * @summary Save Albums for Current User
 
  */
-export const saveAlbumsUser = <TData = AxiosResponse<void>>(
+export const saveAlbumsUser = (
     saveAlbumsUserBody: SaveAlbumsUserBody,
     params: SaveAlbumsUserParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.put(
-        `https://api.spotify.com/v1/me/albums`,
-        saveAlbumsUserBody,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<void>(
         {
-            ...options,
-            params: { ...params, ...options?.params },
-        }
+            url: `https://api.spotify.com/v1/me/albums`,
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            data: saveAlbumsUserBody,
+            params,
+        },
+        options
     );
 };
 
@@ -3394,16 +3452,21 @@ export const saveAlbumsUser = <TData = AxiosResponse<void>>(
  * @summary Remove Users' Saved Albums
 
  */
-export const removeAlbumsUser = <TData = AxiosResponse<void>>(
+export const removeAlbumsUser = (
     removeAlbumsUserBody: RemoveAlbumsUserBody,
     params: RemoveAlbumsUserParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.delete(`https://api.spotify.com/v1/me/albums`, {
-        data: removeAlbumsUserBody,
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<void>(
+        {
+            url: `https://api.spotify.com/v1/me/albums`,
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            data: removeAlbumsUserBody,
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -3412,16 +3475,18 @@ export const removeAlbumsUser = <TData = AxiosResponse<void>>(
  * @summary Check User's Saved Albums
 
  */
-export const checkUsersSavedAlbums = <
-    TData = AxiosResponse<ArrayOfBooleansResponse>,
->(
+export const checkUsersSavedAlbums = (
     params: CheckUsersSavedAlbumsParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/me/albums/contains`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<ArrayOfBooleansResponse>(
+        {
+            url: `https://api.spotify.com/v1/me/albums/contains`,
+            method: "GET",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -3430,16 +3495,14 @@ export const checkUsersSavedAlbums = <
  * @summary Get User's Saved Tracks
 
  */
-export const getUsersSavedTracks = <
-    TData = AxiosResponse<PagingSavedTrackObjectResponse>,
->(
+export const getUsersSavedTracks = (
     params?: GetUsersSavedTracksParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/me/tracks`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<PagingSavedTrackObjectResponse>(
+        { url: `https://api.spotify.com/v1/me/tracks`, method: "GET", params },
+        options
+    );
 };
 
 /**
@@ -3448,18 +3511,20 @@ export const getUsersSavedTracks = <
  * @summary Save Tracks for Current User
 
  */
-export const saveTracksUser = <TData = AxiosResponse<void>>(
+export const saveTracksUser = (
     saveTracksUserBody: SaveTracksUserBody,
     params: SaveTracksUserParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.put(
-        `https://api.spotify.com/v1/me/tracks`,
-        saveTracksUserBody,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<void>(
         {
-            ...options,
-            params: { ...params, ...options?.params },
-        }
+            url: `https://api.spotify.com/v1/me/tracks`,
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            data: saveTracksUserBody,
+            params,
+        },
+        options
     );
 };
 
@@ -3469,16 +3534,21 @@ export const saveTracksUser = <TData = AxiosResponse<void>>(
  * @summary Remove User's Saved Tracks
 
  */
-export const removeTracksUser = <TData = AxiosResponse<void>>(
+export const removeTracksUser = (
     removeTracksUserBody: RemoveTracksUserBody,
     params: RemoveTracksUserParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.delete(`https://api.spotify.com/v1/me/tracks`, {
-        data: removeTracksUserBody,
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<void>(
+        {
+            url: `https://api.spotify.com/v1/me/tracks`,
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            data: removeTracksUserBody,
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -3487,16 +3557,18 @@ export const removeTracksUser = <TData = AxiosResponse<void>>(
  * @summary Check User's Saved Tracks
 
  */
-export const checkUsersSavedTracks = <
-    TData = AxiosResponse<ArrayOfBooleansResponse>,
->(
+export const checkUsersSavedTracks = (
     params: CheckUsersSavedTracksParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/me/tracks/contains`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<ArrayOfBooleansResponse>(
+        {
+            url: `https://api.spotify.com/v1/me/tracks/contains`,
+            method: "GET",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -3506,16 +3578,18 @@ This API endpoint is in __beta__ and could change without warning. Please share 
  * @summary Get User's Saved Episodes
 
  */
-export const getUsersSavedEpisodes = <
-    TData = AxiosResponse<PagingSavedEpisodeObjectResponse>,
->(
+export const getUsersSavedEpisodes = (
     params?: GetUsersSavedEpisodesParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/me/episodes`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<PagingSavedEpisodeObjectResponse>(
+        {
+            url: `https://api.spotify.com/v1/me/episodes`,
+            method: "GET",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -3525,18 +3599,20 @@ This API endpoint is in __beta__ and could change without warning. Please share 
  * @summary Save Episodes for Current User
 
  */
-export const saveEpisodesUser = <TData = AxiosResponse<void>>(
+export const saveEpisodesUser = (
     saveEpisodesUserBody: SaveEpisodesUserBody,
     params: SaveEpisodesUserParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.put(
-        `https://api.spotify.com/v1/me/episodes`,
-        saveEpisodesUserBody,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<void>(
         {
-            ...options,
-            params: { ...params, ...options?.params },
-        }
+            url: `https://api.spotify.com/v1/me/episodes`,
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            data: saveEpisodesUserBody,
+            params,
+        },
+        options
     );
 };
 
@@ -3547,16 +3623,21 @@ This API endpoint is in __beta__ and could change without warning. Please share 
  * @summary Remove User's Saved Episodes
 
  */
-export const removeEpisodesUser = <TData = AxiosResponse<void>>(
+export const removeEpisodesUser = (
     removeEpisodesUserBody: RemoveEpisodesUserBody,
     params: RemoveEpisodesUserParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.delete(`https://api.spotify.com/v1/me/episodes`, {
-        data: removeEpisodesUserBody,
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<void>(
+        {
+            url: `https://api.spotify.com/v1/me/episodes`,
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            data: removeEpisodesUserBody,
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -3566,16 +3647,18 @@ This API endpoint is in __beta__ and could change without warning. Please share 
  * @summary Check User's Saved Episodes
 
  */
-export const checkUsersSavedEpisodes = <
-    TData = AxiosResponse<ArrayOfBooleansResponse>,
->(
+export const checkUsersSavedEpisodes = (
     params: CheckUsersSavedEpisodesParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/me/episodes/contains`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<ArrayOfBooleansResponse>(
+        {
+            url: `https://api.spotify.com/v1/me/episodes/contains`,
+            method: "GET",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -3584,16 +3667,14 @@ export const checkUsersSavedEpisodes = <
  * @summary Get User's Saved Shows
 
  */
-export const getUsersSavedShows = <
-    TData = AxiosResponse<PagingSavedShowObjectResponse>,
->(
+export const getUsersSavedShows = (
     params?: GetUsersSavedShowsParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/me/shows`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<PagingSavedShowObjectResponse>(
+        { url: `https://api.spotify.com/v1/me/shows`, method: "GET", params },
+        options
+    );
 };
 
 /**
@@ -3602,14 +3683,14 @@ export const getUsersSavedShows = <
  * @summary Save Shows for Current User
 
  */
-export const saveShowsUser = <TData = AxiosResponse<void>>(
+export const saveShowsUser = (
     params: SaveShowsUserParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.put(`https://api.spotify.com/v1/me/shows`, undefined, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<void>(
+        { url: `https://api.spotify.com/v1/me/shows`, method: "PUT", params },
+        options
+    );
 };
 
 /**
@@ -3618,14 +3699,18 @@ export const saveShowsUser = <TData = AxiosResponse<void>>(
  * @summary Remove User's Saved Shows
 
  */
-export const removeShowsUser = <TData = AxiosResponse<void>>(
+export const removeShowsUser = (
     params: RemoveShowsUserParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.delete(`https://api.spotify.com/v1/me/shows`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<void>(
+        {
+            url: `https://api.spotify.com/v1/me/shows`,
+            method: "DELETE",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -3634,16 +3719,18 @@ export const removeShowsUser = <TData = AxiosResponse<void>>(
  * @summary Check User's Saved Shows
 
  */
-export const checkUsersSavedShows = <
-    TData = AxiosResponse<ArrayOfBooleansResponse>,
->(
+export const checkUsersSavedShows = (
     params: CheckUsersSavedShowsParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/me/shows/contains`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<ArrayOfBooleansResponse>(
+        {
+            url: `https://api.spotify.com/v1/me/shows/contains`,
+            method: "GET",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -3652,17 +3739,19 @@ export const checkUsersSavedShows = <
  * @summary Get User's Top Items
 
  */
-export const getUsersTopArtistsAndTracks = <
-    TData = AxiosResponse<PagingArtistOrTrackObjectResponse>,
->(
+export const getUsersTopArtistsAndTracks = (
     type: "artists" | "tracks",
     params?: GetUsersTopArtistsAndTracksParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/me/top/${type}`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<PagingArtistOrTrackObjectResponse>(
+        {
+            url: `https://api.spotify.com/v1/me/top/${type}`,
+            method: "GET",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -3671,11 +3760,14 @@ export const getUsersTopArtistsAndTracks = <
  * @summary Get User's Profile
 
  */
-export const getUsersProfile = <TData = AxiosResponse<OnePublicUserResponse>>(
+export const getUsersProfile = (
     userId: string,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/users/${userId}`, options);
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<OnePublicUserResponse>(
+        { url: `https://api.spotify.com/v1/users/${userId}`, method: "GET" },
+        options
+    );
 };
 
 /**
@@ -3684,17 +3776,19 @@ export const getUsersProfile = <TData = AxiosResponse<OnePublicUserResponse>>(
  * @summary Get User's Playlists
 
  */
-export const getListUsersPlaylists = <
-    TData = AxiosResponse<PagedPlaylistsResponse>,
->(
+export const getListUsersPlaylists = (
     userId: string,
     params?: GetListUsersPlaylistsParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/users/${userId}/playlists`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<PagedPlaylistsResponse>(
+        {
+            url: `https://api.spotify.com/v1/users/${userId}/playlists`,
+            method: "GET",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -3705,14 +3799,18 @@ Each user is generally limited to a maximum of 11000 playlists.
  * @summary Create Playlist
 
  */
-export const createPlaylist = <TData = AxiosResponse<OnePlaylistResponse>>(
+export const createPlaylist = (
     userId: string,
     createPlaylistBody: CreatePlaylistBody,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.post(
-        `https://api.spotify.com/v1/users/${userId}/playlists`,
-        createPlaylistBody,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<OnePlaylistResponse>(
+        {
+            url: `https://api.spotify.com/v1/users/${userId}/playlists`,
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            data: createPlaylistBody,
+        },
         options
     );
 };
@@ -3723,14 +3821,18 @@ export const createPlaylist = <TData = AxiosResponse<OnePlaylistResponse>>(
  * @summary Follow Playlist
 
  */
-export const followPlaylist = <TData = AxiosResponse<void>>(
+export const followPlaylist = (
     playlistId: string,
     followPlaylistBody: FollowPlaylistBody,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.put(
-        `https://api.spotify.com/v1/playlists/${playlistId}/followers`,
-        followPlaylistBody,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<void>(
+        {
+            url: `https://api.spotify.com/v1/playlists/${playlistId}/followers`,
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            data: followPlaylistBody,
+        },
         options
     );
 };
@@ -3741,12 +3843,15 @@ export const followPlaylist = <TData = AxiosResponse<void>>(
  * @summary Unfollow Playlist
 
  */
-export const unfollowPlaylist = <TData = AxiosResponse<void>>(
+export const unfollowPlaylist = (
     playlistId: string,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.delete(
-        `https://api.spotify.com/v1/playlists/${playlistId}/followers`,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<void>(
+        {
+            url: `https://api.spotify.com/v1/playlists/${playlistId}/followers`,
+            method: "DELETE",
+        },
         options
     );
 };
@@ -3757,16 +3862,18 @@ export const unfollowPlaylist = <TData = AxiosResponse<void>>(
  * @summary Get Featured Playlists
 
  */
-export const getFeaturedPlaylists = <
-    TData = AxiosResponse<PagedFeaturedPlaylistsResponse>,
->(
+export const getFeaturedPlaylists = (
     params?: GetFeaturedPlaylistsParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/browse/featured-playlists`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<PagedFeaturedPlaylistsResponse>(
+        {
+            url: `https://api.spotify.com/v1/browse/featured-playlists`,
+            method: "GET",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -3775,14 +3882,18 @@ export const getFeaturedPlaylists = <
  * @summary Get Several Browse Categories
 
  */
-export const getCategories = <TData = AxiosResponse<PagedCategoriesResponse>>(
+export const getCategories = (
     params?: GetCategoriesParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/browse/categories`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<PagedCategoriesResponse>(
+        {
+            url: `https://api.spotify.com/v1/browse/categories`,
+            method: "GET",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -3791,17 +3902,18 @@ export const getCategories = <TData = AxiosResponse<PagedCategoriesResponse>>(
  * @summary Get Single Browse Category
 
  */
-export const getACategory = <TData = AxiosResponse<OneCategoryResponse>>(
+export const getACategory = (
     categoryId: string,
     params?: GetACategoryParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(
-        `https://api.spotify.com/v1/browse/categories/${categoryId}`,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<OneCategoryResponse>(
         {
-            ...options,
-            params: { ...params, ...options?.params },
-        }
+            url: `https://api.spotify.com/v1/browse/categories/${categoryId}`,
+            method: "GET",
+            params,
+        },
+        options
     );
 };
 
@@ -3811,19 +3923,18 @@ export const getACategory = <TData = AxiosResponse<OneCategoryResponse>>(
  * @summary Get Category's Playlists
 
  */
-export const getACategoriesPlaylists = <
-    TData = AxiosResponse<PagedFeaturedPlaylistsResponse>,
->(
+export const getACategoriesPlaylists = (
     categoryId: string,
     params?: GetACategoriesPlaylistsParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(
-        `https://api.spotify.com/v1/browse/categories/${categoryId}/playlists`,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<PagedFeaturedPlaylistsResponse>(
         {
-            ...options,
-            params: { ...params, ...options?.params },
-        }
+            url: `https://api.spotify.com/v1/browse/categories/${categoryId}/playlists`,
+            method: "GET",
+            params,
+        },
+        options
     );
 };
 
@@ -3833,12 +3944,15 @@ export const getACategoriesPlaylists = <
  * @summary Get Playlist Cover Image
 
  */
-export const getPlaylistCover = <TData = AxiosResponse<ArrayOfImagesResponse>>(
+export const getPlaylistCover = (
     playlistId: string,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(
-        `https://api.spotify.com/v1/playlists/${playlistId}/images`,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<ArrayOfImagesResponse>(
+        {
+            url: `https://api.spotify.com/v1/playlists/${playlistId}/images`,
+            method: "GET",
+        },
         options
     );
 };
@@ -3849,14 +3963,18 @@ export const getPlaylistCover = <TData = AxiosResponse<ArrayOfImagesResponse>>(
  * @summary Add Custom Playlist Cover Image
 
  */
-export const uploadCustomPlaylistCover = <TData = AxiosResponse<void>>(
+export const uploadCustomPlaylistCover = (
     playlistId: string,
     uploadCustomPlaylistCoverBody: string,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.put(
-        `https://api.spotify.com/v1/playlists/${playlistId}/images`,
-        uploadCustomPlaylistCoverBody,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<void>(
+        {
+            url: `https://api.spotify.com/v1/playlists/${playlistId}/images`,
+            method: "PUT",
+            headers: { "Content-Type": "image/jpeg" },
+            data: uploadCustomPlaylistCoverBody,
+        },
         options
     );
 };
@@ -3867,14 +3985,18 @@ export const uploadCustomPlaylistCover = <TData = AxiosResponse<void>>(
  * @summary Get New Releases
 
  */
-export const getNewReleases = <TData = AxiosResponse<PagedAlbumsResponse>>(
+export const getNewReleases = (
     params?: GetNewReleasesParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/browse/new-releases`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<PagedAlbumsResponse>(
+        {
+            url: `https://api.spotify.com/v1/browse/new-releases`,
+            method: "GET",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -3883,14 +4005,18 @@ export const getNewReleases = <TData = AxiosResponse<PagedAlbumsResponse>>(
  * @summary Get Followed Artists
 
  */
-export const getFollowed = <TData = AxiosResponse<CursorPagedArtistsResponse>>(
+export const getFollowed = (
     params: GetFollowedParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/me/following`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<CursorPagedArtistsResponse>(
+        {
+            url: `https://api.spotify.com/v1/me/following`,
+            method: "GET",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -3899,18 +4025,20 @@ export const getFollowed = <TData = AxiosResponse<CursorPagedArtistsResponse>>(
  * @summary Follow Artists or Users
 
  */
-export const followArtistsUsers = <TData = AxiosResponse<void>>(
+export const followArtistsUsers = (
     followArtistsUsersBody: FollowArtistsUsersBody,
     params: FollowArtistsUsersParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.put(
-        `https://api.spotify.com/v1/me/following`,
-        followArtistsUsersBody,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<void>(
         {
-            ...options,
-            params: { ...params, ...options?.params },
-        }
+            url: `https://api.spotify.com/v1/me/following`,
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            data: followArtistsUsersBody,
+            params,
+        },
+        options
     );
 };
 
@@ -3920,16 +4048,21 @@ export const followArtistsUsers = <TData = AxiosResponse<void>>(
  * @summary Unfollow Artists or Users
 
  */
-export const unfollowArtistsUsers = <TData = AxiosResponse<void>>(
+export const unfollowArtistsUsers = (
     unfollowArtistsUsersBody: UnfollowArtistsUsersBody,
     params: UnfollowArtistsUsersParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.delete(`https://api.spotify.com/v1/me/following`, {
-        data: unfollowArtistsUsersBody,
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<void>(
+        {
+            url: `https://api.spotify.com/v1/me/following`,
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            data: unfollowArtistsUsersBody,
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -3938,16 +4071,18 @@ export const unfollowArtistsUsers = <TData = AxiosResponse<void>>(
  * @summary Check If User Follows Artists or Users
 
  */
-export const checkCurrentUserFollows = <
-    TData = AxiosResponse<ArrayOfBooleansResponse>,
->(
+export const checkCurrentUserFollows = (
     params: CheckCurrentUserFollowsParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/me/following/contains`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<ArrayOfBooleansResponse>(
+        {
+            url: `https://api.spotify.com/v1/me/following/contains`,
+            method: "GET",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -3956,19 +4091,18 @@ export const checkCurrentUserFollows = <
  * @summary Check if Current User Follows Playlist
 
  */
-export const checkIfUserFollowsPlaylist = <
-    TData = AxiosResponse<SingletonArrayOfBooleanResponse>,
->(
+export const checkIfUserFollowsPlaylist = (
     playlistId: string,
     params?: CheckIfUserFollowsPlaylistParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(
-        `https://api.spotify.com/v1/playlists/${playlistId}/followers/contains`,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<SingletonArrayOfBooleanResponse>(
         {
-            ...options,
-            params: { ...params, ...options?.params },
-        }
+            url: `https://api.spotify.com/v1/playlists/${playlistId}/followers/contains`,
+            method: "GET",
+            params,
+        },
+        options
     );
 };
 
@@ -3978,16 +4112,18 @@ export const checkIfUserFollowsPlaylist = <
  * @summary Get Several Tracks' Audio Features
 
  */
-export const getSeveralAudioFeatures = <
-    TData = AxiosResponse<ManyAudioFeaturesResponse>,
->(
+export const getSeveralAudioFeatures = (
     params: GetSeveralAudioFeaturesParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/audio-features`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<ManyAudioFeaturesResponse>(
+        {
+            url: `https://api.spotify.com/v1/audio-features`,
+            method: "GET",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -3997,14 +4133,15 @@ Spotify ID.
  * @summary Get Track's Audio Features
 
  */
-export const getAudioFeatures = <
-    TData = AxiosResponse<OneAudioFeaturesResponse>,
->(
+export const getAudioFeatures = (
     id: string,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(
-        `https://api.spotify.com/v1/audio-features/${id}`,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<OneAudioFeaturesResponse>(
+        {
+            url: `https://api.spotify.com/v1/audio-features/${id}`,
+            method: "GET",
+        },
         options
     );
 };
@@ -4015,14 +4152,15 @@ export const getAudioFeatures = <
  * @summary Get Track's Audio Analysis
 
  */
-export const getAudioAnalysis = <
-    TData = AxiosResponse<OneAudioAnalysisResponse>,
->(
+export const getAudioAnalysis = (
     id: string,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(
-        `https://api.spotify.com/v1/audio-analysis/${id}`,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<OneAudioAnalysisResponse>(
+        {
+            url: `https://api.spotify.com/v1/audio-analysis/${id}`,
+            method: "GET",
+        },
         options
     );
 };
@@ -4035,16 +4173,18 @@ For artists and tracks that are very new or obscure there might not be enough da
  * @summary Get Recommendations
 
  */
-export const getRecommendations = <
-    TData = AxiosResponse<OneRecommendationsResponse>,
->(
+export const getRecommendations = (
     params: GetRecommendationsParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/recommendations`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<OneRecommendationsResponse>(
+        {
+            url: `https://api.spotify.com/v1/recommendations`,
+            method: "GET",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -4053,13 +4193,14 @@ export const getRecommendations = <
  * @summary Get Available Genre Seeds
 
  */
-export const getRecommendationGenres = <
-    TData = AxiosResponse<ManyGenresResponse>,
->(
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(
-        `https://api.spotify.com/v1/recommendations/available-genre-seeds`,
+export const getRecommendationGenres = (
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<ManyGenresResponse>(
+        {
+            url: `https://api.spotify.com/v1/recommendations/available-genre-seeds`,
+            method: "GET",
+        },
         options
     );
 };
@@ -4070,16 +4211,14 @@ export const getRecommendationGenres = <
  * @summary Get Playback State
 
  */
-export const getInformationAboutTheUsersCurrentPlayback = <
-    TData = AxiosResponse<OneCurrentlyPlayingResponse | void>,
->(
+export const getInformationAboutTheUsersCurrentPlayback = (
     params?: GetInformationAboutTheUsersCurrentPlaybackParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/me/player`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<OneCurrentlyPlayingResponse | void>(
+        { url: `https://api.spotify.com/v1/me/player`, method: "GET", params },
+        options
+    );
 };
 
 /**
@@ -4088,13 +4227,17 @@ export const getInformationAboutTheUsersCurrentPlayback = <
  * @summary Transfer Playback
 
  */
-export const transferAUsersPlayback = <TData = AxiosResponse<void>>(
+export const transferAUsersPlayback = (
     transferAUsersPlaybackBody: TransferAUsersPlaybackBody,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.put(
-        `https://api.spotify.com/v1/me/player`,
-        transferAUsersPlaybackBody,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<void>(
+        {
+            url: `https://api.spotify.com/v1/me/player`,
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            data: transferAUsersPlaybackBody,
+        },
         options
     );
 };
@@ -4105,12 +4248,13 @@ export const transferAUsersPlayback = <TData = AxiosResponse<void>>(
  * @summary Get Available Devices
 
  */
-export const getAUsersAvailableDevices = <
-    TData = AxiosResponse<ManyDevicesResponse>,
->(
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/me/player/devices`, options);
+export const getAUsersAvailableDevices = (
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<ManyDevicesResponse>(
+        { url: `https://api.spotify.com/v1/me/player/devices`, method: "GET" },
+        options
+    );
 };
 
 /**
@@ -4119,16 +4263,18 @@ export const getAUsersAvailableDevices = <
  * @summary Get Currently Playing Track
 
  */
-export const getTheUsersCurrentlyPlayingTrack = <
-    TData = AxiosResponse<OneCurrentlyPlayingTrackResponse>,
->(
+export const getTheUsersCurrentlyPlayingTrack = (
     params?: GetTheUsersCurrentlyPlayingTrackParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/me/player/currently-playing`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<OneCurrentlyPlayingTrackResponse>(
+        {
+            url: `https://api.spotify.com/v1/me/player/currently-playing`,
+            method: "GET",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -4137,18 +4283,20 @@ export const getTheUsersCurrentlyPlayingTrack = <
  * @summary Start/Resume Playback
 
  */
-export const startAUsersPlayback = <TData = AxiosResponse<void>>(
+export const startAUsersPlayback = (
     startAUsersPlaybackBody: StartAUsersPlaybackBody,
     params?: StartAUsersPlaybackParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.put(
-        `https://api.spotify.com/v1/me/player/play`,
-        startAUsersPlaybackBody,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<void>(
         {
-            ...options,
-            params: { ...params, ...options?.params },
-        }
+            url: `https://api.spotify.com/v1/me/player/play`,
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            data: startAUsersPlaybackBody,
+            params,
+        },
+        options
     );
 };
 
@@ -4158,14 +4306,18 @@ export const startAUsersPlayback = <TData = AxiosResponse<void>>(
  * @summary Pause Playback
 
  */
-export const pauseAUsersPlayback = <TData = AxiosResponse<void>>(
+export const pauseAUsersPlayback = (
     params?: PauseAUsersPlaybackParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.put(`https://api.spotify.com/v1/me/player/pause`, undefined, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<void>(
+        {
+            url: `https://api.spotify.com/v1/me/player/pause`,
+            method: "PUT",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -4174,14 +4326,18 @@ export const pauseAUsersPlayback = <TData = AxiosResponse<void>>(
  * @summary Skip To Next
 
  */
-export const skipUsersPlaybackToNextTrack = <TData = AxiosResponse<void>>(
+export const skipUsersPlaybackToNextTrack = (
     params?: SkipUsersPlaybackToNextTrackParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.post(`https://api.spotify.com/v1/me/player/next`, undefined, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<void>(
+        {
+            url: `https://api.spotify.com/v1/me/player/next`,
+            method: "POST",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -4190,17 +4346,17 @@ export const skipUsersPlaybackToNextTrack = <TData = AxiosResponse<void>>(
  * @summary Skip To Previous
 
  */
-export const skipUsersPlaybackToPreviousTrack = <TData = AxiosResponse<void>>(
+export const skipUsersPlaybackToPreviousTrack = (
     params?: SkipUsersPlaybackToPreviousTrackParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.post(
-        `https://api.spotify.com/v1/me/player/previous`,
-        undefined,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<void>(
         {
-            ...options,
-            params: { ...params, ...options?.params },
-        }
+            url: `https://api.spotify.com/v1/me/player/previous`,
+            method: "POST",
+            params,
+        },
+        options
     );
 };
 
@@ -4210,16 +4366,18 @@ export const skipUsersPlaybackToPreviousTrack = <TData = AxiosResponse<void>>(
  * @summary Seek To Position
 
  */
-export const seekToPositionInCurrentlyPlayingTrack = <
-    TData = AxiosResponse<void>,
->(
+export const seekToPositionInCurrentlyPlayingTrack = (
     params: SeekToPositionInCurrentlyPlayingTrackParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.put(`https://api.spotify.com/v1/me/player/seek`, undefined, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<void>(
+        {
+            url: `https://api.spotify.com/v1/me/player/seek`,
+            method: "PUT",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -4228,14 +4386,18 @@ export const seekToPositionInCurrentlyPlayingTrack = <
  * @summary Set Repeat Mode
 
  */
-export const setRepeatModeOnUsersPlayback = <TData = AxiosResponse<void>>(
+export const setRepeatModeOnUsersPlayback = (
     params: SetRepeatModeOnUsersPlaybackParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.put(`https://api.spotify.com/v1/me/player/repeat`, undefined, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<void>(
+        {
+            url: `https://api.spotify.com/v1/me/player/repeat`,
+            method: "PUT",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -4244,14 +4406,18 @@ export const setRepeatModeOnUsersPlayback = <TData = AxiosResponse<void>>(
  * @summary Set Playback Volume
 
  */
-export const setVolumeForUsersPlayback = <TData = AxiosResponse<void>>(
+export const setVolumeForUsersPlayback = (
     params: SetVolumeForUsersPlaybackParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.put(`https://api.spotify.com/v1/me/player/volume`, undefined, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<void>(
+        {
+            url: `https://api.spotify.com/v1/me/player/volume`,
+            method: "PUT",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -4260,17 +4426,17 @@ export const setVolumeForUsersPlayback = <TData = AxiosResponse<void>>(
  * @summary Toggle Playback Shuffle
 
  */
-export const toggleShuffleForUsersPlayback = <TData = AxiosResponse<void>>(
+export const toggleShuffleForUsersPlayback = (
     params: ToggleShuffleForUsersPlaybackParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.put(
-        `https://api.spotify.com/v1/me/player/shuffle`,
-        undefined,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<void>(
         {
-            ...options,
-            params: { ...params, ...options?.params },
-        }
+            url: `https://api.spotify.com/v1/me/player/shuffle`,
+            method: "PUT",
+            params,
+        },
+        options
     );
 };
 
@@ -4281,16 +4447,18 @@ _**Note**: Currently doesn't support podcast episodes._
  * @summary Get Recently Played Tracks
 
  */
-export const getRecentlyPlayed = <
-    TData = AxiosResponse<CursorPagedPlayHistoryResponse>,
->(
+export const getRecentlyPlayed = (
     params?: GetRecentlyPlayedParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/me/player/recently-played`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<CursorPagedPlayHistoryResponse>(
+        {
+            url: `https://api.spotify.com/v1/me/player/recently-played`,
+            method: "GET",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -4299,10 +4467,11 @@ export const getRecentlyPlayed = <
  * @summary Get the User's Queue
 
  */
-export const getQueue = <TData = AxiosResponse<QueueResponse>>(
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/me/player/queue`, options);
+export const getQueue = (options?: SecondParameter<typeof customInstance>) => {
+    return customInstance<QueueResponse>(
+        { url: `https://api.spotify.com/v1/me/player/queue`, method: "GET" },
+        options
+    );
 };
 
 /**
@@ -4311,14 +4480,18 @@ export const getQueue = <TData = AxiosResponse<QueueResponse>>(
  * @summary Add Item to Playback Queue
 
  */
-export const addToQueue = <TData = AxiosResponse<void>>(
+export const addToQueue = (
     params: AddToQueueParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.post(`https://api.spotify.com/v1/me/player/queue`, undefined, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<void>(
+        {
+            url: `https://api.spotify.com/v1/me/player/queue`,
+            method: "POST",
+            params,
+        },
+        options
+    );
 };
 
 /**
@@ -4327,130 +4500,268 @@ export const addToQueue = <TData = AxiosResponse<void>>(
  * @summary Get Available Markets
 
  */
-export const getAvailableMarkets = <
-    TData = AxiosResponse<GetAvailableMarkets200>,
->(
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://api.spotify.com/v1/markets`, options);
+export const getAvailableMarkets = (
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<GetAvailableMarkets200>(
+        { url: `https://api.spotify.com/v1/markets`, method: "GET" },
+        options
+    );
 };
 
-export type GetAnAlbumResult = AxiosResponse<OneAlbumResponse>;
-export type GetMultipleAlbumsResult = AxiosResponse<ManyAlbumsResponse>;
-export type GetAnAlbumsTracksResult =
-    AxiosResponse<PagingSimplifiedTrackObjectResponse>;
-export type GetAnArtistResult = AxiosResponse<OneArtistResponse>;
-export type GetMultipleArtistsResult = AxiosResponse<ManyArtistsResponse>;
-export type GetAnArtistsAlbumsResult =
-    AxiosResponse<PagingArtistDiscographyAlbumObjectResponse>;
-export type GetAnArtistsTopTracksResult = AxiosResponse<ManyTracksResponse>;
-export type GetAnArtistsRelatedArtistsResult =
-    AxiosResponse<ManyArtistsResponse>;
-export type GetAShowResult = AxiosResponse<OneShowResponse>;
-export type GetMultipleShowsResult = AxiosResponse<ManySimplifiedShowsResponse>;
-export type GetAShowsEpisodesResult =
-    AxiosResponse<PagingSimplifiedEpisodeObjectResponse>;
-export type GetAnEpisodeResult = AxiosResponse<OneEpisodeResponse>;
-export type GetMultipleEpisodesResult = AxiosResponse<ManyEpisodesResponse>;
-export type GetAnAudiobookResult = AxiosResponse<OneAudiobookResponse>;
-export type GetMultipleAudiobooksResult = AxiosResponse<ManyAudiobooksResponse>;
-export type GetAudiobookChaptersResult =
-    AxiosResponse<PagingSimplifiedChapterObjectResponse>;
-export type GetUsersSavedAudiobooksResult =
-    AxiosResponse<PagingSimplifiedAudiobookObjectResponse>;
-export type SaveAudiobooksUserResult = AxiosResponse<void>;
-export type RemoveAudiobooksUserResult = AxiosResponse<void>;
-export type CheckUsersSavedAudiobooksResult =
-    AxiosResponse<ArrayOfBooleansResponse>;
-export type GetAChapterResult = AxiosResponse<OneChapterResponse>;
-export type GetSeveralChaptersResult = AxiosResponse<ManyChaptersResponse>;
-export type GetTrackResult = AxiosResponse<OneTrackResponse>;
-export type GetSeveralTracksResult = AxiosResponse<ManyTracksResponse>;
-export type SearchResult = AxiosResponse<SearchItemsResponse>;
-export type GetCurrentUsersProfileResult =
-    AxiosResponse<OnePrivateUserResponse>;
-export type GetPlaylistResult = AxiosResponse<OnePlaylistResponse>;
-export type ChangePlaylistDetailsResult = AxiosResponse<void>;
-export type GetPlaylistsTracksResult =
-    AxiosResponse<PagingPlaylistTrackObjectResponse>;
-export type AddTracksToPlaylistResult =
-    AxiosResponse<PlaylistSnapshotIdResponse>;
-export type ReorderOrReplacePlaylistsTracksResult =
-    AxiosResponse<PlaylistSnapshotIdResponse>;
-export type RemoveTracksPlaylistResult =
-    AxiosResponse<PlaylistSnapshotIdResponse>;
-export type GetAListOfCurrentUsersPlaylistsResult =
-    AxiosResponse<PagedPlaylistsResponse>;
-export type GetUsersSavedAlbumsResult =
-    AxiosResponse<PagingSavedAlbumObjectResponse>;
-export type SaveAlbumsUserResult = AxiosResponse<void>;
-export type RemoveAlbumsUserResult = AxiosResponse<void>;
-export type CheckUsersSavedAlbumsResult =
-    AxiosResponse<ArrayOfBooleansResponse>;
-export type GetUsersSavedTracksResult =
-    AxiosResponse<PagingSavedTrackObjectResponse>;
-export type SaveTracksUserResult = AxiosResponse<void>;
-export type RemoveTracksUserResult = AxiosResponse<void>;
-export type CheckUsersSavedTracksResult =
-    AxiosResponse<ArrayOfBooleansResponse>;
-export type GetUsersSavedEpisodesResult =
-    AxiosResponse<PagingSavedEpisodeObjectResponse>;
-export type SaveEpisodesUserResult = AxiosResponse<void>;
-export type RemoveEpisodesUserResult = AxiosResponse<void>;
-export type CheckUsersSavedEpisodesResult =
-    AxiosResponse<ArrayOfBooleansResponse>;
-export type GetUsersSavedShowsResult =
-    AxiosResponse<PagingSavedShowObjectResponse>;
-export type SaveShowsUserResult = AxiosResponse<void>;
-export type RemoveShowsUserResult = AxiosResponse<void>;
-export type CheckUsersSavedShowsResult = AxiosResponse<ArrayOfBooleansResponse>;
-export type GetUsersTopArtistsAndTracksResult =
-    AxiosResponse<PagingArtistOrTrackObjectResponse>;
-export type GetUsersProfileResult = AxiosResponse<OnePublicUserResponse>;
-export type GetListUsersPlaylistsResult = AxiosResponse<PagedPlaylistsResponse>;
-export type CreatePlaylistResult = AxiosResponse<OnePlaylistResponse>;
-export type FollowPlaylistResult = AxiosResponse<void>;
-export type UnfollowPlaylistResult = AxiosResponse<void>;
-export type GetFeaturedPlaylistsResult =
-    AxiosResponse<PagedFeaturedPlaylistsResponse>;
-export type GetCategoriesResult = AxiosResponse<PagedCategoriesResponse>;
-export type GetACategoryResult = AxiosResponse<OneCategoryResponse>;
-export type GetACategoriesPlaylistsResult =
-    AxiosResponse<PagedFeaturedPlaylistsResponse>;
-export type GetPlaylistCoverResult = AxiosResponse<ArrayOfImagesResponse>;
-export type UploadCustomPlaylistCoverResult = AxiosResponse<void>;
-export type GetNewReleasesResult = AxiosResponse<PagedAlbumsResponse>;
-export type GetFollowedResult = AxiosResponse<CursorPagedArtistsResponse>;
-export type FollowArtistsUsersResult = AxiosResponse<void>;
-export type UnfollowArtistsUsersResult = AxiosResponse<void>;
-export type CheckCurrentUserFollowsResult =
-    AxiosResponse<ArrayOfBooleansResponse>;
-export type CheckIfUserFollowsPlaylistResult =
-    AxiosResponse<SingletonArrayOfBooleanResponse>;
-export type GetSeveralAudioFeaturesResult =
-    AxiosResponse<ManyAudioFeaturesResponse>;
-export type GetAudioFeaturesResult = AxiosResponse<OneAudioFeaturesResponse>;
-export type GetAudioAnalysisResult = AxiosResponse<OneAudioAnalysisResponse>;
-export type GetRecommendationsResult =
-    AxiosResponse<OneRecommendationsResponse>;
-export type GetRecommendationGenresResult = AxiosResponse<ManyGenresResponse>;
-export type GetInformationAboutTheUsersCurrentPlaybackResult =
-    AxiosResponse<OneCurrentlyPlayingResponse | void>;
-export type TransferAUsersPlaybackResult = AxiosResponse<void>;
-export type GetAUsersAvailableDevicesResult =
-    AxiosResponse<ManyDevicesResponse>;
-export type GetTheUsersCurrentlyPlayingTrackResult =
-    AxiosResponse<OneCurrentlyPlayingTrackResponse>;
-export type StartAUsersPlaybackResult = AxiosResponse<void>;
-export type PauseAUsersPlaybackResult = AxiosResponse<void>;
-export type SkipUsersPlaybackToNextTrackResult = AxiosResponse<void>;
-export type SkipUsersPlaybackToPreviousTrackResult = AxiosResponse<void>;
-export type SeekToPositionInCurrentlyPlayingTrackResult = AxiosResponse<void>;
-export type SetRepeatModeOnUsersPlaybackResult = AxiosResponse<void>;
-export type SetVolumeForUsersPlaybackResult = AxiosResponse<void>;
-export type ToggleShuffleForUsersPlaybackResult = AxiosResponse<void>;
-export type GetRecentlyPlayedResult =
-    AxiosResponse<CursorPagedPlayHistoryResponse>;
-export type GetQueueResult = AxiosResponse<QueueResponse>;
-export type AddToQueueResult = AxiosResponse<void>;
-export type GetAvailableMarketsResult = AxiosResponse<GetAvailableMarkets200>;
+export type GetAnAlbumResult = NonNullable<
+    Awaited<ReturnType<typeof getAnAlbum>>
+>;
+export type GetMultipleAlbumsResult = NonNullable<
+    Awaited<ReturnType<typeof getMultipleAlbums>>
+>;
+export type GetAnAlbumsTracksResult = NonNullable<
+    Awaited<ReturnType<typeof getAnAlbumsTracks>>
+>;
+export type GetAnArtistResult = NonNullable<
+    Awaited<ReturnType<typeof getAnArtist>>
+>;
+export type GetMultipleArtistsResult = NonNullable<
+    Awaited<ReturnType<typeof getMultipleArtists>>
+>;
+export type GetAnArtistsAlbumsResult = NonNullable<
+    Awaited<ReturnType<typeof getAnArtistsAlbums>>
+>;
+export type GetAnArtistsTopTracksResult = NonNullable<
+    Awaited<ReturnType<typeof getAnArtistsTopTracks>>
+>;
+export type GetAnArtistsRelatedArtistsResult = NonNullable<
+    Awaited<ReturnType<typeof getAnArtistsRelatedArtists>>
+>;
+export type GetAShowResult = NonNullable<Awaited<ReturnType<typeof getAShow>>>;
+export type GetMultipleShowsResult = NonNullable<
+    Awaited<ReturnType<typeof getMultipleShows>>
+>;
+export type GetAShowsEpisodesResult = NonNullable<
+    Awaited<ReturnType<typeof getAShowsEpisodes>>
+>;
+export type GetAnEpisodeResult = NonNullable<
+    Awaited<ReturnType<typeof getAnEpisode>>
+>;
+export type GetMultipleEpisodesResult = NonNullable<
+    Awaited<ReturnType<typeof getMultipleEpisodes>>
+>;
+export type GetAnAudiobookResult = NonNullable<
+    Awaited<ReturnType<typeof getAnAudiobook>>
+>;
+export type GetMultipleAudiobooksResult = NonNullable<
+    Awaited<ReturnType<typeof getMultipleAudiobooks>>
+>;
+export type GetAudiobookChaptersResult = NonNullable<
+    Awaited<ReturnType<typeof getAudiobookChapters>>
+>;
+export type GetUsersSavedAudiobooksResult = NonNullable<
+    Awaited<ReturnType<typeof getUsersSavedAudiobooks>>
+>;
+export type SaveAudiobooksUserResult = NonNullable<
+    Awaited<ReturnType<typeof saveAudiobooksUser>>
+>;
+export type RemoveAudiobooksUserResult = NonNullable<
+    Awaited<ReturnType<typeof removeAudiobooksUser>>
+>;
+export type CheckUsersSavedAudiobooksResult = NonNullable<
+    Awaited<ReturnType<typeof checkUsersSavedAudiobooks>>
+>;
+export type GetAChapterResult = NonNullable<
+    Awaited<ReturnType<typeof getAChapter>>
+>;
+export type GetSeveralChaptersResult = NonNullable<
+    Awaited<ReturnType<typeof getSeveralChapters>>
+>;
+export type GetTrackResult = NonNullable<Awaited<ReturnType<typeof getTrack>>>;
+export type GetSeveralTracksResult = NonNullable<
+    Awaited<ReturnType<typeof getSeveralTracks>>
+>;
+export type SearchResult = NonNullable<Awaited<ReturnType<typeof search>>>;
+export type GetCurrentUsersProfileResult = NonNullable<
+    Awaited<ReturnType<typeof getCurrentUsersProfile>>
+>;
+export type GetPlaylistResult = NonNullable<
+    Awaited<ReturnType<typeof getPlaylist>>
+>;
+export type ChangePlaylistDetailsResult = NonNullable<
+    Awaited<ReturnType<typeof changePlaylistDetails>>
+>;
+export type GetPlaylistsTracksResult = NonNullable<
+    Awaited<ReturnType<typeof getPlaylistsTracks>>
+>;
+export type AddTracksToPlaylistResult = NonNullable<
+    Awaited<ReturnType<typeof addTracksToPlaylist>>
+>;
+export type ReorderOrReplacePlaylistsTracksResult = NonNullable<
+    Awaited<ReturnType<typeof reorderOrReplacePlaylistsTracks>>
+>;
+export type RemoveTracksPlaylistResult = NonNullable<
+    Awaited<ReturnType<typeof removeTracksPlaylist>>
+>;
+export type GetAListOfCurrentUsersPlaylistsResult = NonNullable<
+    Awaited<ReturnType<typeof getAListOfCurrentUsersPlaylists>>
+>;
+export type GetUsersSavedAlbumsResult = NonNullable<
+    Awaited<ReturnType<typeof getUsersSavedAlbums>>
+>;
+export type SaveAlbumsUserResult = NonNullable<
+    Awaited<ReturnType<typeof saveAlbumsUser>>
+>;
+export type RemoveAlbumsUserResult = NonNullable<
+    Awaited<ReturnType<typeof removeAlbumsUser>>
+>;
+export type CheckUsersSavedAlbumsResult = NonNullable<
+    Awaited<ReturnType<typeof checkUsersSavedAlbums>>
+>;
+export type GetUsersSavedTracksResult = NonNullable<
+    Awaited<ReturnType<typeof getUsersSavedTracks>>
+>;
+export type SaveTracksUserResult = NonNullable<
+    Awaited<ReturnType<typeof saveTracksUser>>
+>;
+export type RemoveTracksUserResult = NonNullable<
+    Awaited<ReturnType<typeof removeTracksUser>>
+>;
+export type CheckUsersSavedTracksResult = NonNullable<
+    Awaited<ReturnType<typeof checkUsersSavedTracks>>
+>;
+export type GetUsersSavedEpisodesResult = NonNullable<
+    Awaited<ReturnType<typeof getUsersSavedEpisodes>>
+>;
+export type SaveEpisodesUserResult = NonNullable<
+    Awaited<ReturnType<typeof saveEpisodesUser>>
+>;
+export type RemoveEpisodesUserResult = NonNullable<
+    Awaited<ReturnType<typeof removeEpisodesUser>>
+>;
+export type CheckUsersSavedEpisodesResult = NonNullable<
+    Awaited<ReturnType<typeof checkUsersSavedEpisodes>>
+>;
+export type GetUsersSavedShowsResult = NonNullable<
+    Awaited<ReturnType<typeof getUsersSavedShows>>
+>;
+export type SaveShowsUserResult = NonNullable<
+    Awaited<ReturnType<typeof saveShowsUser>>
+>;
+export type RemoveShowsUserResult = NonNullable<
+    Awaited<ReturnType<typeof removeShowsUser>>
+>;
+export type CheckUsersSavedShowsResult = NonNullable<
+    Awaited<ReturnType<typeof checkUsersSavedShows>>
+>;
+export type GetUsersTopArtistsAndTracksResult = NonNullable<
+    Awaited<ReturnType<typeof getUsersTopArtistsAndTracks>>
+>;
+export type GetUsersProfileResult = NonNullable<
+    Awaited<ReturnType<typeof getUsersProfile>>
+>;
+export type GetListUsersPlaylistsResult = NonNullable<
+    Awaited<ReturnType<typeof getListUsersPlaylists>>
+>;
+export type CreatePlaylistResult = NonNullable<
+    Awaited<ReturnType<typeof createPlaylist>>
+>;
+export type FollowPlaylistResult = NonNullable<
+    Awaited<ReturnType<typeof followPlaylist>>
+>;
+export type UnfollowPlaylistResult = NonNullable<
+    Awaited<ReturnType<typeof unfollowPlaylist>>
+>;
+export type GetFeaturedPlaylistsResult = NonNullable<
+    Awaited<ReturnType<typeof getFeaturedPlaylists>>
+>;
+export type GetCategoriesResult = NonNullable<
+    Awaited<ReturnType<typeof getCategories>>
+>;
+export type GetACategoryResult = NonNullable<
+    Awaited<ReturnType<typeof getACategory>>
+>;
+export type GetACategoriesPlaylistsResult = NonNullable<
+    Awaited<ReturnType<typeof getACategoriesPlaylists>>
+>;
+export type GetPlaylistCoverResult = NonNullable<
+    Awaited<ReturnType<typeof getPlaylistCover>>
+>;
+export type UploadCustomPlaylistCoverResult = NonNullable<
+    Awaited<ReturnType<typeof uploadCustomPlaylistCover>>
+>;
+export type GetNewReleasesResult = NonNullable<
+    Awaited<ReturnType<typeof getNewReleases>>
+>;
+export type GetFollowedResult = NonNullable<
+    Awaited<ReturnType<typeof getFollowed>>
+>;
+export type FollowArtistsUsersResult = NonNullable<
+    Awaited<ReturnType<typeof followArtistsUsers>>
+>;
+export type UnfollowArtistsUsersResult = NonNullable<
+    Awaited<ReturnType<typeof unfollowArtistsUsers>>
+>;
+export type CheckCurrentUserFollowsResult = NonNullable<
+    Awaited<ReturnType<typeof checkCurrentUserFollows>>
+>;
+export type CheckIfUserFollowsPlaylistResult = NonNullable<
+    Awaited<ReturnType<typeof checkIfUserFollowsPlaylist>>
+>;
+export type GetSeveralAudioFeaturesResult = NonNullable<
+    Awaited<ReturnType<typeof getSeveralAudioFeatures>>
+>;
+export type GetAudioFeaturesResult = NonNullable<
+    Awaited<ReturnType<typeof getAudioFeatures>>
+>;
+export type GetAudioAnalysisResult = NonNullable<
+    Awaited<ReturnType<typeof getAudioAnalysis>>
+>;
+export type GetRecommendationsResult = NonNullable<
+    Awaited<ReturnType<typeof getRecommendations>>
+>;
+export type GetRecommendationGenresResult = NonNullable<
+    Awaited<ReturnType<typeof getRecommendationGenres>>
+>;
+export type GetInformationAboutTheUsersCurrentPlaybackResult = NonNullable<
+    Awaited<ReturnType<typeof getInformationAboutTheUsersCurrentPlayback>>
+>;
+export type TransferAUsersPlaybackResult = NonNullable<
+    Awaited<ReturnType<typeof transferAUsersPlayback>>
+>;
+export type GetAUsersAvailableDevicesResult = NonNullable<
+    Awaited<ReturnType<typeof getAUsersAvailableDevices>>
+>;
+export type GetTheUsersCurrentlyPlayingTrackResult = NonNullable<
+    Awaited<ReturnType<typeof getTheUsersCurrentlyPlayingTrack>>
+>;
+export type StartAUsersPlaybackResult = NonNullable<
+    Awaited<ReturnType<typeof startAUsersPlayback>>
+>;
+export type PauseAUsersPlaybackResult = NonNullable<
+    Awaited<ReturnType<typeof pauseAUsersPlayback>>
+>;
+export type SkipUsersPlaybackToNextTrackResult = NonNullable<
+    Awaited<ReturnType<typeof skipUsersPlaybackToNextTrack>>
+>;
+export type SkipUsersPlaybackToPreviousTrackResult = NonNullable<
+    Awaited<ReturnType<typeof skipUsersPlaybackToPreviousTrack>>
+>;
+export type SeekToPositionInCurrentlyPlayingTrackResult = NonNullable<
+    Awaited<ReturnType<typeof seekToPositionInCurrentlyPlayingTrack>>
+>;
+export type SetRepeatModeOnUsersPlaybackResult = NonNullable<
+    Awaited<ReturnType<typeof setRepeatModeOnUsersPlayback>>
+>;
+export type SetVolumeForUsersPlaybackResult = NonNullable<
+    Awaited<ReturnType<typeof setVolumeForUsersPlayback>>
+>;
+export type ToggleShuffleForUsersPlaybackResult = NonNullable<
+    Awaited<ReturnType<typeof toggleShuffleForUsersPlayback>>
+>;
+export type GetRecentlyPlayedResult = NonNullable<
+    Awaited<ReturnType<typeof getRecentlyPlayed>>
+>;
+export type GetQueueResult = NonNullable<Awaited<ReturnType<typeof getQueue>>>;
+export type AddToQueueResult = NonNullable<
+    Awaited<ReturnType<typeof addToQueue>>
+>;
+export type GetAvailableMarketsResult = NonNullable<
+    Awaited<ReturnType<typeof getAvailableMarkets>>
+>;
