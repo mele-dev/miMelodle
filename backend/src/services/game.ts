@@ -32,9 +32,11 @@ export async function getRandomPopularSong(opts: {
             chart_name: "mxmweekly",
         });
 
+        const body = result.message.body;
+
         // If we are past the last page (musixmatch returns empty array).
-        if (Array.isArray(result) || result.track_list.length === 0) {
-            console.info("Returned array", result);
+        if (Array.isArray(body) || body.track_list.length === 0) {
+            console.info("Returned array", body);
             if (index === 0) {
                 throw "No songs available.";
             }
@@ -44,13 +46,13 @@ export async function getRandomPopularSong(opts: {
         }
 
         // If we find a
-        if (result.track_list.length > withinPageIndex) {
-            return { ...result.track_list[withinPageIndex], top: index };
+        if (body.track_list.length > withinPageIndex) {
+            return { ...body.track_list[withinPageIndex], top: index };
         }
 
         // If we are past the end of the dataset, but this page has songs,
         // grab the last song in the page.
-        return result.track_list[result.track_list.length - 1];
+        return body.track_list[body.track_list.length - 1];
     }
 }
 

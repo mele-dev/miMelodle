@@ -28,7 +28,7 @@ const artist: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 artist_id: request.params.artistMusixMatchId,
             });
 
-            return sendOk(reply, 200, response.artist);
+            return sendOk(reply, 200, response.message.body.artist);
         },
     });
 
@@ -55,7 +55,9 @@ const artist: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 q_artist: request.query.query,
             });
 
-            const artists = response.artist_list.map((artist) => artist.artist);
+            const artists = response.message.body.artist_list.map(
+                (artist) => artist.artist
+            );
 
             return sendOk(reply, 200, artists);
         },

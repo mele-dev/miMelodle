@@ -6,6 +6,7 @@ import {
     MusixMatchAlbumList,
     MusixMatchArtist,
     MusixMatchArtistList,
+    MusixMatchStatusCode,
     MusixMatchLyrics,
     MusixMatchLyricsMood,
     MusixMatchLyricsTranslation,
@@ -19,10 +20,21 @@ import {
 
 const url = "https://api.musixmatch.com/ws/1.1";
 
-interface MusixmatchResponse<T> {
+type MusixmatchResponse<T> = {
     message: {
         body: T;
+        header: {
+            status_code: MusixMatchStatusCode;
+            execute_time: number;
+        };
     };
+};
+
+// TODO
+function isSuccessfulResponse<T extends MusixmatchResponse<unknown>>(
+    response: T
+): response is MusixmatchResponse<T, H & { status_code: 200 }> {
+    return response.message.header.status_code === 200;
 }
 
 export class MusixmatchAPI {
@@ -38,7 +50,7 @@ export class MusixmatchAPI {
         endpoint: string,
         /* uso record para asegurar que el tipado de k/v siempre sea string string */
         params: Partial<MusixMatchQueryParams>
-    ): Promise<T> {
+    ): Promise<MusixmatchResponse<T>> {
         try {
             const url = `${this.baseUrl}${endpoint}`;
             const response: AxiosResponse<MusixmatchResponse<T>> =
@@ -50,7 +62,7 @@ export class MusixmatchAPI {
                         ...params,
                     },
                 });
-            return response.data.message.body;
+            return response.data;
         } catch (error) {
             console.error("Error fetching data from Musixmatch API:", error);
             throw error;

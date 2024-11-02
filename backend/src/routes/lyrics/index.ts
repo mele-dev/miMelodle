@@ -38,7 +38,7 @@ const lyric: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
             const response =
                 await musixmatch.getTrackLyrics({ "track_id": trackMusixMatchId });
 
-            if (response.lyrics) {
+            if (response.message.body.lyrics) {
                 // FIXME
                 //const trackLyricsInfo = {
                 //    lyricsId: response.lyrics.lyrics_id,

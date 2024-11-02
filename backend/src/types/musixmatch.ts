@@ -589,3 +589,19 @@ export const musixMatchTrackSchema = SafeType.Object({
         secondary_genres: SafeType.Optional(musixMatchGenresSchema),
     }),
 });
+
+export type MusixMatchTrack = Static<typeof musixMatchTrackSchema>;
+
+export const MusixMatchStatusCode = SafeType.Union([
+    SafeType.Literal(200),
+    SafeType.Literal(400),
+    SafeType.Literal(401),
+    SafeType.Literal(402),
+    SafeType.Literal(403),
+    SafeType.Literal(404),
+    SafeType.Literal(405),
+    SafeType.Literal(500),
+    SafeType.Literal(503),
+]);
+
+export type MusixMatchStatusCode = Static<typeof MusixMatchStatusCode>;
