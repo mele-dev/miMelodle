@@ -69,7 +69,7 @@ export class BlockingService {
                 targetId
             );
 
-            await this.reloadList();
+            this.reloadList();
 
             toast(this.dict().blockSuccess(result.data.username));
 
