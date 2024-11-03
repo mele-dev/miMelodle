@@ -21,7 +21,12 @@ const tokenData: Record<Developer, SpotifyData[]> = {
             clientSecret: "f2903f0fa6da4e17b8bb324b86b12940",
         },
     ],
-    juan: [],
+    juan: [
+        {
+            clientId: "d7e875daefc6477093ca003c463986d4",
+            clientSecret: "02d67674f7794d0fb8113a593f8ac773",
+        },
+    ],
     ines: [],
 };
 
@@ -40,8 +45,6 @@ export async function getNextToken() {
     await reloadTokenIfNecessary(data.clientId);
 
     i = (i + 1) % allData.length;
-
-    console.info(tokens);
 
     return tokens[data.clientId]!.response.access_token;
 }

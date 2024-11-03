@@ -13,11 +13,9 @@ export const customInstance = async <T>(
     const source = Axios.CancelToken.source();
     const promise = AXIOS_INSTANCE({
         paramsSerializer: (params) => {
-            console.info("val: ", params);
             const output = QueryString.stringify(params, {
                 arrayFormat: "repeat",
             });
-            console.info("output: ", output);
             return output;
         },
         ...config,

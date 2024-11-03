@@ -10,6 +10,13 @@ export const artistSchema = SafeType.Object(
         musixmatchArtistId: SafeType.Integer({
             description: "Identifier for an artist given by MusixMatch",
         }),
+        spotifyArtistId: SafeType.String({
+            description: "Identifier for an artist given by spotify",
+        }),
+        artistIsrc: SafeType.String({
+            description:
+                "Identifier for an artist accepted by multiple platforms",
+        }),
         name: SafeType.String({
             description: "Name of the artist, does not have to be unique.",
         }),

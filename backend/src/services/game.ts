@@ -34,7 +34,6 @@ export async function getRandomPopularSong(opts: {
 
         // If we are past the last page (musixmatch returns empty array).
         if (Array.isArray(body) || body.track_list.length === 0) {
-            console.info("Returned array", body);
             if (index === 0) {
                 throw "No songs available.";
             }

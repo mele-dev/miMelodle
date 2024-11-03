@@ -16,9 +16,11 @@ import {
 } from "../../queries/snapshots.queries.js";
 import { friendSchema, User, userSchema } from "../../types/user.js";
 import { sendOk } from "../../utils/reply.js";
-import { getTrack, search } from "../../apiCodegen/spotify.js";
+import {
+    search,
+} from "../../apiCodegen/spotify.js";
 import { isAxiosError } from "axios";
-import QueryString from "qs";
+import { getRandomTrackFromArtists } from "../../spotify/helpers.js";
 
 export default (async (fastify) => {
     if (typedEnv.NODE_ENV === "development") {
@@ -105,16 +107,19 @@ export default (async (fastify) => {
         },
         async handler(_request, reply) {
             try {
-                const result = await search(
-                    {
-                        type: ["track"],
-                        "q": "a",
-                        "limit": 1,
-                        offset: 250
-                    },
-                );
+                const artist = (
+                    await search({
+                        type: ["artist"],
+                        q: "shakira",
+                    })
+                ).artists!.items![0];
 
-                return { ...result.tracks, "items": [] };
+                const song = await getRandomTrackFromArtists({
+                    "artistsIds": [artist.id!],
+                    "groups": ["album", "single"],
+                });
+
+                return artist.id!;
             } catch (e) {
                 if (isAxiosError(e)) {
                     return reply.code(200).send(e.response?.data);

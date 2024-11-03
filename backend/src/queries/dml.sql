@@ -193,3 +193,33 @@ SELECT u.*, pp.filename AS "profilePictureFilename", CEIL(COUNT(*) OVER () / :pa
            INNER JOIN "profilePictures" pp ON u."profilePictureId" = pp.id
  ORDER BY "rank!" DESC, levenshtein(u.username, :username!)
  LIMIT :pageSize! OFFSET :pageSize!::INT * :page!::INT;
+
+/* @name createGuessLineGame */
+  WITH "newestGame"    AS (
+      SELECT * FROM "guessSongGames" gsg WHERE "userId" = :selfId! ORDER BY gsg."createdAt" DESC LIMIT 1
+  ),
+       "canCreateGame" AS (
+      SELECT CASE
+                 WHEN :allowMultipleGamesADay! THEN FALSE
+                 WHEN (
+                          SELECT "createdAt"::DATE
+                            FROM "newestGame"
+                      ) != CURRENT_DATE        THEN TRUE
+                 ELSE FALSE
+             END AS "canCreate"
+  ),
+       "insertGame"
+                       AS ( INSERT INTO "guessSongGames" ("userId", "createdAt", "spotifyTrackId") SELECT :selfId!, NOW(), :spotifyTrackId!
+                                                                                                    WHERE EXISTS (
+                                                                                                        SELECT 1
+                                                                                                          FROM "canCreateGame"
+                                                                                                         WHERE "canCreate" = TRUE
+                                                                                                    ) RETURNING id
+  )
+SELECT (
+    SELECT "canCreate"
+      FROM "canCreateGame"
+)
+     , "insertGame".id
+  FROM "canCreateGame"
+           LEFT JOIN "insertGame" ON TRUE;
