@@ -28,7 +28,7 @@ export class BlockingService {
 
         const result = await getUsersSelfSelfIdBlocking(userId);
 
-        this._blockedUsers.set(result.data as []);
+        this._blockedUsers.set(result.data);
     }
 
     public async unblockUser(targetId: number) {
