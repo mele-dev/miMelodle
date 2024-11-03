@@ -1,4 +1,6 @@
-export default {
+import { defineConfig } from "orval";
+
+export default defineConfig({
     spotify: {
         input: {
             target: "https://developer.spotify.com/reference/web-api/open-api-schema.yaml",
@@ -6,17 +8,13 @@ export default {
         output: {
             target: "src/apiCodegen/spotify.ts",
             prettier: true,
-            baseUrl: "https://api.spotify.com/v1",
+            "override": {
+                "mutator": {
+                    "path": "./src/spotify/spotify-mutator.ts",
+                    "name": "customInstance",
+                },
+                "useTypeOverInterfaces": true,
+            }
         },
     },
-    musixmatch: {
-        input: {
-            target: "./src/utils/musixmatch/musimusixmatch-openapi.yaml",
-        },
-        output: {
-            target: "./src/api/musixmatch.ts",
-            prettier: true,
-            baseUrl: "https://api.musixmatch.com/ws/1.1",
-        },
-    },
-};
+});

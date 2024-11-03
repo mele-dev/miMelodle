@@ -1,11 +1,11 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
-import fastify from "fastify";
 import { decorators } from "../../services/decorators.js";
 import { SafeType } from "../../utils/typebox.js";
 import { MelodleTagName } from "../../plugins/swagger.js";
 import { lyricSchema } from "../../types/lyric.js";
 import { ParamsSchema } from "../../types/params.js";
 import MusixmatchAPI from "../../musixmatch-api/musixmatch.js";
+import { sendError } from "../../utils/reply.js";
 
 const lyric: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
     fastify.get("/:trackMusixMatchId", {
@@ -22,7 +22,7 @@ const lyric: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                     "language",
                     "copyright",
                 ]),
-                ...SafeType.CreateErrors([]),
+                ...SafeType.CreateErrors(["notFound", "misdirectedRequest"]),
             },
             summary: "Get lyrics for a specific track",
             description:
@@ -36,18 +36,23 @@ const lyric: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
             const musixmatch = new MusixmatchAPI();
 
             const response =
-                await musixmatch.getLyricsByTrackId(trackMusixMatchId);
+                await musixmatch.getTrackLyrics({ "track_id": trackMusixMatchId });
 
-            if (response.lyrics) {
-                const trackLyricsInfo = {
-                    lyricsId: response.lyrics.lyricsId,
-                    trackId: response.lyrics.trackId,
-                    lyricsBody: response.lyrics.lyricsBody,
-                    explicit: response.lyrics.explicit,
-                    language: response.lyrics.language,
-                    copyright: response.lyrics.copyright,
-                };
-                return reply.send(trackLyricsInfo);
+            if (!response.parse()) {
+                return sendError(reply, "misdirectedRequest");
+            }
+
+            if (response.body.lyrics) {
+                // FIXME
+                //const trackLyricsInfo = {
+                //    lyricsId: response.lyrics.lyrics_id,
+                //    trackId: response.lyrics.trackId,
+                //    lyricsBody: response.lyrics.lyricsBody,
+                //    explicit: response.lyrics.explicit,
+                //    language: response.lyrics.language,
+                //    copyright: response.lyrics.copyright,
+                //};
+                //return reply.send(trackLyricsInfo);
             } else {
                 return reply.notFound("Lyrics not found for this track ID.");
             }

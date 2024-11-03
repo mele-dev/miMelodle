@@ -1,8 +1,9 @@
+import { Static } from "@sinclair/typebox";
 import { SafeType } from "../utils/typebox.js";
 
 export const trackSchema = SafeType.Object(
     {
-        trackId: SafeType.String({
+        trackId: SafeType.Integer({
             description: "Identifier for the track provided by MusixMatch.",
         }),
         trackName: SafeType.String({

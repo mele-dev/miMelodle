@@ -42,11 +42,11 @@ CREATE TABLE users (
 CREATE TYPE "friendshipStatus" AS ENUM ('pending', 'accepted');
 
 CREATE TABLE friendships (
-    id         SERIAL PRIMARY KEY,
-    "userId"    BIGINT REFERENCES users (id)        NOT NULL,
-    "user2Id"  BIGINT REFERENCES users (id)        NOT NULL,
-    "createdAt" timestamptz       DEFAULT NOW()     NOT NULL,
-    status     "friendshipStatus" DEFAULT 'pending' NOT NULL,
+    id          SERIAL PRIMARY KEY,
+    "userId"    BIGINT REFERENCES users (id)         NOT NULL,
+    "user2Id"   BIGINT REFERENCES users (id)         NOT NULL,
+    "createdAt" timestamptz        DEFAULT NOW()     NOT NULL,
+    status      "friendshipStatus" DEFAULT 'pending' NOT NULL,
     CHECK ( "userId" <> friendships."user2Id" )
 );
 
@@ -54,23 +54,18 @@ CREATE TABLE friendships (
 CREATE INDEX users_username_trgm_idx ON users USING gin (username gin_trgm_ops);
 
 CREATE TABLE blocks (
-    "userWhoBlocksId"    BIGINT REFERENCES users (id)        NOT NULL,
-    "blockedUserId"    BIGINT REFERENCES users (id)        NOT NULL,
-    "createdAt" timestamptz       DEFAULT NOW()     NOT NULL,
+    "userWhoBlocksId" BIGINT REFERENCES users (id) NOT NULL,
+    "blockedUserId"   BIGINT REFERENCES users (id) NOT NULL,
+    "createdAt"       timestamptz DEFAULT NOW()    NOT NULL,
     PRIMARY KEY ("userWhoBlocksId", "blockedUserId")
 );
 
-CREATE TABLE artists (
-    id                   SERIAL PRIMARY KEY,
-    "musixmatchArtistId" TEXT UNIQUE NOT NULL
-);
-
-CREATE TABLE saved_artists (
-    id           SERIAL PRIMARY KEY,
-    "userId"     BIGINT REFERENCES users (id)   NOT NULL,
-    "artistId"   BIGINT REFERENCES artists (id) NOT NULL,
-    "savedAt"    timestamptz DEFAULT NOW()      NOT NULL,
-    "isFavorite" bool        DEFAULT FALSE      NOT NULL
+CREATE TABLE "savedArtists" (
+    id                SERIAL PRIMARY KEY,
+    "userId"          BIGINT REFERENCES users (id) NOT NULL,
+    "spotifyArtistId" TEXT                         NOT NULL,
+    "savedAt"         timestamptz DEFAULT NOW()    NOT NULL,
+    "isFavorite"      bool        DEFAULT FALSE    NOT NULL
 );
 
 CREATE TABLE streaks (
@@ -81,53 +76,36 @@ CREATE TABLE streaks (
     "maxStreak"   INTEGER     DEFAULT 0        NOT NULL
 );
 
-CREATE TABLE songs (
-    id             SERIAL PRIMARY KEY,
-    "musixmatchId" TEXT NOT NULL UNIQUE
+-- We can get all the info from a request to spotify for cheap, we don't need a
+-- separate table.
+-- CREATE TABLE songs (
+--     id             SERIAL PRIMARY KEY,
+--     "musixmatchId" TEXT NOT NULL UNIQUE
+-- );
+
+CREATE TABLE "guessSongGames" (
+    id               SERIAL PRIMARY KEY,
+    "userId"         BIGINT REFERENCES users (id) NOT NULL,
+    "spotifyTrackId" TEXT                         NOT NULL,
+    "createdAt"      timestamptz DEFAULT NOW()    NOT NULL
 );
 
-CREATE TABLE games (
-    id       SERIAL PRIMARY KEY,
-    "userId" BIGINT REFERENCES users (id) NOT NULL,
-    "songId" BIGINT REFERENCES songs (id) NOT NULL,
-    "gameId" DATE DEFAULT NOW()::DATE     NOT NULL
+CREATE TABLE "guessSongAttempts" (
+    "gameId"                BIGINT REFERENCES "guessSongGames" (id) NOT NULL,
+    "guessedSpotifyTrackId" TEXT                                    NOT NULL,
+    "guessedAt"             timestamptz                             NOT NULL,
+    PRIMARY KEY ("gameId", "guessedSpotifyTrackId")
 );
-
-CREATE TABLE attempts (
-    id              SERIAL PRIMARY KEY,
-    "gameId"        BIGINT REFERENCES games (id) NOT NULL,
-    "guessedSongId" BIGINT REFERENCES songs (id) NOT NULL,
-    "guessedAt"     timestamptz                  NOT NULL
-);
-
-CREATE TABLE "gameModes" (
-    id   SERIAL PRIMARY KEY,
-    name TEXT UNIQUE NOT NULL
-);
-
-INSERT
-  INTO "gameModes"(name)
-VALUES ('Guess Line')
-     , ('Guess Song');
-
-SELECT *
-  FROM "gameModes";
 
 CREATE TABLE "gameConfig" (
-    id         SERIAL PRIMARY KEY,
-    "userId"   BIGINT REFERENCES users (id)                 NOT NULL,
-    "gameMode" BIGINT DEFAULT 1 REFERENCES "gameModes" (id) NOT NULL
+    id       SERIAL PRIMARY KEY,
+    "userId" BIGINT REFERENCES users (id) NOT NULL
 );
 
-CREATE TABLE "artistGameConfig" (
-    "gameConfigId" BIGINT REFERENCES "gameConfig" (id) NOT NULL,
-    "artistId"     BIGINT REFERENCES artists (id)      NOT NULL,
-    PRIMARY KEY ("gameConfigId", "artistId")
-);
-
-CREATE TABLE "artistSong" (
-    "songId"   BIGINT REFERENCES songs (id)   NOT NULL,
-    "artistId" BIGINT REFERENCES artists (id) NOT NULL
+CREATE TABLE "chosenArtistInConfig" (
+    "gameConfigId"    BIGINT REFERENCES "gameConfig" (id) NOT NULL,
+    "spotifyArtistId" TEXT                                NOT NULL,
+    PRIMARY KEY ("gameConfigId", "spotifyArtistId")
 );
 
 CREATE OR REPLACE FUNCTION encrypt_password(

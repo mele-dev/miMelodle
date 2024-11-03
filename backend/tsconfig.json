@@ -5,6 +5,7 @@
         "outDir": "dist",
         "sourceMap": true,
         "moduleResolution": "NodeNext",
+        "allowImportingTsExtensions": false,
         "noUnusedLocals": false,
         "module": "NodeNext",
         "target": "ES2022",

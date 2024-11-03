@@ -1,4 +1,7 @@
-import { FastifyPluginAsyncTypebox, TSchema } from "@fastify/type-provider-typebox";
+import {
+    FastifyPluginAsyncTypebox,
+    TSchema,
+} from "@fastify/type-provider-typebox";
 import { typedEnv } from "../../types/env.js";
 import { SafeType } from "../../utils/typebox.js";
 import { MelodleTagName } from "../../plugins/swagger.js";
@@ -13,6 +16,12 @@ import {
 } from "../../queries/snapshots.queries.js";
 import { friendSchema, User, userSchema } from "../../types/user.js";
 import { sendOk } from "../../utils/reply.js";
+import { search } from "../../apiCodegen/spotify.js";
+import { isAxiosError } from "axios";
+import {
+    getAllTracksFromArtist,
+    getRandomTrackFromArtists,
+} from "../../spotify/helpers.js";
 
 export default (async (fastify) => {
     if (typedEnv.NODE_ENV === "development") {
@@ -90,4 +99,47 @@ export default (async (fastify) => {
             },
         });
     }
+
+    fastify.post("/playground", {
+        onRequest: [decorators.noSecurity],
+        schema: {
+            security: [],
+            tags: ["Debug"] satisfies MelodleTagName[],
+        },
+        async handler(_request, reply) {
+            try {
+                const artist = (
+                    await search({
+                        type: ["artist"],
+                        q: "el cuarteto de nos",
+                    })
+                ).artists!.items![0];
+
+                const tracks = await getAllTracksFromArtist(artist.id!, [
+                    "album",
+                    "single",
+                ]);
+
+                return tracks?.albums.map((album) => {
+                    return {
+                        name: album.name,
+                        id: album.id,
+                        tracks: album.tracks.map(track => {
+                            return {
+                                trackName: track.name,
+                                trackId: track.id,
+                                trackAlbum: album.name,
+                            }
+                        }),
+                    };
+                });
+            } catch (e) {
+                if (isAxiosError(e)) {
+                    return reply.code(200).send(e.response?.data);
+                }
+
+                return e;
+            }
+        },
+    });
 }) satisfies FastifyPluginAsyncTypebox;
