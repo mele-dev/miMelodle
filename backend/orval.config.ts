@@ -8,10 +8,9 @@ export default defineConfig({
         output: {
             target: "src/apiCodegen/spotify.ts",
             prettier: true,
-            baseUrl: "https://api.spotify.com/v1",
             "override": {
                 "mutator": {
-                    "path": "./src/apiCodegen/spotify-mutator.ts",
+                    "path": "./src/spotify/spotify-mutator.ts",
                     "name": "customInstance",
                 },
                 "useTypeOverInterfaces": true,

@@ -8,9 +8,9 @@ import MusixmatchAPI from "../musixmatch-api/musixmatch.js";
 export async function getRandomPopularSong(opts: {
     songPoolSize: number;
     bias: "less popular" | "more popular" | "random";
-    baseUrl?: string;
+    apiKey?: string;
 }) {
-    const api = new MusixmatchAPI(opts.baseUrl);
+    const api = new MusixmatchAPI(opts.apiKey);
     const pageSize = 100;
 
     let index = randomInt(0, opts.songPoolSize);

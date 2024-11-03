@@ -44,7 +44,7 @@ export async function getAllTracksFromArtist(
 
 /**
  * ### COST
- * This method will usually find the track in two api calls, so it theoretically
+ * This method will usually find the track in two api calls, but it theoretically
  * can do (artistIds.length * 51) api calls. I don't think we should worry
  * about that, it would only happen if every album in every artist is empty,
  * which doesn't make sense to ever happen.

@@ -2,9 +2,9 @@ import Axios, { AxiosRequestConfig } from "axios";
 import QueryString from "qs";
 import { getNextToken } from "./spotify-token.js";
 
-export const AXIOS_INSTANCE = Axios.create({ baseURL: "<BACKEND URL>" }); // use your own URL here or environment variable
-
-// add a second `options` argument here if you want to pass extra options to each generated query
+export const AXIOS_INSTANCE = Axios.create({
+    baseURL: "https://api.spotify.com/v1",
+});
 
 export const customInstance = async <T>(
     config: AxiosRequestConfig,
@@ -27,21 +27,9 @@ export const customInstance = async <T>(
         cancelToken: source.token,
     }).then(({ data }) => data);
 
-    // @ts-ignore
-    promise.cancel = () => {
+    (promise as any).cancel = () => {
         source.cancel("Query was cancelled");
     };
 
     return promise;
 };
-
-//const api = axios.create({
-//    baseURL: "your-api-url",
-//    paramsSerializer: (params) =>
-//        qs.stringify(params, {
-//            arrayFormat: "repeat",
-//        }),
-//});
-//
-//// Now every request through this instance will use this serialization
-//export default api;

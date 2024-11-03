@@ -2762,11 +2762,7 @@ export const getAnAlbum = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<OneAlbumResponse>(
-        {
-            url: `https://api.spotify.com/v1/albums/${id}`,
-            method: "GET",
-            params,
-        },
+        { url: `/albums/${id}`, method: "GET", params },
         options
     );
 };
@@ -2782,7 +2778,7 @@ export const getMultipleAlbums = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<ManyAlbumsResponse>(
-        { url: `https://api.spotify.com/v1/albums`, method: "GET", params },
+        { url: `/albums`, method: "GET", params },
         options
     );
 };
@@ -2800,11 +2796,7 @@ export const getAnAlbumsTracks = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<PagingSimplifiedTrackObjectResponse>(
-        {
-            url: `https://api.spotify.com/v1/albums/${id}/tracks`,
-            method: "GET",
-            params,
-        },
+        { url: `/albums/${id}/tracks`, method: "GET", params },
         options
     );
 };
@@ -2820,7 +2812,7 @@ export const getAnArtist = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<OneArtistResponse>(
-        { url: `https://api.spotify.com/v1/artists/${id}`, method: "GET" },
+        { url: `/artists/${id}`, method: "GET" },
         options
     );
 };
@@ -2836,7 +2828,7 @@ export const getMultipleArtists = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<ManyArtistsResponse>(
-        { url: `https://api.spotify.com/v1/artists`, method: "GET", params },
+        { url: `/artists`, method: "GET", params },
         options
     );
 };
@@ -2853,11 +2845,7 @@ export const getAnArtistsAlbums = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<PagingArtistDiscographyAlbumObjectResponse>(
-        {
-            url: `https://api.spotify.com/v1/artists/${id}/albums`,
-            method: "GET",
-            params,
-        },
+        { url: `/artists/${id}/albums`, method: "GET", params },
         options
     );
 };
@@ -2874,11 +2862,7 @@ export const getAnArtistsTopTracks = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<ManyTracksResponse>(
-        {
-            url: `https://api.spotify.com/v1/artists/${id}/top-tracks`,
-            method: "GET",
-            params,
-        },
+        { url: `/artists/${id}/top-tracks`, method: "GET", params },
         options
     );
 };
@@ -2894,10 +2878,7 @@ export const getAnArtistsRelatedArtists = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<ManyArtistsResponse>(
-        {
-            url: `https://api.spotify.com/v1/artists/${id}/related-artists`,
-            method: "GET",
-        },
+        { url: `/artists/${id}/related-artists`, method: "GET" },
         options
     );
 };
@@ -2915,11 +2896,7 @@ export const getAShow = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<OneShowResponse>(
-        {
-            url: `https://api.spotify.com/v1/shows/${id}`,
-            method: "GET",
-            params,
-        },
+        { url: `/shows/${id}`, method: "GET", params },
         options
     );
 };
@@ -2935,7 +2912,7 @@ export const getMultipleShows = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<ManySimplifiedShowsResponse>(
-        { url: `https://api.spotify.com/v1/shows`, method: "GET", params },
+        { url: `/shows`, method: "GET", params },
         options
     );
 };
@@ -2952,11 +2929,7 @@ export const getAShowsEpisodes = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<PagingSimplifiedEpisodeObjectResponse>(
-        {
-            url: `https://api.spotify.com/v1/shows/${id}/episodes`,
-            method: "GET",
-            params,
-        },
+        { url: `/shows/${id}/episodes`, method: "GET", params },
         options
     );
 };
@@ -2974,11 +2947,7 @@ export const getAnEpisode = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<OneEpisodeResponse>(
-        {
-            url: `https://api.spotify.com/v1/episodes/${id}`,
-            method: "GET",
-            params,
-        },
+        { url: `/episodes/${id}`, method: "GET", params },
         options
     );
 };
@@ -2994,7 +2963,7 @@ export const getMultipleEpisodes = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<ManyEpisodesResponse>(
-        { url: `https://api.spotify.com/v1/episodes`, method: "GET", params },
+        { url: `/episodes`, method: "GET", params },
         options
     );
 };
@@ -3011,11 +2980,7 @@ export const getAnAudiobook = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<OneAudiobookResponse>(
-        {
-            url: `https://api.spotify.com/v1/audiobooks/${id}`,
-            method: "GET",
-            params,
-        },
+        { url: `/audiobooks/${id}`, method: "GET", params },
         options
     );
 };
@@ -3031,7 +2996,7 @@ export const getMultipleAudiobooks = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<ManyAudiobooksResponse>(
-        { url: `https://api.spotify.com/v1/audiobooks`, method: "GET", params },
+        { url: `/audiobooks`, method: "GET", params },
         options
     );
 };
@@ -3048,11 +3013,7 @@ export const getAudiobookChapters = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<PagingSimplifiedChapterObjectResponse>(
-        {
-            url: `https://api.spotify.com/v1/audiobooks/${id}/chapters`,
-            method: "GET",
-            params,
-        },
+        { url: `/audiobooks/${id}/chapters`, method: "GET", params },
         options
     );
 };
@@ -3068,11 +3029,7 @@ export const getUsersSavedAudiobooks = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<PagingSimplifiedAudiobookObjectResponse>(
-        {
-            url: `https://api.spotify.com/v1/me/audiobooks`,
-            method: "GET",
-            params,
-        },
+        { url: `/me/audiobooks`, method: "GET", params },
         options
     );
 };
@@ -3088,11 +3045,7 @@ export const saveAudiobooksUser = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<void>(
-        {
-            url: `https://api.spotify.com/v1/me/audiobooks`,
-            method: "PUT",
-            params,
-        },
+        { url: `/me/audiobooks`, method: "PUT", params },
         options
     );
 };
@@ -3108,11 +3061,7 @@ export const removeAudiobooksUser = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<void>(
-        {
-            url: `https://api.spotify.com/v1/me/audiobooks`,
-            method: "DELETE",
-            params,
-        },
+        { url: `/me/audiobooks`, method: "DELETE", params },
         options
     );
 };
@@ -3128,11 +3077,7 @@ export const checkUsersSavedAudiobooks = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<ArrayOfBooleansResponse>(
-        {
-            url: `https://api.spotify.com/v1/me/audiobooks/contains`,
-            method: "GET",
-            params,
-        },
+        { url: `/me/audiobooks/contains`, method: "GET", params },
         options
     );
 };
@@ -3149,11 +3094,7 @@ export const getAChapter = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<OneChapterResponse>(
-        {
-            url: `https://api.spotify.com/v1/chapters/${id}`,
-            method: "GET",
-            params,
-        },
+        { url: `/chapters/${id}`, method: "GET", params },
         options
     );
 };
@@ -3169,7 +3110,7 @@ export const getSeveralChapters = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<ManyChaptersResponse>(
-        { url: `https://api.spotify.com/v1/chapters`, method: "GET", params },
+        { url: `/chapters`, method: "GET", params },
         options
     );
 };
@@ -3187,11 +3128,7 @@ export const getTrack = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<OneTrackResponse>(
-        {
-            url: `https://api.spotify.com/v1/tracks/${id}`,
-            method: "GET",
-            params,
-        },
+        { url: `/tracks/${id}`, method: "GET", params },
         options
     );
 };
@@ -3207,7 +3144,7 @@ export const getSeveralTracks = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<ManyTracksResponse>(
-        { url: `https://api.spotify.com/v1/tracks`, method: "GET", params },
+        { url: `/tracks`, method: "GET", params },
         options
     );
 };
@@ -3224,7 +3161,7 @@ export const search = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<SearchItemsResponse>(
-        { url: `https://api.spotify.com/v1/search`, method: "GET", params },
+        { url: `/search`, method: "GET", params },
         options
     );
 };
@@ -3240,7 +3177,7 @@ export const getCurrentUsersProfile = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<OnePrivateUserResponse>(
-        { url: `https://api.spotify.com/v1/me`, method: "GET" },
+        { url: `/me`, method: "GET" },
         options
     );
 };
@@ -3257,11 +3194,7 @@ export const getPlaylist = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<OnePlaylistResponse>(
-        {
-            url: `https://api.spotify.com/v1/playlists/${playlistId}`,
-            method: "GET",
-            params,
-        },
+        { url: `/playlists/${playlistId}`, method: "GET", params },
         options
     );
 };
@@ -3280,7 +3213,7 @@ export const changePlaylistDetails = (
 ) => {
     return customInstance<void>(
         {
-            url: `https://api.spotify.com/v1/playlists/${playlistId}`,
+            url: `/playlists/${playlistId}`,
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             data: changePlaylistDetailsBody,
@@ -3301,11 +3234,7 @@ export const getPlaylistsTracks = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<PagingPlaylistTrackObjectResponse>(
-        {
-            url: `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
-            method: "GET",
-            params,
-        },
+        { url: `/playlists/${playlistId}/tracks`, method: "GET", params },
         options
     );
 };
@@ -3324,7 +3253,7 @@ export const addTracksToPlaylist = (
 ) => {
     return customInstance<PlaylistSnapshotIdResponse>(
         {
-            url: `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
+            url: `/playlists/${playlistId}/tracks`,
             method: "POST",
             headers: { "Content-Type": "application/json" },
             data: addTracksToPlaylistBody,
@@ -3354,7 +3283,7 @@ export const reorderOrReplacePlaylistsTracks = (
 ) => {
     return customInstance<PlaylistSnapshotIdResponse>(
         {
-            url: `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
+            url: `/playlists/${playlistId}/tracks`,
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             data: reorderOrReplacePlaylistsTracksBody,
@@ -3377,7 +3306,7 @@ export const removeTracksPlaylist = (
 ) => {
     return customInstance<PlaylistSnapshotIdResponse>(
         {
-            url: `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
+            url: `/playlists/${playlistId}/tracks`,
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
             data: removeTracksPlaylistBody,
@@ -3398,11 +3327,7 @@ export const getAListOfCurrentUsersPlaylists = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<PagedPlaylistsResponse>(
-        {
-            url: `https://api.spotify.com/v1/me/playlists`,
-            method: "GET",
-            params,
-        },
+        { url: `/me/playlists`, method: "GET", params },
         options
     );
 };
@@ -3418,7 +3343,7 @@ export const getUsersSavedAlbums = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<PagingSavedAlbumObjectResponse>(
-        { url: `https://api.spotify.com/v1/me/albums`, method: "GET", params },
+        { url: `/me/albums`, method: "GET", params },
         options
     );
 };
@@ -3436,7 +3361,7 @@ export const saveAlbumsUser = (
 ) => {
     return customInstance<void>(
         {
-            url: `https://api.spotify.com/v1/me/albums`,
+            url: `/me/albums`,
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             data: saveAlbumsUserBody,
@@ -3459,7 +3384,7 @@ export const removeAlbumsUser = (
 ) => {
     return customInstance<void>(
         {
-            url: `https://api.spotify.com/v1/me/albums`,
+            url: `/me/albums`,
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
             data: removeAlbumsUserBody,
@@ -3480,11 +3405,7 @@ export const checkUsersSavedAlbums = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<ArrayOfBooleansResponse>(
-        {
-            url: `https://api.spotify.com/v1/me/albums/contains`,
-            method: "GET",
-            params,
-        },
+        { url: `/me/albums/contains`, method: "GET", params },
         options
     );
 };
@@ -3500,7 +3421,7 @@ export const getUsersSavedTracks = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<PagingSavedTrackObjectResponse>(
-        { url: `https://api.spotify.com/v1/me/tracks`, method: "GET", params },
+        { url: `/me/tracks`, method: "GET", params },
         options
     );
 };
@@ -3518,7 +3439,7 @@ export const saveTracksUser = (
 ) => {
     return customInstance<void>(
         {
-            url: `https://api.spotify.com/v1/me/tracks`,
+            url: `/me/tracks`,
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             data: saveTracksUserBody,
@@ -3541,7 +3462,7 @@ export const removeTracksUser = (
 ) => {
     return customInstance<void>(
         {
-            url: `https://api.spotify.com/v1/me/tracks`,
+            url: `/me/tracks`,
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
             data: removeTracksUserBody,
@@ -3562,11 +3483,7 @@ export const checkUsersSavedTracks = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<ArrayOfBooleansResponse>(
-        {
-            url: `https://api.spotify.com/v1/me/tracks/contains`,
-            method: "GET",
-            params,
-        },
+        { url: `/me/tracks/contains`, method: "GET", params },
         options
     );
 };
@@ -3583,11 +3500,7 @@ export const getUsersSavedEpisodes = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<PagingSavedEpisodeObjectResponse>(
-        {
-            url: `https://api.spotify.com/v1/me/episodes`,
-            method: "GET",
-            params,
-        },
+        { url: `/me/episodes`, method: "GET", params },
         options
     );
 };
@@ -3606,7 +3519,7 @@ export const saveEpisodesUser = (
 ) => {
     return customInstance<void>(
         {
-            url: `https://api.spotify.com/v1/me/episodes`,
+            url: `/me/episodes`,
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             data: saveEpisodesUserBody,
@@ -3630,7 +3543,7 @@ export const removeEpisodesUser = (
 ) => {
     return customInstance<void>(
         {
-            url: `https://api.spotify.com/v1/me/episodes`,
+            url: `/me/episodes`,
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
             data: removeEpisodesUserBody,
@@ -3652,11 +3565,7 @@ export const checkUsersSavedEpisodes = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<ArrayOfBooleansResponse>(
-        {
-            url: `https://api.spotify.com/v1/me/episodes/contains`,
-            method: "GET",
-            params,
-        },
+        { url: `/me/episodes/contains`, method: "GET", params },
         options
     );
 };
@@ -3672,7 +3581,7 @@ export const getUsersSavedShows = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<PagingSavedShowObjectResponse>(
-        { url: `https://api.spotify.com/v1/me/shows`, method: "GET", params },
+        { url: `/me/shows`, method: "GET", params },
         options
     );
 };
@@ -3688,7 +3597,7 @@ export const saveShowsUser = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<void>(
-        { url: `https://api.spotify.com/v1/me/shows`, method: "PUT", params },
+        { url: `/me/shows`, method: "PUT", params },
         options
     );
 };
@@ -3704,11 +3613,7 @@ export const removeShowsUser = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<void>(
-        {
-            url: `https://api.spotify.com/v1/me/shows`,
-            method: "DELETE",
-            params,
-        },
+        { url: `/me/shows`, method: "DELETE", params },
         options
     );
 };
@@ -3724,11 +3629,7 @@ export const checkUsersSavedShows = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<ArrayOfBooleansResponse>(
-        {
-            url: `https://api.spotify.com/v1/me/shows/contains`,
-            method: "GET",
-            params,
-        },
+        { url: `/me/shows/contains`, method: "GET", params },
         options
     );
 };
@@ -3745,11 +3646,7 @@ export const getUsersTopArtistsAndTracks = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<PagingArtistOrTrackObjectResponse>(
-        {
-            url: `https://api.spotify.com/v1/me/top/${type}`,
-            method: "GET",
-            params,
-        },
+        { url: `/me/top/${type}`, method: "GET", params },
         options
     );
 };
@@ -3765,7 +3662,7 @@ export const getUsersProfile = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<OnePublicUserResponse>(
-        { url: `https://api.spotify.com/v1/users/${userId}`, method: "GET" },
+        { url: `/users/${userId}`, method: "GET" },
         options
     );
 };
@@ -3782,11 +3679,7 @@ export const getListUsersPlaylists = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<PagedPlaylistsResponse>(
-        {
-            url: `https://api.spotify.com/v1/users/${userId}/playlists`,
-            method: "GET",
-            params,
-        },
+        { url: `/users/${userId}/playlists`, method: "GET", params },
         options
     );
 };
@@ -3806,7 +3699,7 @@ export const createPlaylist = (
 ) => {
     return customInstance<OnePlaylistResponse>(
         {
-            url: `https://api.spotify.com/v1/users/${userId}/playlists`,
+            url: `/users/${userId}/playlists`,
             method: "POST",
             headers: { "Content-Type": "application/json" },
             data: createPlaylistBody,
@@ -3828,7 +3721,7 @@ export const followPlaylist = (
 ) => {
     return customInstance<void>(
         {
-            url: `https://api.spotify.com/v1/playlists/${playlistId}/followers`,
+            url: `/playlists/${playlistId}/followers`,
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             data: followPlaylistBody,
@@ -3848,10 +3741,7 @@ export const unfollowPlaylist = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<void>(
-        {
-            url: `https://api.spotify.com/v1/playlists/${playlistId}/followers`,
-            method: "DELETE",
-        },
+        { url: `/playlists/${playlistId}/followers`, method: "DELETE" },
         options
     );
 };
@@ -3867,11 +3757,7 @@ export const getFeaturedPlaylists = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<PagedFeaturedPlaylistsResponse>(
-        {
-            url: `https://api.spotify.com/v1/browse/featured-playlists`,
-            method: "GET",
-            params,
-        },
+        { url: `/browse/featured-playlists`, method: "GET", params },
         options
     );
 };
@@ -3887,11 +3773,7 @@ export const getCategories = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<PagedCategoriesResponse>(
-        {
-            url: `https://api.spotify.com/v1/browse/categories`,
-            method: "GET",
-            params,
-        },
+        { url: `/browse/categories`, method: "GET", params },
         options
     );
 };
@@ -3908,11 +3790,7 @@ export const getACategory = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<OneCategoryResponse>(
-        {
-            url: `https://api.spotify.com/v1/browse/categories/${categoryId}`,
-            method: "GET",
-            params,
-        },
+        { url: `/browse/categories/${categoryId}`, method: "GET", params },
         options
     );
 };
@@ -3930,7 +3808,7 @@ export const getACategoriesPlaylists = (
 ) => {
     return customInstance<PagedFeaturedPlaylistsResponse>(
         {
-            url: `https://api.spotify.com/v1/browse/categories/${categoryId}/playlists`,
+            url: `/browse/categories/${categoryId}/playlists`,
             method: "GET",
             params,
         },
@@ -3949,10 +3827,7 @@ export const getPlaylistCover = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<ArrayOfImagesResponse>(
-        {
-            url: `https://api.spotify.com/v1/playlists/${playlistId}/images`,
-            method: "GET",
-        },
+        { url: `/playlists/${playlistId}/images`, method: "GET" },
         options
     );
 };
@@ -3970,7 +3845,7 @@ export const uploadCustomPlaylistCover = (
 ) => {
     return customInstance<void>(
         {
-            url: `https://api.spotify.com/v1/playlists/${playlistId}/images`,
+            url: `/playlists/${playlistId}/images`,
             method: "PUT",
             headers: { "Content-Type": "image/jpeg" },
             data: uploadCustomPlaylistCoverBody,
@@ -3990,11 +3865,7 @@ export const getNewReleases = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<PagedAlbumsResponse>(
-        {
-            url: `https://api.spotify.com/v1/browse/new-releases`,
-            method: "GET",
-            params,
-        },
+        { url: `/browse/new-releases`, method: "GET", params },
         options
     );
 };
@@ -4010,11 +3881,7 @@ export const getFollowed = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<CursorPagedArtistsResponse>(
-        {
-            url: `https://api.spotify.com/v1/me/following`,
-            method: "GET",
-            params,
-        },
+        { url: `/me/following`, method: "GET", params },
         options
     );
 };
@@ -4032,7 +3899,7 @@ export const followArtistsUsers = (
 ) => {
     return customInstance<void>(
         {
-            url: `https://api.spotify.com/v1/me/following`,
+            url: `/me/following`,
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             data: followArtistsUsersBody,
@@ -4055,7 +3922,7 @@ export const unfollowArtistsUsers = (
 ) => {
     return customInstance<void>(
         {
-            url: `https://api.spotify.com/v1/me/following`,
+            url: `/me/following`,
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
             data: unfollowArtistsUsersBody,
@@ -4076,11 +3943,7 @@ export const checkCurrentUserFollows = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<ArrayOfBooleansResponse>(
-        {
-            url: `https://api.spotify.com/v1/me/following/contains`,
-            method: "GET",
-            params,
-        },
+        { url: `/me/following/contains`, method: "GET", params },
         options
     );
 };
@@ -4098,7 +3961,7 @@ export const checkIfUserFollowsPlaylist = (
 ) => {
     return customInstance<SingletonArrayOfBooleanResponse>(
         {
-            url: `https://api.spotify.com/v1/playlists/${playlistId}/followers/contains`,
+            url: `/playlists/${playlistId}/followers/contains`,
             method: "GET",
             params,
         },
@@ -4117,11 +3980,7 @@ export const getSeveralAudioFeatures = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<ManyAudioFeaturesResponse>(
-        {
-            url: `https://api.spotify.com/v1/audio-features`,
-            method: "GET",
-            params,
-        },
+        { url: `/audio-features`, method: "GET", params },
         options
     );
 };
@@ -4138,10 +3997,7 @@ export const getAudioFeatures = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<OneAudioFeaturesResponse>(
-        {
-            url: `https://api.spotify.com/v1/audio-features/${id}`,
-            method: "GET",
-        },
+        { url: `/audio-features/${id}`, method: "GET" },
         options
     );
 };
@@ -4157,10 +4013,7 @@ export const getAudioAnalysis = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<OneAudioAnalysisResponse>(
-        {
-            url: `https://api.spotify.com/v1/audio-analysis/${id}`,
-            method: "GET",
-        },
+        { url: `/audio-analysis/${id}`, method: "GET" },
         options
     );
 };
@@ -4178,11 +4031,7 @@ export const getRecommendations = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<OneRecommendationsResponse>(
-        {
-            url: `https://api.spotify.com/v1/recommendations`,
-            method: "GET",
-            params,
-        },
+        { url: `/recommendations`, method: "GET", params },
         options
     );
 };
@@ -4197,10 +4046,7 @@ export const getRecommendationGenres = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<ManyGenresResponse>(
-        {
-            url: `https://api.spotify.com/v1/recommendations/available-genre-seeds`,
-            method: "GET",
-        },
+        { url: `/recommendations/available-genre-seeds`, method: "GET" },
         options
     );
 };
@@ -4216,7 +4062,7 @@ export const getInformationAboutTheUsersCurrentPlayback = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<OneCurrentlyPlayingResponse | void>(
-        { url: `https://api.spotify.com/v1/me/player`, method: "GET", params },
+        { url: `/me/player`, method: "GET", params },
         options
     );
 };
@@ -4233,7 +4079,7 @@ export const transferAUsersPlayback = (
 ) => {
     return customInstance<void>(
         {
-            url: `https://api.spotify.com/v1/me/player`,
+            url: `/me/player`,
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             data: transferAUsersPlaybackBody,
@@ -4252,7 +4098,7 @@ export const getAUsersAvailableDevices = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<ManyDevicesResponse>(
-        { url: `https://api.spotify.com/v1/me/player/devices`, method: "GET" },
+        { url: `/me/player/devices`, method: "GET" },
         options
     );
 };
@@ -4268,11 +4114,7 @@ export const getTheUsersCurrentlyPlayingTrack = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<OneCurrentlyPlayingTrackResponse>(
-        {
-            url: `https://api.spotify.com/v1/me/player/currently-playing`,
-            method: "GET",
-            params,
-        },
+        { url: `/me/player/currently-playing`, method: "GET", params },
         options
     );
 };
@@ -4290,7 +4132,7 @@ export const startAUsersPlayback = (
 ) => {
     return customInstance<void>(
         {
-            url: `https://api.spotify.com/v1/me/player/play`,
+            url: `/me/player/play`,
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             data: startAUsersPlaybackBody,
@@ -4311,11 +4153,7 @@ export const pauseAUsersPlayback = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<void>(
-        {
-            url: `https://api.spotify.com/v1/me/player/pause`,
-            method: "PUT",
-            params,
-        },
+        { url: `/me/player/pause`, method: "PUT", params },
         options
     );
 };
@@ -4331,11 +4169,7 @@ export const skipUsersPlaybackToNextTrack = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<void>(
-        {
-            url: `https://api.spotify.com/v1/me/player/next`,
-            method: "POST",
-            params,
-        },
+        { url: `/me/player/next`, method: "POST", params },
         options
     );
 };
@@ -4351,11 +4185,7 @@ export const skipUsersPlaybackToPreviousTrack = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<void>(
-        {
-            url: `https://api.spotify.com/v1/me/player/previous`,
-            method: "POST",
-            params,
-        },
+        { url: `/me/player/previous`, method: "POST", params },
         options
     );
 };
@@ -4371,11 +4201,7 @@ export const seekToPositionInCurrentlyPlayingTrack = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<void>(
-        {
-            url: `https://api.spotify.com/v1/me/player/seek`,
-            method: "PUT",
-            params,
-        },
+        { url: `/me/player/seek`, method: "PUT", params },
         options
     );
 };
@@ -4391,11 +4217,7 @@ export const setRepeatModeOnUsersPlayback = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<void>(
-        {
-            url: `https://api.spotify.com/v1/me/player/repeat`,
-            method: "PUT",
-            params,
-        },
+        { url: `/me/player/repeat`, method: "PUT", params },
         options
     );
 };
@@ -4411,11 +4233,7 @@ export const setVolumeForUsersPlayback = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<void>(
-        {
-            url: `https://api.spotify.com/v1/me/player/volume`,
-            method: "PUT",
-            params,
-        },
+        { url: `/me/player/volume`, method: "PUT", params },
         options
     );
 };
@@ -4431,11 +4249,7 @@ export const toggleShuffleForUsersPlayback = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<void>(
-        {
-            url: `https://api.spotify.com/v1/me/player/shuffle`,
-            method: "PUT",
-            params,
-        },
+        { url: `/me/player/shuffle`, method: "PUT", params },
         options
     );
 };
@@ -4452,11 +4266,7 @@ export const getRecentlyPlayed = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<CursorPagedPlayHistoryResponse>(
-        {
-            url: `https://api.spotify.com/v1/me/player/recently-played`,
-            method: "GET",
-            params,
-        },
+        { url: `/me/player/recently-played`, method: "GET", params },
         options
     );
 };
@@ -4469,7 +4279,7 @@ export const getRecentlyPlayed = (
  */
 export const getQueue = (options?: SecondParameter<typeof customInstance>) => {
     return customInstance<QueueResponse>(
-        { url: `https://api.spotify.com/v1/me/player/queue`, method: "GET" },
+        { url: `/me/player/queue`, method: "GET" },
         options
     );
 };
@@ -4485,11 +4295,7 @@ export const addToQueue = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<void>(
-        {
-            url: `https://api.spotify.com/v1/me/player/queue`,
-            method: "POST",
-            params,
-        },
+        { url: `/me/player/queue`, method: "POST", params },
         options
     );
 };
@@ -4504,7 +4310,7 @@ export const getAvailableMarkets = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<GetAvailableMarkets200>(
-        { url: `https://api.spotify.com/v1/markets`, method: "GET" },
+        { url: `/markets`, method: "GET" },
         options
     );
 };
