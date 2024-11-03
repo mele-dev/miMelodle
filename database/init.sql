@@ -68,7 +68,7 @@ CREATE TABLE artists (
 CREATE TABLE saved_artists (
     id           SERIAL PRIMARY KEY,
     "userId"     BIGINT REFERENCES users (id)   NOT NULL,
-    "artistId"   BIGINT REFERENCES artists (id) NOT NULL,
+    "artistId"   TEXT NOT NULL UNIQUE,
     "savedAt"    timestamptz DEFAULT NOW()      NOT NULL,
     "isFavorite" bool        DEFAULT FALSE      NOT NULL
 );

@@ -205,3 +205,13 @@ SELECT u.*, pp.filename AS "profilePictureFilename", CEIL(COUNT(*) OVER () / :pa
            INNER JOIN "profilePictures" pp ON u."profilePictureId" = pp.id
  ORDER BY "rank!" DESC, levenshtein(u.username, :username!)
  LIMIT :pageSize! OFFSET :pageSize!::INT * :page!::INT;
+
+/* @name addArtist */
+INSERT INTO saved_artists("userId", "artistId")
+values (:selfId!, :spotifyId!)
+returning *;
+
+/* @name getHomeArtists */
+SELECT *
+from saved_artists
+where "userId" = :selfId!;
