@@ -9,6 +9,14 @@ const translations = {
         en: "Error while searching for users.",
         es: "Error al buscar usuarios.",
     },
+    title: {
+        en: ["Search users", "by username."],
+        es: ["Buscar usuarios", "por nombre de usuario."],
+    },
+    usernamePlaceholder: {
+    en: "The.username-from_someone.else",
+    es: "El.nombre-de-usuario_de_otra.persona",
+  }
 } as const satisfies Translations;
 
 @Injectable({

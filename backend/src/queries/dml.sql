@@ -139,11 +139,23 @@ SELECT status
 RETURNING *;
 
 /* @name unblockUser */
-   DELETE
-     FROM blocks
-    WHERE "userWhoBlocksId" = :selfId!
-      AND "blockedUserId" = :targetUserId!
-RETURNING *;
+WITH target AS (SELECT *
+                FROM users u
+                WHERE u.id = :targetUserId!
+                LIMIT 1)
+DELETE
+FROM blocks
+WHERE "userWhoBlocksId" = :selfId!
+  AND "blockedUserId" = :targetUserId!
+RETURNING (SELECT username
+           FROM target) AS "targetUsername!";
+
+/* @name getBlockedUsers */
+SELECT u.*, pP.filename as "profilePictureFilename"
+FROM users u
+         JOIN blocks b ON u.id = b."blockedUserId"
+         inner join public."profilePictures" pP on pP.id = u."profilePictureId"
+WHERE b."userWhoBlocksId" = :selfId;
 
 /* @name getRequestReceiver */
 SELECT "user2Id"
