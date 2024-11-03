@@ -66,7 +66,6 @@ export default (async (fastify) => {
                 allowMultipleGamesADay: true,
             });
 
-            console.info(queryResult);
             if (!queryResult[0].canCreate) {
                 return sendError(
                     reply,

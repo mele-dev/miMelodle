@@ -16,11 +16,12 @@ import {
 } from "../../queries/snapshots.queries.js";
 import { friendSchema, User, userSchema } from "../../types/user.js";
 import { sendOk } from "../../utils/reply.js";
-import {
-    search,
-} from "../../apiCodegen/spotify.js";
+import { search } from "../../apiCodegen/spotify.js";
 import { isAxiosError } from "axios";
-import { getRandomTrackFromArtists } from "../../spotify/helpers.js";
+import {
+    getAllTracksFromArtist,
+    getRandomTrackFromArtists,
+} from "../../spotify/helpers.js";
 
 export default (async (fastify) => {
     if (typedEnv.NODE_ENV === "development") {
@@ -110,16 +111,28 @@ export default (async (fastify) => {
                 const artist = (
                     await search({
                         type: ["artist"],
-                        q: "shakira",
+                        q: "el cuarteto de nos",
                     })
                 ).artists!.items![0];
 
-                const song = await getRandomTrackFromArtists({
-                    "artistsIds": [artist.id!],
-                    "groups": ["album", "single"],
-                });
+                const tracks = await getAllTracksFromArtist(artist.id!, [
+                    "album",
+                    "single",
+                ]);
 
-                return artist.id!;
+                return tracks?.albums.map((album) => {
+                    return {
+                        name: album.name,
+                        id: album.id,
+                        tracks: album.tracks.map(track => {
+                            return {
+                                trackName: track.name,
+                                trackId: track.id,
+                                trackAlbum: album.name,
+                            }
+                        }),
+                    };
+                });
             } catch (e) {
                 if (isAxiosError(e)) {
                     return reply.code(200).send(e.response?.data);
