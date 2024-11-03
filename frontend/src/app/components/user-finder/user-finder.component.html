@@ -15,61 +15,59 @@
     [(ngModel)]="this.userFilter"
 />
 
-<hlm-scroll-area class="h-96 w-96 rounded pt-2">
-    <hlm-table>
-        @for (user of matchedUsers(); track user.id) {
-            <hlm-trow class="flex py-2">
-                <hlm-td class="flex flex-grow gap-2">
-                    <div
-                        [innerHTML]="
-                            this.sanitizer.bypassSecurityTrustHtml(user.svg)
-                        "
-                        class="aspect-square h-10 w-10 rounded-full bg-white p-1"
-                    ></div>
-                    <div class="flex flex-col">
-                        <div>
-                            <span>&#64;</span
-                            ><span class="text-lx">{{ user.username }}</span>
-                        </div>
-                        <span class="text-xs">
-                            {{ user.name }}
-                        </span>
+<hlm-table class="h-96 w-96 overflow-y-scroll scroll-auto">
+    @for (user of matchedUsers(); track user.id) {
+        <hlm-trow class="flex py-2">
+            <hlm-td class="flex flex-grow gap-2">
+                <div
+                    [innerHTML]="
+                        this.sanitizer.bypassSecurityTrustHtml(user.svg)
+                    "
+                    class="aspect-square h-10 w-10 rounded-full bg-white p-1"
+                ></div>
+                <div class="flex flex-col">
+                    <div>
+                        <span>&#64;</span
+                        ><span class="text-lx">{{ user.username }}</span>
                     </div>
-                </hlm-td>
-                <hlm-td class="justify-end">
-                    <!-- FIXME: The popup errors sometimes. It seems to work anyways though.-->
-                    <button
-                        hlmBtn
-                        type="button"
-                        size="sm"
-                        [brnMenuTriggerFor]="userMenu"
-                        variant="ghost"
-                    >
-                        <hlm-icon name="lucideMoreHorizontal"></hlm-icon>
-                    </button>
-                    <ng-template #userMenu>
-                        <hlm-menu>
-                            <hlm-menu-label> Actions </hlm-menu-label>
-                            <hlm-menu-separator />
-                            <button
-                                type="button"
-                                (click)="this.sendFriendRequest(user)"
-                                hlmMenuItem
-                            >
-                                Add friend
-                            </button>
-                            <button type="button" hlmMenuItem>Block</button>
-                            <button
-                                type="button"
-                                hlmMenuItem
-                                (click)="this.deleteFriendship(user)"
-                            >
-                                Remove friend
-                            </button>
-                        </hlm-menu>
-                    </ng-template>
-                </hlm-td>
-            </hlm-trow>
-        }
-    </hlm-table>
-</hlm-scroll-area>
+                    <span class="text-xs">
+                        {{ user.name }}
+                    </span>
+                </div>
+            </hlm-td>
+            <hlm-td class="justify-end">
+                <!-- FIXME: The popup errors sometimes. It seems to work anyways though.-->
+                <button hlmBtn type="button" [brnMenuTriggerFor]="userMenu">
+                    TODO ICON
+                </button>
+                <ng-template #userMenu>
+                    <hlm-menu>
+                        <hlm-menu-label> Actions </hlm-menu-label>
+                        <hlm-menu-separator />
+                        <button
+                            type="button"
+                            (click)="this.sendFriendRequest(user)"
+                            hlmMenuItem
+                        >
+                            Add friend
+                        </button>
+                        <button
+                            type="button"
+                            hlmMenuItem
+                            (click)="this.block(user)"
+                        >
+                            Block
+                        </button>
+                        <button
+                            type="button"
+                            hlmMenuItem
+                            (click)="this.deleteFriendship(user)"
+                        >
+                            Remove friend
+                        </button>
+                    </hlm-menu>
+                </ng-template>
+            </hlm-td>
+        </hlm-trow>
+    }
+</hlm-table>
