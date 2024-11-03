@@ -40,6 +40,15 @@
                 </div>
             </brn-popover>
 
+            <brn-popover sideOffset="5" closeDelay="100">
+                <button brnPopoverTrigger>
+                    <hlm-icon size="base" name="lucideCircleSlash"></hlm-icon>
+                </button>
+                <div hlmPopoverContent *brnPopoverContent="let ctx">
+                    <app-blocking></app-blocking>
+                </div>
+            </brn-popover>
+
             <hlm-icon size="base" name="lucideBell"></hlm-icon>
             <button type="button" (click)="this.logOut()">
                 <hlm-icon name="lucideLogOut"></hlm-icon>

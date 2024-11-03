@@ -30,7 +30,10 @@ export default (async (fastify, _opts) => {
             params: usersRelationShipSchema,
             tags: ["Blocking"] satisfies MelodleTagName[],
             response: {
-                201: SafeType.Object({ blocked: SafeType.Boolean() }),
+                201: SafeType.Object({
+                    blocked: SafeType.Boolean(),
+                    username: SafeType.String(),
+                }),
                 ...SafeType.CreateErrors([
                     "badRequest",
                     "notFound",
@@ -80,7 +83,10 @@ export default (async (fastify, _opts) => {
                 request.params
             );
 
-            return sendOk(reply, 201, { blocked: true });
+            return sendOk(reply, 201, {
+                blocked: true,
+                username: queryResult[0].targetUsername
+            });
         },
     });
 
