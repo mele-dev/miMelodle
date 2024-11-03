@@ -57,7 +57,6 @@ export class BlockingService {
 
     public async blockUser(targetId: number){
         const selfId = this._localStorage.getItem("userInfo")?.id;
-        console.log('AAAAAAA')
 
         if (selfId === undefined) {
             window.location.reload();
@@ -69,7 +68,6 @@ export class BlockingService {
                 selfId,
                 targetId
             );
-                console.log('AAAAAAA DPS DE LA QUERY')
 
             await this.reloadList();
 
