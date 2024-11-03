@@ -781,42 +781,6 @@ export const getUsersSelfSelfIdConfigsSuggestResponse = zod.array(
 );
 
 /**
- * @summary Get all friends from a user.
- */
-export const getUsersSelfSelfIdFriendsParams = zod.object({
-    selfId: zod.number(),
-});
-
-export const getUsersSelfSelfIdFriendsResponseNameMax = 25;
-export const getUsersSelfSelfIdFriendsResponseUsernameMin = 3;
-
-export const getUsersSelfSelfIdFriendsResponseUsernameMax = 50;
-
-export const getUsersSelfSelfIdFriendsResponseUsernameRegExp = new RegExp(
-    "^[a-zA-Z0-9\\.-_]+$"
-);
-export const getUsersSelfSelfIdFriendsResponseStatusRegExp = new RegExp(
-    "^(pending|blocked|accepted)$"
-);
-
-export const getUsersSelfSelfIdFriendsResponseItem = zod.object({
-    id: zod.number(),
-    name: zod.string().min(1).max(getUsersSelfSelfIdFriendsResponseNameMax),
-    username: zod
-        .string()
-        .min(getUsersSelfSelfIdFriendsResponseUsernameMin)
-        .max(getUsersSelfSelfIdFriendsResponseUsernameMax)
-        .regex(getUsersSelfSelfIdFriendsResponseUsernameRegExp),
-    profilePictureId: zod.number(),
-    profilePictureFilename: zod.string(),
-    status: zod.string().regex(getUsersSelfSelfIdFriendsResponseStatusRegExp),
-    selfIsRequestSender: zod.boolean(),
-});
-export const getUsersSelfSelfIdFriendsResponse = zod.array(
-    getUsersSelfSelfIdFriendsResponseItem
-);
-
-/**
  * @summary Start a new melodle game.
  */
 export const postUsersSelfSelfIdMelodleParams = zod.object({
@@ -916,6 +880,42 @@ export const getUsersSelfSelfIdMelodleHistoryResponse = zod.array(
 );
 
 /**
+ * @summary Get all friends from a user.
+ */
+export const getUsersSelfSelfIdFriendsParams = zod.object({
+    selfId: zod.number(),
+});
+
+export const getUsersSelfSelfIdFriendsResponseNameMax = 25;
+export const getUsersSelfSelfIdFriendsResponseUsernameMin = 3;
+
+export const getUsersSelfSelfIdFriendsResponseUsernameMax = 50;
+
+export const getUsersSelfSelfIdFriendsResponseUsernameRegExp = new RegExp(
+    "^[a-zA-Z0-9\\.-_]+$"
+);
+export const getUsersSelfSelfIdFriendsResponseStatusRegExp = new RegExp(
+    "^(pending|blocked|accepted)$"
+);
+
+export const getUsersSelfSelfIdFriendsResponseItem = zod.object({
+    id: zod.number(),
+    name: zod.string().min(1).max(getUsersSelfSelfIdFriendsResponseNameMax),
+    username: zod
+        .string()
+        .min(getUsersSelfSelfIdFriendsResponseUsernameMin)
+        .max(getUsersSelfSelfIdFriendsResponseUsernameMax)
+        .regex(getUsersSelfSelfIdFriendsResponseUsernameRegExp),
+    profilePictureId: zod.number(),
+    profilePictureFilename: zod.string(),
+    status: zod.string().regex(getUsersSelfSelfIdFriendsResponseStatusRegExp),
+    selfIsRequestSender: zod.boolean(),
+});
+export const getUsersSelfSelfIdFriendsResponse = zod.array(
+    getUsersSelfSelfIdFriendsResponseItem
+);
+
+/**
  * @summary Update whether a given artist is within you favorite ones.
  */
 export const putUsersSelfSelfIdArtistsArtistMusixMatchIdFavoriteParams =
@@ -953,6 +953,62 @@ export const deleteUsersSelfSelfIdBlockingTargetUserIdParams = zod.object({
 export const deleteUsersSelfSelfIdBlockingTargetUserIdResponse = zod.object({
     blocked: zod.boolean(),
     username: zod.string(),
+});
+
+/**
+ * @summary Get information about a melodle game.
+ */
+export const getUsersSelfSelfIdMelodleGameIdParams = zod.object({
+    selfId: zod.number(),
+    gameId: zod.number(),
+});
+
+export const getUsersSelfSelfIdMelodleGameIdResponseAttemptsItemGuessedLineMax = 1000;
+export const getUsersSelfSelfIdMelodleGameIdResponseGameModeRegExp = new RegExp(
+    "^(Guess Line|Guess Song)$"
+);
+export const getUsersSelfSelfIdMelodleGameIdResponseConfigModeRegExp =
+    new RegExp("^(Guess Line|Guess Song)$");
+
+export const getUsersSelfSelfIdMelodleGameIdResponse = zod.object({
+    userId: zod.number(),
+    gameId: zod.number(),
+    attempts: zod
+        .array(
+            zod.object({
+                guessedSongId: zod.string(),
+                guessedAt: zod.string().datetime(),
+            })
+        )
+        .or(
+            zod.array(
+                zod.object({
+                    guessedLine: zod
+                        .string()
+                        .max(
+                            getUsersSelfSelfIdMelodleGameIdResponseAttemptsItemGuessedLineMax
+                        ),
+                    guessedAt: zod.string().datetime(),
+                })
+            )
+        ),
+    won: zod.boolean().optional(),
+    endingTime: zod.string().datetime().optional(),
+    gameMode: zod
+        .string()
+        .regex(getUsersSelfSelfIdMelodleGameIdResponseGameModeRegExp),
+    config: zod.object({
+        id: zod.number(),
+        mode: zod
+            .string()
+            .regex(getUsersSelfSelfIdMelodleGameIdResponseConfigModeRegExp),
+        onlyFavoriteArtists: zod.boolean(),
+        fromArtists: zod.array(
+            zod.object({
+                musixmatchArtistId: zod.string(),
+            })
+        ),
+    }),
 });
 
 /**
@@ -1079,62 +1135,6 @@ export const getUsersSelfSelfIdFriendsLeaderboardsResponse = zod.object({
                 })
             )
     ),
-});
-
-/**
- * @summary Get information about a melodle game.
- */
-export const getUsersSelfSelfIdMelodleGameIdParams = zod.object({
-    selfId: zod.number(),
-    gameId: zod.number(),
-});
-
-export const getUsersSelfSelfIdMelodleGameIdResponseAttemptsItemGuessedLineMax = 1000;
-export const getUsersSelfSelfIdMelodleGameIdResponseGameModeRegExp = new RegExp(
-    "^(Guess Line|Guess Song)$"
-);
-export const getUsersSelfSelfIdMelodleGameIdResponseConfigModeRegExp =
-    new RegExp("^(Guess Line|Guess Song)$");
-
-export const getUsersSelfSelfIdMelodleGameIdResponse = zod.object({
-    userId: zod.number(),
-    gameId: zod.number(),
-    attempts: zod
-        .array(
-            zod.object({
-                guessedSongId: zod.string(),
-                guessedAt: zod.string().datetime(),
-            })
-        )
-        .or(
-            zod.array(
-                zod.object({
-                    guessedLine: zod
-                        .string()
-                        .max(
-                            getUsersSelfSelfIdMelodleGameIdResponseAttemptsItemGuessedLineMax
-                        ),
-                    guessedAt: zod.string().datetime(),
-                })
-            )
-        ),
-    won: zod.boolean().optional(),
-    endingTime: zod.string().datetime().optional(),
-    gameMode: zod
-        .string()
-        .regex(getUsersSelfSelfIdMelodleGameIdResponseGameModeRegExp),
-    config: zod.object({
-        id: zod.number(),
-        mode: zod
-            .string()
-            .regex(getUsersSelfSelfIdMelodleGameIdResponseConfigModeRegExp),
-        onlyFavoriteArtists: zod.boolean(),
-        fromArtists: zod.array(
-            zod.object({
-                musixmatchArtistId: zod.string(),
-            })
-        ),
-    }),
 });
 
 /**
