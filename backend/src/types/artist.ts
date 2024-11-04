@@ -26,6 +26,18 @@ export const artistSchema = SafeType.Object(
                     "Url to download the artist's portrait image, if available.",
             })
         ),
+        externalUrls: SafeType.String({
+            description:
+                "Url that will allow users to be redirected to the artist's profile on Spotify.",
+        }),
+        genres: SafeType.Array(
+            SafeType.String({
+                description: "Genres associated with the artist.",
+            })
+        ),
+        followers: SafeType.Number({
+            description: "The number of followers the artist has.",
+        }),
     },
     {
         $id: "ArtistSchema",

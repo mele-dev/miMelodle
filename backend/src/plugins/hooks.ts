@@ -6,6 +6,7 @@ import { Value } from "@sinclair/typebox/value";
 import schemaReferences from "../types/schemaReferences.js";
 import { TSchema } from "@sinclair/typebox";
 import { SafeType } from "../utils/typebox.js";
+import { isAxiosError } from "axios";
 
 export default fastifyPlugin(async (fastify) => {
     // No debug in production check.
@@ -69,4 +70,12 @@ export default fastifyPlugin(async (fastify) => {
             request.params = parsedParams;
         }
     });
+
+    fastify.setErrorHandler((error, _request, _reply) => {
+        if (isAxiosError(error)) {
+            fastify.log.info(error.response?.data, "Axios error body: ");
+        }
+
+        return error;
+    })
 });
