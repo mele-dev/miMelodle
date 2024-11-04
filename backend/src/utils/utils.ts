@@ -9,10 +9,3 @@ export function reverseMap<T extends Record<keyof T, keyof any>>(
         Object.entries(obj).map(([key, val]) => [val, key])
     );
 }
-
-/** Utility to assert exhaustiveness */
-export function assertUnreachable(x: never): never {
-    throw new Error(
-        "Didn't expect to get here. Value: " + (JSON.stringify(x) || "Nothing.")
-    );
-}

@@ -11,7 +11,11 @@ import {
     GuessSongHints,
     guessSongHintsList,
 } from "../../../../../../../types/guessSong.js";
-import { checkSongGuess } from "../../../../../../../services/game.js";
+import {
+    checkSongGuess,
+    getGuessSongInformation,
+} from "../../../../../../../services/game.js";
+import { UnreachableCaseError } from "ts-essentials";
 
 export default (async (fastify) => {
     fastify.get("", {
@@ -20,13 +24,33 @@ export default (async (fastify) => {
             params: SafeType.Pick(ParamsSchema, ["selfId", "gameId"]),
             response: {
                 200: guessSongHintsList,
-                ...SafeType.CreateErrors(["unauthorized", "notFound"]),
+                ...SafeType.CreateErrors([
+                    "unauthorized",
+                    "notFound",
+                ]),
             },
             summary: "Get information about a melodle game.",
             description: undefined,
             tags: ["User", "Melodle"] satisfies MelodleTagName[],
         },
         async handler(request, reply) {
+            const result = await getGuessSongInformation(request.params);
+            switch (result.status) {
+                case "RepeatedTrack":
+                case "AttemptsExhausted":
+                case "AlreadyWon":
+                    // This should never happen.
+                    throw result.status;
+                case "NoGame":
+                    return sendError(reply, "notFound", result.status);
+                case "TrackNotFound":
+                    return sendError(reply, "notFound", result.status);
+                case "Success":
+                    break;
+                default:
+                    throw new UnreachableCaseError(result);
+            }
+
             const gameInfo = await runPreparedQuery(
                 getGuessSongFromUser,
                 request.params

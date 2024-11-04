@@ -5,22 +5,13 @@ import { decorators } from "../../../../../../../../services/decorators.js";
 import { ParamsSchema } from "../../../../../../../../types/params.js";
 import {
     commonGuessSongProperties,
-    GuessSongHints,
     guessSongHintsList,
 } from "../../../../../../../../types/guessSong.js";
 import { runPreparedQuery } from "../../../../../../../../services/database.js";
 import { sendError, sendOk } from "../../../../../../../../utils/reply.js";
-import { getSeveralTracks } from "../../../../../../../../apiCodegen/spotify.js";
-import {
-    getGuessSongFromUser,
-    insertGuessSongAttempt,
-} from "../../../../../../../../queries/dml.queries.js";
-import {
-    checkSongGuess,
-    getGuessSongInformation,
-} from "../../../../../../../../services/game.js";
-import { assertUnreachable } from "../../../../../../../../utils/utils.js";
-import { send } from "process";
+import { insertGuessSongAttempt } from "../../../../../../../../queries/dml.queries.js";
+import { getGuessSongInformation } from "../../../../../../../../services/game.js";
+import { UnreachableCaseError } from "ts-essentials";
 
 export default (async (fastify) => {
     fastify.post("", {
@@ -61,7 +52,7 @@ export default (async (fastify) => {
                 case "Success":
                     break;
                 default:
-                    assertUnreachable(result);
+                    throw new UnreachableCaseError(result);
             }
 
             const queryResult = await runPreparedQuery(insertGuessSongAttempt, {

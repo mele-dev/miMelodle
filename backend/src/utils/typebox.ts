@@ -160,6 +160,10 @@ const extensions = {
         // blame this. - cr
         return output as any;
     },
+    TODO: Type.Optional(Type.Any({ description: "Not yet implemented!" })),
+    Nullable<T extends TSchema>(schema: T, options?: SchemaOptions) {
+        return Type.Union([schema, Type.Null()], options);
+    },
 } as const;
 
 /**
