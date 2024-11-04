@@ -27,6 +27,7 @@ import {
 } from "@spartan-ng/ui-menu-helm";
 import { BrnMenuTriggerDirective } from "@spartan-ng/ui-menu-brain";
 import { FriendsService } from "../../services/friends.service";
+import { BlockingService } from "../../services/blocking.service";
 import { HlmScrollAreaModule } from "@spartan-ng/ui-scrollarea-helm";
 import { HlmIconModule } from "@spartan-ng/ui-icon-helm";
 import { provideIcons } from "@ng-icons/core";
@@ -70,6 +71,7 @@ export class UserFinderComponent {
     private _icons = inject(IconCacheService);
     sanitizer = inject(DomSanitizer);
     private _friends = inject(FriendsService);
+    private _blocking = inject(BlockingService);
     private _self = inject(SelfService);
 
     constructor() {
@@ -123,5 +125,9 @@ export class UserFinderComponent {
 
     async deleteFriendship(user: SearchedUser) {
         return await this._friends.deleteFriend(user.id);
+    }
+
+    async block(user: SearchedUser){
+        return await this._blocking.blockUser(user.id);
     }
 }

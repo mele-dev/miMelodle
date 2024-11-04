@@ -14,10 +14,10 @@ export const melodleGameConfig = SafeType.Object({
         description: "Whether to pick from any artist or only favorited ones.",
     }),
     fromArtists: SafeType.Array(
-        SafeType.Pick(artistSchema, ["musixmatchArtistId"]),
+        artistSchema.properties.spotifyArtistId,
         {
             description:
-                "The artists we can choose from. If empty, it means this filter does not do anything.",
+                "The artists we can choose from, by their spotify ids.",
         }
     ),
 });

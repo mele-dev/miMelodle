@@ -133,29 +133,38 @@ SELECT status
     OR (f."userId" = :targetUserId! AND f."user2Id" = :selfId!);
 
 /* @name blockUser */
-   INSERT
-     INTO blocks("userWhoBlocksId", "blockedUserId")
-   VALUES (:selfId!, :targetUserId!)
-RETURNING *;
-
-/* @name unblockUser */
 WITH target AS (SELECT *
                 FROM users u
                 WHERE u.id = :targetUserId!
                 LIMIT 1)
-DELETE
-FROM blocks
-WHERE "userWhoBlocksId" = :selfId!
-  AND "blockedUserId" = :targetUserId!
+   INSERT
+     INTO blocks("userWhoBlocksId", "blockedUserId")
+   VALUES (:selfId!, :targetUserId!)
 RETURNING (SELECT username
            FROM target) AS "targetUsername!";
 
+/* @name unblockUser */
+     WITH target AS (
+         SELECT *
+           FROM users u
+          WHERE u.id = :targetUserId!
+          LIMIT 1
+     )
+   DELETE
+     FROM blocks
+    WHERE "userWhoBlocksId" = :selfId!
+      AND "blockedUserId" = :targetUserId!
+RETURNING (
+    SELECT username
+      FROM target
+) AS "targetUsername!";
+
 /* @name getBlockedUsers */
-SELECT u.*, pP.filename as "profilePictureFilename"
-FROM users u
-         JOIN blocks b ON u.id = b."blockedUserId"
-         inner join public."profilePictures" pP on pP.id = u."profilePictureId"
-WHERE b."userWhoBlocksId" = :selfId;
+SELECT u.*, pp.filename AS "profilePictureFilename"
+  FROM users u
+           JOIN blocks b ON u.id = b."blockedUserId"
+           INNER JOIN public."profilePictures" pp ON pp.id = u."profilePictureId"
+ WHERE b."userWhoBlocksId" = :selfId;
 
 /* @name getRequestReceiver */
 SELECT "user2Id"
@@ -206,12 +215,66 @@ SELECT u.*, pp.filename AS "profilePictureFilename", CEIL(COUNT(*) OVER () / :pa
  ORDER BY "rank!" DESC, levenshtein(u.username, :username!)
  LIMIT :pageSize! OFFSET :pageSize!::INT * :page!::INT;
 
-/* @name addArtist */
-INSERT INTO saved_artists("userId", "artistId")
-values (:selfId!, :spotifyId!)
+/* @name addArtistToHome */
+INSERT INTO "savedArtists"("userId", "spotifyArtistId")
+values (:selfId!, :spotifyArtistId!)
 returning *;
 
+/* @name deleteArtistFromHome */
+DELETE
+FROM "savedArtists"
+WHERE "userId" = :selfId
+  AND "spotifyArtistId" = :spotifyArtistId
+returning *;
+
+
+/* @name changeFavorite */
+update "savedArtists"
+set "isFavorite" = :isFavorite
+WHERE "userId" = :selfId
+  AND "spotifyArtistId" = :spotifyArtistId
+returning "isFavorite";
+
+
 /* @name getHomeArtists */
-SELECT *
-from saved_artists
+SELECT "spotifyArtistId", "isFavorite"
+from "savedArtists"
 where "userId" = :selfId!;
+
+/* @name createGuessLineGame */
+  WITH "newestGame"    AS (
+      SELECT * FROM "guessSongGames" gsg WHERE "userId" = :selfId! ORDER BY gsg."createdAt" DESC LIMIT 1
+  ),
+       "canCreateGame" AS (
+      SELECT CASE
+                 WHEN :allowMultipleGamesADay! THEN TRUE
+                 WHEN (
+                          SELECT "createdAt"::DATE
+                            FROM "newestGame"
+                      ) != CURRENT_DATE        THEN TRUE
+                 ELSE FALSE
+             END AS "canCreate"
+  ),
+       "insertGame"
+                       AS ( INSERT INTO "guessSongGames" ("userId", "createdAt", "spotifyTrackId") SELECT :selfId!, NOW(), :spotifyTrackId!
+                                                                                                    WHERE EXISTS (
+                                                                                                        SELECT 1
+                                                                                                          FROM "canCreateGame"
+                                                                                                         WHERE "canCreate" = TRUE
+                                                                                                    ) RETURNING id
+  )
+SELECT (
+    SELECT "canCreate"
+      FROM "canCreateGame"
+)
+     , "insertGame".id
+  FROM "canCreateGame"
+           LEFT JOIN "insertGame" ON TRUE;
+
+/* @name getGuessSongFromUser */
+  WITH "game" AS (
+      SELECT * FROM "guessSongGames" gsg WHERE gsg."userId" = :selfId! AND gsg.id = :gameId!
+  )
+SELECT *
+  FROM "guessSongGames"
+           LEFT JOIN public."guessSongAttempts" gsa ON "guessSongGames".id = gsa."gameId";

@@ -38,9 +38,9 @@ export default (async (fastify) => {
             });
 
             const parsedUserInfo = spotifyCallbackGuard.Decode({
-                spotifyId: userInfo.data.id,
-                email: userInfo.data.email,
-                username: userInfo.data.display_name,
+                spotifyId: userInfo.id,
+                email: userInfo.email,
+                username: userInfo.display_name,
             } satisfies Partial<spotifyCallback>);
 
             const result = await runPreparedQuery(

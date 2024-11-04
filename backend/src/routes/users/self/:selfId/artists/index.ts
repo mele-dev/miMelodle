@@ -15,7 +15,12 @@ import {
     getSelfFriends,
 } from "../../../../../queries/dml.queries.js";
 import { artistSchema } from "../../../../../types/artist.js";
-import { getAnArtist } from "../../../../../apiCodegen/spotify.js";
+import {
+    getAnArtist,
+    getMultipleArtists,
+} from "../../../../../apiCodegen/spotify.js";
+import artist from "../../../../artists/index.js";
+import { isAxiosError } from "axios";
 
 export default (async (fastify, _opts) => {
     fastify.get("", {
@@ -27,12 +32,16 @@ export default (async (fastify, _opts) => {
             response: {
                 200: SafeType.Array(
                     SafeType.Object({
-                        ...SafeType.Pick(artistSchema, [
-                            "id",
-                            "spotifyId",
-                            "name",
-                            "imageUrl"
-                        ]).properties,
+                        isFavorite: SafeType.Boolean(),
+                        data: SafeType.Object({
+                            ...SafeType.Pick(artistSchema, [
+                                "name",
+                                "imageUrl",
+                                "externalUrls",
+                                "genres",
+                                "followers",
+                            ]).properties,
+                        }),
                     })
                 ),
                 ...SafeType.CreateErrors(["unauthorized"]),
@@ -44,12 +53,35 @@ export default (async (fastify, _opts) => {
                 request.params
             );
 
-            queryResult.forEach(async (artist) => {
-                await runPreparedQuery (getAnArtist)
-            }) 
-            return sendOk(reply, 200, queryResult);
+            try {
+                const ids = queryResult
+                    .map((artist) => artist.spotifyArtistId)
+                    .join(",");
+                const artistData = await getMultipleArtists({ ids });
+
+                const output = queryResult.map((artist, index) => {
+                    return {
+                        isFavorite: artist.isFavorite,
+                        data: {
+                            name: artistData.artists[index]?.name as string,
+                            imageUrl: artistData.artists[index]?.images?.[0]
+                                ?.url as string | undefined,
+                            externalUrls: artistData.artists[index]
+                                ?.external_urls?.spotify as string,
+                            genres: artistData.artists[index]
+                                ?.genres as string[],
+                            followers: artistData.artists[index]?.followers
+                                ?.total as number,
+                        },
+                    };
+                });
+
+                return sendOk(reply, 200, output);
+            } catch (e) {
+                if (isAxiosError(e)) {
+                    return e.response?.data;
+                }
+            }
         },
     });
 }) satisfies FastifyPluginAsyncTypebox;
-
-
