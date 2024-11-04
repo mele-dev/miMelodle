@@ -231,9 +231,14 @@ returning *;
 /* @name changeFavorite */
 update "savedArtists"
 set "isFavorite" = :isFavorite
-WHERE "userId" = :selfId
+WHERE "userId" = :selfId!
   AND "spotifyArtistId" = :spotifyArtistId
 returning "isFavorite";
+
+/* @name countFavorites */
+SELECT COUNT(*)
+FROM "savedArtists"
+WHERE "userId" = :selfId! AND "isFavorite" = true;
 
 
 /* @name getHomeArtists */

@@ -10,6 +10,8 @@ import {
     addArtistToHome,
     deleteArtistFromHome,
     changeFavorite,
+    countFavorites,
+    ICountFavoritesParams,
 } from "../../../../../../queries/dml.queries.js";
 import { getAnArtist } from "../../../../../../apiCodegen/spotify.js";
 import { run } from "node:test";
@@ -27,12 +29,32 @@ export default (async (fastify) => {
             body: isFavoriteSchema,
             response: {
                 200: isFavoriteSchema,
-                ...SafeType.CreateErrors(["unauthorized", "notFound"]),
+                ...SafeType.CreateErrors([
+                    "unauthorized",
+                    "notFound",
+                    "forbidden",
+                ]),
             },
             summary:
                 "Update whether a given artist is within you favorite ones.",
             description: undefined,
             tags: ["Artists"] satisfies MelodleTagName[],
+        },
+        async preHandler(request, reply) {
+            if (request.body.isFavorite === true) {
+                const quantity = await runPreparedQuery(
+                    countFavorites,
+                    request.params
+                );
+
+                if (quantity[0].count! >= 4) {
+                    return sendError(
+                        reply,
+                        "forbidden",
+                        "You reached the maximum of favorite artists allowed."
+                    );
+                }
+            }
         },
         async handler(request, reply) {
             const queryResult = await runPreparedQuery(changeFavorite, {
@@ -105,7 +127,7 @@ export default (async (fastify) => {
                     "badRequest",
                 ]),
             },
-            summary: "Delte an artist from user's home.",
+            summary: "Delete an artist from user's home.",
             description: undefined,
             tags: ["Artists"] satisfies MelodleTagName[],
         },
