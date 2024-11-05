@@ -90,7 +90,6 @@ const artist: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                     SafeType.Pick(artistSchema, [
                         "musixmatchArtistId",
                         "name",
-                        "imageUrl",
                     ])
                 ),
                 ...SafeType.CreateErrors([]),

@@ -7,7 +7,7 @@ import {
     userSchema,
 } from "../../../../../types/user.js";
 import { decorators } from "../../../../../services/decorators.js";
-import { sendOk } from "../../../../../utils/reply.js";
+import { sendError, sendOk } from "../../../../../utils/reply.js";
 import { runPreparedQuery } from "../../../../../services/database.js";
 import {
     getBlockedUsers,
@@ -44,7 +44,7 @@ export default (async (fastify, _opts) => {
                         }),
                     })
                 ),
-                ...SafeType.CreateErrors(["unauthorized"]),
+                ...SafeType.CreateErrors(["unauthorized", "notFound"]),
             },
         },
         async handler(request, reply) {
@@ -79,7 +79,7 @@ export default (async (fastify, _opts) => {
                 return sendOk(reply, 200, output);
             } catch (e) {
                 if (isAxiosError(e)) {
-                    return e.response?.data;
+                    return sendError(reply,"notFound","There's no artists to get.");
                 }
             }
         },
