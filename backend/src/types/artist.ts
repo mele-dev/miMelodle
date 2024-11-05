@@ -1,4 +1,5 @@
 import { SafeType } from "../utils/typebox.js";
+import { spotifyImageSchema } from "./guessSong.js";
 
 export const artistSchema = SafeType.Object(
     {
@@ -20,23 +21,38 @@ export const artistSchema = SafeType.Object(
         name: SafeType.String({
             description: "Name of the artist, does not have to be unique.",
         }),
-        imageUrl: SafeType.Optional(
+        imageUrls: SafeType.Optional(
             SafeType.String({
                 description:
                     "Url to download the artist's portrait image, if available.",
             })
         ),
-        externalUrls: SafeType.String({
-            description:
-                "Url that will allow users to be redirected to the artist's profile on Spotify.",
-        }),
+        images: SafeType.Array(spotifyImageSchema),
+        externalUrls: SafeType.Object(
+            {
+                spotify: SafeType.String({
+                    description:
+                        "Url that will allow users to be redirected to the artist's profile on Spotify.",
+                }),
+            },
+            { additionalProperties: true }
+        ),
         genres: SafeType.Array(
             SafeType.String({
                 description: "Genres associated with the artist.",
             })
         ),
-        followers: SafeType.Number({
-            description: "The number of followers the artist has.",
+        followers: SafeType.Object({
+            href: SafeType.Nullable(SafeType.String()),
+            total: SafeType.Number({
+                description: "The number of followers the artist has.",
+            }),
+        }),
+        popularity: SafeType.Number({
+            description:
+                "The popularity of the artist. " +
+                "The value will be between 0 and 100, with 100 being the most popular. " +
+                "The artist's popularity is calculated from the popularity of all the artist's tracks.",
         }),
     },
     {

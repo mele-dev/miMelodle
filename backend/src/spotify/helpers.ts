@@ -6,6 +6,10 @@ import {
     getAnArtistsAlbums,
     SimplifiedTrackObject,
 } from "../apiCodegen/spotify.js";
+import { DeepRequired } from "ts-essentials";
+
+export type RequireSpotify<T extends (...args: never) => unknown> =
+    DeepRequired<Awaited<ReturnType<T>>>;
 
 /**
  * This method is expensive in terms of spotify api tokens.

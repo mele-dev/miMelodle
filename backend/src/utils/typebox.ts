@@ -11,7 +11,6 @@ import {
     FormatRegistry,
 } from "@sinclair/typebox";
 import { Value } from "@sinclair/typebox/value";
-import schemaReferences from "../types/schemaReferences.js";
 import {
     CommonErrorCode,
     CommonErrorName,
@@ -105,7 +104,7 @@ const extensions = {
         const output = Type.Union([schema], { ...schema, examples });
 
         for (const example of output.examples) {
-            Value.Assert(schema, schemaReferences, example);
+            Value.Assert(schema, example);
         }
 
         return output;

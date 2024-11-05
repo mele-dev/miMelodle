@@ -1,7 +1,6 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { SafeType } from "../../utils/typebox.js";
 import { ParamsSchema } from "../../types/params.js";
-import { artistSchema } from "../../types/artist.js";
 import { MelodleTagName } from "../../plugins/swagger.js";
 import { decorators } from "../../services/decorators.js";
 import MusixmatchAPI from "../../musixmatch-api/musixmatch.js";
@@ -75,34 +74,6 @@ const artist: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
             );
 
             return sendOk(reply, 200, artists);
-        },
-    });
-
-    fastify.get("/search", {
-        onRequest: [decorators.noSecurity],
-        schema: {
-            security: [],
-            querystring: SafeType.Object({
-                query: SafeType.String({ maxLength: 500 }),
-            }),
-            response: {
-                200: SafeType.Array(
-                    SafeType.Pick(artistSchema, [
-                        "musixmatchArtistId",
-                        "name",
-                        "imageUrl",
-                    ])
-                ),
-                ...SafeType.CreateErrors([]),
-            },
-            summary: "Search for available artists.",
-            description:
-                "We use a custom algorithm to determine which artists are most relevant, " +
-                "based off the query in the querystring.",
-            tags: ["Artists"] satisfies MelodleTagName[],
-        },
-        async handler(_request, reply) {
-            return reply.notImplemented();
         },
     });
 };

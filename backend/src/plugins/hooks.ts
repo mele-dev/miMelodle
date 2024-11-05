@@ -3,9 +3,7 @@ import { decorators } from "../services/decorators.js";
 import { typedEnv } from "../types/env.js";
 import { MelodleTagName } from "./swagger.js";
 import { Value } from "@sinclair/typebox/value";
-import schemaReferences from "../types/schemaReferences.js";
 import { TSchema } from "@sinclair/typebox";
-import { SafeType } from "../utils/typebox.js";
 import { isAxiosError } from "axios";
 
 export default fastifyPlugin(async (fastify) => {
@@ -64,7 +62,6 @@ export default fastifyPlugin(async (fastify) => {
         if (paramsSchema) {
             const parsedParams = Value.Convert(
                 paramsSchema,
-                schemaReferences,
                 request.params
             );
             request.params = parsedParams;
