@@ -133,15 +133,19 @@ SELECT status
     OR (f."userId" = :targetUserId! AND f."user2Id" = :selfId!);
 
 /* @name blockUser */
-WITH target AS (SELECT *
-                FROM users u
-                WHERE u.id = :targetUserId!
-                LIMIT 1)
+     WITH target AS (
+         SELECT *
+           FROM users u
+          WHERE u.id = :targetUserId!
+          LIMIT 1
+     )
    INSERT
      INTO blocks("userWhoBlocksId", "blockedUserId")
    VALUES (:selfId!, :targetUserId!)
-RETURNING (SELECT username
-           FROM target) AS "targetUsername!";
+RETURNING (
+    SELECT username
+      FROM target
+) AS "targetUsername!";
 
 /* @name unblockUser */
      WITH target AS (
@@ -247,8 +251,18 @@ SELECT (
 
 /* @name getGuessSongFromUser */
   WITH "game" AS (
-      SELECT * FROM "guessSongGames" gsg WHERE gsg."userId" = :selfId! AND gsg.id = :gameId!
+      SELECT *
+        FROM "guessSongGames" gsg
+       WHERE gsg."userId" = :selfId! AND gsg.id = :gameId!
+       ORDER BY gsg."createdAt"
+       LIMIT 6
   )
 SELECT *
-  FROM "guessSongGames"
-           LEFT JOIN public."guessSongAttempts" gsa ON "guessSongGames".id = gsa."gameId";
+  FROM "game"
+           LEFT JOIN public."guessSongAttempts" gsa ON "game".id = gsa."gameId";
+
+/* @name insertGuessSongAttempt */
+   INSERT
+     INTO "guessSongAttempts" ("guessedAt", "guessedSpotifyTrackId", "gameId")
+   VALUES (NOW(), :trackId!, :gameId!)
+RETURNING *;

@@ -2,13 +2,9 @@ import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { MelodleTagName } from "../../../../plugins/swagger.js";
 import { decorators } from "../../../../services/decorators.js";
 import * as spotifyApi from "../../../../apiCodegen/spotify.js";
-import {
-    spotifyCallback,
-    spotifyCallbackGuard,
-} from "../../../../types/spotify.js";
 import { runPreparedQuery } from "../../../../services/database.js";
 import { loginUserSpotify } from "../../../../queries/dml.queries.js";
-import { JwtTokenContent } from "../../../../types/user.js";
+import { JwtTokenContent, spotifyCallback, spotifyCallbackGuard } from "../../../../types/user.js";
 import { SafeType } from "../../../../utils/typebox.js";
 import { frontendPaths } from "../../../../services/urls.js";
 

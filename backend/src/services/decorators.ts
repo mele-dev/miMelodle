@@ -1,7 +1,6 @@
 import { Value } from "@sinclair/typebox/value";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { jwtTokenContentSchema, User } from "../types/user.js";
-import schemaReferences from "../types/schemaReferences.js";
 import {
     CommonErrorName,
     CommonErrorToCode,
@@ -52,7 +51,6 @@ export const decorators = {
                 if (
                     !Value.Check(
                         jwtTokenContentSchema,
-                        schemaReferences,
                         tokenContent
                     )
                 ) {

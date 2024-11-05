@@ -1,68 +1,133 @@
-import { randomInt } from "crypto";
-import MusixmatchAPI from "../musixmatch-api/musixmatch.js";
+import { getSeveralTracks, TrackObject } from "../apiCodegen/spotify.js";
+import { getGuessSongFromUser } from "../queries/dml.queries.js";
+import {
+    GuessSongHints,
+    GuessSongGameInformation,
+} from "../types/guessSong.js";
+import { runPreparedQuery } from "./database.js";
 
-/**
- * @param songPoolSize
- * Songs will be chosen from the first songPoolSize songs, sorted by popularity.
- */
-export async function getRandomPopularSong(opts: {
-    songPoolSize: number;
-    bias: "less popular" | "more popular" | "random";
-    apiKey?: string;
-}) {
-    const api = new MusixmatchAPI(opts.apiKey);
-    const pageSize = 100;
+export function checkSongGuess(opts: {
+    targetTrack: TrackObject;
+    trackToCompare: TrackObject;
+}): GuessSongHints {
+    const { targetTrack, trackToCompare } = opts;
 
-    let index = randomInt(0, opts.songPoolSize);
+    const titleHint = trackToCompare.name
+        ?.split("")
+        .map((value, index) =>
+            value.toLowerCase() === targetTrack.name?.[index]?.toLowerCase()
+                ? value
+                : "_"
+        )
+        .join("");
 
-    if (opts.bias !== "random") {
-        index = applyBiasEasing(index, opts.songPoolSize, opts.bias);
-    }
-
-    while (true) {
-        const pageIndex = Math.floor(index / pageSize);
-        const withinPageIndex = index % pageSize;
- 
-        // TODO: FIX getting error when calling this.
-        const result = await api.searchTrack({
-            page: pageIndex,
-            page_size: pageSize,
-            f_has_lyrics: 1,
-        });
-
-        const body = result.expect().body;
-
-        // If we are past the last page (musixmatch returns empty array).
-        if (Array.isArray(body) || body.track_list.length === 0) {
-            if (index === 0) {
-                throw "No songs available.";
-            }
-            // Search for a lower index via binary search.
-            index = Math.floor(index / 2);
-            continue;
-        }
-
-        // If we find a
-        if (body.track_list.length > withinPageIndex) {
-            return { ...body.track_list[withinPageIndex], top: index };
-        }
-
-        // If we are past the end of the dataset, but this page has songs,
-        // grab the last song in the page.
-        return body.track_list[body.track_list.length - 1];
-    }
+    return {
+        isCorrectAlbum: targetTrack.album?.id === trackToCompare.album?.id,
+        guessedTrackAlbumName: trackToCompare.album?.name!,
+        isCorrectTrack: targetTrack.id === trackToCompare.id,
+        guessedTrackSpotifyId: trackToCompare.id!,
+        guessedTrackNameHint: titleHint ?? "",
+        guessedTrackName: trackToCompare.name!,
+        guessedTrackAlbumImages: trackToCompare.album?.images ?? [],
+    };
 }
 
-function applyBiasEasing(
-    initialIndex: number,
-    maxIndex: number,
-    popularityBias: "less popular" | "more popular"
-) {
-    const biasRatio = initialIndex / maxIndex;
-    const easedBiasRatio =
-        popularityBias === "more popular"
-            ? Math.pow(biasRatio, 1.5)
-            : Math.pow(biasRatio, 0.5);
+type GuessSongResult =
+    | { status: "NoGame" }
+    | { status: "AttemptsExhausted" }
+    | { status: "RepeatedTrack" }
+    | { status: "TrackNotFound" }
+    | { status: "AlreadyWon" }
+    | { status: "Success"; hints: GuessSongGameInformation };
 
-    return Math.floor(easedBiasRatio * maxIndex);
+export async function getGuessSongInformation(opts: {
+    selfId: number;
+    gameId: number;
+    newGuess?: string;
+}): Promise<GuessSongResult> {
+    // All the attempt info is nullable here, pgtyped is dumb with
+    // left joins.
+    const gameInfo = await runPreparedQuery(getGuessSongFromUser, opts);
+
+    if (gameInfo.length === 0) {
+        return { status: "NoGame" };
+    }
+
+    if (opts.newGuess && gameInfo.length >= 6) {
+        return { status: "AttemptsExhausted" };
+    }
+
+    const hiddenTrackId = gameInfo[0].spotifyTrackId;
+
+    const existingAttemptsIds = gameInfo
+        .map((row) => row.guessedSpotifyTrackId)
+        .filter((id) => id !== null);
+
+    if (opts.newGuess && existingAttemptsIds.includes(opts.newGuess)) {
+        return { status: "RepeatedTrack" };
+    }
+
+    const idsExceptHidden = [...existingAttemptsIds, opts.newGuess].filter(
+        (val) => val !== undefined
+    );
+
+    const idsToFetch = [hiddenTrackId, ...idsExceptHidden].join(",");
+
+    const tracksInfo = await getSeveralTracks({
+        ids: idsToFetch,
+    });
+
+    const hiddenTrack = tracksInfo.tracks.find((t) => t.id === hiddenTrackId);
+
+    const attemptHints: GuessSongHints[] = [];
+
+    for (const id of idsExceptHidden) {
+        const trackToCompare = tracksInfo.tracks.find((t) => t.id === id);
+
+        if (hiddenTrack === undefined || trackToCompare === undefined) {
+            return { status: "TrackNotFound" };
+        }
+
+        attemptHints.push(
+            checkSongGuess({
+                targetTrack: hiddenTrack,
+                trackToCompare,
+            })
+        );
+    }
+
+    // If some attempt except the last one was correct, there can be no
+    // more attempts made for this game.
+    if (
+        opts.newGuess === undefined &&
+        attemptHints.some((val) => val.isCorrectTrack) &&
+        !attemptHints[attemptHints.length - 1].isCorrectTrack
+    ) {
+        return { status: "AlreadyWon" };
+    }
+
+    const albumInfo = hiddenTrack?.album;
+
+    const albumHints: Partial<GuessSongGameInformation["album"]> = {
+        images: albumInfo?.images,
+    };
+
+    if (attemptHints.some((a) => a.isCorrectAlbum)) {
+        albumHints.name = albumInfo?.name;
+    }
+
+    return {
+        status: "Success",
+        hints: {
+            attempts: attemptHints,
+            album: albumHints,
+            artists:
+                hiddenTrack?.artists?.map((artist) => {
+                    return {
+                        name: artist.name!,
+                        spotifyArtistId: artist.id!,
+                    };
+                }) ?? [],
+        },
+    };
 }

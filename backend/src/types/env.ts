@@ -1,6 +1,5 @@
 import { Value } from "@sinclair/typebox/value";
 import { SafeType } from "../utils/typebox.js";
-import schemaReferences from "./schemaReferences.js";
 import { Static } from "@sinclair/typebox";
 
 // If any new environment variables are added, they should be put here.
@@ -16,7 +15,7 @@ const envSchema = SafeType.Object({
 
 const filteredProperties = Object.entries(envSchema.properties).filter(
     ([key, property]) =>
-        !Value.Check(property, schemaReferences, process.env[key])
+        !Value.Check(property, process.env[key])
 );
 
 if (filteredProperties.length !== 0) {
@@ -38,6 +37,5 @@ if (filteredProperties.length !== 0) {
  */
 export const typedEnv = Value.Parse(
     envSchema,
-    schemaReferences,
     process.env
 ) as Readonly<Static<typeof envSchema>>;

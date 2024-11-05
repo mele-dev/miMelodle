@@ -1,7 +1,6 @@
 import { Static, TSchema } from "@sinclair/typebox";
 import { MusixMatchStatusCode } from "../types/musixmatch.js";
 import { Value } from "@sinclair/typebox/value";
-import schemaReferences from "../types/schemaReferences.js";
 
 /**
  * Represents the raw response structure from the MusixMatch API.
@@ -72,7 +71,7 @@ export class MusixMatchResponse<TTSchema extends TSchema> {
         body: Static<TTSchema>;
     } {
         if (this.isOk()) {
-            this.body = Value.Parse(this.schema, schemaReferences, this.body);
+            this.body = Value.Parse(this.schema, this.body);
             return true;
         }
 

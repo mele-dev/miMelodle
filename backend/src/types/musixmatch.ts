@@ -1,4 +1,4 @@
-import { Static, String } from "@sinclair/typebox";
+import { Static } from "@sinclair/typebox";
 import { SafeType } from "../utils/typebox.js";
 
 export function createMusixMatchBooleanSchema(description?: string) {
@@ -278,10 +278,7 @@ export const commonMusixMatchResponseProperties = SafeType.Object({
         music_genre_parent_id: SafeType.Integer(),
         music_genre_name: SafeType.String(),
         music_genre_name_extended: SafeType.String(),
-        music_genre_vanity: SafeType.Union([
-            SafeType.String(),
-            SafeType.Null(),
-        ]),
+        music_genre_vanity: SafeType.Nullable(SafeType.String()),
     }),
     managed: createMusixMatchBooleanSchema(),
     album_id: SafeType.Integer(),
