@@ -4,9 +4,8 @@ import { SafeType } from "../../../utils/typebox.js";
 import { queryStringSchema } from "../../../types/querystring.js";
 import { MelodleTagName } from "../../../plugins/swagger.js";
 import { search, SearchItemsResponse } from "../../../apiCodegen/spotify.js";
-import { createSpotifyPagination } from "../../../types/spotify.js";
+import { artistSchema, createSpotifyPagination } from "../../../types/spotify.js";
 import { sendOk } from "../../../utils/reply.js";
-import { artistSchema } from "../../../types/artist.js";
 import { RequireSpotify } from "../../../spotify/helpers.js";
 
 export default (async (fastify) => {

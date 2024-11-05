@@ -1,7 +1,8 @@
 import { Static } from "@sinclair/typebox";
 import { emailPattern, SafeType } from "../utils/typebox.js";
 import { profilePictureSchema } from "./public.js";
-import { artistSchema } from "./artist.js";
+import { artistSchema } from "./spotify.js";
+import { TypeCompiler } from "@sinclair/typebox/compiler";
 
 
 export const userSchema = SafeType.Object(
@@ -108,3 +109,14 @@ export type jwtTokenReturn = Static<typeof jwtTokenSchema>;
 export type User = Static<typeof userSchema>;
 
 export type FriendType = Static<typeof friendSchema>;
+
+export const spotifyCallbackSchema = SafeType.Pick(userSchema, [
+    "spotifyId",
+    "username",
+    "email",
+]);
+
+export const spotifyCallbackGuard = TypeCompiler.Compile(spotifyCallbackSchema);
+
+export type spotifyCallback = Static<typeof spotifyCallbackSchema>;
+

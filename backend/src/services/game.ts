@@ -1,6 +1,9 @@
 import { getSeveralTracks, TrackObject } from "../apiCodegen/spotify.js";
 import { getGuessSongFromUser } from "../queries/dml.queries.js";
-import { guessSongHints, GuessSongHints } from "../types/guessSong.js";
+import {
+    GuessSongHints,
+    GuessSongGameInformation,
+} from "../types/guessSong.js";
 import { runPreparedQuery } from "./database.js";
 
 export function checkSongGuess(opts: {
@@ -15,14 +18,15 @@ export function checkSongGuess(opts: {
             value.toLowerCase() === targetTrack.name?.[index]?.toLowerCase()
                 ? value
                 : "_"
-        );
+        )
+        .join("");
 
     return {
         isCorrectAlbum: targetTrack.album?.id === trackToCompare.album?.id,
         guessedTrackAlbumName: trackToCompare.album?.name!,
         isCorrectTrack: targetTrack.id === trackToCompare.id,
         guessedTrackSpotifyId: trackToCompare.id!,
-        guessedTrackNameHint: titleHint?.join("") ?? "",
+        guessedTrackNameHint: titleHint ?? "",
         guessedTrackName: trackToCompare.name!,
         guessedTrackAlbumImages: trackToCompare.album?.images ?? [],
     };
@@ -34,7 +38,7 @@ type GuessSongResult =
     | { status: "RepeatedTrack" }
     | { status: "TrackNotFound" }
     | { status: "AlreadyWon" }
-    | { status: "Success"; hints: GuessSongHints[] };
+    | { status: "Success"; hints: GuessSongGameInformation };
 
 export async function getGuessSongInformation(opts: {
     selfId: number;
@@ -75,7 +79,7 @@ export async function getGuessSongInformation(opts: {
 
     const hiddenTrack = tracksInfo.tracks.find((t) => t.id === hiddenTrackId);
 
-    const output: GuessSongHints[] = [];
+    const attemptHints: GuessSongHints[] = [];
 
     for (const id of idsExceptHidden) {
         const trackToCompare = tracksInfo.tracks.find((t) => t.id === id);
@@ -84,7 +88,7 @@ export async function getGuessSongInformation(opts: {
             return { status: "TrackNotFound" };
         }
 
-        output.push(
+        attemptHints.push(
             checkSongGuess({
                 targetTrack: hiddenTrack,
                 trackToCompare,
@@ -96,11 +100,34 @@ export async function getGuessSongInformation(opts: {
     // more attempts made for this game.
     if (
         opts.newGuess === undefined &&
-        output.some((val) => val.isCorrectTrack) &&
-        !output[output.length - 1].isCorrectTrack
+        attemptHints.some((val) => val.isCorrectTrack) &&
+        !attemptHints[attemptHints.length - 1].isCorrectTrack
     ) {
         return { status: "AlreadyWon" };
     }
 
-    return { status: "Success", hints: output };
+    const albumInfo = hiddenTrack?.album;
+
+    const albumHints: Partial<GuessSongGameInformation["album"]> = {
+        images: albumInfo?.images,
+    };
+
+    if (attemptHints.some((a) => a.isCorrectAlbum)) {
+        albumHints.name = albumInfo?.name;
+    }
+
+    return {
+        status: "Success",
+        hints: {
+            attempts: attemptHints,
+            album: albumHints,
+            artists:
+                hiddenTrack?.artists?.map((artist) => {
+                    return {
+                        name: artist.name!,
+                        spotifyArtistId: artist.id!,
+                    };
+                }) ?? [],
+        },
+    };
 }

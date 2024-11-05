@@ -1,7 +1,7 @@
 import { Static } from "@sinclair/typebox";
 import { SafeType } from "../utils/typebox.js";
 import { userSchema } from "./user.js";
-import { artistSchema } from "./artist.js";
+import { artistSchema } from "./spotify.js";
 
 export const gameModes = ["Guess Line", "Guess Song"] as const;
 

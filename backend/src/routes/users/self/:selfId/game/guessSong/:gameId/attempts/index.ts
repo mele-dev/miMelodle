@@ -4,8 +4,9 @@ import { MelodleTagName } from "../../../../../../../../plugins/swagger.js";
 import { decorators } from "../../../../../../../../services/decorators.js";
 import { ParamsSchema } from "../../../../../../../../types/params.js";
 import {
-    commonGuessSongProperties,
-    guessSongHintsList,
+    commonGuessSongPropertiesSchema,
+    guessSongGameInformationSchema,
+    guessSongHintsListSchema,
 } from "../../../../../../../../types/guessSong.js";
 import { runPreparedQuery } from "../../../../../../../../services/database.js";
 import { sendError, sendOk } from "../../../../../../../../utils/reply.js";
@@ -18,11 +19,11 @@ export default (async (fastify) => {
         onRequest: [decorators.authenticateSelf()],
         schema: {
             params: SafeType.Pick(ParamsSchema, ["selfId", "gameId"]),
-            body: SafeType.Pick(commonGuessSongProperties, [
+            body: SafeType.Pick(commonGuessSongPropertiesSchema, [
                 "guessedTrackSpotifyId",
             ]),
             response: {
-                201: guessSongHintsList,
+                201: guessSongGameInformationSchema,
                 ...SafeType.CreateErrors([
                     "internalServerError",
                     "unauthorized",

@@ -1,16 +1,8 @@
 import { Static } from "@sinclair/typebox";
 import { SafeType } from "../utils/typebox.js";
-import { ImageObject } from "../apiCodegen/spotify.js";
+import { albumSchema, artistSchema, spotifyImagesSchema } from "./spotify.js";
 
-export const spotifyImageSchema = SafeType.Object({
-    url: SafeType.String(),
-    width: SafeType.Union([SafeType.Integer(), SafeType.Null()]),
-    height: SafeType.Union([SafeType.Integer(), SafeType.Null()]),
-} satisfies { [K in keyof ImageObject]: unknown });
-
-export const spotifyImagesSchema = SafeType.Array(spotifyImageSchema);
-
-export const commonGuessSongProperties = SafeType.Object({
+export const commonGuessSongPropertiesSchema = SafeType.Object({
     artistSpotifyId: SafeType.String(),
     artistsSpotifyIds: SafeType.Array(SafeType.String()),
     guessedTrackSpotifyId: SafeType.String(),
@@ -27,28 +19,42 @@ export const commonGuessSongProperties = SafeType.Object({
     trackSnippet: SafeType.Optional(SafeType.String()),
     guessedTrackAlbumName: SafeType.String(),
     guessedTrackAlbumImages: spotifyImagesSchema,
-    artistImages: spotifyImageSchema,
+    artistImages: spotifyImagesSchema,
 });
 
-export const guessSongHints = SafeType.Pick(commonGuessSongProperties, [
-    "trackSnippet",
-    "isCorrectAlbum",
-    "isCorrectTrack",
-    "guessedTrackNameHint",
-    "guessedTrackSpotifyId",
-    "guessedTrackName",
-    "guessedTrackAlbumName",
-    "guessedTrackAlbumImages",
-]);
+export const guessSongHintsSchema = SafeType.Pick(
+    commonGuessSongPropertiesSchema,
+    [
+        "trackSnippet",
+        "isCorrectAlbum",
+        "isCorrectTrack",
+        "guessedTrackNameHint",
+        "guessedTrackSpotifyId",
+        "guessedTrackName",
+        "guessedTrackAlbumName",
+        "guessedTrackAlbumImages",
+    ]
+);
 
-export const guessSongHintsList = SafeType.Array(guessSongHints, {
+export const guessSongHintsListSchema = SafeType.Array(guessSongHintsSchema, {
     description:
         "Hints for every attempt made thus far, ordered from oldest to newest.",
 });
+export const guessSongGameInformationSchema = SafeType.Object({
+    attempts: guessSongHintsListSchema,
+    artists: SafeType.Array(SafeType.Pick(artistSchema, [
+        "spotifyArtistId",
+        "name",
+    ])),
+    album: SafeType.Optional(
+        SafeType.Partial(
+            SafeType.Pick(albumSchema, ["images", "name", "genres", "label"])
+        )
+    ),
+});
 
-export const guessSongGameInformation = SafeType.Object({
-    attempts: guessSongHintsList,
-    artistId: SafeType.String(),
-})
+export type GuessSongGameInformation = Static<
+    typeof guessSongGameInformationSchema
+>;
 
-export type GuessSongHints = Static<typeof guessSongHints>;
+export type GuessSongHints = Static<typeof guessSongHintsSchema>;
