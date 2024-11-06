@@ -1,10 +1,11 @@
 import { Component, inject, OnInit } from "@angular/core";
 import { HomeArtistsService } from "../../services/home-artists.service";
+import {HlmScrollAreaComponent} from '@spartan-ng/ui-scrollarea-helm';
 
 @Component({
     selector: "app-collection-artist-card",
     standalone: true,
-    imports: [],
+    imports: [HlmScrollAreaComponent],
     templateUrl: "./collection-artist-card.component.html",
 })
 export class CollectionArtistCardComponent implements OnInit {
@@ -14,6 +15,6 @@ export class CollectionArtistCardComponent implements OnInit {
     }
 
     onClick(){
-      // logica para comenzar el juego (llamar al endpoint ?)
+      // logica para comenzar el juego (llamar al endpoint)
     }
 }

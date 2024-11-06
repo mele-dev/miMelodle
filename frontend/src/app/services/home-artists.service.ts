@@ -16,6 +16,7 @@ export class HomeArtistsService {
 
     public artists = this._artists.asReadonly();
     private _localStorage = inject(LocalStorageService);
+
     public async loadData() {
         const userId = this._localStorage.getItem("userInfo")?.id;
 
@@ -24,7 +25,21 @@ export class HomeArtistsService {
         }
 
         const data = await getUsersSelfSelfIdArtists(userId);
-        console.log(`LLEGA JUANCHO?? = ${data}`)
+
+        this._artists.set(data.data as Artist[]);
+    }
+
+    public async loadArtistsFromSpotify(){
+        const userId = this._localStorage.getItem("userInfo")?.id;
+        const spotifyId = this._localStorage.getItem("userInfo");
+
+        if (userId === undefined) {
+          return;
+        }
+
+        if(true){}
+        
+        const data = await getUsersSelfSelfIdArtists(userId);
         this._artists.set(data.data as Artist[]);
     }
 }

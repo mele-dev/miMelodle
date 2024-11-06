@@ -39,4 +39,5 @@ import { CollectionArtistCardComponent } from "../components/artist-card/collect
 ],
     templateUrl: "./home.page.html",
 })
-export class HomePage {}
+export class HomePage {
+}

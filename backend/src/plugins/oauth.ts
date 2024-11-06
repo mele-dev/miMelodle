@@ -41,6 +41,7 @@ export default fastifyPlugin(async (fastify) => {
         name: "spotifyRegister",
         scope: [
             "user-read-email",
+            "user-library-read"
         ] satisfies SpotifyScopes[],
         pkce: "S256",
         credentials: {
