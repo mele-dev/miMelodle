@@ -40,6 +40,7 @@ export default (async (fastify, _opts) => {
                                 "externalUrls",
                                 "genres",
                                 "followers",
+                                "spotifyArtistId"
                             ]).properties,
                         }),
                     })
@@ -72,6 +73,7 @@ export default (async (fastify, _opts) => {
                                 ?.genres as string[],
                             followers: artistData.artists[index]?.followers
                                 ?.total as number,
+                            spotifyArtistId: artistData.artists[index]?.id as string
                         },
                     };
                 });

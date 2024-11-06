@@ -89,7 +89,7 @@ export default (async (fastify) => {
                 ]),
             },
             summary:
-                "Add an artist to user's home (for not Spotify users mostly).",
+                "Add an artist to user's home page (for non-Spotify users mostly).",
             description: undefined,
             tags: ["Artists"] satisfies MelodleTagName[],
         },
