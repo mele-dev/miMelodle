@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from "@angular/core";
+import { Component, inject, signal } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import { SafeRoutingService } from "../../services/safe-routing.service";
 import { LanguagePickerComponent } from "../language-picker/language-picker.component";

@@ -10,6 +10,7 @@ import { authCallbackGuard } from "./guards/auth-callback.guard";
 import { AppLayoutPage } from "./app-layout/app-layout.page";
 import { authGuard } from "./guards/auth.guard";
 import { HomePage } from "./home/home.page";
+import { CreateGamePage } from "./pages/game/create-game/create-game.page";
 
 export const routes = [
     {
@@ -62,11 +63,15 @@ export const routes = [
                 component: TODOComponent,
             },
             {
-                path: "melodle/guess_line/:gameId",
+                path: "game",
+                component: CreateGamePage,
+            },
+            {
+                path: "game/guess_line/:gameId",
                 component: TODOComponent,
             },
             {
-                path: "melodle/guess_song/:gameId",
+                path: "game/guess_song/:gameId",
                 component: TODOComponent,
             },
         ],

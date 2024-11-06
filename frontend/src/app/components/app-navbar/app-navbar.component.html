@@ -2,11 +2,12 @@
 <nav class="w-full text-xl backdrop-blur-lg">
     <div class="container flex w-full items-baseline justify-between px-4 py-2">
         <div class="flex flex-grow items-baseline gap-4">
-            <button
-                class="rounded-2xl border-2 border-white bg-fuchsia-500 px-4 py-2 text-2xl font-extrabold transition-all hover:scale-110"
+            <a
+                class="cursor-pointer rounded-2xl border-2 border-white bg-fuchsia-500 px-4 py-2 text-2xl font-extrabold transition-all hover:scale-110"
+                [routerLink]="this.safeRouter.createLink('/app/game')"
             >
                 {{ this.dict().play }}
-            </button>
+            </a>
             <div class="flex gap-3 text-xl">
                 <a [routerLink]="this.safeRouter.createLink('/app/home')">{{
                     this.dict().home
