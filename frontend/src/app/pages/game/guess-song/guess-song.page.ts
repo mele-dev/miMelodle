@@ -1,4 +1,4 @@
-import { JsonPipe } from "@angular/common";
+import { CommonModule, JsonPipe } from "@angular/common";
 import {
     Component,
     computed,
@@ -17,7 +17,7 @@ import { SelfService } from "../../../services/self.service";
 @Component({
     selector: "app-guess-song",
     standalone: true,
-    imports: [JsonPipe],
+    imports: [JsonPipe, CommonModule],
     templateUrl: "./guess-song.page.html",
 })
 export class GuessSongPage implements OnInit {
@@ -39,6 +39,19 @@ export class GuessSongPage implements OnInit {
     gameInfo = signal<
         GetUsersSelfSelfIdGameGuessSongGameIdResult["data"] | undefined
     >(undefined);
+
+    hasWon = computed(
+        () => this.gameInfo()?.attempts.some((a) => a.isCorrectTrack) ?? false
+    );
+
+    artistsString = computed(() => {
+        const info = this.gameInfo();
+        if (info === undefined) {
+            return undefined;
+        }
+
+        return info.artists.map((a) => a.name).join(", ");
+    });
 
     async ngOnInit() {
         const self = await this._self.waitForUserInfoSnapshot();

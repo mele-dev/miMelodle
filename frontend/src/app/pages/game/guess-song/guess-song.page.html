@@ -1,6 +1,63 @@
 @if (this.gameInfo()) {
-    <div>
-
+<header
+    class="my-5 h-48 w-full overflow-hidden rounded-2xl bg-cover bg-center"
+    style="background-image: url({{ this.gameInfo()!.album!.images?.[0]?.url }});"
+>
+    <div
+        class="flex h-full w-full flex-row justify-between gap-6 p-6 backdrop-blur-2xl"
+    >
+        <!-- TODO: Get artist image, not album image. -->
+        <img
+            [src]="this.gameInfo()!.album?.images?.[0]?.url"
+            alt=""
+            class="aspect-square h-full rounded-xl shadow"
+        />
+        <div class="flex w-full flex-col justify-center gap-4">
+            <div
+                class="h-16 w-full rounded-xl bg-muted/80 shadow grayscale backdrop-blur"
+            ></div>
+            <span class="text-3xl drop-shadow"
+                >By {{ this.artistsString() }}</span
+            >
+        </div>
     </div>
-<span>{{this.gameInfo() | json}}</span>
+</header>
+<section class="my-5 mb-20 flex flex-col gap-4 px-6">
+    @for (attempt of this.gameInfo()!.attempts; track
+    attempt.guessedTrackSpotifyId) {
+    <article
+        class="xl h-48 w-full overflow-hidden rounded-2xl bg-cover bg-center"
+        style="background-image: url({{ attempt.guessedTrackAlbumImages[0].url }});"
+    >
+        <div
+            class="flex h-full w-full flex-row justify-between gap-6 p-6 backdrop-blur-md"
+            [ngClass]="{
+                'backdrop-grayscale': !attempt.isCorrectAlbum
+            }"
+        >
+            <img
+                [src]="attempt.guessedTrackAlbumImages[0].url"
+                alt=""
+                class="aspect-square h-full rounded-xl shadow"
+            />
+            <div class="flex w-full flex-col justify-center gap-4">
+                <h3 class="font-mono text-5xl flex flex-row gap-2">
+                    @for (char of attempt.guessedTrackNameHint; track char) {
+                    <span
+                        [ngClass]="{
+            'drop-shadow border p-2 underlinechar w-[2ch] text-center rounded-md': true,
+            'bg-emerald-500/50': char !== '_'
+            }"
+                        >{{ attempt.guessedTrackName[$index]}}</span
+                    >
+                    }
+                </h3>
+                <span class="text-3xl drop-shadow">
+                    From {{ attempt.guessedTrackAlbumName }}</span
+                >
+            </div>
+        </div>
+    </article>
+    }
+</section>
 }

@@ -6,7 +6,6 @@ import { ParamsSchema } from "../../../../../../../../types/params.js";
 import {
     commonGuessSongPropertiesSchema,
     guessSongGameInformationSchema,
-    guessSongHintsListSchema,
 } from "../../../../../../../../types/guessSong.js";
 import { runPreparedQuery } from "../../../../../../../../services/database.js";
 import { sendError, sendOk } from "../../../../../../../../utils/reply.js";
