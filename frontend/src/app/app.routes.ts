@@ -11,6 +11,8 @@ import { AppLayoutPage } from "./app-layout/app-layout.page";
 import { authGuard } from "./guards/auth.guard";
 import { HomePage } from "./home/home.page";
 import { CreateGamePage } from "./pages/game/create-game/create-game.page";
+import { GuessLinePage } from "./pages/game/guess-line/guess-line.page";
+import { GuessSongPage } from "./pages/game/guess-song/guess-song.page";
 
 export const routes = [
     {
@@ -68,11 +70,11 @@ export const routes = [
             },
             {
                 path: "game/guess_line/:gameId",
-                component: TODOComponent,
+                component: GuessLinePage,
             },
             {
                 path: "game/guess_song/:gameId",
-                component: TODOComponent,
+                component: GuessSongPage,
             },
         ],
     },

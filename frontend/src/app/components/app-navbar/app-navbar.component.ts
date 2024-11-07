@@ -52,6 +52,6 @@ export class AppNavbarComponent {
 
     logOut() {
         this._localStorage.removeItem("userInfo");
-        this.safeRouter.navigate(["/auth"]);
+        this.safeRouter.navigate("/auth");
     }
 }

@@ -1,6 +1,6 @@
-<!-- TODO: MAKE THIS PRETTY; I WAS WORKING ON THE GRADIENT. -->
+<!-- FIXME: Translate page -->
 <div
-    class="mx-auto mt-10 flex w-full max-w-lg flex-col items-start gap-5 rounded-xl bg-gradient-to-b from-neutral-800 to-80% to-zinc-900 px-5 py-5"
+    class="mx-auto mt-10 flex w-full max-w-lg flex-col items-start gap-5 rounded-xl bg-gradient-to-b from-neutral-800 to-zinc-900 to-80% p-10"
 >
     <div class="flex w-full items-baseline justify-between">
         <h1
@@ -11,9 +11,9 @@
                 <span
                     class="inline-block transition-transform duration-500"
                     [ngClass]="{
-        '': this.selected === 'line!',
-        'translate-y-[150%]': this.selected === 'song!',
-        }"
+                        '': this.selected === 'line!',
+                        'translate-y-[150%]': this.selected === 'song!',
+                    }"
                 >
                     <span
                         class="inline-block w-0"
@@ -42,12 +42,29 @@
         </button>
     </div>
     <div class="w-full">
-        <h2 class="text-lg font-bold">From these artists</h2>
-        <hlm-scroll-area
-            class="h-96 w-full rounded p-2"
-        >
-            <span>hi</span>
+        <div class="flex flex-row items-baseline justify-between">
+            <h2 class="text-lg font-bold">From these artists</h2>
+            <button type="button" hlmBtn variant="ghost" size="icon">
+                <hlm-icon name="lucidePlus"></hlm-icon>
+            </button>
+        </div>
+        <hlm-scroll-area class="gradient-mask-t-0 h-[26rem] w-full">
+            <div class="flex flex-col gap-2 rounded">
+                @for (artist of this.artists(); track artist.spotifyArtistId) {
+                <app-artist-list-item
+                    [artist]="artist"
+                    (destroy)="this.remove($event)"
+                ></app-artist-list-item>
+                }
+            </div>
         </hlm-scroll-area>
     </div>
-    <button type="button">Play!</button>
+    <button
+        type="button"
+        appCrFancyButtonStyles
+        [disabled]="this.artists().length === 0"
+        (click)="this.submit()"
+    >
+        Play!
+    </button>
 </div>

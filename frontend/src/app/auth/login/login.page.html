@@ -1,4 +1,8 @@
-<form (ngSubmit)=this.onSubmit() [formGroup]="person" class="flex flex-col justify-center">
+<form
+    (ngSubmit)="this.onSubmit()"
+    [formGroup]="person"
+    class="flex flex-col justify-center"
+>
     <h1 class="font-sans">
         <span class="mb-2 block">{{ dict().welcomeTo }}</span>
         <span class="block text-8xl">
@@ -42,8 +46,8 @@
         </div>
         <button
             type="submit"
+            appCrFancyButtonStyles
             [disabled]="!this.person.valid"
-            class="w-full shadow-xl shadow-fuchsia-500/50 disabled:shadow-none scale-105 rounded-lg bg-fuchsia-500 p-2 px-4 text-lg font-extrabold text-neutral-800 transition-all disabled:scale-100 disabled:cursor-not-allowed disabled:hover:bg-neutral-800 disabled:hover:text-neutral-200"
         >
             {{ dict().login }}
         </button>
