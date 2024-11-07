@@ -53,6 +53,7 @@
     "ngx-sonner": "^2.0.0",
     "rxjs": "~7.8.0",
     "tailwind-gradient-mask-image": "^1.2.0",
+    "ts-essentials": "^10.0.3",
     "tslib": "^2.3.0",
     "zod": "^3.23.8",
     "zone.js": "~0.14.10"

@@ -5,7 +5,6 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './guess-line.page.html',
-  styleUrl: './guess-line.page.css'
 })
 export class GuessLinePage {
 
