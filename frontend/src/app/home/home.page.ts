@@ -17,7 +17,7 @@ import {
 } from "@spartan-ng/ui-dialog-brain";
 import { HlmLabelDirective } from "@spartan-ng/ui-label-helm";
 import { HlmInputDirective } from "@spartan-ng/ui-input-helm";
-import { CollectionArtistCardComponent } from "../components/artist-card/collection-artist-card.component";
+import { CollectionArtistCardComponent } from "../components/collection-artist-card/collection-artist-card.component";
 
 @Component({
     selector: "app-home",
