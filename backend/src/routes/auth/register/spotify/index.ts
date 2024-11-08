@@ -4,14 +4,12 @@ import { MelodleTagName } from "../../../../plugins/swagger.js";
 import { decorators } from "../../../../services/decorators.js";
 import * as spotifyApi from "../../../../apiCodegen/spotify.js";
 import { runPreparedQuery } from "../../../../services/database.js";
-import { insertUserSpotify, loginUserSpotify } from "../../../../queries/dml.queries.js";
+import { insertUserSpotify } from "../../../../queries/dml.queries.js";
 import {
     JwtTokenContent,
-} from "../../../../types/user.js";
-import {
     spotifyCallback,
     spotifyCallbackGuard,
-} from "../../../../types/spotify.js";
+} from "../../../../types/user.js";
 import { frontendPaths } from "../../../../services/urls.js";
 
 export default (async (fastify) => {
@@ -43,9 +41,9 @@ export default (async (fastify) => {
             });
 
             const parsedUserInfo = spotifyCallbackGuard.Decode({
-                email: userInfo.data.email,
-                username: userInfo.data.display_name,
-                spotifyId: userInfo.data.id,
+                email: userInfo.email,
+                username: userInfo.display_name,
+                spotifyId: userInfo.id,
             } satisfies Partial<spotifyCallback>);
 
             // TODO: Auto-generate username so that it cannot collide.

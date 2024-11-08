@@ -42,7 +42,7 @@ const friendsRoutes: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
             );
 
             const output = result.map((row) => {
-                if (row.userId == request.params.selfId) {
+                if (row.userId === request.params.selfId) {
                     return {
                         id: row.user2Id,
                         name: row.name2,

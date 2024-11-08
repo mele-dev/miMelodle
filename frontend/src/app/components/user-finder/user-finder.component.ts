@@ -27,6 +27,14 @@ import {
 } from "@spartan-ng/ui-menu-helm";
 import { BrnMenuTriggerDirective } from "@spartan-ng/ui-menu-brain";
 import { FriendsService } from "../../services/friends.service";
+import { BlockingService } from "../../services/blocking.service";
+import { HlmScrollAreaModule } from "@spartan-ng/ui-scrollarea-helm";
+import { HlmIconModule } from "@spartan-ng/ui-icon-helm";
+import { provideIcons } from "@ng-icons/core";
+import { lucideMoreHorizontal } from "@ng-icons/lucide";
+import { LocalStorageService } from "../../services/local-storage.service";
+import { SelfService } from "../../services/self.service";
+import { HlmPaginationModule } from "@spartan-ng/ui-pagination-helm";
 
 type SearchedUser = GetUsersSearch200["matches"][number];
 
@@ -40,7 +48,6 @@ type SearchedUser = GetUsersSearch200["matches"][number];
         BrnTableModule,
         HlmTableModule,
         HlmButtonDirective,
-
         HlmMenuComponent,
         HlmMenuGroupComponent,
         HlmMenuItemDirective,
@@ -51,7 +58,10 @@ type SearchedUser = GetUsersSearch200["matches"][number];
         HlmMenuShortcutComponent,
         HlmSubMenuComponent,
         BrnMenuTriggerDirective,
+        HlmScrollAreaModule,
+        HlmIconModule,
     ],
+    providers: [provideIcons({ lucideMoreHorizontal })],
     templateUrl: "./user-finder.component.html",
 })
 export class UserFinderComponent {
@@ -61,11 +71,16 @@ export class UserFinderComponent {
     private _icons = inject(IconCacheService);
     sanitizer = inject(DomSanitizer);
     private _friends = inject(FriendsService);
+    private _blocking = inject(BlockingService);
+    private _self = inject(SelfService);
 
     constructor() {
         effect(
             async () => {
+                // TODO: Change dropdown menu behaviour depending on whether
+                // they are a friend or not.
                 const filter = this.userFilter();
+                const self = await this._self.waitForUserInfoSnapshot();
 
                 if (filter.length < getUsersSearchQueryQueryMin) {
                     this.matchedUsers.set([]);
@@ -73,23 +88,27 @@ export class UserFinderComponent {
                 }
 
                 try {
-                    const result = await getUsersSearch({
+                    const response = await getUsersSearch({
                         query: filter,
                         page: 0,
                         pageSize: getUsersSearchQueryPageSizeMax,
                     });
 
-                    const resultWithIcons = await Promise.all(
-                        result.data.matches.map(async (match) => ({
-                            ...match,
-                            svg:
-                                (await this._icons.getProfilePicture(
-                                    match.profilePictureFilename
-                                )) ?? "",
-                        }))
-                    );
+                    const processedResponse = response.data.matches
+                        // Remove self
+                        .filter((match) => match.id !== self.id)
+                        // Add icons
+                        .map(async (match) => {
+                            return {
+                                ...match,
+                                svg:
+                                    (await this._icons.getProfilePicture(
+                                        match.profilePictureFilename
+                                    )) ?? "",
+                            };
+                        });
 
-                    this.matchedUsers.set(resultWithIcons);
+                    this.matchedUsers.set(await Promise.all(processedResponse));
                 } catch (e) {
                     console.error("Error while searching users:", e);
                     toast(this.dict().searchUsersError);
@@ -106,5 +125,9 @@ export class UserFinderComponent {
 
     async deleteFriendship(user: SearchedUser) {
         return await this._friends.deleteFriend(user.id);
+    }
+
+    async block(user: SearchedUser){
+        return await this._blocking.blockUser(user.id);
     }
 }

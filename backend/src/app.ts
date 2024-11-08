@@ -1,8 +1,7 @@
 import * as path from "path";
 import AutoLoad, { AutoloadPluginOptions } from "@fastify/autoload";
-import { FastifyPluginAsync, FastifyPluginCallback } from "fastify";
+import { FastifyPluginAsync } from "fastify";
 import { fileURLToPath } from "url";
-import schemaReferences from "./types/schemaReferences.js";
 import plugins from "./plugins/plugins.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -19,12 +18,6 @@ const app: FastifyPluginAsync<AppOptions> = async (
     fastify,
     opts
 ): Promise<void> => {
-
-    // Manually load almost everything
-    for (const schema of schemaReferences) {
-        fastify.addSchema(schema);
-    }
-
     for (const plugin of plugins) {
         fastify.register(plugin);
     }

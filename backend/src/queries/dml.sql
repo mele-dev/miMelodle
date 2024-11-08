@@ -133,29 +133,42 @@ SELECT status
     OR (f."userId" = :targetUserId! AND f."user2Id" = :selfId!);
 
 /* @name blockUser */
+     WITH target AS (
+         SELECT *
+           FROM users u
+          WHERE u.id = :targetUserId!
+          LIMIT 1
+     )
    INSERT
      INTO blocks("userWhoBlocksId", "blockedUserId")
    VALUES (:selfId!, :targetUserId!)
-RETURNING *;
+RETURNING (
+    SELECT username
+      FROM target
+) AS "targetUsername!";
 
 /* @name unblockUser */
-WITH target AS (SELECT *
-                FROM users u
-                WHERE u.id = :targetUserId!
-                LIMIT 1)
-DELETE
-FROM blocks
-WHERE "userWhoBlocksId" = :selfId!
-  AND "blockedUserId" = :targetUserId!
-RETURNING (SELECT username
-           FROM target) AS "targetUsername!";
+     WITH target AS (
+         SELECT *
+           FROM users u
+          WHERE u.id = :targetUserId!
+          LIMIT 1
+     )
+   DELETE
+     FROM blocks
+    WHERE "userWhoBlocksId" = :selfId!
+      AND "blockedUserId" = :targetUserId!
+RETURNING (
+    SELECT username
+      FROM target
+) AS "targetUsername!";
 
 /* @name getBlockedUsers */
-SELECT u.*, pP.filename as "profilePictureFilename"
-FROM users u
-         JOIN blocks b ON u.id = b."blockedUserId"
-         inner join public."profilePictures" pP on pP.id = u."profilePictureId"
-WHERE b."userWhoBlocksId" = :selfId;
+SELECT u.*, pp.filename AS "profilePictureFilename"
+  FROM users u
+           JOIN blocks b ON u.id = b."blockedUserId"
+           INNER JOIN public."profilePictures" pp ON pp.id = u."profilePictureId"
+ WHERE b."userWhoBlocksId" = :selfId;
 
 /* @name getRequestReceiver */
 SELECT "user2Id"
@@ -205,3 +218,51 @@ SELECT u.*, pp.filename AS "profilePictureFilename", CEIL(COUNT(*) OVER () / :pa
            INNER JOIN "profilePictures" pp ON u."profilePictureId" = pp.id
  ORDER BY "rank!" DESC, levenshtein(u.username, :username!)
  LIMIT :pageSize! OFFSET :pageSize!::INT * :page!::INT;
+
+/* @name createGuessLineGame */
+  WITH "newestGame"    AS (
+      SELECT * FROM "guessSongGames" gsg WHERE "userId" = :selfId! ORDER BY gsg."createdAt" DESC LIMIT 1
+  ),
+       "canCreateGame" AS (
+      SELECT CASE
+                 WHEN :allowMultipleGamesADay! THEN TRUE
+                 WHEN (
+                          SELECT "createdAt"::DATE
+                            FROM "newestGame"
+                      ) != CURRENT_DATE        THEN TRUE
+                 ELSE FALSE
+             END AS "canCreate"
+  ),
+       "insertGame"
+                       AS ( INSERT INTO "guessSongGames" ("userId", "createdAt", "spotifyTrackId") SELECT :selfId!, NOW(), :spotifyTrackId!
+                                                                                                    WHERE EXISTS (
+                                                                                                        SELECT 1
+                                                                                                          FROM "canCreateGame"
+                                                                                                         WHERE "canCreate" = TRUE
+                                                                                                    ) RETURNING id
+  )
+SELECT (
+    SELECT "canCreate"
+      FROM "canCreateGame"
+)
+     , "insertGame".id
+  FROM "canCreateGame"
+           LEFT JOIN "insertGame" ON TRUE;
+
+/* @name getGuessSongFromUser */
+  WITH "game" AS (
+      SELECT *
+        FROM "guessSongGames" gsg
+       WHERE gsg."userId" = :selfId! AND gsg.id = :gameId!
+       ORDER BY gsg."createdAt"
+       LIMIT 6
+  )
+SELECT *
+  FROM "game"
+           LEFT JOIN public."guessSongAttempts" gsa ON "game".id = gsa."gameId";
+
+/* @name insertGuessSongAttempt */
+   INSERT
+     INTO "guessSongAttempts" ("guessedAt", "guessedSpotifyTrackId", "gameId")
+   VALUES (NOW(), :trackId!, :gameId!)
+RETURNING *;

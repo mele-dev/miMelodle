@@ -34,55 +34,6 @@ export const getResponse = zod.object({
 });
 
 /**
- * @summary Get information about an artist
- */
-export const getArtistsArtistMusixMatchIdParams = zod.object({
-    artistMusixMatchId: zod.string(),
-});
-
-export const getArtistsArtistMusixMatchIdResponse = zod.object({
-    name: zod.string(),
-    musixmatchArtistId: zod.string(),
-    imageUrl: zod.string().optional(),
-});
-
-/**
- * Search for artists based on the query provided in the querystring.
- * @summary Search for artists by name
- */
-export const getArtistsArtistNameQueryQueryMax = 200;
-
-export const getArtistsArtistNameQueryParams = zod.object({
-    query: zod.string().max(getArtistsArtistNameQueryQueryMax),
-});
-
-export const getArtistsArtistNameResponseItem = zod.object({
-    musixmatchArtistId: zod.string(),
-    name: zod.string(),
-    imageUrl: zod.string().optional(),
-});
-export const getArtistsArtistNameResponse = zod.array(
-    getArtistsArtistNameResponseItem
-);
-
-/**
- * We use a custom algorithm to determine which artists are most relevant, based off the query in the querystring.
- * @summary Search for available artists.
- */
-export const getArtistsSearchQueryQueryMax = 500;
-
-export const getArtistsSearchQueryParams = zod.object({
-    query: zod.string().max(getArtistsSearchQueryQueryMax),
-});
-
-export const getArtistsSearchResponseItem = zod.object({
-    musixmatchArtistId: zod.string(),
-    name: zod.string(),
-    imageUrl: zod.string().optional(),
-});
-export const getArtistsSearchResponse = zod.array(getArtistsSearchResponseItem);
-
-/**
  * @summary Get current state of application.
  */
 export const getDebugSnapshotResponseUsersItemNameMax = 25;
@@ -217,7 +168,7 @@ export const getLeaderboardsResponse = zod.object({
  * @summary Get lyrics for a specific track
  */
 export const getLyricsTrackMusixMatchIdParams = zod.object({
-    trackMusixMatchId: zod.string(),
+    trackMusixMatchId: zod.number(),
 });
 
 export const getLyricsTrackMusixMatchIdResponse = zod.object({
@@ -228,6 +179,194 @@ export const getLyricsTrackMusixMatchIdResponse = zod.object({
     language: zod.string(),
     copyright: zod.string().optional(),
 });
+
+/**
+ * @summary Get information about an artist
+ */
+export const getArtistsArtistMusixMatchIdParams = zod.object({
+    artistMusixMatchId: zod.number(),
+});
+
+export const getArtistsArtistMusixMatchIdResponseRestrictedMin = 0;
+
+export const getArtistsArtistMusixMatchIdResponseRestrictedMax = 1;
+export const getArtistsArtistMusixMatchIdResponseManagedMin = 0;
+
+export const getArtistsArtistMusixMatchIdResponseManagedMax = 1;
+
+export const getArtistsArtistMusixMatchIdResponse = zod.object({
+    artist_id: zod.number(),
+    artist_fq_id: zod.string().optional(),
+    artist_mbid: zod.string().optional(),
+    artist_name: zod.string(),
+    artist_name_translation_list: zod.any(),
+    artist_comment: zod.string(),
+    artist_country: zod.string(),
+    artist_alias_list: zod.array(
+        zod.object({
+            artist_alias: zod.string(),
+        })
+    ),
+    artist_rating: zod.number(),
+    artist_twitter_url: zod.string().optional(),
+    artist_website_url: zod.string().optional(),
+    artist_tiktok_url: zod.string().optional(),
+    artist_facebook_url: zod.string().optional(),
+    artist_youtube_url: zod.string().optional(),
+    artist_vanity_url: zod.string().optional(),
+    artist_edit_url: zod.string().optional(),
+    artist_share_url: zod.string().optional(),
+    restricted: zod
+        .number()
+        .min(getArtistsArtistMusixMatchIdResponseRestrictedMin)
+        .max(getArtistsArtistMusixMatchIdResponseRestrictedMax)
+        .optional(),
+    managed: zod
+        .number()
+        .min(getArtistsArtistMusixMatchIdResponseManagedMin)
+        .max(getArtistsArtistMusixMatchIdResponseManagedMax)
+        .optional(),
+    updated_time: zod.string().datetime(),
+    externals_ids: zod
+        .object({
+            spotify: zod.array(zod.string()).optional(),
+            itunes: zod.array(zod.string()).optional(),
+            amazon_music: zod.array(zod.string()).optional(),
+        })
+        .optional(),
+    begin_date_year: zod.string(),
+    begin_date: zod.string(),
+    end_date_year: zod.string(),
+    end_date: zod.string(),
+    primary_genres: zod
+        .object({
+            music_genre_list: zod.array(
+                zod.object({
+                    music_genre: zod.object({
+                        music_genre_id: zod.number(),
+                        music_genre_parent_id: zod.number(),
+                        music_genre_name: zod.string(),
+                        music_genre_name_extended: zod.string(),
+                        music_genre_vanity: zod.string().or(zod.null()),
+                    }),
+                })
+            ),
+        })
+        .optional(),
+    secondary_genres: zod
+        .object({
+            music_genre_list: zod.array(
+                zod.object({
+                    music_genre: zod.object({
+                        music_genre_id: zod.number(),
+                        music_genre_parent_id: zod.number(),
+                        music_genre_name: zod.string(),
+                        music_genre_name_extended: zod.string(),
+                        music_genre_vanity: zod.string().or(zod.null()),
+                    }),
+                })
+            ),
+        })
+        .optional(),
+    artist_credits: zod.any(),
+});
+
+/**
+ * Search for artists based on the query provided in the querystring.
+ * @summary Search for artists by name
+ */
+export const getArtistsArtistNameQueryQueryMax = 200;
+
+export const getArtistsArtistNameQueryParams = zod.object({
+    query: zod.string().max(getArtistsArtistNameQueryQueryMax),
+});
+
+export const getArtistsArtistNameResponseRestrictedMin = 0;
+
+export const getArtistsArtistNameResponseRestrictedMax = 1;
+export const getArtistsArtistNameResponseManagedMin = 0;
+
+export const getArtistsArtistNameResponseManagedMax = 1;
+
+export const getArtistsArtistNameResponseItem = zod.object({
+    artist_id: zod.number(),
+    artist_fq_id: zod.string().optional(),
+    artist_mbid: zod.string().optional(),
+    artist_name: zod.string(),
+    artist_name_translation_list: zod.any(),
+    artist_comment: zod.string(),
+    artist_country: zod.string(),
+    artist_alias_list: zod.array(
+        zod.object({
+            artist_alias: zod.string(),
+        })
+    ),
+    artist_rating: zod.number(),
+    artist_twitter_url: zod.string().optional(),
+    artist_website_url: zod.string().optional(),
+    artist_tiktok_url: zod.string().optional(),
+    artist_facebook_url: zod.string().optional(),
+    artist_youtube_url: zod.string().optional(),
+    artist_vanity_url: zod.string().optional(),
+    artist_edit_url: zod.string().optional(),
+    artist_share_url: zod.string().optional(),
+    restricted: zod
+        .number()
+        .min(getArtistsArtistNameResponseRestrictedMin)
+        .max(getArtistsArtistNameResponseRestrictedMax)
+        .optional(),
+    managed: zod
+        .number()
+        .min(getArtistsArtistNameResponseManagedMin)
+        .max(getArtistsArtistNameResponseManagedMax)
+        .optional(),
+    updated_time: zod.string().datetime(),
+    externals_ids: zod
+        .object({
+            spotify: zod.array(zod.string()).optional(),
+            itunes: zod.array(zod.string()).optional(),
+            amazon_music: zod.array(zod.string()).optional(),
+        })
+        .optional(),
+    begin_date_year: zod.string(),
+    begin_date: zod.string(),
+    end_date_year: zod.string(),
+    end_date: zod.string(),
+    primary_genres: zod
+        .object({
+            music_genre_list: zod.array(
+                zod.object({
+                    music_genre: zod.object({
+                        music_genre_id: zod.number(),
+                        music_genre_parent_id: zod.number(),
+                        music_genre_name: zod.string(),
+                        music_genre_name_extended: zod.string(),
+                        music_genre_vanity: zod.string().or(zod.null()),
+                    }),
+                })
+            ),
+        })
+        .optional(),
+    secondary_genres: zod
+        .object({
+            music_genre_list: zod.array(
+                zod.object({
+                    music_genre: zod.object({
+                        music_genre_id: zod.number(),
+                        music_genre_parent_id: zod.number(),
+                        music_genre_name: zod.string(),
+                        music_genre_name_extended: zod.string(),
+                        music_genre_vanity: zod.string().or(zod.null()),
+                    }),
+                })
+            ),
+        })
+        .optional(),
+    artist_credits: zod.any(),
+});
+export const getArtistsArtistNameResponse = zod.array(
+    getArtistsArtistNameResponseItem
+);
 
 /**
  * Get the svg for a certain user icon. The selection of user icons is fixed.
@@ -283,7 +422,7 @@ export const getUsersUserIdResponse = zod.object({
 export const getUsersSearchQueryQueryMin = 3;
 
 export const getUsersSearchQueryQueryMax = 100;
-export const getUsersSearchQueryPageSizeMax = 100;
+export const getUsersSearchQueryPageSizeMax = 50;
 
 export const getUsersSearchQueryParams = zod.object({
     query: zod
@@ -407,6 +546,27 @@ export const postDebugFakeUsersBody = zod.object({
 });
 
 /**
+ * @summary Fetch a user's jwt token.
+ */
+export const postAuthLoginBodyPasswordMin = 3;
+
+export const postAuthLoginBodyPasswordMax = 20;
+export const postAuthLoginBodyEmailOrUsernameMax = 254;
+
+export const postAuthLoginBody = zod.object({
+    password: zod
+        .string()
+        .min(postAuthLoginBodyPasswordMin)
+        .max(postAuthLoginBodyPasswordMax),
+    emailOrUsername: zod.string().max(postAuthLoginBodyEmailOrUsernameMax),
+});
+
+export const postAuthLoginResponse = zod.object({
+    jwtToken: zod.string(),
+    id: zod.number(),
+});
+
+/**
  * Creates a new user with the given credentials if possible.
  * @summary Create a user.
  */
@@ -451,24 +611,61 @@ export const postAuthRegisterResponse = zod.object({
 });
 
 /**
- * @summary Fetch a user's jwt token.
+ * @summary Query information from spotify.
  */
-export const postAuthLoginBodyPasswordMin = 3;
+export const getSpotifySearchQueryPageSizeMax = 50;
+export const getSpotifySearchQueryQueryMin = 3;
 
-export const postAuthLoginBodyPasswordMax = 20;
-export const postAuthLoginBodyEmailOrUsernameMax = 254;
+export const getSpotifySearchQueryQueryMax = 100;
+export const getSpotifySearchQuerySpotifyQueryTypeItemRegExp = new RegExp(
+    "^(artist|track|album|playlist|show|episode|audiobook)$"
+);
 
-export const postAuthLoginBody = zod.object({
-    password: zod
+export const getSpotifySearchQueryParams = zod.object({
+    page: zod.number(),
+    pageSize: zod.number().min(1).max(getSpotifySearchQueryPageSizeMax),
+    query: zod
         .string()
-        .min(postAuthLoginBodyPasswordMin)
-        .max(postAuthLoginBodyPasswordMax),
-    emailOrUsername: zod.string().max(postAuthLoginBodyEmailOrUsernameMax),
+        .min(getSpotifySearchQueryQueryMin)
+        .max(getSpotifySearchQueryQueryMax),
+    spotifyQueryType: zod.array(
+        zod.string().regex(getSpotifySearchQuerySpotifyQueryTypeItemRegExp)
+    ),
 });
 
-export const postAuthLoginResponse = zod.object({
-    jwtToken: zod.string(),
-    id: zod.number(),
+export const getSpotifySearchResponse = zod.object({
+    artists: zod
+        .object({
+            limit: zod.number(),
+            href: zod.string(),
+            next: zod.string().or(zod.null()),
+            previous: zod.string().or(zod.null()),
+            total: zod.number(),
+            offset: zod.number(),
+            items: zod.array(
+                zod.object({
+                    name: zod.string(),
+                    spotifyArtistId: zod.string(),
+                    genres: zod.array(zod.string()),
+                    followers: zod.object({
+                        href: zod.string().or(zod.null()),
+                        total: zod.number(),
+                    }),
+                    popularity: zod.number(),
+                    images: zod.array(
+                        zod.object({
+                            url: zod.string(),
+                            width: zod.number().or(zod.null()),
+                            height: zod.number().or(zod.null()),
+                        })
+                    ),
+                    externalUrls: zod.object({
+                        spotify: zod.string(),
+                    }),
+                })
+            ),
+        })
+        .optional(),
 });
 
 /**
@@ -610,6 +807,37 @@ export const deleteUsersSelfSelfIdResponse = zod.object({
 });
 
 /**
+ * @summary Get every user currently blocked by self.
+ */
+export const getUsersSelfSelfIdBlockingParams = zod.object({
+    selfId: zod.number(),
+});
+
+export const getUsersSelfSelfIdBlockingResponseNameMax = 25;
+export const getUsersSelfSelfIdBlockingResponseUsernameMin = 3;
+
+export const getUsersSelfSelfIdBlockingResponseUsernameMax = 50;
+
+export const getUsersSelfSelfIdBlockingResponseUsernameRegExp = new RegExp(
+    "^[a-zA-Z0-9\\.-_]+$"
+);
+
+export const getUsersSelfSelfIdBlockingResponseItem = zod.object({
+    id: zod.number(),
+    name: zod.string().min(1).max(getUsersSelfSelfIdBlockingResponseNameMax),
+    username: zod
+        .string()
+        .min(getUsersSelfSelfIdBlockingResponseUsernameMin)
+        .max(getUsersSelfSelfIdBlockingResponseUsernameMax)
+        .regex(getUsersSelfSelfIdBlockingResponseUsernameRegExp),
+    profilePictureId: zod.number(),
+    profilePictureFilename: zod.string(),
+});
+export const getUsersSelfSelfIdBlockingResponse = zod.array(
+    getUsersSelfSelfIdBlockingResponseItem
+);
+
+/**
  * @summary Get saved user configurations.
  */
 export const getUsersSelfSelfIdConfigsParams = zod.object({
@@ -624,11 +852,7 @@ export const getUsersSelfSelfIdConfigsResponseItem = zod.object({
     id: zod.number(),
     mode: zod.string().regex(getUsersSelfSelfIdConfigsResponseModeRegExp),
     onlyFavoriteArtists: zod.boolean(),
-    fromArtists: zod.array(
-        zod.object({
-            musixmatchArtistId: zod.string(),
-        })
-    ),
+    fromArtists: zod.array(zod.string()),
 });
 export const getUsersSelfSelfIdConfigsResponse = zod.array(
     getUsersSelfSelfIdConfigsResponseItem
@@ -648,11 +872,7 @@ export const postUsersSelfSelfIdConfigsBodyModeRegExp = new RegExp(
 export const postUsersSelfSelfIdConfigsBody = zod.object({
     mode: zod.string().regex(postUsersSelfSelfIdConfigsBodyModeRegExp),
     onlyFavoriteArtists: zod.boolean(),
-    fromArtists: zod.array(
-        zod.object({
-            musixmatchArtistId: zod.string(),
-        })
-    ),
+    fromArtists: zod.array(zod.string()),
 });
 
 export const postUsersSelfSelfIdConfigsResponseModeRegExp = new RegExp(
@@ -663,11 +883,7 @@ export const postUsersSelfSelfIdConfigsResponse = zod.object({
     id: zod.number(),
     mode: zod.string().regex(postUsersSelfSelfIdConfigsResponseModeRegExp),
     onlyFavoriteArtists: zod.boolean(),
-    fromArtists: zod.array(
-        zod.object({
-            musixmatchArtistId: zod.string(),
-        })
-    ),
+    fromArtists: zod.array(zod.string()),
 });
 
 /**
@@ -687,11 +903,7 @@ export const deleteUsersSelfSelfIdConfigsMelodleConfigIdResponse = zod.object({
         .string()
         .regex(deleteUsersSelfSelfIdConfigsMelodleConfigIdResponseModeRegExp),
     onlyFavoriteArtists: zod.boolean(),
-    fromArtists: zod.array(
-        zod.object({
-            musixmatchArtistId: zod.string(),
-        })
-    ),
+    fromArtists: zod.array(zod.string()),
 });
 
 /**
@@ -711,11 +923,7 @@ export const putUsersSelfSelfIdConfigsMelodleConfigIdResponse = zod.object({
         .string()
         .regex(putUsersSelfSelfIdConfigsMelodleConfigIdResponseModeRegExp),
     onlyFavoriteArtists: zod.boolean(),
-    fromArtists: zod.array(
-        zod.object({
-            musixmatchArtistId: zod.string(),
-        })
-    ),
+    fromArtists: zod.array(zod.string()),
 });
 
 /**
@@ -739,11 +947,7 @@ export const getUsersSelfSelfIdConfigsSuggestResponseItem = zod.object({
         .string()
         .regex(getUsersSelfSelfIdConfigsSuggestResponseModeRegExp),
     onlyFavoriteArtists: zod.boolean(),
-    fromArtists: zod.array(
-        zod.object({
-            musixmatchArtistId: zod.string(),
-        })
-    ),
+    fromArtists: zod.array(zod.string()),
 });
 export const getUsersSelfSelfIdConfigsSuggestResponse = zod.array(
     getUsersSelfSelfIdConfigsSuggestResponseItem
@@ -800,11 +1004,7 @@ export const postUsersSelfSelfIdMelodleBody = zod.object({
     id: zod.number(),
     mode: zod.string().regex(postUsersSelfSelfIdMelodleBodyModeRegExp),
     onlyFavoriteArtists: zod.boolean(),
-    fromArtists: zod.array(
-        zod.object({
-            musixmatchArtistId: zod.string(),
-        })
-    ),
+    fromArtists: zod.array(zod.string()),
 });
 
 export const postUsersSelfSelfIdMelodleResponseConfigModeRegExp = new RegExp(
@@ -819,11 +1019,7 @@ export const postUsersSelfSelfIdMelodleResponse = zod.object({
             .string()
             .regex(postUsersSelfSelfIdMelodleResponseConfigModeRegExp),
         onlyFavoriteArtists: zod.boolean(),
-        fromArtists: zod.array(
-            zod.object({
-                musixmatchArtistId: zod.string(),
-            })
-        ),
+        fromArtists: zod.array(zod.string()),
     }),
 });
 
@@ -873,11 +1069,7 @@ export const getUsersSelfSelfIdMelodleHistoryResponseItem = zod.object({
             .string()
             .regex(getUsersSelfSelfIdMelodleHistoryResponseConfigModeRegExp),
         onlyFavoriteArtists: zod.boolean(),
-        fromArtists: zod.array(
-            zod.object({
-                musixmatchArtistId: zod.string(),
-            })
-        ),
+        fromArtists: zod.array(zod.string()),
     }),
 });
 export const getUsersSelfSelfIdMelodleHistoryResponse = zod.array(
@@ -885,32 +1077,12 @@ export const getUsersSelfSelfIdMelodleHistoryResponse = zod.array(
 );
 
 /**
- * @summary Block a user.
- */
-export const postUsersSelfSelfIdBlocksTargetUserIdParams = zod.object({
-    selfId: zod.number(),
-    targetUserId: zod.number(),
-});
-
-/**
- * @summary Unblock a user.
- */
-export const deleteUsersSelfSelfIdBlocksTargetUserIdParams = zod.object({
-    selfId: zod.number(),
-    targetUserId: zod.number(),
-});
-
-export const deleteUsersSelfSelfIdBlocksTargetUserIdResponse = zod.object({
-    blocked: zod.boolean(),
-});
-
-/**
  * @summary Update whether a given artist is within you favorite ones.
  */
 export const putUsersSelfSelfIdArtistsArtistMusixMatchIdFavoriteParams =
     zod.object({
         selfId: zod.number(),
-        artistMusixMatchId: zod.string(),
+        artistMusixMatchId: zod.number(),
     });
 
 export const putUsersSelfSelfIdArtistsArtistMusixMatchIdFavoriteBody =
@@ -922,6 +1094,27 @@ export const putUsersSelfSelfIdArtistsArtistMusixMatchIdFavoriteResponse =
     zod.object({
         isFavorite: zod.boolean(),
     });
+
+/**
+ * @summary Block a user.
+ */
+export const postUsersSelfSelfIdBlockingTargetUserIdParams = zod.object({
+    selfId: zod.number(),
+    targetUserId: zod.number(),
+});
+
+/**
+ * @summary Unblock a user.
+ */
+export const deleteUsersSelfSelfIdBlockingTargetUserIdParams = zod.object({
+    selfId: zod.number(),
+    targetUserId: zod.number(),
+});
+
+export const deleteUsersSelfSelfIdBlockingTargetUserIdResponse = zod.object({
+    blocked: zod.boolean(),
+    username: zod.string(),
+});
 
 /**
  * @summary Gets information about the user's friends leaderboard on the game mode.
@@ -1052,19 +1245,18 @@ export const putUsersSelfSelfIdFriendsTargetUserIdResponse = zod.object({
 /**
  * @summary Get information about a melodle game.
  */
-export const getUsersSelfSelfIdMelodleGameIdParams = zod.object({
+export const getUsersSelfSelfIdMelodleGuessSongParams = zod.object({
     selfId: zod.number(),
     gameId: zod.number(),
 });
 
-export const getUsersSelfSelfIdMelodleGameIdResponseAttemptsItemGuessedLineMax = 1000;
-export const getUsersSelfSelfIdMelodleGameIdResponseGameModeRegExp = new RegExp(
-    "^(Guess Line|Guess Song)$"
-);
-export const getUsersSelfSelfIdMelodleGameIdResponseConfigModeRegExp =
+export const getUsersSelfSelfIdMelodleGuessSongResponseAttemptsItemGuessedLineMax = 1000;
+export const getUsersSelfSelfIdMelodleGuessSongResponseGameModeRegExp =
+    new RegExp("^(Guess Line|Guess Song)$");
+export const getUsersSelfSelfIdMelodleGuessSongResponseConfigModeRegExp =
     new RegExp("^(Guess Line|Guess Song)$");
 
-export const getUsersSelfSelfIdMelodleGameIdResponse = zod.object({
+export const getUsersSelfSelfIdMelodleGuessSongResponse = zod.object({
     userId: zod.number(),
     gameId: zod.number(),
     attempts: zod
@@ -1080,7 +1272,7 @@ export const getUsersSelfSelfIdMelodleGameIdResponse = zod.object({
                     guessedLine: zod
                         .string()
                         .max(
-                            getUsersSelfSelfIdMelodleGameIdResponseAttemptsItemGuessedLineMax
+                            getUsersSelfSelfIdMelodleGuessSongResponseAttemptsItemGuessedLineMax
                         ),
                     guessedAt: zod.string().datetime(),
                 })
@@ -1090,77 +1282,155 @@ export const getUsersSelfSelfIdMelodleGameIdResponse = zod.object({
     endingTime: zod.string().datetime().optional(),
     gameMode: zod
         .string()
-        .regex(getUsersSelfSelfIdMelodleGameIdResponseGameModeRegExp),
+        .regex(getUsersSelfSelfIdMelodleGuessSongResponseGameModeRegExp),
     config: zod.object({
         id: zod.number(),
         mode: zod
             .string()
-            .regex(getUsersSelfSelfIdMelodleGameIdResponseConfigModeRegExp),
+            .regex(getUsersSelfSelfIdMelodleGuessSongResponseConfigModeRegExp),
         onlyFavoriteArtists: zod.boolean(),
-        fromArtists: zod.array(
-            zod.object({
-                musixmatchArtistId: zod.string(),
-            })
-        ),
+        fromArtists: zod.array(zod.string()),
     }),
 });
 
 /**
+ * @summary Start a new melodle game.
+ */
+export const postUsersSelfSelfIdMelodleGuessSongParams = zod.object({
+    selfId: zod.number(),
+});
+
+export const postUsersSelfSelfIdMelodleGuessSongBody = zod.object({
+    fromArtists: zod.array(zod.string()),
+});
+
+/**
+ * @summary Get information about a melodle game.
+ */
+export const getUsersSelfSelfIdMelodleGuessLineParams = zod.object({
+    selfId: zod.number(),
+    gameId: zod.number(),
+});
+
+export const getUsersSelfSelfIdMelodleGuessLineResponseAttemptsItemGuessedLineMax = 1000;
+export const getUsersSelfSelfIdMelodleGuessLineResponseGameModeRegExp =
+    new RegExp("^(Guess Line|Guess Song)$");
+export const getUsersSelfSelfIdMelodleGuessLineResponseConfigModeRegExp =
+    new RegExp("^(Guess Line|Guess Song)$");
+
+export const getUsersSelfSelfIdMelodleGuessLineResponse = zod.object({
+    userId: zod.number(),
+    gameId: zod.number(),
+    attempts: zod
+        .array(
+            zod.object({
+                guessedSongId: zod.string(),
+                guessedAt: zod.string().datetime(),
+            })
+        )
+        .or(
+            zod.array(
+                zod.object({
+                    guessedLine: zod
+                        .string()
+                        .max(
+                            getUsersSelfSelfIdMelodleGuessLineResponseAttemptsItemGuessedLineMax
+                        ),
+                    guessedAt: zod.string().datetime(),
+                })
+            )
+        ),
+    won: zod.boolean().optional(),
+    endingTime: zod.string().datetime().optional(),
+    gameMode: zod
+        .string()
+        .regex(getUsersSelfSelfIdMelodleGuessLineResponseGameModeRegExp),
+    config: zod.object({
+        id: zod.number(),
+        mode: zod
+            .string()
+            .regex(getUsersSelfSelfIdMelodleGuessLineResponseConfigModeRegExp),
+        onlyFavoriteArtists: zod.boolean(),
+        fromArtists: zod.array(zod.string()),
+    }),
+});
+
+/**
+ * @summary Get information about a melodle game.
+ */
+export const getUsersSelfSelfIdMelodleGuessSongGameIdParams = zod.object({
+    selfId: zod.number(),
+    gameId: zod.number(),
+});
+
+export const getUsersSelfSelfIdMelodleGuessSongGameIdResponseItem = zod.object({
+    trackSnippet: zod.string().optional(),
+    isCorrectAlbum: zod.boolean(),
+    isCorrectTrack: zod.boolean(),
+    guessedTrackNameHint: zod.string(),
+    guessedTrackSpotifyId: zod.string(),
+    guessedTrackName: zod.string(),
+    guessedTrackAlbumName: zod.string(),
+    guessedTrackAlbumImages: zod.array(
+        zod.object({
+            url: zod.string(),
+            width: zod.number().or(zod.null()),
+            height: zod.number().or(zod.null()),
+        })
+    ),
+});
+export const getUsersSelfSelfIdMelodleGuessSongGameIdResponse = zod.array(
+    getUsersSelfSelfIdMelodleGuessSongGameIdResponseItem
+);
+
+/**
  * @summary Submit a guess for a melodle game.
  */
-export const postUsersSelfSelfIdMelodleGameIdGuessLineAttemptsParams =
+export const postUsersSelfSelfIdMelodleGuessSongGameIdAttemptsParams =
     zod.object({
         selfId: zod.number(),
         gameId: zod.number(),
     });
 
-export const postUsersSelfSelfIdMelodleGameIdGuessLineAttemptsBodyGuessedLineMax = 1000;
+export const postUsersSelfSelfIdMelodleGuessSongGameIdAttemptsBody = zod.object(
+    {
+        guessedTrackSpotifyId: zod.string(),
+    }
+);
 
-export const postUsersSelfSelfIdMelodleGameIdGuessLineAttemptsBody = zod.object(
+/**
+ * @summary Submit a guess for a melodle game.
+ */
+export const postUsersSelfSelfIdMelodleGuessLineGameIdAttemptsParams =
+    zod.object({
+        selfId: zod.number(),
+        gameId: zod.number(),
+    });
+
+export const postUsersSelfSelfIdMelodleGuessLineGameIdAttemptsBodyGuessedLineMax = 1000;
+
+export const postUsersSelfSelfIdMelodleGuessLineGameIdAttemptsBody = zod.object(
     {
         guessedLine: zod
             .string()
             .max(
-                postUsersSelfSelfIdMelodleGameIdGuessLineAttemptsBodyGuessedLineMax
+                postUsersSelfSelfIdMelodleGuessLineGameIdAttemptsBodyGuessedLineMax
             ),
     }
 );
 
-export const postUsersSelfSelfIdMelodleGameIdGuessLineAttemptsResponseGuessLineHintsItemRegExp =
+export const postUsersSelfSelfIdMelodleGuessLineGameIdAttemptsResponseGuessLineHintsItemRegExp =
     new RegExp("^(Correct spot|Correct letter, wrong spot\\.|Wrong)$");
 
-export const postUsersSelfSelfIdMelodleGameIdGuessLineAttemptsResponse =
+export const postUsersSelfSelfIdMelodleGuessLineGameIdAttemptsResponse =
     zod.object({
         guessLineHints: zod.array(
             zod
                 .string()
                 .regex(
-                    postUsersSelfSelfIdMelodleGameIdGuessLineAttemptsResponseGuessLineHintsItemRegExp
+                    postUsersSelfSelfIdMelodleGuessLineGameIdAttemptsResponseGuessLineHintsItemRegExp
                 )
         ),
         input: zod.string(),
-        won: zod.boolean(),
-    });
-
-/**
- * @summary Submit a guess for a melodle game.
- */
-export const postUsersSelfSelfIdMelodleGameIdGuessSongAttemptsParams =
-    zod.object({
-        selfId: zod.number(),
-        gameId: zod.number(),
-    });
-
-export const postUsersSelfSelfIdMelodleGameIdGuessSongAttemptsBody = zod.object(
-    {
-        guessedSongId: zod.string(),
-    }
-);
-
-export const postUsersSelfSelfIdMelodleGameIdGuessSongAttemptsResponse =
-    zod.object({
-        correctArtist: zod.boolean(),
-        correctBand: zod.boolean(),
-        correctAlbum: zod.boolean(),
         won: zod.boolean(),
     });

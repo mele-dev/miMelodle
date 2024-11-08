@@ -4,7 +4,6 @@ import { selectAllIcons } from "../queries/dml.queries.js";
 import { SafeType } from "./typebox.js";
 import { userSchema } from "../types/user.js";
 import { Value } from "@sinclair/typebox/value";
-import schemaReferences from "../types/schemaReferences.js";
 import { Static } from "@sinclair/typebox";
 
 export const mockUserSchema = SafeType.Pick(userSchema, [
@@ -33,7 +32,7 @@ export async function mockUser(): Promise<MockUser> {
         profilePictureId: faker.helpers.arrayElement(profilePictures).id,
     };
 
-    if (!Value.Check(mockUserSchema, schemaReferences, output)) {
+    if (!Value.Check(mockUserSchema, output)) {
         return await mockUser();
     }
 

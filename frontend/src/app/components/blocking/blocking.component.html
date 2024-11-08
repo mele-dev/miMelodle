@@ -1,0 +1,26 @@
+<div class="space-y-2">
+    <h4 class="font-medium leading-none">
+        {{ this.dict().title }}
+    </h4>
+</div>
+<br />
+<div class="grid gap-2">
+    @for (user of this.blockingService.blockedUsers(); track $index) {
+        <div class="flex items-baseline gap-2">
+            <div>
+                <span>&#64;</span
+                ><label hlmLabel class="font-bold" for="username">{{
+                    user.username
+                }}</label>
+            </div>
+            <button
+                type="button"
+                variant="ghost"
+                hlmBtn
+                (click)="this.blockingService.unblockUser(user.id)"
+            >
+                unblock
+            </button>
+        </div>
+    }
+</div>
