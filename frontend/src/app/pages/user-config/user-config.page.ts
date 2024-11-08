@@ -19,6 +19,8 @@ import {
     HlmTabsTriggerDirective,
     HlmTabsPaginatedListComponent,
 } from "@spartan-ng/ui-tabs-helm";
+import { BrnSelectImports } from "@spartan-ng/ui-select-brain";
+import { HlmSelectImports } from "@spartan-ng/ui-select-helm";
 
 @Component({
     selector: "app-user-config",
@@ -41,6 +43,9 @@ import {
         HlmInputDirective,
         HlmButtonDirective,
         HlmBadgeDirective,
+
+        BrnSelectImports,
+        HlmSelectImports,
     ],
     templateUrl: "./user-config.page.html",
 })

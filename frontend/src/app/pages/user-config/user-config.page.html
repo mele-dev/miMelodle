@@ -37,7 +37,8 @@
                     Name
                     <input
                         class="mt-1.5 w-full"
-                        value="Pedro Duarte"
+                        value=""
+                        placeholder="Pedro Duarte"
                         hlmInput
                     />
                 </label>
@@ -49,8 +50,31 @@
                         hlmInput
                     />
                 </label>
+                <label class="my-4 block" hlmLabel>
+                    Email
+                    <input
+                        class="mt-1.5 w-full"
+                        placeholder="my@email.com"
+                        hlmInput
+                    />
+                </label>
+                <brn-select
+                    class="mt-4 inline-block w-full"
+                    placeholder="Select your fav artists"
+                    [multiple]="true"
+                >
+                    <hlm-select-trigger class="w-full">
+                        <hlm-select-value class="w-full" />
+                    </hlm-select-trigger>
+                    <hlm-select-content>
+                        <hlm-option value="jb">Justin Bieber</hlm-option>
+                        <hlm-option value="jb2">kidrauhl</hlm-option>
+                        <hlm-option value="jb3">Drew</hlm-option>
+                        <hlm-option value="jb4">Biebs</hlm-option>
+                    </hlm-select-content>
+                </brn-select>
             </p>
-            <div hlmCardFooter>
+            <div hlmCardFooter class="flex justify-center">
                 <button hlmBtn>Save Changes</button>
             </div>
         </section>
