@@ -10,7 +10,8 @@ import {
 import { getRandomTrackFromArtists } from "../../../../../../spotify/helpers.js";
 import { sendError, sendOk } from "../../../../../../utils/reply.js";
 import { runPreparedQuery } from "../../../../../../services/database.js";
-import { createGuessLineGame } from "../../../../../../queries/dml.queries.js";
+import { createGuessSongGame } from "../../../../../../queries/dml.queries.js";
+import { getTrackSnippet } from "../../../../../../services/game.js";
 
 export default (async (fastify) => {
     fastify.post("", {
@@ -43,10 +44,15 @@ export default (async (fastify) => {
                 );
             }
 
-            const queryResult = await runPreparedQuery(createGuessLineGame, {
+            const isrc = track.track.external_ids?.isrc;
+
+            let snippet = !!isrc ? await getTrackSnippet(isrc) : null;
+
+            const queryResult = await runPreparedQuery(createGuessSongGame, {
                 ...request.params,
                 spotifyTrackId: track.track.id!,
                 allowMultipleGamesADay: true,
+                snippet: snippet,
             });
 
             if (!queryResult[0].canCreate) {

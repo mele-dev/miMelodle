@@ -13,11 +13,15 @@ import {
     GetUsersSelfSelfIdGameGuessSongGameIdResult,
 } from "../../../../apiCodegen/backend";
 import { SelfService } from "../../../services/self.service";
+import { HlmIconModule } from "@spartan-ng/ui-icon-helm";
+import { provideIcons } from "@ng-icons/core";
+import { lucideCheck, lucideX } from "@ng-icons/lucide";
 
 @Component({
     selector: "app-guess-song",
     standalone: true,
-    imports: [JsonPipe, CommonModule],
+    imports: [JsonPipe, CommonModule, HlmIconModule],
+    providers: [provideIcons({ lucideCheck, lucideX })],
     templateUrl: "./guess-song.page.html",
 })
 export class GuessSongPage implements OnInit {
@@ -53,6 +57,10 @@ export class GuessSongPage implements OnInit {
         return info.artists.map((a) => a.name).join(", ");
     });
 
+    hintHasCorrectSpots(hint: string) {
+        return hint.split("").some((c) => c !== "_");
+    }
+
     async ngOnInit() {
         const self = await this._self.waitForUserInfoSnapshot();
         try {
@@ -60,6 +68,9 @@ export class GuessSongPage implements OnInit {
                 self.id,
                 this.ids().gameId
             );
+            const a = result.data.attempts[0].guessedTrackNameHint
+                .split("")
+                .some((a) => a !== "_");
 
             this.gameInfo.set(result.data);
         } catch (e) {

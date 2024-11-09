@@ -1,3 +1,4 @@
+import { DeepRequired } from "ts-essentials";
 import { getSeveralTracks, TrackObject } from "../apiCodegen/spotify.js";
 import { getGuessSongFromUser } from "../queries/dml.queries.js";
 import {
@@ -5,6 +6,7 @@ import {
     GuessSongGameInformation,
 } from "../types/guessSong.js";
 import { runPreparedQuery } from "./database.js";
+import MusixmatchAPI from "../musixmatch-api/musixmatch.js";
 
 export function checkSongGuess(opts: {
     targetTrack: TrackObject;
@@ -73,11 +75,11 @@ export async function getGuessSongInformation(opts: {
 
     const idsToFetch = [hiddenTrackId, ...idsExceptHidden].join(",");
 
-    const tracksInfo = await getSeveralTracks({
+    const tracksInfo = (await getSeveralTracks({
         ids: idsToFetch,
-    });
+    })) as DeepRequired<Awaited<ReturnType<typeof getSeveralTracks>>>;
 
-    const hiddenTrack = tracksInfo.tracks.find((t) => t.id === hiddenTrackId);
+    const hiddenTrack = tracksInfo.tracks.find((t) => t.id === hiddenTrackId)!;
 
     const attemptHints: GuessSongHints[] = [];
 
@@ -121,13 +123,22 @@ export async function getGuessSongInformation(opts: {
         hints: {
             attempts: attemptHints,
             album: albumHints,
-            artists:
-                hiddenTrack?.artists?.map((artist) => {
-                    return {
-                        name: artist.name!,
-                        spotifyArtistId: artist.id!,
-                    };
-                }) ?? [],
+            artists: hiddenTrack!.artists,
+            snippet: gameInfo[0].snippet ?? undefined,
         },
     };
+}
+
+export async function getTrackSnippet(trackIsrc: string) {
+    const api = new MusixmatchAPI();
+
+    const result = await api.getTrackSnippet({
+        "track_isrc": trackIsrc,
+    });
+
+    if (result.headers.status_code === 404) {
+        return undefined;
+    }
+
+    return result.expect().snippet.snippet_body;
 }

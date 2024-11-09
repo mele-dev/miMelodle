@@ -163,7 +163,7 @@ export class MusixmatchAPI {
         opts:
             | PickMusixMatchQueryParams<"track_id">
             | PickMusixMatchQueryParams<"commontrack_id">
-            | PickMusixMatchQueryParams<"track_id">
+            | PickMusixMatchQueryParams<"track_isrc">
     ) {
         return this.request(
             "/track.snippet.get",

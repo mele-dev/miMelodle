@@ -22,33 +22,51 @@
         </div>
     </div>
 </header>
-<section class="my-5 mb-20 flex flex-col gap-4 px-6">
+<section class="my-5 mb-20 grid grid-cols-1 gap-4 px-6">
     @for (attempt of this.gameInfo()!.attempts; track
     attempt.guessedTrackSpotifyId) {
     <article
         class="xl h-48 w-full overflow-hidden rounded-2xl bg-cover bg-center"
         style="background-image: url({{ attempt.guessedTrackAlbumImages[0].url }});"
     >
+    <!--TODO: Make this pretty and allow user to submit guess.-->
         <div
-            class="flex h-full w-full flex-row justify-between gap-6 p-6 backdrop-blur-md"
-            [ngClass]="{
-                'backdrop-grayscale': !attempt.isCorrectAlbum
-            }"
+            class="flex h-full w-full flex-row justify-between gap-6 p-6 backdrop-blur bg-black/30 bg-blend-multiply"
         >
-            <img
-                [src]="attempt.guessedTrackAlbumImages[0].url"
-                alt=""
-                class="aspect-square h-full rounded-xl shadow"
-            />
+            <div class="relative aspect-square h-full">
+                <img
+                    [src]="attempt.guessedTrackAlbumImages[0].url"
+                    alt=""
+                    class="aspect-square h-full rounded-xl shadow"
+                />
+                <div
+                    class="absolute bottom-2 right-2 z-10 flex h-5 w-5 items-center justify-center rounded-full"
+                    [ngClass]="{
+                        'bg-green-500': attempt.isCorrectAlbum,
+                        'bg-red-500': !attempt.isCorrectAlbum,
+                    }"
+                >
+                    @if (attempt.isCorrectAlbum) {
+                    <hlm-icon name="lucideCheck" size="sm"></hlm-icon>
+                    } @else {
+
+                    <hlm-icon name="lucideX" size="sm"></hlm-icon>
+                    }
+                </div>
+            </div>
             <div class="flex w-full flex-col justify-center gap-4">
-                <h3 class="font-mono text-5xl flex flex-row gap-2">
-                    @for (char of attempt.guessedTrackNameHint; track char) {
+                <h3
+                    class="flex w-full flex-row flex-wrap gap-2 font-mono text-3xl"
+                >
+                    @for (char of attempt.guessedTrackNameHint; track $index) {
                     <span
+                        class="w-[2ch] rounded-md border p-2 text-center drop-shadow"
                         [ngClass]="{
-            'drop-shadow border p-2 underlinechar w-[2ch] text-center rounded-md': true,
-            'bg-emerald-500/50': char !== '_'
-            }"
-                        >{{ attempt.guessedTrackName[$index]}}</span
+                            'bg-emerald-500': char !== '_',
+                            'bg-slate-500': char === '_'
+                        }"
+                        >{{
+                        attempt.guessedTrackName[$index].toUpperCase()}}</span
                     >
                     }
                 </h3>

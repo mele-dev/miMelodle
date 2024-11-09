@@ -87,6 +87,7 @@ CREATE TABLE "guessSongGames" (
     id               SERIAL PRIMARY KEY,
     "userId"         BIGINT REFERENCES users (id) NOT NULL,
     "spotifyTrackId" TEXT                         NOT NULL,
+    "snippet"        TEXT                         NULL,
     "createdAt"      timestamptz DEFAULT NOW()    NOT NULL
 );
 

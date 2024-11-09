@@ -219,7 +219,7 @@ SELECT u.*, pp.filename AS "profilePictureFilename", CEIL(COUNT(*) OVER () / :pa
  ORDER BY "rank!" DESC, levenshtein(u.username, :username!)
  LIMIT :pageSize! OFFSET :pageSize!::INT * :page!::INT;
 
-/* @name createGuessLineGame */
+/* @name createGuessSongGame */
   WITH "newestGame"    AS (
       SELECT * FROM "guessSongGames" gsg WHERE "userId" = :selfId! ORDER BY gsg."createdAt" DESC LIMIT 1
   ),
@@ -234,7 +234,7 @@ SELECT u.*, pp.filename AS "profilePictureFilename", CEIL(COUNT(*) OVER () / :pa
              END AS "canCreate"
   ),
        "insertGame"
-                       AS ( INSERT INTO "guessSongGames" ("userId", "createdAt", "spotifyTrackId") SELECT :selfId!, NOW(), :spotifyTrackId!
+                       AS ( INSERT INTO "guessSongGames" ("userId", "createdAt", "spotifyTrackId", "snippet") SELECT :selfId!, NOW(), :spotifyTrackId!, :snippet
                                                                                                     WHERE EXISTS (
                                                                                                         SELECT 1
                                                                                                           FROM "canCreateGame"
