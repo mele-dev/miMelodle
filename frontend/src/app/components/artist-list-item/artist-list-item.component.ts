@@ -7,7 +7,7 @@ import { lucideX, lucideXSquare } from "@ng-icons/lucide";
 import { HlmIconModule } from "@spartan-ng/ui-icon-helm";
 
 export type ArtistListItem = NonNullable<
-    GetSpotifySearch200["artists"]
+  GetSpotifySearch200["artists"]
 >["items"][number];
 
 @Component({

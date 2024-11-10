@@ -1,0 +1,12 @@
+import { Component, model } from '@angular/core';
+import { WordleTextComponent, WordleTextModifiers } from '../wordle-text/wordle-text.component';
+
+@Component({
+  selector: 'app-guess-song-text-input',
+  standalone: true,
+  imports: [WordleTextComponent],
+  templateUrl: './guess-song-text-input.component.html',
+})
+export class GuessSongTextInputComponent {
+  public value = model.required<WordleTextModifiers[]>();
+}

@@ -37,7 +37,10 @@ export default (async (fastify) => {
             tags: ["Melodle"] satisfies MelodleTagName[],
         },
         async handler(request, reply) {
-            const result = await getGuessSongInformation(request.params);
+            const result = await getGuessSongInformation({
+                ...request.params,
+                newGuess: request.body.guessedTrackSpotifyId,
+            });
             switch (result.status) {
                 case "RepeatedTrack":
                     return sendError(reply, "conflict", result.status);

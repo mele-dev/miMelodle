@@ -43,7 +43,7 @@ export class CreateGamePage {
     artists = signal([
         {
             name: "El Cuarteto De Nos",
-            spotifyArtistId: "13JJKrUewC1CJYmIDXQNoH",
+            id: "13JJKrUewC1CJYmIDXQNoH",
             genres: ["rock uruguayo"],
             followers: {
                 href: null,
@@ -67,14 +67,14 @@ export class CreateGamePage {
                     height: 160,
                 },
             ],
-            externalUrls: {
+            external_urls: {
                 spotify:
                     "https://open.spotify.com/artist/13JJKrUewC1CJYmIDXQNoH",
             },
         },
         {
             name: "Cuco",
-            spotifyArtistId: "2Tglaf8nvDzwSQnpSrjLHP",
+            id: "2Tglaf8nvDzwSQnpSrjLHP",
             genres: ["bedroom pop", "dream pop"],
             followers: {
                 href: null,
@@ -98,14 +98,14 @@ export class CreateGamePage {
                     height: 160,
                 },
             ],
-            externalUrls: {
+            external_urls: {
                 spotify:
                     "https://open.spotify.com/artist/2Tglaf8nvDzwSQnpSrjLHP",
             },
         },
         {
             name: "King Crimson",
-            spotifyArtistId: "7M1FPw29m5FbicYzS2xdpi",
+            id: "7M1FPw29m5FbicYzS2xdpi",
             genres: [
                 "art rock",
                 "instrumental rock",
@@ -137,14 +137,14 @@ export class CreateGamePage {
                     height: 160,
                 },
             ],
-            externalUrls: {
+            external_urls: {
                 spotify:
                     "https://open.spotify.com/artist/7M1FPw29m5FbicYzS2xdpi",
             },
         },
         {
             name: "Shakira",
-            spotifyArtistId: "0EmeFodog0BfCgMzAIvKQp",
+            id: "0EmeFodog0BfCgMzAIvKQp",
             genres: ["colombian pop", "dance pop", "latin pop", "pop"],
             followers: {
                 href: null,
@@ -168,14 +168,14 @@ export class CreateGamePage {
                     height: 160,
                 },
             ],
-            externalUrls: {
+            external_urls: {
                 spotify:
                     "https://open.spotify.com/artist/0EmeFodog0BfCgMzAIvKQp",
             },
         },
         {
             name: "KAROL G",
-            spotifyArtistId: "790FomKkXshlbRYZFtlgla",
+            id: "790FomKkXshlbRYZFtlgla",
             genres: ["reggaeton", "reggaeton colombiano", "urbano latino"],
             followers: {
                 href: null,
@@ -199,12 +199,12 @@ export class CreateGamePage {
                     height: 160,
                 },
             ],
-            externalUrls: {
+            external_urls: {
                 spotify:
                     "https://open.spotify.com/artist/790FomKkXshlbRYZFtlgla",
             },
         },
-    ] satisfies ArtistListItem[]);
+    ] as any as ArtistListItem[]);
 
     next() {
         this.selectedIndex++;
@@ -215,7 +215,7 @@ export class CreateGamePage {
     remove(artist: ArtistListItem) {
         this.artists.set(
             this.artists().filter(
-                (a) => a.spotifyArtistId !== artist.spotifyArtistId
+                (a) => a.id !== artist.id
             )
         );
     }
@@ -232,7 +232,7 @@ export class CreateGamePage {
             toast("Creating game, hold on tight!");
             const result = await postUsersSelfSelfIdGameGuessSong(user.id, {
                 fromArtists: this.artists().map(
-                    (artist) => artist.spotifyArtistId
+                    (artist) => artist.id
                 ),
             });
             toast("Game created!");

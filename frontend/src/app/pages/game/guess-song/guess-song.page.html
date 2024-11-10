@@ -4,11 +4,11 @@
     style="background-image: url({{ this.gameInfo()!.album!.images?.[0]?.url }});"
 >
     <div
-        class="flex h-full w-full flex-row justify-between gap-6 p-6 backdrop-blur-2xl"
+        class="flex h-full w-full flex-row justify-between gap-6 p-6 backdrop-blur-2xl backdrop-brightness-50"
     >
         <!-- TODO: Get artist image, not album image. -->
         <img
-            [src]="this.gameInfo()!.album?.images?.[0]?.url"
+            [src]="this.gameInfo()?.artists?.[0]?.images?.[0]?.url"
             alt=""
             class="aspect-square h-full rounded-xl shadow"
         />
@@ -23,59 +23,88 @@
     </div>
 </header>
 <section class="my-5 mb-20 grid grid-cols-1 gap-4 px-6">
-    @for (attempt of this.gameInfo()!.attempts; track
-    attempt.guessedTrackSpotifyId) {
-    <article
-        class="xl h-48 w-full overflow-hidden rounded-2xl bg-cover bg-center"
-        style="background-image: url({{ attempt.guessedTrackAlbumImages[0].url }});"
-    >
-    <!--TODO: Make this pretty and allow user to submit guess.-->
-        <div
-            class="flex h-full w-full flex-row justify-between gap-6 p-6 backdrop-blur bg-black/30 bg-blend-multiply"
+    @for (attempt of this.computedAttempts(); track $index) {
+    <div>
+        @if (attempt === null) {
+        <article
+            (click)="this.focusInput()"
+            class="relative w-full overflow-hidden rounded-2xl border border-muted focus-within:border-fuchsia-500"
         >
-            <div class="relative aspect-square h-full">
-                <img
-                    [src]="attempt.guessedTrackAlbumImages[0].url"
-                    alt=""
-                    class="aspect-square h-full rounded-xl shadow"
-                />
-                <div
-                    class="absolute bottom-2 right-2 z-10 flex h-5 w-5 items-center justify-center rounded-full"
-                    [ngClass]="{
-                        'bg-green-500': attempt.isCorrectAlbum,
-                        'bg-red-500': !attempt.isCorrectAlbum,
-                    }"
-                >
-                    @if (attempt.isCorrectAlbum) {
-                    <hlm-icon name="lucideCheck" size="sm"></hlm-icon>
-                    } @else {
-
-                    <hlm-icon name="lucideX" size="sm"></hlm-icon>
-                    }
+            <div
+                class="flex h-full w-full flex-row justify-between gap-6 p-6 backdrop-blur backdrop-brightness-50"
+            >
+                <div class="flex h-full shrink-0 items-center">
+                    <div class="relative">
+                        <img
+                            src="https://fastly.picsum.photos/id/757/500/500.jpg?blur=5&hmac=YUxQN6yoMwzq4KX_sujkMetvN1zycPxxZArlKENgu8g"
+                            alt=""
+                            class="my-auto aspect-square h-44 rounded-xl shadow"
+                        />
+                    </div>
+                </div>
+                <div class="flex w-full flex-col justify-center gap-4">
+                    <app-wordle-text
+                        [text]="this.shownValue()"
+                        [isPending]="true"
+                        [selection]="this.selection"
+                    ></app-wordle-text>
                 </div>
             </div>
-            <div class="flex w-full flex-col justify-center gap-4">
-                <h3
-                    class="flex w-full flex-row flex-wrap gap-2 font-mono text-3xl"
-                >
-                    @for (char of attempt.guessedTrackNameHint; track $index) {
-                    <span
-                        class="w-[2ch] rounded-md border p-2 text-center drop-shadow"
-                        [ngClass]="{
-                            'bg-emerald-500': char !== '_',
-                            'bg-slate-500': char === '_'
+            <input
+                #hiddenInput
+                (input)="this.onInput()"
+                (keydown)="this.keyDown($event)"
+                (keyup)="this.onInput()"
+                (click)="this.onInput()"
+                class="absolute h-0 opacity-0"
+                [(ngModel)]="this.value"
+            />
+        </article>
+        } @else {
+        <article
+            class="w-full overflow-hidden rounded-2xl border border-muted bg-cover bg-center"
+            style="background-image: url({{ attempt.guessedTrackAlbumImages[0].url }});"
+        >
+            <!--TODO: Make this pretty and allow user to submit guess.-->
+            <div
+                class="flex h-full w-full flex-row justify-between gap-6 p-6 backdrop-blur backdrop-brightness-50"
+            >
+                <div class="flex h-full shrink-0 items-center">
+                    <div class="relative">
+                        <img
+                            [src]="attempt.guessedTrackAlbumImages[0].url"
+                            alt=""
+                            class="my-auto aspect-square h-44 rounded-xl shadow"
+                        />
+                        <div
+                            class="absolute bottom-2 right-2 z-10 flex h-5 w-5 items-center justify-center rounded-full"
+                            [ngClass]="{
+                            'bg-green-500': attempt.isCorrectAlbum,
+                            'bg-red-500': !attempt.isCorrectAlbum,
                         }"
-                        >{{
-                        attempt.guessedTrackName[$index].toUpperCase()}}</span
+                        >
+                            @if (attempt.isCorrectAlbum) {
+                            <hlm-icon name="lucideCheck" size="sm"></hlm-icon>
+                            } @else {
+
+                            <hlm-icon name="lucideX" size="sm"></hlm-icon>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="flex w-full flex-col justify-center gap-4">
+                    <app-wordle-text
+                        [text]="attempt.guessedTrackNameHint"
+                        [isPending]="false"
+                    ></app-wordle-text>
+                    <span class="text-3xl drop-shadow">
+                        From {{ attempt.guessedTrackAlbumName }}</span
                     >
-                    }
-                </h3>
-                <span class="text-3xl drop-shadow">
-                    From {{ attempt.guessedTrackAlbumName }}</span
-                >
+                </div>
             </div>
-        </div>
-    </article>
+        </article>
+        }
+    </div>
     }
 </section>
 }

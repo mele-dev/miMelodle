@@ -1,5 +1,9 @@
 import { DeepRequired } from "ts-essentials";
-import { getSeveralTracks, TrackObject } from "../apiCodegen/spotify.js";
+import {
+    getMultipleArtists,
+    getSeveralTracks,
+    TrackObject,
+} from "../apiCodegen/spotify.js";
 import { getGuessSongFromUser } from "../queries/dml.queries.js";
 import {
     GuessSongHints,
@@ -81,6 +85,10 @@ export async function getGuessSongInformation(opts: {
 
     const hiddenTrack = tracksInfo.tracks.find((t) => t.id === hiddenTrackId)!;
 
+    const artists = await getMultipleArtists({
+        ids: hiddenTrack.artists.map((a) => a.id).join(","),
+    }) as DeepRequired<Awaited<ReturnType<typeof getMultipleArtists>>>;
+
     const attemptHints: GuessSongHints[] = [];
 
     for (const id of idsExceptHidden) {
@@ -123,7 +131,7 @@ export async function getGuessSongInformation(opts: {
         hints: {
             attempts: attemptHints,
             album: albumHints,
-            artists: hiddenTrack!.artists,
+            artists: artists.artists,
             snippet: gameInfo[0].snippet ?? undefined,
         },
     };
@@ -133,7 +141,7 @@ export async function getTrackSnippet(trackIsrc: string) {
     const api = new MusixmatchAPI();
 
     const result = await api.getTrackSnippet({
-        "track_isrc": trackIsrc,
+        track_isrc: trackIsrc,
     });
 
     if (result.headers.status_code === 404) {
