@@ -46,10 +46,7 @@ export default (async (fastify) => {
                 offset: request.query.page * request.query.pageSize,
             })) as Partial<RequireSpotify<typeof search>>;
 
-            return sendOk(reply, 200, {
-                tracks: result.tracks,
-                artists: result.artists,
-            });
+            return sendOk(reply, 200, result);
         },
     });
 }) satisfies FastifyPluginAsyncTypebox;

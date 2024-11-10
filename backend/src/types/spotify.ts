@@ -80,18 +80,6 @@ export const artistSchema = SafeType.Object(
     }
 );
 
-// I have not done every property yet.
-export const albumSchema = SafeType.Object({
-    images: spotifyImagesSchema,
-    name: SafeType.String(),
-    genres: SafeType.Array(SafeType.String()),
-    id: SafeType.String(),
-    uri: SafeType.String(),
-    type: SafeType.Literal("album"),
-    href: SafeType.String(),
-    label: SafeType.String(),
-} satisfies Partial<{ [K in keyof AlbumObject]: TUnsafe<AlbumObject[K]> }>);
-
 export function createSpotifyPagination<TTSchema extends TSchema>(
     innerSchema: TTSchema
 ) {

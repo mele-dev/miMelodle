@@ -11,6 +11,7 @@ import {
 } from "../types/guessSong.js";
 import { runPreparedQuery } from "./database.js";
 import MusixmatchAPI from "../musixmatch-api/musixmatch.js";
+import { RequireSpotify } from "../spotify/helpers.js";
 
 export function checkSongGuess(opts: {
     targetTrack: TrackObject;
@@ -81,13 +82,13 @@ export async function getGuessSongInformation(opts: {
 
     const tracksInfo = (await getSeveralTracks({
         ids: idsToFetch,
-    })) as DeepRequired<Awaited<ReturnType<typeof getSeveralTracks>>>;
+    })) as RequireSpotify<typeof getSeveralTracks>;
 
     const hiddenTrack = tracksInfo.tracks.find((t) => t.id === hiddenTrackId)!;
 
     const artists = await getMultipleArtists({
         ids: hiddenTrack.artists.map((a) => a.id).join(","),
-    }) as DeepRequired<Awaited<ReturnType<typeof getMultipleArtists>>>;
+    }) as RequireSpotify<typeof getMultipleArtists>;
 
     const attemptHints: GuessSongHints[] = [];
 
