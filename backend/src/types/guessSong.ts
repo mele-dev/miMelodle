@@ -1,7 +1,7 @@
 import { Static } from "@sinclair/typebox";
 import { SafeType } from "../utils/typebox.js";
 import {
-    spotifyAlbumSchema,
+    simplifiedAlbumSchema,
     spotifyArtistSchema,
     spotifyImagesSchema,
 } from "./spotify.js";
@@ -48,11 +48,7 @@ export const guessSongGameInformationSchema = SafeType.Object({
     attempts: guessSongHintsListSchema,
     artists: SafeType.Array(spotifyArtistSchema),
     snippet: SafeType.Optional(SafeType.String()),
-    album: SafeType.Optional(
-        SafeType.Partial(
-            SafeType.Pick(spotifyAlbumSchema, ["images", "name", "genres", "label"])
-        )
-    ),
+    album: SafeType.Optional(SafeType.Partial(simplifiedAlbumSchema)),
 });
 
 export type GuessSongGameInformation = Static<

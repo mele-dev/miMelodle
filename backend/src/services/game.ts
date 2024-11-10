@@ -119,12 +119,12 @@ export async function getGuessSongInformation(opts: {
 
     const albumInfo = hiddenTrack?.album;
 
-    const albumHints: Partial<GuessSongGameInformation["album"]> = {
+    let albumHints: GuessSongGameInformation["album"] = {
         images: albumInfo?.images,
     };
 
     if (attemptHints.some((a) => a.isCorrectAlbum)) {
-        albumHints.name = albumInfo?.name;
+        albumHints = albumInfo;
     }
 
     return {
