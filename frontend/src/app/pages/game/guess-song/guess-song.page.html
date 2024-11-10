@@ -4,7 +4,7 @@
     style="background-image: url({{ this.gameInfo()!.album!.images?.[0]?.url }});"
 >
     <div
-        class="flex h-full w-full flex-row justify-between gap-6 p-6 backdrop-blur-2xl backdrop-brightness-50"
+        class="flex h-full w-full flex-row justify-between gap-6 p-6 backdrop-blur-md backdrop-brightness-50"
     >
         <!-- TODO: Get artist image, not album image. -->
         <img
@@ -25,42 +25,6 @@
 <section class="my-5 mb-20 grid grid-cols-1 gap-4 px-6">
     @for (attempt of this.computedAttempts(); track $index) {
     <div>
-        @if (attempt === null) {
-        <article
-            (click)="this.focusInput()"
-            class="relative w-full overflow-hidden rounded-2xl border border-muted focus-within:border-fuchsia-500"
-        >
-            <div
-                class="flex h-full w-full flex-row justify-between gap-6 p-6 backdrop-blur backdrop-brightness-50"
-            >
-                <div class="flex h-full shrink-0 items-center">
-                    <div class="relative">
-                        <img
-                            src="https://fastly.picsum.photos/id/757/500/500.jpg?blur=5&hmac=YUxQN6yoMwzq4KX_sujkMetvN1zycPxxZArlKENgu8g"
-                            alt=""
-                            class="my-auto aspect-square h-44 rounded-xl shadow"
-                        />
-                    </div>
-                </div>
-                <div class="flex w-full flex-col justify-center gap-4">
-                    <app-wordle-text
-                        [text]="this.shownValue()"
-                        [isPending]="true"
-                        [selection]="this.selection"
-                    ></app-wordle-text>
-                </div>
-            </div>
-            <input
-                #hiddenInput
-                (input)="this.onInput()"
-                (keydown)="this.keyDown($event)"
-                (keyup)="this.onInput()"
-                (click)="this.onInput()"
-                class="absolute h-0 opacity-0"
-                [(ngModel)]="this.value"
-            />
-        </article>
-        } @else {
         <article
             class="w-full overflow-hidden rounded-2xl border border-muted bg-cover bg-center"
             style="background-image: url({{ attempt.guessedTrackAlbumImages[0].url }});"
@@ -103,8 +67,89 @@
                 </div>
             </div>
         </article>
-        }
     </div>
-    }
+    } @if (!this.hasWon()) {
+    <article
+        (click)="this.focusInput()"
+        class="relative w-full overflow-hidden rounded-2xl border border-muted focus-within:border-fuchsia-500"
+    >
+        <div
+            class="flex h-full w-full flex-row justify-between gap-6 p-6 backdrop-blur backdrop-brightness-50"
+        >
+            <div class="flex h-full shrink-0 items-center">
+                <div class="relative">
+                    <img
+                        src="https://imgs.search.brave.com/4dlTnXnFH27cbikm13CNRJ6XuNeVUnk0eBMQasBaYNY/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly93d3cu/bm1lLmNvbS93cC1j/b250ZW50L3VwbG9h/ZHMvMjAxNy8wNy9S/SUNLX1JPTEwtNjk2/eDQ0Mi5qcGc"
+                        alt=""
+                        class="my-auto aspect-square h-44 rounded-xl shadow object-cover"
+                    />
+                </div>
+            </div>
+            <div class="flex w-full flex-col justify-center gap-4">
+                <app-wordle-text
+                    [text]="this.shownValue()"
+                    [isPending]="true"
+                    [selection]="this.selection"
+                ></app-wordle-text>
+            </div>
+        </div>
+        <input
+            #hiddenInput
+            (input)="this.onInput()"
+            (keydown)="this.keyDown($event)"
+            (keyup)="this.onInput()"
+            (click)="this.onInput()"
+            class="absolute h-0 opacity-0"
+            [(ngModel)]="this.value"
+        />
+    </article>
+  }
+
+  @if (this.hasWon()) {
+  <!--TODO-->
+  you won!
+  }
 </section>
 }
+
+<hlm-dialog #pickTrackDialog>
+    <hlm-dialog-content
+        *brnDialogContent="let ctx"
+        class="w-fit max-w-screen-sm"
+    >
+        <h1 class="text-md font-extrabold">Which track did you mean?</h1>
+        @if (this.trackOptions() === undefined) {
+        <h1>Loading!</h1>
+        } @else {
+        <hlm-scroll-area
+            track="vertical"
+            class="h-96 w-[36rem] overflow-hidden"
+        >
+            @for (track of this.trackOptions()?.items ; track track.id) {
+            <button
+                (click)="this.submitAttempt(track)"
+                type="button"
+                class="m-2 flex w-[35rem] items-center gap-2 overflow-hidden text-ellipsis rounded p-2 hover:bg-muted"
+            >
+                <img
+                    [src]="track.album.images[0].url"
+                    class="h-20 w-20 rounded"
+                    alt=""
+                />
+                <div
+                    class="flex w-full flex-col items-start overflow-hidden text-ellipsis text-nowrap"
+                >
+                    <span class="block text-ellipsis"> {{ track.name }} </span>
+                    <span class="block w-full text-ellipsis text-left text-sm">
+                        By {{ this.dict().stringifyArtists(track.artists) }}
+                    </span>
+                    <span class="block w-full text-ellipsis text-left text-sm">
+                        From {{ track.album.name }}
+                    </span>
+                </div>
+            </button>
+            }
+        </hlm-scroll-area>
+        }
+    </hlm-dialog-content>
+</hlm-dialog>

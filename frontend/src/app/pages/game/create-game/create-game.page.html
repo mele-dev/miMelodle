@@ -48,7 +48,7 @@
                 <hlm-icon name="lucidePlus"></hlm-icon>
             </button>
         </div>
-        <hlm-scroll-area class="gradient-mask-t-0 h-[26rem] w-full">
+        <hlm-scroll-area class="gradient-mask-t-0 h-[26rem] w-full" track="vertical" visibility="hover">
             <div class="flex flex-col gap-2 rounded">
                 @for (artist of this.artists(); track artist.id) {
                 <app-artist-list-item
