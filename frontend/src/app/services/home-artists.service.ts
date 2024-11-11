@@ -11,6 +11,8 @@ import { SelfService } from "./self.service";
 import { boolean } from "zod";
 import { toast } from "ngx-sonner";
 import { isAxiosError } from "axios";
+import { JsonPipe } from "@angular/common";
+import { getFollowed } from "../../apiCodegen/spotify";
 
 export type Artist = GetUsersSelfSelfIdArtists200Item;
 
@@ -83,16 +85,14 @@ export class HomeArtistsService {
     public async loadArtistsFromSpotify() {
         const userId = this._localStorage.getItem("userInfo")?.id;
 
-        const spotifyId = this._selfService.getUserInfo();
+        const spotifyId = (await this._selfService.waitForUserInfoSnapshot()).spotifyId;
 
         if (userId === undefined) {
             return;
         }
 
-        if (true) {
+        if (spotifyId === undefined) {
+            return;
         }
-
-        const data = await getUsersSelfSelfIdArtists(userId);
-        this._artists.set(data.data as Artist[]);
     }
 }

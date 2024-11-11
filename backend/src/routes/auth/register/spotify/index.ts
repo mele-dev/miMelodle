@@ -13,6 +13,7 @@ import {
     spotifyCallbackGuard,
 } from "../../../../types/spotify.js";
 import { frontendPaths } from "../../../../services/urls.js";
+import { isAxiosError } from "axios";
 
 export default (async (fastify) => {
     fastify.get("/callback", {
@@ -35,12 +36,14 @@ export default (async (fastify) => {
                 await fastify.oauth2SpotifyRegister.getAccessTokenFromAuthorizationCodeFlow(
                     request
                 );
-
+            
             const userInfo = await spotifyApi.getCurrentUsersProfile({
                 headers: {
                     Authorization: "Bearer " + spotifyToken.token.access_token,
                 },
             });
+
+            return userInfo;
 
             const parsedUserInfo = spotifyCallbackGuard.Decode({
                 email: userInfo.email,
@@ -67,6 +70,9 @@ export default (async (fastify) => {
         },
 
         async errorHandler(_error, _request, reply) {
+            if(isAxiosError(_error)){
+                fastify.log.info(_error)
+            }
             return reply.redirect(
                 `${frontendPaths.register}?${frontendPaths.generalSearchParams({ errorEnum: "spotify_taken" })}`
             );
