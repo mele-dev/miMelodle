@@ -3,11 +3,16 @@ import { SafeType } from "../../../../utils/typebox.js";
 import { MelodleTagName } from "../../../../plugins/swagger.js";
 import { decorators } from "../../../../services/decorators.js";
 import * as spotifyApi from "../../../../apiCodegen/spotify.js";
-import { runPreparedQuery } from "../../../../services/database.js";
-import { insertUserSpotify, loginUserSpotify } from "../../../../queries/dml.queries.js";
 import {
-    JwtTokenContent,
-} from "../../../../types/user.js";
+    executeTransaction,
+    runPreparedQuery,
+} from "../../../../services/database.js";
+import {
+    addArtistToHome,
+    insertUserSpotify,
+    loginUserSpotify,
+} from "../../../../queries/dml.queries.js";
+import { JwtTokenContent } from "../../../../types/user.js";
 import {
     spotifyCallback,
     spotifyCallbackGuard,
@@ -36,14 +41,26 @@ export default (async (fastify) => {
                 await fastify.oauth2SpotifyRegister.getAccessTokenFromAuthorizationCodeFlow(
                     request
                 );
-            
-            const userInfo = await spotifyApi.getCurrentUsersProfile({
+
+            const userInfoPromise = spotifyApi.getCurrentUsersProfile({
                 headers: {
                     Authorization: "Bearer " + spotifyToken.token.access_token,
                 },
             });
 
-            return userInfo;
+            const userFollowsPromise = spotifyApi.getFollowed(
+                { type: "artist", limit: 50 },
+                {
+                    headers: {
+                        Authorization:
+                            "Bearer " + spotifyToken.token.access_token,
+                    },
+                }
+            );
+
+            const userInfo = await userInfoPromise;
+
+            const userFollows = await userFollowsPromise;
 
             const parsedUserInfo = spotifyCallbackGuard.Decode({
                 email: userInfo.email,
@@ -51,10 +68,25 @@ export default (async (fastify) => {
                 spotifyId: userInfo.id,
             } satisfies Partial<spotifyCallback>);
 
-            // TODO: Auto-generate username so that it cannot collide.
-            const result = await runPreparedQuery(insertUserSpotify, {
-                ...parsedUserInfo,
-                name: parsedUserInfo.username,
+            let result = await executeTransaction(async () => {
+                // TODO: Auto-generate username so that it cannot collide.
+                const result = await runPreparedQuery(insertUserSpotify, {
+                    ...parsedUserInfo,
+                    name: parsedUserInfo.username,
+                });
+
+                if (userFollows.artists.items) {
+                    Promise.all(
+                        userFollows.artists.items.map((artist) =>
+                            runPreparedQuery(addArtistToHome, {
+                                selfId: result[0].id,
+                                spotifyArtistId: artist.id!,
+                            })
+                        )
+                    );
+                }
+
+                return result;
             });
 
             const token = fastify.jwt.sign({
@@ -70,9 +102,6 @@ export default (async (fastify) => {
         },
 
         async errorHandler(_error, _request, reply) {
-            if(isAxiosError(_error)){
-                fastify.log.info(_error)
-            }
             return reply.redirect(
                 `${frontendPaths.register}?${frontendPaths.generalSearchParams({ errorEnum: "spotify_taken" })}`
             );
