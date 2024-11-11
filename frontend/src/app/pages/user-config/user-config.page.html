@@ -13,7 +13,7 @@
             <div class="flex justify-center">
                 <div
                     [innerHTML]="
-                        this.sanitizer.bypassSecurityTrustHtml('El SVG')
+                    
                     "
                     class="aspect-square h-40 w-40 rounded-full bg-white p-1"
                 ></div>
@@ -40,6 +40,7 @@
                         value=""
                         placeholder="Pedro Duarte"
                         hlmInput
+                        [formControl]="user.controls.name"
                     />
                 </label>
                 <label class="my-4 block" hlmLabel>
@@ -48,6 +49,7 @@
                         class="mt-1.5 w-full"
                         placeholder="@peduarte"
                         hlmInput
+                        [formControl]="user.controls.username"
                     />
                 </label>
                 <label class="my-4 block" hlmLabel>
@@ -56,6 +58,7 @@
                         class="mt-1.5 w-full"
                         placeholder="my@email.com"
                         hlmInput
+                        [formControl]="user.controls.email"
                     />
                 </label>
                 <brn-select

@@ -8,6 +8,7 @@ import { MustHaveAuthTranslator } from "../guards/must-have-auth.translations";
 import { toast } from "ngx-sonner";
 import { SafeRoutingService } from "./safe-routing.service";
 import { isAxiosError } from "axios";
+import { IconCacheService } from "./icon-cache.service";
 
 export type SelfInfo = GetUsersSelfSelfId200;
 
@@ -19,6 +20,7 @@ export class SelfService {
     private _userInfo = signal<SelfInfo | undefined>(undefined);
     private _safeRouter = inject(SafeRoutingService);
     private _authDict = inject(MustHaveAuthTranslator).dict;
+    private _iconService = inject(IconCacheService);
 
     /**
      * This can only be read from the outside after getting it from
@@ -78,4 +80,10 @@ export class SelfService {
     public async patchUserInfo(newInfo: Partial<SelfInfo>): Promise<void> {
         throw "TODO!" || newInfo;
     }
+
+    public userIconSVG = computed(async () => {
+        const info = await this.waitForUserInfoSnapshot();
+
+        return this._iconService.getProfilePicture(info.profilePictureFile);
+    });
 }
