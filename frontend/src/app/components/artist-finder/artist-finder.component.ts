@@ -4,6 +4,7 @@ import { getFollowed, GetFollowedType } from "../../../apiCodegen/spotify";
 import {
     getSpotifySearch,
     GetSpotifySearch200Artists,
+    postUsersSelfSelfIdArtistsSpotifyArtistId,
 } from "../../../apiCodegen/backend";
 import { getSpotifySearchResponse } from "../../../apiCodegen/backend-zod";
 import { toast } from "ngx-sonner";
@@ -25,6 +26,7 @@ export class ArtistFinderComponent {
     usersFilter = signal<string>("");
     matchedArtists = signal<SearchedArtist[]>([]);
     private _localStorage = inject(LocalStorageService)
+    private _ = inject(LocalStorageService)
 
     async search() {
         console.info(this.usersFilter());
@@ -43,14 +45,15 @@ export class ArtistFinderComponent {
         }
     }
 
-    public addArtist(spotifyId: string){
+    public async addArtist(spotifyId: string){
         const userId = this._localStorage.getItem('userInfo')?.id
 
         if (userId === undefined) {
             return;
         }
 
-        
+        const result = await postUsersSelfSelfIdArtistsSpotifyArtistId(userId,spotifyId);
+
 
     }
 }
