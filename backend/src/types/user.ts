@@ -4,7 +4,6 @@ import { profilePictureSchema } from "./public.js";
 import { artistSchema } from "./spotify.js";
 import { TypeCompiler } from "@sinclair/typebox/compiler";
 
-
 export const userSchema = SafeType.Object(
     {
         id: SafeType.Integer({
@@ -31,6 +30,11 @@ export const userSchema = SafeType.Object(
             minLength: 3,
             maxLength: 20,
             description: "A password.",
+        }),
+        oldPassword: SafeType.String({
+            minLength: 3,
+            maxLength: 20,
+            description: "Older password.",
         }),
         spotifyId: SafeType.String({
             description:
@@ -119,4 +123,3 @@ export const spotifyCallbackSchema = SafeType.Pick(userSchema, [
 export const spotifyCallbackGuard = TypeCompiler.Compile(spotifyCallbackSchema);
 
 export type spotifyCallback = Static<typeof spotifyCallbackSchema>;
-

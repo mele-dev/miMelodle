@@ -65,6 +65,7 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                     "email",
                     "name",
                     "password",
+                    "oldPassword",
                     "profilePictureId",
                 ]),
                 [
@@ -73,6 +74,7 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                         email: "juanchoTanca@gmail.com",
                         name: "juancho",
                         password: "Juancho123!",
+                        oldPassword: "Juancito123!",
                         profilePictureId: 1,
                     },
                 ]
@@ -95,6 +97,8 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 ...request.body,
                 ...request.params,
             });
+            if (request.body.password !== request.body.oldPassword) {
+            }
 
             return sendOk(reply, 200, request.body);
         },

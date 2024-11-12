@@ -1,6 +1,8 @@
+@if (userInfo() !== undefined && userIconSVG !== "") {
+
 <hlm-tabs
-    tab="account"
-    class="mx-auto flex w-[100rem] max-w-3xl flex-row space-x-2"
+    tab="profile"
+    class="mx-auto mt-32 flex w-[100rem] max-w-3xl flex-row space-x-2"
     orientation="vertical"
 >
     <hlm-tabs-list orientation="vertical" aria-label="tabs example">
@@ -13,8 +15,8 @@
             <div class="flex justify-center">
                 <div
                     [innerHTML]="
-                    
-                    "
+                    this.sanitizer.bypassSecurityTrustHtml(this.userIconSVG)
+                "
                     class="aspect-square h-40 w-40 rounded-full bg-white p-1"
                 ></div>
             </div>
@@ -38,7 +40,7 @@
                     <input
                         class="mt-1.5 w-full"
                         value=""
-                        placeholder="Pedro Duarte"
+                        [placeholder]="userInfo()?.name"
                         hlmInput
                         [formControl]="user.controls.name"
                     />
@@ -47,7 +49,7 @@
                     Username
                     <input
                         class="mt-1.5 w-full"
-                        placeholder="@peduarte"
+                        [placeholder]="userInfo()?.username"
                         hlmInput
                         [formControl]="user.controls.username"
                     />
@@ -56,29 +58,54 @@
                     Email
                     <input
                         class="mt-1.5 w-full"
-                        placeholder="my@email.com"
+                        [placeholder]="userInfo()?.email"
                         hlmInput
                         [formControl]="user.controls.email"
                     />
                 </label>
-                <brn-select
-                    class="mt-4 inline-block w-full"
-                    placeholder="Select your fav artists"
-                    [multiple]="true"
-                >
-                    <hlm-select-trigger class="w-full">
-                        <hlm-select-value class="w-full" />
-                    </hlm-select-trigger>
-                    <hlm-select-content>
-                        <hlm-option value="jb">Justin Bieber</hlm-option>
-                        <hlm-option value="jb2">kidrauhl</hlm-option>
-                        <hlm-option value="jb3">Drew</hlm-option>
-                        <hlm-option value="jb4">Biebs</hlm-option>
-                    </hlm-select-content>
-                </brn-select>
             </p>
             <div hlmCardFooter class="flex justify-center">
-                <button hlmBtn>Save Changes</button>
+                <hlm-dialog>
+                    <button id="edit-profile" brnDialogTrigger hlmBtn>
+                        Save Changes
+                    </button>
+                    <hlm-dialog-content
+                        class="sm:max-w-[425px]"
+                        *brnDialogContent="let ctx"
+                    >
+                        <hlm-dialog-header>
+                            <h3 hlmDialogTitle>Edit Profile</h3>
+                            <p hlmDialogDescription>
+                                Enter your password to confirm your changes.
+                            </p>
+                        </hlm-dialog-header>
+                        <div class="grid gap-4 py-4">
+                            <div class="grid grid-cols-4 items-center gap-4">
+                                <label
+                                    hlmLabel
+                                    for="username"
+                                    class="text-right"
+                                    >Password</label
+                                >
+                                <input
+                                    hlmInput
+                                    id="userPassword"
+                                    value=""
+                                    type="password"
+                                    placeholder="*************"
+                                    class="col-span-3"
+                                    [formControl]="user.controls.oldPassword"
+                                />
+                            </div>
+                        </div>
+                        <hlm-dialog-footer>
+                            <button hlmBtn (click)="onSubmit()" type="submit">
+                                Save changes
+                            </button>
+                        </hlm-dialog-footer>
+                    </hlm-dialog-content>
+                </hlm-dialog>
+                <!-- <button type="submit" hlmBtn>Save Changes</button> -->
             </div>
         </section>
     </div>
@@ -121,3 +148,9 @@
         </section>
     </div>
 </hlm-tabs>
+} @else {
+<div class="mt-32 flex h-full w-full items-center justify-center gap-5">
+    <hlm-spinner />
+    <label for="">Loading...</label>
+</div>
+}

@@ -1,4 +1,4 @@
-import { Component, inject, input, signal } from "@angular/core";
+import { Component, effect, inject, input, signal } from "@angular/core";
 import { DomSanitizer } from "@angular/platform-browser";
 import { HlmBadgeDirective } from "@spartan-ng/ui-badge-helm";
 import { HlmButtonDirective } from "@spartan-ng/ui-button-helm";
@@ -28,9 +28,28 @@ import {
 } from "@angular/forms";
 import { ClientValidationService } from "../../services/client-validation.service";
 import { putUsersSelfSelfIdBody } from "../../../apiCodegen/backend-zod";
-import { PutUsersSelfSelfIdBody } from "../../../apiCodegen/backend";
+import {
+    putUsersSelfSelfId,
+    PutUsersSelfSelfIdBody,
+} from "../../../apiCodegen/backend";
 import { BackendIcon } from "../../types/backend-icon";
 import { SelfService } from "../../services/self.service";
+import { LocalStorageService } from "../../services/local-storage.service";
+import {
+    BrnDialogContentDirective,
+    BrnDialogTriggerDirective,
+} from "@spartan-ng/ui-dialog-brain";
+import {
+    HlmDialogComponent,
+    HlmDialogContentComponent,
+    HlmDialogDescriptionDirective,
+    HlmDialogFooterComponent,
+    HlmDialogHeaderComponent,
+    HlmDialogTitleDirective,
+} from "@spartan-ng/ui-dialog-helm";
+import { SafeRoutingService } from "../../services/safe-routing.service";
+import { toast } from "ngx-sonner";
+import { HlmSpinnerComponent } from "@spartan-ng/ui-spinner-helm";
 
 @Component({
     selector: "app-user-config",
@@ -58,13 +77,32 @@ import { SelfService } from "../../services/self.service";
 
         BrnSelectImports,
         HlmSelectImports,
+
+        BrnDialogTriggerDirective,
+        BrnDialogContentDirective,
+
+        HlmDialogComponent,
+        HlmDialogContentComponent,
+        HlmDialogHeaderComponent,
+        HlmDialogFooterComponent,
+        HlmDialogTitleDirective,
+        HlmDialogDescriptionDirective,
+
+        HlmLabelDirective,
+        HlmInputDirective,
+        HlmButtonDirective,
+
+        HlmSpinnerComponent,
     ],
     templateUrl: "./user-config.page.html",
 })
 export class UserConfigPage {
     private _validator = inject(ClientValidationService);
     chosenIcon = signal<BackendIcon | undefined>(undefined);
-    private _selfService = inject(SelfService);
+    public selfService = inject(SelfService);
+    public userIconSVG = "";
+    public userInfo = this.selfService.getUserInfo();
+    public safeRouter = inject(SafeRoutingService);
 
     private schema = putUsersSelfSelfIdBody;
     private builder = new FormBuilder().nonNullable;
@@ -83,6 +121,11 @@ export class UserConfigPage {
                 [],
                 this._validator.Schema(this.schema.shape.profilePictureId)
             ),
+            oldPassword: this.builder.control(
+                "",
+                [],
+                this._validator.Schema(this.schema.shape.oldPassword)
+            ),
         } satisfies Partial<{ [k in keyof PutUsersSelfSelfIdBody]: unknown }>,
         {
             asyncValidators: this._validator.Schema(this.schema),
@@ -96,6 +139,12 @@ export class UserConfigPage {
         .map((_, index) => `Tab ${index}`);
 
     sanitizer = inject(DomSanitizer);
+
+    constructor() {
+        effect(async () => {
+            this.userIconSVG = (await this.selfService.userIconSVG()) ?? "";
+        });
+    }
 
     private validateUsername() {
         const thisBinding = this;
@@ -119,5 +168,20 @@ export class UserConfigPage {
                 (await thisBinding._validator.validateUniqueEmail(control))
             );
         };
+    }
+
+    async onSubmit() {
+        try {
+            const userInfo = await this.selfService.waitForUserInfoSnapshot();
+            const rawValue = this.user.getRawValue();
+            const result = await putUsersSelfSelfId(userInfo.id, {
+                ...rawValue,
+                password: rawValue.oldPassword,
+            });
+            this.safeRouter.navigate(["/app"]);
+        } catch (e) {
+            console.error(e);
+            toast("Error al guardar datos");
+        }
     }
 }
