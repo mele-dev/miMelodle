@@ -1,0 +1,37 @@
+<h1 class="mb-5">
+    <span class="font-semibold text-neutral-300">
+        Search an artist
+    </span>
+    <span class="text-neutral-400">by their name</span>
+</h1>
+
+<input
+    hlmInput
+    type="text"
+    name="query"
+    [placeholder]=""
+    value=""
+    class="w-full"
+    [(ngModel)]="this.usersFilter"
+    (keydown.enter)="search()"
+
+/>
+
+<hlm-table class="h-96 w-96 overflow-y-scroll scroll-auto">
+    @for (artist of matchedArtists(); track artist.name) {
+        <hlm-trow class="flex py-2">
+            <hlm-td class="flex flex-grow gap-2">
+                <button (click)="this.addArtist(artist.name)">+</button>
+                <div class="flex flex-col">
+                    <div>
+                        <span>&#64;</span
+                        ><span class="text-lx">{{ artist.name }}</span>
+                    </div>
+                    <span class="text-xs">
+                        {{ artist.followers.total }}
+                    </span>
+                </div>
+            </hlm-td>
+        </hlm-trow>
+    }
+</hlm-table>
