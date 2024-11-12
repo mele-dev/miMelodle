@@ -6,7 +6,7 @@ import {
 
 export const artistFinderDict = {
     errorToast: {
-        en: "Artist already added.",
+        en: "Artist already on home page.",
         es: "Ese artista ya está en tu home page.",
     },
     successToast: {

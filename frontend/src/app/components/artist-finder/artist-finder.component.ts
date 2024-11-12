@@ -25,7 +25,7 @@ type SearchedArtist = GetSpotifySearch200Artists["items"][number];
     templateUrl: "./artist-finder.component.html",
 })
 export class ArtistFinderComponent {
-    dict = inject(ArtistFinderTranslator).dict
+    dict = inject(ArtistFinderTranslator).dict;
     usersFilter = signal<string>("");
     matchedArtists = signal<SearchedArtist[]>([]);
     private _localStorage = inject(LocalStorageService);
