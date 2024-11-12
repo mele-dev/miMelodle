@@ -7,7 +7,6 @@ import {
     input,
     OnInit,
     signal,
-    TemplateRef,
     ViewChild,
 } from "@angular/core";
 import { z } from "zod";
@@ -17,7 +16,6 @@ import {
     GetSpotifySearch200TracksItemsItem,
     getUsersSelfSelfIdGameGuessSongGameId,
     GetUsersSelfSelfIdGameGuessSongGameIdResult,
-    postUsersSelfSelfIdGameGuessSong,
     postUsersSelfSelfIdGameGuessSongGameIdAttempts,
 } from "../../../../apiCodegen/backend";
 import { SelfService } from "../../../services/self.service";
@@ -39,6 +37,9 @@ import {
 import { BrnDialogModule } from "@spartan-ng/ui-dialog-brain";
 import { GuessSongTranslator } from "./guess-song.translations";
 import { HlmScrollAreaModule } from "@spartan-ng/ui-scrollarea-helm";
+import { SafeRoutingService } from "../../../services/safe-routing.service";
+import { HlmButtonModule } from "@spartan-ng/ui-button-helm";
+import { DomSanitizer } from "@angular/platform-browser";
 
 @Component({
     selector: "app-guess-song",
@@ -52,6 +53,7 @@ import { HlmScrollAreaModule } from "@spartan-ng/ui-scrollarea-helm";
         BrnDialogModule,
         HlmDialogModule,
         HlmScrollAreaModule,
+        HlmButtonModule,
     ],
     providers: [provideIcons({ lucideCheck, lucideX })],
     templateUrl: "./guess-song.page.html",
@@ -59,6 +61,8 @@ import { HlmScrollAreaModule } from "@spartan-ng/ui-scrollarea-helm";
 export class GuessSongPage implements OnInit {
     readonly gameId = input.required<string>();
     private _self = inject(SelfService);
+    sanitizer = inject(DomSanitizer);
+    router = inject(SafeRoutingService);
     dict = inject(GuessSongTranslator).dict;
     ids = computed(() => {
         const schema = z.object({ gameId: z.coerce.number().positive() });
@@ -104,7 +108,7 @@ export class GuessSongPage implements OnInit {
                         .map(
                             (c, i) =>
                                 ({
-                                    char: attempt.guessedTrackName[i],
+                                    char: attempt.guessedTrack.name[i],
                                     hint: c === "_" ? "Wrong" : "Correct",
                                 }) satisfies WordleTextModifiers
                         ),
@@ -118,14 +122,27 @@ export class GuessSongPage implements OnInit {
         () => this.gameInfo()?.attempts.some((a) => a.isCorrectTrack) ?? false
     );
 
-    artistsString = computed(() => {
+    hasLost = computed(() => {
         const info = this.gameInfo();
-        if (info === undefined) {
+        const hasWon = this.hasWon();
+
+        if (info == undefined) {
+            return false;
+        }
+
+        return info.attempts.length >= 6 && !hasWon;
+    });
+
+    embedSrc = computed(() => {
+        const info = this.gameInfo();
+        if (info?.correctTrack === undefined) {
             return undefined;
         }
 
-        return info.artists.map((a) => a.name).join(", ");
+        return `https://open.spotify.com/embed/track/${info.correctTrack.id}?utm_source=generator`;
     });
+
+    hasEnded = computed(() => this.hasLost() || this.hasWon());
 
     @ViewChild("hiddenInput") hiddenInput!: ElementRef<HTMLInputElement>;
     selection: WordleTextInputSelection | undefined = undefined;

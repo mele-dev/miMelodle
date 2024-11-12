@@ -159,7 +159,7 @@ export const spotifySimplifiedTrackSchema = SafeType.Object({
     ),
     restrictions: SafeType.Optional(SafeType.String()) as any,
     name: SafeType.String(),
-    preview_url: SafeType.Nullable(SafeType.String()),
+    preview_url: SafeType.Optional(SafeType.Nullable(SafeType.String())),
     track_number: SafeType.Integer(),
     type: SafeType.Literal("track"),
     uri: SafeType.String(),

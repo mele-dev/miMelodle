@@ -12,6 +12,36 @@ const translations = {
         es: (artists: SimplifiedArtistObject[]) =>
             artists.map((a) => a.name).join(", "),
     },
+    by: {
+        en: (artists: { name: string }[]) =>
+            `By ${artists.map((a) => a.name).join(", ")}`,
+        es: (artists: { name: string }[]) =>
+            `Por ${artists.map((a) => a.name).join(", ")}`,
+    },
+    from: {
+        en: (album: string) => `From ${album}`,
+        es: (album: string) => `De ${album}`,
+    },
+    snippet: {
+        en: "Snippet",
+        es: "Fragmento",
+    },
+    wonTitle: {
+        en: "That's it! You won!",
+        es: "¡Eso es! ¡Ganaste!",
+    },
+    lostTitle: {
+        en: "No more attempts.",
+        es: "Agotaste tus intentos.",
+    },
+    seeFriends: {
+        en: "See my friends",
+        es: "Ver a mis amigos",
+    },
+    playAgain: {
+        en: "Play again",
+        es: "Jugar de nuevo",
+    },
 } as const satisfies Translations;
 
 @Injectable({

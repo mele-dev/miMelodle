@@ -1,4 +1,3 @@
-import { DeepRequired } from "ts-essentials";
 import {
     getMultipleArtists,
     getSeveralTracks,
@@ -12,10 +11,11 @@ import {
 import { runPreparedQuery } from "./database.js";
 import MusixmatchAPI from "../musixmatch-api/musixmatch.js";
 import { RequireSpotify } from "../spotify/helpers.js";
+import { DeepRequired } from "ts-essentials";
 
 export function checkSongGuess(opts: {
-    targetTrack: TrackObject;
-    trackToCompare: TrackObject;
+    targetTrack: DeepRequired<TrackObject>;
+    trackToCompare: DeepRequired<TrackObject>;
 }): GuessSongHints {
     const { targetTrack, trackToCompare } = opts;
 
@@ -30,12 +30,9 @@ export function checkSongGuess(opts: {
 
     return {
         isCorrectAlbum: targetTrack.album?.id === trackToCompare.album?.id,
-        guessedTrackAlbumName: trackToCompare.album?.name!,
-        isCorrectTrack: targetTrack.id === trackToCompare.id,
-        guessedTrackSpotifyId: trackToCompare.id!,
+        guessedTrack: trackToCompare,
         guessedTrackNameHint: titleHint ?? "",
-        guessedTrackName: trackToCompare.name!,
-        guessedTrackAlbumImages: trackToCompare.album?.images ?? [],
+        isCorrectTrack: targetTrack.id === trackToCompare.id,
     };
 }
 
@@ -86,9 +83,9 @@ export async function getGuessSongInformation(opts: {
 
     const hiddenTrack = tracksInfo.tracks.find((t) => t.id === hiddenTrackId)!;
 
-    const artists = await getMultipleArtists({
+    const artists = (await getMultipleArtists({
         ids: hiddenTrack.artists.map((a) => a.id).join(","),
-    }) as RequireSpotify<typeof getMultipleArtists>;
+    })) as RequireSpotify<typeof getMultipleArtists>;
 
     const attemptHints: GuessSongHints[] = [];
 
@@ -123,9 +120,13 @@ export async function getGuessSongInformation(opts: {
         images: albumInfo?.images,
     };
 
-    if (attemptHints.some((a) => a.isCorrectAlbum)) {
+    const hasWon = attemptHints.some((a) => a.isCorrectAlbum);
+
+    if (hasWon) {
         albumHints = albumInfo;
     }
+
+    const gameHasEnded = gameInfo.length >= 6 || hasWon;
 
     return {
         status: "Success",
@@ -134,6 +135,7 @@ export async function getGuessSongInformation(opts: {
             album: albumHints,
             artists: artists.artists,
             snippet: gameInfo[0].snippet ?? undefined,
+            correctTrack: gameHasEnded ? hiddenTrack : undefined,
         },
     };
 }

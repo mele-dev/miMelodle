@@ -300,6 +300,44 @@ export const getDebugSnapshotResponse = zod.object({
 export const putDebugSnapshotResponse = zod.enum(["TODO!"]);
 
 /**
+ * This endpoint retrieves the lyrics for a given track using its Musixmatch ID
+ * @summary Get lyrics for a specific track
+ */
+export const getLyricsTrackMusixMatchIdParams = zod.object({
+    trackMusixMatchId: zod.number(),
+});
+
+export const getLyricsTrackMusixMatchIdResponse = zod.object({
+    lyricsId: zod.string(),
+    trackId: zod.string(),
+    lyricsBody: zod.string(),
+    explicit: zod.boolean(),
+    language: zod.string(),
+    copyright: zod.string().optional(),
+});
+
+/**
+ * Get the svg for a certain user icon. The selection of user icons is fixed.
+ * @summary Get a user icon.
+ */
+export const getPublicIconsFilenamePathFilenameRegExp = new RegExp(
+    "^(abstract-1\\.svg|abstract-10\\.svg|abstract-11\\.svg|abstract-2\\.svg|abstract-3\\.svg|abstract-4\\.svg|abstract-5\\.svg|abstract-6\\.svg|abstract-7\\.svg|abstract-8\\.svg|abstract-9\\.svg|default\\.svg)$"
+);
+
+export const getPublicIconsFilenameParams = zod.object({
+    filename: zod.string().regex(getPublicIconsFilenamePathFilenameRegExp),
+});
+
+/**
+ * @summary Get information about all user icons.
+ */
+export const getPublicIconsResponseItem = zod.object({
+    id: zod.number(),
+    filename: zod.string(),
+});
+export const getPublicIconsResponse = zod.array(getPublicIconsResponseItem);
+
+/**
  * @summary Fetches global leaderboard information.
  */
 export const getLeaderboardsQueryGameModesItemRegExp = new RegExp(
@@ -350,44 +388,6 @@ export const getLeaderboardsResponse = zod.object({
             )
     ),
 });
-
-/**
- * This endpoint retrieves the lyrics for a given track using its Musixmatch ID
- * @summary Get lyrics for a specific track
- */
-export const getLyricsTrackMusixMatchIdParams = zod.object({
-    trackMusixMatchId: zod.number(),
-});
-
-export const getLyricsTrackMusixMatchIdResponse = zod.object({
-    lyricsId: zod.string(),
-    trackId: zod.string(),
-    lyricsBody: zod.string(),
-    explicit: zod.boolean(),
-    language: zod.string(),
-    copyright: zod.string().optional(),
-});
-
-/**
- * Get the svg for a certain user icon. The selection of user icons is fixed.
- * @summary Get a user icon.
- */
-export const getPublicIconsFilenamePathFilenameRegExp = new RegExp(
-    "^(abstract-1\\.svg|abstract-10\\.svg|abstract-11\\.svg|abstract-2\\.svg|abstract-3\\.svg|abstract-4\\.svg|abstract-5\\.svg|abstract-6\\.svg|abstract-7\\.svg|abstract-8\\.svg|abstract-9\\.svg|default\\.svg)$"
-);
-
-export const getPublicIconsFilenameParams = zod.object({
-    filename: zod.string().regex(getPublicIconsFilenamePathFilenameRegExp),
-});
-
-/**
- * @summary Get information about all user icons.
- */
-export const getPublicIconsResponseItem = zod.object({
-    id: zod.number(),
-    filename: zod.string(),
-});
-export const getPublicIconsResponse = zod.array(getPublicIconsResponseItem);
 
 /**
  * Authentication is not needed to see public user information.
@@ -499,6 +499,53 @@ export const getUsersCheckResponse = zod.object({
 });
 
 /**
+ * All fake users have Fake123! as their password.
+ * @summary Returns random, believable credentials for a user.
+ */
+export const getDebugFakeUserResponseNameMax = 25;
+export const getDebugFakeUserResponseEmailMax = 254;
+
+export const getDebugFakeUserResponseEmailRegExp = new RegExp(
+    "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$"
+);
+export const getDebugFakeUserResponseUsernameMin = 3;
+
+export const getDebugFakeUserResponseUsernameMax = 50;
+
+export const getDebugFakeUserResponseUsernameRegExp = new RegExp(
+    "^[a-zA-Z0-9\\.-_]+$"
+);
+export const getDebugFakeUserResponsePasswordMin = 3;
+
+export const getDebugFakeUserResponsePasswordMax = 20;
+
+export const getDebugFakeUserResponse = zod.object({
+    name: zod.string().min(1).max(getDebugFakeUserResponseNameMax),
+    email: zod
+        .string()
+        .max(getDebugFakeUserResponseEmailMax)
+        .regex(getDebugFakeUserResponseEmailRegExp),
+    username: zod
+        .string()
+        .min(getDebugFakeUserResponseUsernameMin)
+        .max(getDebugFakeUserResponseUsernameMax)
+        .regex(getDebugFakeUserResponseUsernameRegExp),
+    password: zod
+        .string()
+        .min(getDebugFakeUserResponsePasswordMin)
+        .max(getDebugFakeUserResponsePasswordMax),
+    profilePictureId: zod.number(),
+});
+
+/**
+ * We do not check if the user already exists, so this route may error. On error, we roll back any changes.
+ * @summary Create a certain number of fake users.
+ */
+export const postDebugFakeUsersBody = zod.object({
+    amount: zod.number(),
+});
+
+/**
  * @summary Fetch a user's jwt token.
  */
 export const postAuthLoginBodyPasswordMin = 3;
@@ -561,53 +608,6 @@ export const postAuthRegisterBody = zod.object({
 export const postAuthRegisterResponse = zod.object({
     jwtToken: zod.string(),
     id: zod.number(),
-});
-
-/**
- * All fake users have Fake123! as their password.
- * @summary Returns random, believable credentials for a user.
- */
-export const getDebugFakeUserResponseNameMax = 25;
-export const getDebugFakeUserResponseEmailMax = 254;
-
-export const getDebugFakeUserResponseEmailRegExp = new RegExp(
-    "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$"
-);
-export const getDebugFakeUserResponseUsernameMin = 3;
-
-export const getDebugFakeUserResponseUsernameMax = 50;
-
-export const getDebugFakeUserResponseUsernameRegExp = new RegExp(
-    "^[a-zA-Z0-9\\.-_]+$"
-);
-export const getDebugFakeUserResponsePasswordMin = 3;
-
-export const getDebugFakeUserResponsePasswordMax = 20;
-
-export const getDebugFakeUserResponse = zod.object({
-    name: zod.string().min(1).max(getDebugFakeUserResponseNameMax),
-    email: zod
-        .string()
-        .max(getDebugFakeUserResponseEmailMax)
-        .regex(getDebugFakeUserResponseEmailRegExp),
-    username: zod
-        .string()
-        .min(getDebugFakeUserResponseUsernameMin)
-        .max(getDebugFakeUserResponseUsernameMax)
-        .regex(getDebugFakeUserResponseUsernameRegExp),
-    password: zod
-        .string()
-        .min(getDebugFakeUserResponsePasswordMin)
-        .max(getDebugFakeUserResponsePasswordMax),
-    profilePictureId: zod.number(),
-});
-
-/**
- * We do not check if the user already exists, so this route may error. On error, we roll back any changes.
- * @summary Create a certain number of fake users.
- */
-export const postDebugFakeUsersBody = zod.object({
-    amount: zod.number(),
 });
 
 /**
@@ -963,37 +963,6 @@ export const deleteUsersSelfSelfIdResponse = zod.object({
 });
 
 /**
- * @summary Get every user currently blocked by self.
- */
-export const getUsersSelfSelfIdBlockingParams = zod.object({
-    selfId: zod.number(),
-});
-
-export const getUsersSelfSelfIdBlockingResponseNameMax = 25;
-export const getUsersSelfSelfIdBlockingResponseUsernameMin = 3;
-
-export const getUsersSelfSelfIdBlockingResponseUsernameMax = 50;
-
-export const getUsersSelfSelfIdBlockingResponseUsernameRegExp = new RegExp(
-    "^[a-zA-Z0-9\\.-_]+$"
-);
-
-export const getUsersSelfSelfIdBlockingResponseItem = zod.object({
-    id: zod.number(),
-    name: zod.string().min(1).max(getUsersSelfSelfIdBlockingResponseNameMax),
-    username: zod
-        .string()
-        .min(getUsersSelfSelfIdBlockingResponseUsernameMin)
-        .max(getUsersSelfSelfIdBlockingResponseUsernameMax)
-        .regex(getUsersSelfSelfIdBlockingResponseUsernameRegExp),
-    profilePictureId: zod.number(),
-    profilePictureFilename: zod.string(),
-});
-export const getUsersSelfSelfIdBlockingResponse = zod.array(
-    getUsersSelfSelfIdBlockingResponseItem
-);
-
-/**
  * @summary Get saved user configurations.
  */
 export const getUsersSelfSelfIdConfigsParams = zod.object({
@@ -1107,6 +1076,37 @@ export const getUsersSelfSelfIdConfigsSuggestResponseItem = zod.object({
 });
 export const getUsersSelfSelfIdConfigsSuggestResponse = zod.array(
     getUsersSelfSelfIdConfigsSuggestResponseItem
+);
+
+/**
+ * @summary Get every user currently blocked by self.
+ */
+export const getUsersSelfSelfIdBlockingParams = zod.object({
+    selfId: zod.number(),
+});
+
+export const getUsersSelfSelfIdBlockingResponseNameMax = 25;
+export const getUsersSelfSelfIdBlockingResponseUsernameMin = 3;
+
+export const getUsersSelfSelfIdBlockingResponseUsernameMax = 50;
+
+export const getUsersSelfSelfIdBlockingResponseUsernameRegExp = new RegExp(
+    "^[a-zA-Z0-9\\.-_]+$"
+);
+
+export const getUsersSelfSelfIdBlockingResponseItem = zod.object({
+    id: zod.number(),
+    name: zod.string().min(1).max(getUsersSelfSelfIdBlockingResponseNameMax),
+    username: zod
+        .string()
+        .min(getUsersSelfSelfIdBlockingResponseUsernameMin)
+        .max(getUsersSelfSelfIdBlockingResponseUsernameMax)
+        .regex(getUsersSelfSelfIdBlockingResponseUsernameRegExp),
+    profilePictureId: zod.number(),
+    profilePictureFilename: zod.string(),
+});
+export const getUsersSelfSelfIdBlockingResponse = zod.array(
+    getUsersSelfSelfIdBlockingResponseItem
 );
 
 /**
@@ -1437,27 +1437,166 @@ export const getUsersSelfSelfIdGameGuessSongGameIdParams = zod.object({
     gameId: zod.number(),
 });
 
+export const getUsersSelfSelfIdGameGuessSongGameIdResponseAttemptsItemGuessedTrackAvailableMarketsItemMin = 2;
+
+export const getUsersSelfSelfIdGameGuessSongGameIdResponseAttemptsItemGuessedTrackAvailableMarketsItemMax = 2;
+export const getUsersSelfSelfIdGameGuessSongGameIdResponseAttemptsItemGuessedTrackAlbumAlbumTypeRegExp =
+    new RegExp("^(album|single|compilation)$");
+export const getUsersSelfSelfIdGameGuessSongGameIdResponseAttemptsItemGuessedTrackAlbumAvailableMarketsItemMin = 2;
+
+export const getUsersSelfSelfIdGameGuessSongGameIdResponseAttemptsItemGuessedTrackAlbumAvailableMarketsItemMax = 2;
+export const getUsersSelfSelfIdGameGuessSongGameIdResponseAttemptsItemGuessedTrackAlbumReleaseDatePrecisionRegExp =
+    new RegExp("^(year|month|day)$");
+export const getUsersSelfSelfIdGameGuessSongGameIdResponseAttemptsItemGuessedTrackPopularityMin = 0;
+
+export const getUsersSelfSelfIdGameGuessSongGameIdResponseAttemptsItemGuessedTrackPopularityMax = 100;
 export const getUsersSelfSelfIdGameGuessSongGameIdResponseArtistsItemPopularityMin = 0;
 
 export const getUsersSelfSelfIdGameGuessSongGameIdResponseArtistsItemPopularityMax = 100;
+export const getUsersSelfSelfIdGameGuessSongGameIdResponseAlbumAlbumTypeRegExp =
+    new RegExp("^(album|single|compilation)$");
+export const getUsersSelfSelfIdGameGuessSongGameIdResponseAlbumAvailableMarketsItemMin = 2;
+
+export const getUsersSelfSelfIdGameGuessSongGameIdResponseAlbumAvailableMarketsItemMax = 2;
+export const getUsersSelfSelfIdGameGuessSongGameIdResponseAlbumReleaseDatePrecisionRegExp =
+    new RegExp("^(year|month|day)$");
+export const getUsersSelfSelfIdGameGuessSongGameIdResponseCorrectTrackAvailableMarketsItemMin = 2;
+
+export const getUsersSelfSelfIdGameGuessSongGameIdResponseCorrectTrackAvailableMarketsItemMax = 2;
+export const getUsersSelfSelfIdGameGuessSongGameIdResponseCorrectTrackAlbumAlbumTypeRegExp =
+    new RegExp("^(album|single|compilation)$");
+export const getUsersSelfSelfIdGameGuessSongGameIdResponseCorrectTrackAlbumAvailableMarketsItemMin = 2;
+
+export const getUsersSelfSelfIdGameGuessSongGameIdResponseCorrectTrackAlbumAvailableMarketsItemMax = 2;
+export const getUsersSelfSelfIdGameGuessSongGameIdResponseCorrectTrackAlbumReleaseDatePrecisionRegExp =
+    new RegExp("^(year|month|day)$");
+export const getUsersSelfSelfIdGameGuessSongGameIdResponseCorrectTrackPopularityMin = 0;
+
+export const getUsersSelfSelfIdGameGuessSongGameIdResponseCorrectTrackPopularityMax = 100;
 
 export const getUsersSelfSelfIdGameGuessSongGameIdResponse = zod.object({
     attempts: zod.array(
         zod.object({
-            trackSnippet: zod.string().optional(),
             isCorrectAlbum: zod.boolean(),
             isCorrectTrack: zod.boolean(),
+            guessedTrack: zod.object({
+                artists: zod.array(
+                    zod.object({
+                        external_urls: zod.object({
+                            spotify: zod.string(),
+                        }),
+                        href: zod.string(),
+                        id: zod.string(),
+                        name: zod.string(),
+                        type: zod.enum(["artist"]),
+                        uri: zod.string(),
+                    })
+                ),
+                available_markets: zod.array(
+                    zod
+                        .string()
+                        .min(
+                            getUsersSelfSelfIdGameGuessSongGameIdResponseAttemptsItemGuessedTrackAvailableMarketsItemMin
+                        )
+                        .max(
+                            getUsersSelfSelfIdGameGuessSongGameIdResponseAttemptsItemGuessedTrackAvailableMarketsItemMax
+                        )
+                ),
+                disc_number: zod.number(),
+                duration_ms: zod.number(),
+                explicit: zod.boolean(),
+                external_urls: zod.object({
+                    spotify: zod.string(),
+                }),
+                href: zod.string(),
+                id: zod.string(),
+                is_playable: zod.boolean().optional(),
+                linked_from: zod
+                    .object({
+                        external_urls: zod
+                            .object({
+                                spotify: zod.string(),
+                            })
+                            .optional(),
+                        href: zod.string().optional(),
+                        id: zod.string().optional(),
+                        type: zod.enum(["track"]).optional(),
+                        uri: zod.string().optional(),
+                    })
+                    .optional(),
+                restrictions: zod.string().optional(),
+                name: zod.string(),
+                preview_url: zod.string().or(zod.null()),
+                track_number: zod.number(),
+                type: zod.enum(["track"]),
+                uri: zod.string(),
+                is_local: zod.boolean(),
+                album: zod.object({
+                    album_type: zod
+                        .string()
+                        .regex(
+                            getUsersSelfSelfIdGameGuessSongGameIdResponseAttemptsItemGuessedTrackAlbumAlbumTypeRegExp
+                        ),
+                    available_markets: zod.array(
+                        zod
+                            .string()
+                            .min(
+                                getUsersSelfSelfIdGameGuessSongGameIdResponseAttemptsItemGuessedTrackAlbumAvailableMarketsItemMin
+                            )
+                            .max(
+                                getUsersSelfSelfIdGameGuessSongGameIdResponseAttemptsItemGuessedTrackAlbumAvailableMarketsItemMax
+                            )
+                    ),
+                    external_urls: zod.object({
+                        spotify: zod.string(),
+                    }),
+                    id: zod.string(),
+                    href: zod.string(),
+                    images: zod.array(
+                        zod.object({
+                            url: zod.string(),
+                            width: zod.number().or(zod.null()),
+                            height: zod.number().or(zod.null()),
+                        })
+                    ),
+                    name: zod.string(),
+                    release_date: zod.string(),
+                    release_date_precision: zod
+                        .string()
+                        .regex(
+                            getUsersSelfSelfIdGameGuessSongGameIdResponseAttemptsItemGuessedTrackAlbumReleaseDatePrecisionRegExp
+                        ),
+                    total_tracks: zod.number(),
+                    type: zod.enum(["album"]),
+                    uri: zod.string(),
+                    artists: zod.array(
+                        zod.object({
+                            external_urls: zod.object({
+                                spotify: zod.string(),
+                            }),
+                            href: zod.string(),
+                            id: zod.string(),
+                            name: zod.string(),
+                            type: zod.enum(["artist"]),
+                            uri: zod.string(),
+                        })
+                    ),
+                }),
+                external_ids: zod.object({
+                    isrc: zod.string().optional(),
+                    ean: zod.string().optional(),
+                    upc: zod.string().optional(),
+                }),
+                popularity: zod
+                    .number()
+                    .min(
+                        getUsersSelfSelfIdGameGuessSongGameIdResponseAttemptsItemGuessedTrackPopularityMin
+                    )
+                    .max(
+                        getUsersSelfSelfIdGameGuessSongGameIdResponseAttemptsItemGuessedTrackPopularityMax
+                    ),
+            }),
             guessedTrackNameHint: zod.string(),
-            guessedTrackSpotifyId: zod.string(),
-            guessedTrackName: zod.string(),
-            guessedTrackAlbumName: zod.string(),
-            guessedTrackAlbumImages: zod.array(
-                zod.object({
-                    url: zod.string(),
-                    width: zod.number().or(zod.null()),
-                    height: zod.number().or(zod.null()),
-                })
-            ),
         })
     ),
     artists: zod.array(
@@ -1495,6 +1634,31 @@ export const getUsersSelfSelfIdGameGuessSongGameIdResponse = zod.object({
     snippet: zod.string().optional(),
     album: zod
         .object({
+            album_type: zod
+                .string()
+                .regex(
+                    getUsersSelfSelfIdGameGuessSongGameIdResponseAlbumAlbumTypeRegExp
+                )
+                .optional(),
+            available_markets: zod
+                .array(
+                    zod
+                        .string()
+                        .min(
+                            getUsersSelfSelfIdGameGuessSongGameIdResponseAlbumAvailableMarketsItemMin
+                        )
+                        .max(
+                            getUsersSelfSelfIdGameGuessSongGameIdResponseAlbumAvailableMarketsItemMax
+                        )
+                )
+                .optional(),
+            external_urls: zod
+                .object({
+                    spotify: zod.string(),
+                })
+                .optional(),
+            id: zod.string().optional(),
+            href: zod.string().optional(),
             images: zod
                 .array(
                     zod.object({
@@ -1505,8 +1669,149 @@ export const getUsersSelfSelfIdGameGuessSongGameIdResponse = zod.object({
                 )
                 .optional(),
             name: zod.string().optional(),
-            genres: zod.array(zod.string()).optional(),
-            label: zod.string().optional(),
+            release_date: zod.string().optional(),
+            release_date_precision: zod
+                .string()
+                .regex(
+                    getUsersSelfSelfIdGameGuessSongGameIdResponseAlbumReleaseDatePrecisionRegExp
+                )
+                .optional(),
+            total_tracks: zod.number().optional(),
+            type: zod.enum(["album"]).optional(),
+            uri: zod.string().optional(),
+            artists: zod
+                .array(
+                    zod.object({
+                        external_urls: zod.object({
+                            spotify: zod.string(),
+                        }),
+                        href: zod.string(),
+                        id: zod.string(),
+                        name: zod.string(),
+                        type: zod.enum(["artist"]),
+                        uri: zod.string(),
+                    })
+                )
+                .optional(),
+        })
+        .optional(),
+    correctTrack: zod
+        .object({
+            artists: zod.array(
+                zod.object({
+                    external_urls: zod.object({
+                        spotify: zod.string(),
+                    }),
+                    href: zod.string(),
+                    id: zod.string(),
+                    name: zod.string(),
+                    type: zod.enum(["artist"]),
+                    uri: zod.string(),
+                })
+            ),
+            available_markets: zod.array(
+                zod
+                    .string()
+                    .min(
+                        getUsersSelfSelfIdGameGuessSongGameIdResponseCorrectTrackAvailableMarketsItemMin
+                    )
+                    .max(
+                        getUsersSelfSelfIdGameGuessSongGameIdResponseCorrectTrackAvailableMarketsItemMax
+                    )
+            ),
+            disc_number: zod.number(),
+            duration_ms: zod.number(),
+            explicit: zod.boolean(),
+            external_urls: zod.object({
+                spotify: zod.string(),
+            }),
+            href: zod.string(),
+            id: zod.string(),
+            is_playable: zod.boolean().optional(),
+            linked_from: zod
+                .object({
+                    external_urls: zod
+                        .object({
+                            spotify: zod.string(),
+                        })
+                        .optional(),
+                    href: zod.string().optional(),
+                    id: zod.string().optional(),
+                    type: zod.enum(["track"]).optional(),
+                    uri: zod.string().optional(),
+                })
+                .optional(),
+            restrictions: zod.string().optional(),
+            name: zod.string(),
+            preview_url: zod.string().or(zod.null()),
+            track_number: zod.number(),
+            type: zod.enum(["track"]),
+            uri: zod.string(),
+            is_local: zod.boolean(),
+            album: zod.object({
+                album_type: zod
+                    .string()
+                    .regex(
+                        getUsersSelfSelfIdGameGuessSongGameIdResponseCorrectTrackAlbumAlbumTypeRegExp
+                    ),
+                available_markets: zod.array(
+                    zod
+                        .string()
+                        .min(
+                            getUsersSelfSelfIdGameGuessSongGameIdResponseCorrectTrackAlbumAvailableMarketsItemMin
+                        )
+                        .max(
+                            getUsersSelfSelfIdGameGuessSongGameIdResponseCorrectTrackAlbumAvailableMarketsItemMax
+                        )
+                ),
+                external_urls: zod.object({
+                    spotify: zod.string(),
+                }),
+                id: zod.string(),
+                href: zod.string(),
+                images: zod.array(
+                    zod.object({
+                        url: zod.string(),
+                        width: zod.number().or(zod.null()),
+                        height: zod.number().or(zod.null()),
+                    })
+                ),
+                name: zod.string(),
+                release_date: zod.string(),
+                release_date_precision: zod
+                    .string()
+                    .regex(
+                        getUsersSelfSelfIdGameGuessSongGameIdResponseCorrectTrackAlbumReleaseDatePrecisionRegExp
+                    ),
+                total_tracks: zod.number(),
+                type: zod.enum(["album"]),
+                uri: zod.string(),
+                artists: zod.array(
+                    zod.object({
+                        external_urls: zod.object({
+                            spotify: zod.string(),
+                        }),
+                        href: zod.string(),
+                        id: zod.string(),
+                        name: zod.string(),
+                        type: zod.enum(["artist"]),
+                        uri: zod.string(),
+                    })
+                ),
+            }),
+            external_ids: zod.object({
+                isrc: zod.string().optional(),
+                ean: zod.string().optional(),
+                upc: zod.string().optional(),
+            }),
+            popularity: zod
+                .number()
+                .min(
+                    getUsersSelfSelfIdGameGuessSongGameIdResponseCorrectTrackPopularityMin
+                )
+                .max(
+                    getUsersSelfSelfIdGameGuessSongGameIdResponseCorrectTrackPopularityMax
+                ),
         })
         .optional(),
 });

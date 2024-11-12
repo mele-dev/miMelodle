@@ -1,74 +1,106 @@
 @if (this.gameInfo()) {
 <header
-    class="my-5 h-48 w-full overflow-hidden rounded-2xl bg-cover bg-center"
+    class="my-5 h-48 w-full overflow-hidden rounded-2xl border border-muted bg-cover bg-center"
     style="background-image: url({{ this.gameInfo()!.album!.images?.[0]?.url }});"
 >
     <div
-        class="flex h-full w-full flex-row justify-between gap-6 p-6 backdrop-blur-md backdrop-brightness-50"
+        class="flex h-full w-full flex-row justify-between gap-6 p-6 backdrop-blur backdrop-brightness-50"
     >
         <!-- TODO: Get artist image, not album image. -->
-        <img
-            [src]="this.gameInfo()?.artists?.[0]?.images?.[0]?.url"
-            alt=""
-            class="aspect-square h-full rounded-xl shadow"
-        />
+        <a
+            [href]="this.gameInfo()?.artists?.[0]?.external_urls?.spotify"
+            class="aspect-square h-full w-fit"
+        >
+            <img
+                [src]="this.gameInfo()?.artists?.[0]?.images?.[0]?.url"
+                alt=""
+                class="aspect-square h-full rounded-xl shadow hover:scale-105 transition-transform"
+            />
+        </a>
         <div class="flex w-full flex-col justify-center gap-4">
             <div
-                class="h-16 w-full rounded-xl bg-muted/80 shadow grayscale backdrop-blur"
-            ></div>
+                class="w-full rounded bg-muted/80 text-5xl shadow grayscale backdrop-blur"
+                [classList]="{
+        'bg-opacity-0': this.hasEnded(),
+        }"
+            >
+                @if (!this.hasEnded()){ <span class="invisible"> Shh </span>}
+                @else {
+                <span class="text-5xl"
+                    >{{ this.gameInfo()?.correctTrack?.name }}</span
+                >
+                }
+            </div>
             <span class="text-3xl drop-shadow"
-                >By {{ this.artistsString() }}</span
+                >{{ this.dict().by(this.gameInfo()?.artists ?? []) }}</span
             >
         </div>
     </div>
 </header>
 <section class="my-5 mb-20 grid grid-cols-1 gap-4 px-6">
     @for (attempt of this.computedAttempts(); track $index) {
-    <div>
-        <article
-            class="w-full overflow-hidden rounded-2xl border border-muted bg-cover bg-center"
-            style="background-image: url({{ attempt.guessedTrackAlbumImages[0].url }});"
+    <article
+        class="w-full overflow-hidden rounded-2xl border border-muted bg-cover bg-center"
+        style="background-image: url({{ attempt.guessedTrack.album.images[0].url }});"
+    >
+        <div
+            class="flex h-full w-full flex-row justify-between gap-6 p-6 backdrop-blur backdrop-brightness-50"
         >
-            <!--TODO: Make this pretty and allow user to submit guess.-->
-            <div
-                class="flex h-full w-full flex-row justify-between gap-6 p-6 backdrop-blur backdrop-brightness-50"
-            >
-                <div class="flex h-full shrink-0 items-center">
-                    <div class="relative">
+            <div class="flex h-full shrink-0 items-center">
+                <div class="relative">
+                    <a
+                        class="aspect-square h-full w-fit"
+                        [href]="attempt.guessedTrack.album.external_urls.spotify"
+                    >
                         <img
-                            [src]="attempt.guessedTrackAlbumImages[0].url"
+                            [src]="attempt.guessedTrack.album.images[0].url"
                             alt=""
-                            class="my-auto aspect-square h-32 rounded-xl shadow"
+                            class="my-auto aspect-square h-32 rounded-xl shadow hover:scale-105 transition-transform"
                         />
-                        <div
-                            class="absolute bottom-2 right-2 z-10 flex h-5 w-5 items-center justify-center rounded-full"
-                            [ngClass]="{
+                    </a>
+                    <div
+                        class="absolute bottom-2 right-2 z-10 flex h-5 w-5 items-center justify-center rounded-full"
+                        [ngClass]="{
                             'bg-green-500': attempt.isCorrectAlbum,
                             'bg-red-500': !attempt.isCorrectAlbum,
                         }"
-                        >
-                            @if (attempt.isCorrectAlbum) {
-                            <hlm-icon name="lucideCheck" size="sm"></hlm-icon>
-                            } @else {
+                    >
+                        @if (attempt.isCorrectAlbum) {
+                        <hlm-icon name="lucideCheck" size="sm"></hlm-icon>
+                        } @else {
 
-                            <hlm-icon name="lucideX" size="sm"></hlm-icon>
-                            }
-                        </div>
+                        <hlm-icon name="lucideX" size="sm"></hlm-icon>
+                        }
                     </div>
                 </div>
-                <div class="flex w-full flex-col justify-center gap-4">
-                    <app-wordle-text
-                        [text]="attempt.guessedTrackNameHint"
-                        [isPending]="false"
-                    ></app-wordle-text>
-                    <span class="text-3xl drop-shadow">
-                        From {{ attempt.guessedTrackAlbumName }}</span
-                    >
-                </div>
             </div>
-        </article>
-    </div>
-    } @if (!this.hasWon()) {
+            <a
+                class="flex w-full flex-col justify-center gap-4 group"
+                [href]="attempt.guessedTrack.external_urls.spotify"
+            >
+                <app-wordle-text
+                    class="group-hover:scale-105 w-fit transition-all"
+                    [text]="attempt.guessedTrackNameHint"
+                    [isPending]="false"
+                ></app-wordle-text>
+                <span class="text-3xl drop-shadow">
+                    {{ this.dict().from(attempt.guessedTrack.album.name)
+                    }}</span
+                >
+            </a>
+        </div>
+    </article>
+    @if ($index === 4 && !attempt.isCorrectTrack) {
+    <article
+        class="w-full rounded-2xl border border-muted bg-accent p-6 text-accent-foreground"
+    >
+        <h2>{{ this.dict().snippet }}</h2>
+        <p class="text-2xl">
+            {{ this.gameInfo()?.snippet ?? "We could not find lyrics for this
+            track." }}
+        </p>
+    </article>
+    } } @if (!hasEnded()) {
     <article
         (click)="this.focusInput()"
         class="relative w-full overflow-hidden rounded-2xl border border-muted focus-within:border-fuchsia-500"
@@ -76,15 +108,6 @@
         <div
             class="flex h-full w-full flex-row justify-between gap-6 p-6 backdrop-blur backdrop-brightness-50"
         >
-            <div class="flex h-full shrink-0 items-center">
-                <div class="relative">
-                    <img
-                        src="https://imgs.search.brave.com/4dlTnXnFH27cbikm13CNRJ6XuNeVUnk0eBMQasBaYNY/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly93d3cu/bm1lLmNvbS93cC1j/b250ZW50L3VwbG9h/ZHMvMjAxNy8wNy9S/SUNLX1JPTEwtNjk2/eDQ0Mi5qcGc"
-                        alt=""
-                        class="my-auto aspect-square h-44 rounded-xl shadow object-cover"
-                    />
-                </div>
-            </div>
             <div class="flex w-full flex-col justify-center gap-4">
                 <app-wordle-text
                     [text]="this.shownValue()"
@@ -103,12 +126,47 @@
             [(ngModel)]="this.value"
         />
     </article>
-  }
-
-  @if (this.hasWon()) {
-  <!--TODO-->
-  you won!
-  }
+    } @if (this.hasEnded()) {
+    <div class="mt-5 flex flex-col items-center gap-5">
+        @if (this.hasWon()) {
+        <h1
+            class="mx-auto bg-gradient-to-r from-purple-500 via-fuchsia-500 via-[30%] to-orange-500 to-[calc(100%+15rem)] bg-clip-text text-6xl font-extrabold text-transparent"
+        >
+            {{ this.dict().wonTitle }}
+        </h1>
+        } @if (this.hasLost()) {
+        <h1 class="mx-auto text-6xl font-extrabold">
+            {{ this.dict().lostTitle }}
+        </h1>
+        }
+        <iframe
+            class="rounded-2xl"
+            [src]="this.sanitizer.bypassSecurityTrustResourceUrl(this.embedSrc()!)"
+            width="100%"
+            height="352"
+            frameborder="0"
+            allowfullscreen=""
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy"
+        ></iframe>
+        <div class="mt-2 flex w-fit justify-between gap-20">
+            <a
+                [href]="this.router.createLink('/app/leaderboards')"
+                hlmBtn
+                variant="ghost"
+                class="text-xl font-bold"
+                >{{ this.dict().seeFriends }}</a
+            >
+            <a
+                [href]="this.router.createLink('/app/game')"
+                hlmBtn
+                variant="ghost"
+                class="text-xl font-bold"
+                >{{ this.dict().playAgain }}</a
+            >
+        </div>
+    </div>
+    }
 </section>
 }
 
