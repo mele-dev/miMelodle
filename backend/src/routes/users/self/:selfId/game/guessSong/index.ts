@@ -13,23 +13,6 @@ import { runPreparedQuery } from "../../../../../../services/database.js";
 import { createGuessLineGame } from "../../../../../../queries/dml.queries.js";
 
 export default (async (fastify) => {
-    fastify.get("", {
-        onRequest: [decorators.authenticateSelf()],
-        schema: {
-            params: SafeType.Pick(ParamsSchema, ["selfId", "gameId"]),
-            response: {
-                200: MelodleGameSchema,
-                ...SafeType.CreateErrors(["unauthorized", "notFound"]),
-            },
-            summary: "Get information about a melodle game.",
-            description: undefined,
-            tags: ["User"] satisfies MelodleTagName[],
-        },
-        async handler(_request, reply) {
-            return reply.notImplemented();
-        },
-    });
-
     fastify.post("", {
         onRequest: [decorators.authenticateSelf()],
         schema: {

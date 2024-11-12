@@ -11,7 +11,6 @@ import {
     FormatRegistry,
 } from "@sinclair/typebox";
 import { Value } from "@sinclair/typebox/value";
-import schemaReferences from "../types/schemaReferences.js";
 import {
     CommonErrorCode,
     CommonErrorName,
@@ -105,7 +104,7 @@ const extensions = {
         const output = Type.Union([schema], { ...schema, examples });
 
         for (const example of output.examples) {
-            Value.Assert(schema, schemaReferences, example);
+            Value.Assert(schema, example);
         }
 
         return output;
@@ -159,6 +158,10 @@ const extensions = {
         // I'm pretty sure this cast is necessary. If this function is buggy,
         // blame this. - cr
         return output as any;
+    },
+    TODO: Type.Optional(Type.Any({ description: "Not yet implemented!" })),
+    Nullable<T extends TSchema>(schema: T, options?: SchemaOptions) {
+        return Type.Union([schema, Type.Null()], options);
     },
 } as const;
 

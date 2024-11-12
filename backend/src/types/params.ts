@@ -1,7 +1,7 @@
 import { SafeType } from "../utils/typebox.js";
-import { artistSchema } from "./artist.js";
 import { melodleGameConfig, MelodleGameSchema } from "./melodle.js";
 import { profilePictureSchema } from "./public.js";
+import { artistSchema } from "./spotify.js";
 import { trackSchema } from "./track.js";
 import { userSchema } from "./user.js";
 

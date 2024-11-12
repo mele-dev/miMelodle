@@ -1,4 +1,6 @@
-export default {
+import { defineConfig } from "orval";
+
+export default defineConfig({
     spotify: {
         input: {
             target: "https://developer.spotify.com/reference/web-api/open-api-schema.yaml",
@@ -6,7 +8,7 @@ export default {
         output: {
             target: "src/apiCodegen/spotify.ts",
             prettier: true,
-            baseUrl: 'https://api.spotify.com/v1',
+            baseUrl: "https://api.spotify.com/v1",
         },
     },
     backend: {
@@ -24,9 +26,9 @@ export default {
             target: "./schemas/backendSchema.json",
         },
         output: {
-            client: 'zod',
+            client: "zod",
             target: "src/apiCodegen/backend-zod.ts",
             prettier: true,
         },
     },
-};
+});
