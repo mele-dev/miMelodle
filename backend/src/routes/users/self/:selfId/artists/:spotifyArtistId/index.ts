@@ -108,8 +108,8 @@ export default (async (fastify) => {
             } catch {
                 return sendError(
                     reply,
-                    "notFound",
-                    "No matching id found on Spotify."
+                    "badRequest",
+                    "Already added artist."
                 );
             }
         },

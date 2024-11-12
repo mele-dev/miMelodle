@@ -14,6 +14,7 @@ import { HlmTdComponent } from "../../../../libs/ui/ui-table-helm/src/lib/hlm-td
 import { FormsModule } from "@angular/forms";
 import { LocalStorageService } from "../../services/local-storage.service";
 import { HomeArtistsService } from "../../services/saved-artists.service";
+import { ArtistFinderTranslator } from "./artist-finder.translations";
 
 type SearchedArtist = GetSpotifySearch200Artists["items"][number];
 
@@ -24,6 +25,7 @@ type SearchedArtist = GetSpotifySearch200Artists["items"][number];
     templateUrl: "./artist-finder.component.html",
 })
 export class ArtistFinderComponent {
+    dict = inject(ArtistFinderTranslator).dict
     usersFilter = signal<string>("");
     matchedArtists = signal<SearchedArtist[]>([]);
     private _localStorage = inject(LocalStorageService);
@@ -58,11 +60,11 @@ export class ArtistFinderComponent {
                 userId,
                 spotifyId
             );
+            toast(this.dict().successToast);
 
             await this.homeArtistsService.loadData();
-            toast("Added succesfully!");
         } catch (e) {
-            toast("Error adding artist.");
+            toast(this.dict().errorToast);
             return;
         }
     }

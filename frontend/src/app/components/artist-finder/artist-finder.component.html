@@ -1,6 +1,6 @@
 <h1 class="mb-5">
-    <span class="font-semibold text-neutral-300"> Search an artist </span>
-    <span class="text-neutral-400">by their name</span>
+    <span class="font-semibold text-neutral-300"> {{this.dict().title}} </span>
+    <span class="text-neutral-400">{{this.dict().subtitle}}</span>
 </h1>
 
 <input
@@ -27,7 +27,7 @@
                         ><span class="text-lx">{{ artist.name }}</span>
                     </div>
                     <span class="text-xs">
-                        {{ this.homeArtistsService.formatNumber(artist.followers.total) }}
+                        {{ this.homeArtistsService.formatNumber(artist.followers.total) }} {{this.dict().followers}}
                     </span>
                 </div>
             </hlm-td>
