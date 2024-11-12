@@ -43,12 +43,14 @@ export class ArtistFinderComponent {
         }
     }
 
-    public addArtist(name: string){
+    public addArtist(spotifyId: string){
         const userId = this._localStorage.getItem('userInfo')?.id
 
         if (userId === undefined) {
             return;
         }
+
+        
 
     }
 }
