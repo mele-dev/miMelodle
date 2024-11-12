@@ -13,6 +13,7 @@ import { HlmTrowComponent } from "../../../../libs/ui/ui-table-helm/src/lib/hlm-
 import { HlmTdComponent } from "../../../../libs/ui/ui-table-helm/src/lib/hlm-td.component";
 import { FormsModule } from "@angular/forms";
 import { LocalStorageService } from "../../services/local-storage.service";
+import { HomeArtistsService } from "../../services/home-artists.service";
 
 type SearchedArtist = GetSpotifySearch200Artists["items"][number];
 
@@ -25,8 +26,8 @@ type SearchedArtist = GetSpotifySearch200Artists["items"][number];
 export class ArtistFinderComponent {
     usersFilter = signal<string>("");
     matchedArtists = signal<SearchedArtist[]>([]);
-    private _localStorage = inject(LocalStorageService)
-    private _ = inject(LocalStorageService)
+    private _localStorage = inject(LocalStorageService);
+    private _homeArtistsService = inject(HomeArtistsService);
 
     async search() {
         console.info(this.usersFilter());
@@ -40,20 +41,29 @@ export class ArtistFinderComponent {
             this.matchedArtists.set(query.data.artists?.items ?? []);
         } catch (e) {
             console.error("Couldn't find any artists.");
-            toast("couldn't find any artists.");
+            toast("Couldn't find any artists.");
             return;
         }
     }
 
-    public async addArtist(spotifyId: string){
-        const userId = this._localStorage.getItem('userInfo')?.id
+    public async addArtist(spotifyId: string) {
+        const userId = this._localStorage.getItem("userInfo")?.id;
 
         if (userId === undefined) {
             return;
         }
 
-        const result = await postUsersSelfSelfIdArtistsSpotifyArtistId(userId,spotifyId);
+        try {
+            const result = await postUsersSelfSelfIdArtistsSpotifyArtistId(
+                userId,
+                spotifyId
+            );
 
-
+            await this._homeArtistsService.loadData();
+            toast("Added succesfully!");
+        } catch (e) {
+            toast("Error adding artist.");
+            return;
+        }
     }
 }

@@ -18,6 +18,7 @@ import {
 import { HlmLabelDirective } from "@spartan-ng/ui-label-helm";
 import { HlmInputDirective } from "@spartan-ng/ui-input-helm";
 import { ArtistFinderComponent } from "../components/artist-finder/artist-finder.component";
+import { CollectionArtistCardComponent } from "../components/collection-artist-card/collection-artist-card.component";
 
 @Component({
     selector: "app-home",
@@ -36,8 +37,10 @@ import { ArtistFinderComponent } from "../components/artist-finder/artist-finder
     HlmLabelDirective,
     HlmInputDirective,
     HlmButtonDirective,
-    ArtistFinderComponent
+    ArtistFinderComponent,
+    CollectionArtistCardComponent
 ],
     templateUrl: "./home.page.html",
 })
-export class HomePage {}
+export class HomePage {
+}
