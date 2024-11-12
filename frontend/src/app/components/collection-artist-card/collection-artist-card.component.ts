@@ -6,7 +6,7 @@ import {
     OnInit,
     ViewChild,
 } from "@angular/core";
-import { HomeArtistsService } from "../../services/home-artists.service";
+import { HomeArtistsService } from "../../services/saved-artists.service";
 import { HlmScrollAreaComponent } from "@spartan-ng/ui-scrollarea-helm";
 import { lucideMusic, lucideStar, lucideStarOff } from "@ng-icons/lucide";
 import { provideIcons } from "@ng-icons/core";
@@ -48,19 +48,6 @@ export class CollectionArtistCardComponent implements OnInit {
 
     public closeDialog() {
         this.dialog!.nativeElement.close();
-    }
-
-    public formatNumber(num: number) {
-        const suffixes = { M: 1_000_000, K: 1_000 };
-
-        for (const suffix in suffixes) {
-            const value = suffixes[suffix as keyof typeof suffixes];
-            if (num >= value) {
-                return (num / value).toFixed(1).replace(/\.0$/, "") + suffix;
-            }
-        }
-
-        return num.toString();
     }
 
     onClick() {

@@ -13,7 +13,7 @@ import { HlmTrowComponent } from "../../../../libs/ui/ui-table-helm/src/lib/hlm-
 import { HlmTdComponent } from "../../../../libs/ui/ui-table-helm/src/lib/hlm-td.component";
 import { FormsModule } from "@angular/forms";
 import { LocalStorageService } from "../../services/local-storage.service";
-import { HomeArtistsService } from "../../services/home-artists.service";
+import { HomeArtistsService } from "../../services/saved-artists.service";
 
 type SearchedArtist = GetSpotifySearch200Artists["items"][number];
 
@@ -27,7 +27,7 @@ export class ArtistFinderComponent {
     usersFilter = signal<string>("");
     matchedArtists = signal<SearchedArtist[]>([]);
     private _localStorage = inject(LocalStorageService);
-    private _homeArtistsService = inject(HomeArtistsService);
+    public homeArtistsService = inject(HomeArtistsService);
 
     async search() {
         console.info(this.usersFilter());
@@ -59,7 +59,7 @@ export class ArtistFinderComponent {
                 spotifyId
             );
 
-            await this._homeArtistsService.loadData();
+            await this.homeArtistsService.loadData();
             toast("Added succesfully!");
         } catch (e) {
             toast("Error adding artist.");

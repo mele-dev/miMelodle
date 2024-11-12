@@ -84,4 +84,17 @@ export class HomeArtistsService {
     public async addNewArtist(artists : GetUsersSelfSelfIdArtists200Item[]) {
         this._artists.set(artists as Artist[])
     }
+
+    public formatNumber(num: number) {
+        const suffixes = { M: 1_000_000, K: 1_000 };
+
+        for (const suffix in suffixes) {
+            const value = suffixes[suffix as keyof typeof suffixes];
+            if (num >= value) {
+                return (num / value).toFixed(1).replace(/\.0$/, "") + suffix;
+            }
+        }
+
+        return num.toString();
+    }
 }
