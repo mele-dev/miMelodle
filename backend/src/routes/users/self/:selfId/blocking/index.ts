@@ -2,7 +2,6 @@ import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { MelodleTagName } from "../../../../../plugins/swagger.js";
 import { SafeType } from "../../../../../utils/typebox.js";
 import {
-    friendSchema,
     selfIdSchema,
     userSchema,
 } from "../../../../../types/user.js";
