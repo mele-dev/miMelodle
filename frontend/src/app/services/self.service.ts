@@ -83,6 +83,7 @@ export class SelfService {
 
     public userIconSVG = computed(async () => {
         const info = await this.waitForUserInfoSnapshot();
+        console.log("info = " + info);
 
         return this._iconService.getProfilePicture(info.profilePictureFile);
     });

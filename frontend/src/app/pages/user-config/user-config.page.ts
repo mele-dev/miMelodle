@@ -1,4 +1,11 @@
-import { Component, effect, inject, input, signal } from "@angular/core";
+import {
+    Component,
+    effect,
+    inject,
+    input,
+    OnInit,
+    signal,
+} from "@angular/core";
 import { DomSanitizer } from "@angular/platform-browser";
 import { HlmBadgeDirective } from "@spartan-ng/ui-badge-helm";
 import { HlmButtonDirective } from "@spartan-ng/ui-button-helm";
@@ -29,6 +36,8 @@ import {
 import { ClientValidationService } from "../../services/client-validation.service";
 import { putUsersSelfSelfIdBody } from "../../../apiCodegen/backend-zod";
 import {
+    getPublicIcons,
+    getPublicIconsFilename,
     putUsersSelfSelfId,
     PutUsersSelfSelfIdBody,
 } from "../../../apiCodegen/backend";
@@ -50,6 +59,18 @@ import {
 import { SafeRoutingService } from "../../services/safe-routing.service";
 import { toast } from "ngx-sonner";
 import { HlmSpinnerComponent } from "@spartan-ng/ui-spinner-helm";
+import { IconPickerComponent } from "../../auth/register-page/icon-picker/icon-picker.component";
+import { TickCircleIconComponent } from "../../icons/tick-circle-icon/tick-circle-icon.component";
+import {
+    BrnPopoverCloseDirective,
+    BrnPopoverComponent,
+    BrnPopoverContentDirective,
+    BrnPopoverTriggerDirective,
+} from "@spartan-ng/ui-popover-brain";
+import {
+    HlmPopoverCloseDirective,
+    HlmPopoverContentDirective,
+} from "@spartan-ng/ui-popover-helm";
 
 @Component({
     selector: "app-user-config",
@@ -93,16 +114,27 @@ import { HlmSpinnerComponent } from "@spartan-ng/ui-spinner-helm";
         HlmButtonDirective,
 
         HlmSpinnerComponent,
+        IconPickerComponent,
+        TickCircleIconComponent,
+
+        //popover
+        BrnPopoverComponent,
+        BrnPopoverTriggerDirective,
+        BrnPopoverContentDirective,
+        BrnPopoverCloseDirective,
+        HlmPopoverContentDirective,
+        HlmPopoverCloseDirective,
     ],
     templateUrl: "./user-config.page.html",
 })
-export class UserConfigPage {
+export class UserConfigPage implements OnInit {
     private _validator = inject(ClientValidationService);
     chosenIcon = signal<BackendIcon | undefined>(undefined);
     public selfService = inject(SelfService);
     public userIconSVG = "";
     public userInfo = this.selfService.getUserInfo();
     public safeRouter = inject(SafeRoutingService);
+    allIcons?: BackendIcon[];
 
     private schema = putUsersSelfSelfIdBody;
     private builder = new FormBuilder().nonNullable;
@@ -143,6 +175,10 @@ export class UserConfigPage {
     constructor() {
         effect(async () => {
             this.userIconSVG = (await this.selfService.userIconSVG()) ?? "";
+            console.log(this.chosenIcon);
+            this.user.patchValue({
+                profilePictureId: this.chosenIcon()?.id ?? -1,
+            });
         });
     }
 
@@ -183,5 +219,22 @@ export class UserConfigPage {
             console.error(e);
             toast("Error al guardar datos");
         }
+    }
+
+    async ngOnInit(): Promise<void> {
+        const iconsInfo = (await getPublicIcons()).data;
+
+        this.allIcons = await Promise.all(
+            iconsInfo.map(async (icon) => ({
+                svg: await (
+                    await getPublicIconsFilename(icon.filename)
+                ).data.text(),
+                ...icon,
+            }))
+        );
+
+        this.chosenIcon.set(
+            this.allIcons.find((v) => v.filename === "default.svg")
+        );
     }
 }

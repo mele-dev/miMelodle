@@ -12,13 +12,33 @@
     </hlm-tabs-list>
     <div hlmTabsContent="profile" class="w-full">
         <section brnCard>
-            <div class="flex justify-center">
-                <div
-                    [innerHTML]="
-                    this.sanitizer.bypassSecurityTrustHtml(this.userIconSVG)
-                "
-                    class="aspect-square h-40 w-40 rounded-full bg-white p-1"
-                ></div>
+            <div class="group flex cursor-pointer justify-center" tabindex="0">
+                <brn-popover sideOffset="5" closeDelay="100">
+                    <button
+                        [innerHTML]="this.sanitizer.bypassSecurityTrustHtml(chosenIcon()?.svg ?? '')"
+                        class="aspect-square h-40 w-40 rounded-full bg-white p-5"
+                        id="edit-profile"
+                        variant="outline"
+                        brnPopoverTrigger
+                        hlmBtn
+                        tabindex="0"
+                        type="button"
+                    ></button>
+                    <div
+                        hlmPopoverContent
+                        class="grid w-80 gap-4"
+                        *brnPopoverContent="let ctx"
+                    >
+                        <div class="space-y-2">
+                            <h4 class="font-medium leading-none">User icon</h4>
+                        </div>
+                        <app-icon-picker
+                            [icons]="this.allIcons ?? []"
+                            [columns]="4"
+                            [(selectedIcon)]="this.chosenIcon"
+                        ></app-icon-picker>
+                    </div>
+                </brn-popover>
             </div>
 
             <div class="flex items-center justify-center space-y-1.5 p-6">
