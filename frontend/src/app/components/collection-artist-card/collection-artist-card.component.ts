@@ -4,7 +4,9 @@ import {
     ElementRef,
     inject,
     OnInit,
+    QueryList,
     ViewChild,
+    ViewChildren,
 } from "@angular/core";
 import { HomeArtistsService } from "../../services/saved-artists.service";
 import { HlmScrollAreaComponent } from "@spartan-ng/ui-scrollarea-helm";
@@ -23,14 +25,14 @@ import { CollectionArtistCardTranslator } from "./collection-artist-card.transla
 export class CollectionArtistCardComponent implements OnInit {
     public homeArtistsService = inject(HomeArtistsService);
     dict = inject(CollectionArtistCardTranslator).dict;
-    @ViewChild("myDialog") dialog: ElementRef<HTMLDialogElement> | undefined;
+    @ViewChildren('dialog') dialogs!: QueryList<ElementRef>;
 
     public async ngOnInit() {
         await this.homeArtistsService.loadData();
     }
 
     public async delete(id: string) {
-        this.closeDialog();
+        this.closeDialog(id);
         await this.homeArtistsService.deleteArtist(id);
     }
 
@@ -42,12 +44,18 @@ export class CollectionArtistCardComponent implements OnInit {
         return this.homeArtistsService.artists().filter((a) => a.isFavorite);
     });
 
-    public openDialog() {
-        this.dialog!.nativeElement.showModal();
+    public openDialog(artistId : string) {
+        const dialog = this.dialogs.find(
+            (dialog) => dialog.nativeElement.getAttribute('data-artist-id') === artistId
+        );
+        dialog?.nativeElement.showModal();
     }
 
-    public closeDialog() {
-        this.dialog!.nativeElement.close();
+    public closeDialog(artistId : string) {
+        const dialog = this.dialogs.find(
+            (dialog) => dialog.nativeElement.getAttribute('data-artist-id') === artistId
+        );
+        dialog?.nativeElement.close();
     }
 
     onClick() {
