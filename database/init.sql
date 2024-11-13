@@ -78,6 +78,19 @@ CREATE TABLE streaks (
     "maxStreak"   INTEGER     DEFAULT 0        NOT NULL
 );
 
+CREATE TABLE ranking
+(
+    "userId"   BIGINT REFERENCES users (id)   NOT NULL,
+    "streakId" BIGINT REFERENCES streaks (id) NOT NULL,
+    "score"    BIGINT DEFAULT 0               NOT NULL,
+    "rank"     BIGINT NULL,
+    "global"   bool   DEFAULT FALSE           NOT NULL,
+    "mode"     "gameMode" DEFAULT 'guessLine' NOT NULL
+);
+
+CREATE TYPE "gameMode" AS ENUM ('guessLine', 'guessSong');
+
+
 -- We can get all the info from a request to spotify for cheap, we don't need a
 -- separate table.
 -- CREATE TABLE songs (

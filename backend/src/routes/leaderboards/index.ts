@@ -4,8 +4,9 @@ import { MelodleTagName } from "../../plugins/swagger.js";
 import { leaderBoardRangeSchema, leaderboardSchema } from "../../types/leaderboard.js";
 import { gameModeArraySchema } from "../../types/melodle.js";
 import { decorators } from "../../services/decorators.js";
+import { runPreparedQuery } from "../../services/database.js";
 
-export default (async (fastify) => {
+const leaderboards: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
     fastify.get("/", {
         onRequest: [decorators.noSecurity],
         schema: {
@@ -22,8 +23,18 @@ export default (async (fastify) => {
             tags: ["Leaderboards"] satisfies MelodleTagName[],
             security: [],
         },
-        async handler(_request, reply) {
-            return reply.notImplemented();
+        async handler(request, reply) {
+            const result = await runPreparedQuery(searchUser, {
+                ...request.query,
+                username: request.query.query,
+                rankThreshold: 0.15,
+            });
+
+            return sendOk(reply, 200, {
+                matches: result,
+                totalPages: result[0]?.totalPages ?? 0,
+            });
         },
     });
-}) satisfies FastifyPluginAsyncTypebox;
+};
+export default leaderboards

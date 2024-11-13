@@ -297,3 +297,5 @@ SELECT *
      INTO "guessSongAttempts" ("guessedAt", "guessedSpotifyTrackId", "gameId")
    VALUES (NOW(), :trackId!, :gameId!)
 RETURNING *;
+
+CREATE TYPE "friendshipStatus" AS ENUM ('pending', 'accepted'
