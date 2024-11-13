@@ -1,7 +1,10 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { SafeType } from "../../utils/typebox.js";
 import { MelodleTagName } from "../../plugins/swagger.js";
-import { leaderBoardRangeSchema, leaderboardSchema } from "../../types/leaderboard.js";
+import {
+    leaderBoardRangeSchema,
+    leaderboardSchema,
+} from "../../types/leaderboard.js";
 import { gameModeArraySchema } from "../../types/melodle.js";
 import { decorators } from "../../services/decorators.js";
 import { runPreparedQuery } from "../../services/database.js";
@@ -11,7 +14,7 @@ const leaderboards: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
         onRequest: [decorators.noSecurity],
         schema: {
             querystring: SafeType.Object({
-                ...gameModeArraySchema.properties,
+                ...gamemodesch.properties,
                 ...leaderBoardRangeSchema.properties,
             }),
             response: {
@@ -24,17 +27,16 @@ const leaderboards: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
             security: [],
         },
         async handler(request, reply) {
-            const result = await runPreparedQuery(searchUser, {
-                ...request.query,
-                username: request.query.query,
-                rankThreshold: 0.15,
-            });
-
-            return sendOk(reply, 200, {
-                matches: result,
-                totalPages: result[0]?.totalPages ?? 0,
-            });
+            // const result = await runPreparedQuery(getglo, {
+            //     ...request.query,
+            //     username: request.query.query,
+            //     rankThreshold: 0.15,
+            // });
+            // return sendOk(reply, 200, {
+            //     matches: result,
+            //     totalPages: result[0]?.totalPages ?? 0,
+            // });
         },
     });
 };
-export default leaderboards
+export default leaderboards;
