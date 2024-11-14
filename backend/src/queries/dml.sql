@@ -219,6 +219,37 @@ SELECT u.*, pp.filename AS "profilePictureFilename", CEIL(COUNT(*) OVER () / :pa
  ORDER BY "rank!" DESC, levenshtein(u.username, :username!)
  LIMIT :pageSize! OFFSET :pageSize!::INT * :page!::INT;
 
+/* @name addArtistToHome */
+INSERT INTO "savedArtists"("userId", "spotifyArtistId")
+values (:selfId!, :spotifyArtistId!)
+returning *;
+
+/* @name deleteArtistFromHome */
+DELETE
+FROM "savedArtists"
+WHERE "userId" = :selfId
+  AND "spotifyArtistId" = :spotifyArtistId
+returning *;
+
+
+/* @name changeFavorite */
+update "savedArtists"
+set "isFavorite" = :isFavorite
+WHERE "userId" = :selfId!
+  AND "spotifyArtistId" = :spotifyArtistId
+returning "isFavorite";
+
+/* @name countFavorites */
+SELECT COUNT(*)
+FROM "savedArtists"
+WHERE "userId" = :selfId! AND "isFavorite" = true;
+
+
+/* @name getHomeArtists */
+SELECT "spotifyArtistId", "isFavorite"
+from "savedArtists"
+where "userId" = :selfId!;
+
 /* @name createGuessSongGame */
   WITH "newestGame"    AS (
       SELECT * FROM "guessSongGames" gsg WHERE "userId" = :selfId! ORDER BY gsg."createdAt" DESC LIMIT 1
