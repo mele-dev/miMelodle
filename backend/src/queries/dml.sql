@@ -300,16 +300,16 @@ WHERE "mode" = :gameMode;
 DELETE
 FROM "ranking"
 WHERE "userId" = :selfId
-  AND "mode" = :gameMode;
+  AND "mode" = :gameMode RETURNING "userId";
   
   /* @name updateScore */
 UPDATE ranking
-SET "score"  = :score!
-WHERE "userId" = :selfId! AND "mode" = :gameMode!
-RETURNING *;
+SET "score"  = :score
+WHERE "userId" = :selfId AND "mode" = :gameMode
+RETURNING "score";
 
 
 
 /* @name addUserToLeaderboard */
 insert into ranking("userId", "score", "mode")
-values (:selfId!, :score, :mode) RETURNING *: ;
+values (:selfId!, :score, :mode) RETURNING *;
