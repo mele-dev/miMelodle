@@ -36,4 +36,8 @@ export class SafeRoutingService {
         }
         return builtPath;
     }
+
+    public get url(): string {
+        return this.router.url;
+    }
 }

@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, signal } from "@angular/core";
+import { Component, inject } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import { SafeRoutingService } from "../../services/safe-routing.service";
 import { LanguagePickerComponent } from "../language-picker/language-picker.component";
@@ -12,24 +12,17 @@ import {
     lucideCircleSlash,
 } from "@ng-icons/lucide";
 import { LocalStorageService } from "../../services/local-storage.service";
-import {
-    BrnPopoverCloseDirective,
-    BrnPopoverComponent,
-    BrnPopoverContentDirective,
-    BrnPopoverTriggerDirective,
-} from "@spartan-ng/ui-popover-brain";
-import {
-    HlmPopoverCloseDirective,
-    HlmPopoverContentDirective,
-} from "@spartan-ng/ui-popover-helm";
+import { BrnPopoverModule } from "@spartan-ng/ui-popover-brain";
+import { HlmPopoverModule } from "@spartan-ng/ui-popover-helm";
 import { DomSanitizer } from "@angular/platform-browser";
-import { BackendIcon } from "../../types/backend-icon";
 import { HlmButtonModule } from "@spartan-ng/ui-button-helm";
 import { FriendshipsComponent } from "../friendships/friendships.component";
 import { BlockingComponent } from "../blocking/blocking.component";
 import { SelfService } from "../../services/self.service";
-import { IconCacheService } from "../../services/icon-cache.service";
 import { LoadProfilePictureDirective } from "../../directives/load-profile-picture.directive";
+import { CommonModule, JsonPipe } from "@angular/common";
+import { HlmTabsModule } from "@spartan-ng/ui-tabs-helm";
+import { AllMelodlePaths } from "../../app.routes";
 
 @Component({
     selector: "app-app-navbar",
@@ -38,23 +31,19 @@ import { LoadProfilePictureDirective } from "../../directives/load-profile-pictu
         RouterLink,
         LanguagePickerComponent,
         HlmIconModule,
-        BrnPopoverCloseDirective,
-        BrnPopoverComponent,
-        BrnPopoverContentDirective,
-        BrnPopoverTriggerDirective,
-        HlmPopoverCloseDirective,
-        HlmPopoverContentDirective,
+        HlmPopoverModule,
+        BrnPopoverModule,
         HlmButtonModule,
         FriendshipsComponent,
         BlockingComponent,
-        LoadProfilePictureDirective
+        LoadProfilePictureDirective,
+        JsonPipe,
+        HlmTabsModule,
+        CommonModule,
     ],
     providers: [
         provideIcons({
             lucideBell,
-            lucideLogOut,
-            lucideBellPlus,
-            lucideCircleSlash,
         }),
     ],
     templateUrl: "./app-navbar.component.html",
@@ -64,25 +53,27 @@ export class AppNavbarComponent {
     safeRouter = inject(SafeRoutingService);
     sanitizer = inject(DomSanitizer);
     private _self = inject(SelfService);
-    private _icons = inject(IconCacheService);
-    private readonly _localStorage = inject(LocalStorageService);
 
-    icon = signal<string>("");
+    selfInfo = this._self.getUserInfo();
 
-    constructor() {
-        effect(async () => {
-            const info = await this._self.waitForUserInfoSnapshot();
-
-            this.icon.set(
-                (await this._icons.getProfilePicture(
-                    info.profilePictureFile
-                )) ?? ""
-            );
-        });
+    currentSection() {
+        const url = this.safeRouter.url;
+        return {
+            game: url.startsWith("/app/game" satisfies AllMelodlePaths),
+            home: url.startsWith("/app/home" satisfies AllMelodlePaths),
+            leaderboards: url.startsWith(
+                "/app/leaderboards" satisfies AllMelodlePaths
+            ),
+            profile: url.startsWith("/app/profile" satisfies AllMelodlePaths),
+        } as const;
     }
 
-    logOut() {
-        this._localStorage.removeItem("userInfo");
-        this.safeRouter.navigate("/auth");
+    ngOnInit() {
+        this.safeRouter.router.url;
     }
+
+    //logOut() {
+    //    this._localStorage.removeItem("userInfo");
+    //    this.safeRouter.navigate("/auth");
+    //}
 }

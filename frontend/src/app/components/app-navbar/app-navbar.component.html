@@ -1,63 +1,83 @@
-<!-- TODO: Make this not be ugly AF. -->
 <nav
-    class="container h-20 w-full rounded-b-2xl border-2 border-t-0 border-muted text-xl backdrop-blur-lg backdrop-brightness-50"
+    class="container flex h-20 w-full flex-row items-center rounded-b-2xl border-2 border-t-0 border-muted px-6 py-4 text-xl backdrop-blur-2xl backdrop-brightness-50 md:items-baseline"
 >
-    <div
-        class="container flex h-full w-full items-center justify-between px-4 py-4"
-    >
-        <div class="flex w-1/2 flex-grow items-baseline gap-4">
+    <div class="flex h-full w-1/2 flex-row items-baseline gap-4">
+        <img
+            src="/icon.svg"
+            alt=""
+            class="-my-2 -mt-8 inline h-[calc(100%+1rem)] w-auto self-center"
+        />
+        <div class="hidden md:block">
             <a
-                class="cursor-pointer rounded-2xl border-2 border-white bg-fuchsia-500 px-4 py-2 text-2xl font-extrabold transition-all hover:scale-110"
-                [routerLink]="this.safeRouter.createLink('/app/game')"
+                [routerLink]="this.safeRouter.createLink('/app/home')"
+                class="underline-offset-8"
+                [ngClass]="{
+                    underline: this.currentSection().home,
+                    'text-muted-foreground': !this.currentSection().home,
+                }"
             >
-                {{ this.dict().play }}
-            </a>
-            <div class="flex gap-3 text-xl">
-                <a [routerLink]="this.safeRouter.createLink('/app/home')">{{
-                    this.dict().home
-                }}</a>
-                <a
-                    [routerLink]="
-                        this.safeRouter.createLink('/app/leaderboards')
-                    "
-                >
-                    {{ this.dict().leaderboards }}</a
-                >
-            </div>
+                {{ this.dict().home }}</a
+            >
+            <a
+                [routerLink]="this.safeRouter.createLink('/app/leaderboards')"
+                class="underline-offset-8"
+                [ngClass]="{
+                    underline: this.currentSection().leaderboards,
+                    'text-muted-foreground':
+                        !this.currentSection().leaderboards,
+                }"
+            >
+                {{ this.dict().leaderboards }}</a
+            >
         </div>
-        <img src="/icon.svg" alt="" class="h-full w-auto flex-shrink-0" />
-        <div class="flex w-1/2 flex-grow items-baseline justify-end gap-2">
-            <div class="flex flex-grow items-baseline justify-end gap-2">
-                <a
-                    [routerLink]="this.safeRouter.createLink('/app/profile')"
-                    appLoadProfilePicture
-                    [profilePictureFilename]="this.icon()"
-                >
-                </a>
-            </div>
-            <!---->
-            <!--<brn-popover sideOffset="5" closeDelay="100">-->
-            <!--    <button brnPopoverTrigger>-->
-            <!--        <hlm-icon size="base" name="lucideBellPlus"></hlm-icon>-->
-            <!--    </button>-->
-            <!--    <div hlmPopoverContent *brnPopoverContent="let ctx">-->
-            <!--        <app-friendships></app-friendships>-->
-            <!--    </div>-->
-            <!--</brn-popover>-->
-            <!---->
-            <!--<brn-popover sideOffset="5" closeDelay="100">-->
-            <!--    <button brnPopoverTrigger>-->
-            <!--        <hlm-icon size="base" name="lucideCircleSlash"></hlm-icon>-->
-            <!--    </button>-->
-            <!--    <div hlmPopoverContent *brnPopoverContent="let ctx">-->
-            <!--        <app-blocking></app-blocking>-->
-            <!--    </div>-->
-            <!--</brn-popover>-->
-            <!---->
-            <!--<hlm-icon size="base" name="lucideBell"></hlm-icon>-->
-            <!--<button type="button" (click)="this.logOut()">-->
-            <!--    <hlm-icon name="lucideLogOut"></hlm-icon>-->
-            <!--</button>-->
-        </div>
+    </div>
+    <div class="flex flex-shrink-0 items-baseline gap-4">
+        <a
+            class="cursor-pointer rounded-2xl bg-[url('/diagonal-lines.svg')] px-4 py-6 text-2xl font-extrabold transition-all hover:scale-110"
+            [routerLink]="this.safeRouter.createLink('/app/game')"
+            hlmBtn
+            variant="outline"
+            [ngClass]="{
+                underline: this.currentSection().game,
+            }"
+        >
+            {{ this.dict().play }}
+        </a>
+    </div>
+    <div
+        class="flex h-full w-1/2 flex-grow items-center justify-end gap-2 self-center"
+    >
+        <brn-popover sideOffset="5" closeDelay="100">
+            <button brnPopoverTrigger hlmBtn variant="ghost" class="h-full">
+                <hlm-icon [size]="'lg'" name="lucideBell"></hlm-icon>
+            </button>
+            <section hlmPopoverContent *brnPopoverContent="let ctx">
+                <hlm-tabs tab="account">
+                    <hlm-tabs-list
+                        class="grid w-full grid-cols-2"
+                        aria-label="tabs example"
+                    >
+                        <button hlmTabsTrigger="account">
+                            {{ this.dict().friendRequests }}
+                        </button>
+                        <button hlmTabsTrigger="password">
+                            {{ this.dict().blocked }}
+                        </button>
+                    </hlm-tabs-list>
+                    <div hlmTabsContent="account">
+                        <app-friendships></app-friendships>
+                    </div>
+                    <div hlmTabsContent="password">
+                        <app-blocking></app-blocking>
+                    </div>
+                </hlm-tabs>
+            </section>
+        </brn-popover>
+        <button
+            [routerLink]="this.safeRouter.createLink('/app/profile')"
+            appLoadProfilePicture
+            [profilePictureFilename]="this.selfInfo()?.profilePictureFile"
+            class="aspect-square h-full w-auto rounded-full bg-white p-1"
+        ></button>
     </div>
 </nav>

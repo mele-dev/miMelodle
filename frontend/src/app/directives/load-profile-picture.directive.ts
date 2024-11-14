@@ -16,19 +16,22 @@ import { DomSanitizer } from "@angular/platform-browser";
 export class LoadProfilePictureDirective {
     private _iconCache = inject(IconCacheService);
     bypass = inject(DomSanitizer).bypassSecurityTrustHtml;
-    profilePictureFilename = input.required<string>();
+    profilePictureFilename = input<string>();
     renderer = inject(Renderer2);
     ref = inject(ElementRef);
 
     constructor() {
         effect(async () => {
             const filename = this.profilePictureFilename();
+            console.log(filename);
 
-            this.renderer.setProperty(
-                this.ref,
-                "innerHTML",
-                (await this._iconCache.getProfilePicture(filename)) ?? ""
-            );
+            if (!filename) {
+                return;
+            }
+
+            const svg = await this._iconCache.getProfilePicture(filename);
+
+            this.renderer.setProperty(this.ref.nativeElement, "innerHTML", svg);
         });
     }
 }
