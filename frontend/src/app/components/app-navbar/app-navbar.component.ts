@@ -5,12 +5,7 @@ import { LanguagePickerComponent } from "../language-picker/language-picker.comp
 import { AppNavbarTranslator } from "./app-navbar.translations";
 import { HlmIconModule } from "@spartan-ng/ui-icon-helm";
 import { provideIcons } from "@ng-icons/core";
-import {
-    lucideBell,
-    lucideLogOut,
-    lucideBellPlus,
-    lucideCircleSlash,
-} from "@ng-icons/lucide";
+import { lucideBell } from "@ng-icons/lucide";
 import { LocalStorageService } from "../../services/local-storage.service";
 import { BrnPopoverModule } from "@spartan-ng/ui-popover-brain";
 import { HlmPopoverModule } from "@spartan-ng/ui-popover-helm";
@@ -23,6 +18,15 @@ import { LoadProfilePictureDirective } from "../../directives/load-profile-pictu
 import { CommonModule, JsonPipe } from "@angular/common";
 import { HlmTabsModule } from "@spartan-ng/ui-tabs-helm";
 import { AllMelodlePaths } from "../../app.routes";
+import { HlmMenuModule } from "@spartan-ng/ui-menu-helm";
+import { BrnMenuModule } from "@spartan-ng/ui-menu-brain";
+import {
+    Language,
+    LanguageManagerService,
+} from "../../services/language-manager.service";
+import { supportedLanguages } from "../../globalConstants";
+import { UnreachableCaseError } from "ts-essentials";
+import { assertUnreachable } from "../../utils/utils";
 
 @Component({
     selector: "app-app-navbar",
@@ -40,6 +44,8 @@ import { AllMelodlePaths } from "../../app.routes";
         JsonPipe,
         HlmTabsModule,
         CommonModule,
+        HlmMenuModule,
+        BrnMenuModule,
     ],
     providers: [
         provideIcons({
@@ -53,8 +59,21 @@ export class AppNavbarComponent {
     safeRouter = inject(SafeRoutingService);
     sanitizer = inject(DomSanitizer);
     private _self = inject(SelfService);
-
+    private _localStorage = inject(LocalStorageService);
+    currentLanguage = inject(LanguageManagerService).currentLanguage;
+    supportedLanguages = supportedLanguages;
     selfInfo = this._self.getUserInfo();
+
+    langLongName(lang: Language) {
+        switch (lang) {
+            case "en":
+                return "English";
+            case "es":
+                return "Español";
+            default:
+                throw new UnreachableCaseError(lang);
+        }
+    }
 
     currentSection() {
         const url = this.safeRouter.url;
@@ -72,8 +91,8 @@ export class AppNavbarComponent {
         this.safeRouter.router.url;
     }
 
-    //logOut() {
-    //    this._localStorage.removeItem("userInfo");
-    //    this.safeRouter.navigate("/auth");
-    //}
+    logOut() {
+        this._localStorage.removeItem("userInfo");
+        this.safeRouter.navigate("/auth");
+    }
 }

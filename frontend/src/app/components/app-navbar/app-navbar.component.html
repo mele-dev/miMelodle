@@ -51,7 +51,11 @@
             <button brnPopoverTrigger hlmBtn variant="ghost" class="h-full">
                 <hlm-icon [size]="'lg'" name="lucideBell"></hlm-icon>
             </button>
-            <section hlmPopoverContent *brnPopoverContent="let ctx">
+            <section
+                hlmPopoverContent
+                *brnPopoverContent="let ctx"
+                class="mt-3"
+            >
                 <hlm-tabs tab="account">
                     <hlm-tabs-list
                         class="grid w-full grid-cols-2"
@@ -74,10 +78,41 @@
             </section>
         </brn-popover>
         <button
-            [routerLink]="this.safeRouter.createLink('/app/profile')"
             appLoadProfilePicture
             [profilePictureFilename]="this.selfInfo()?.profilePictureFile"
             class="aspect-square h-full w-auto rounded-full bg-white p-1"
+            [brnMenuTriggerFor]="menu"
         ></button>
+        <ng-template #menu>
+            <hlm-menu class="mt-4">
+                <hlm-menu-group>
+                    <a
+                        hlmMenuItem
+                        [routerLink]="
+                            this.safeRouter.createLink('/app/profile')
+                        "
+                    >
+                        My profile
+                    </a>
+                    <button hlmMenuItem>Log out</button>
+                </hlm-menu-group>
+                <hlm-menu-separator></hlm-menu-separator>
+                <button hlmMenuItem [brnMenuTriggerFor]="languagePicker">
+                    Language
+                </button>
+            </hlm-menu>
+        </ng-template>
+        <ng-template #languagePicker>
+            <hlm-sub-menu>
+                @for (language of supportedLanguages; track language) {
+                    <button
+                        hlmMenuItem
+                        (click)="this.currentLanguage.set(language)"
+                    >
+                        {{ this.langLongName(language) }}
+                    </button>
+                }
+            </hlm-sub-menu>
+        </ng-template>
     </div>
 </nav>
