@@ -290,12 +290,26 @@ SELECT
     u.name,
     u."profilePictureId",
     r.score,
-    r.rank
+    r.rank,
+    r."mode"
 FROM "ranking" r
 join public.users u on r."userId" = u.id
-WHERE "mode" = :gameMode
-    ORDER BY "score" DESC LIMIT 50;
+WHERE "mode" = :gameMode;
+
+/* @name deleteRankingData */
+DELETE
+FROM "ranking"
+WHERE "userId" = :selfId
+  AND "mode" = :gameMode;
+  
+  /* @name updateScore */
+UPDATE ranking
+SET "score"  = :score!
+WHERE "userId" = :selfId! AND "mode" = :gameMode!
+RETURNING *;
+
+
 
 /* @name addUserToLeaderboard */
-insert into ranking("userId", "score", "rank", "mode")
-values (:selfId!, :score, :rank, :mode) RETURNING *: ;
+insert into ranking("userId", "score", "mode")
+values (:selfId!, :score, :mode) RETURNING *: ;

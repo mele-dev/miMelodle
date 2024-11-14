@@ -2,11 +2,15 @@ import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { MelodleTagName } from "../../../../../plugins/swagger.js";
 import { SafeType } from "../../../../../utils/typebox.js";
 import { decorators } from "../../../../../services/decorators.js";
-import { sendOk } from "../../../../../utils/reply.js";
+import { sendOk, sendError } from "../../../../../utils/reply.js";
 import { runPreparedQuery } from "../../../../../services/database.js";
 import { leaderboardSchema } from "../../../../../types/leaderboard.js";
-import { addUserToLeaderboard } from "../../../../../queries/dml.queries.js";
+import {
+    updateScore,
+    deleteRankingData,
+} from "../../../../../queries/dml.queries.js";
 import { ParamsSchema } from "../../../../../types/params.js";
+import { MelodleGameSchema } from "../../../../../types/melodle.js";
 
 export default (async (fastify, _opts) => {
     fastify.post("", {
@@ -14,14 +18,14 @@ export default (async (fastify, _opts) => {
         schema: {
             body: SafeType.Pick(
                 leaderboardSchema.properties.leaderboard.items,
-                ["score", "rank", "mode"]
+                ["score", "mode"]
             ),
             params: SafeType.Pick(ParamsSchema, ["selfId"]),
             tags: ["Leaderboards"] satisfies MelodleTagName[],
             response: {
                 201: SafeType.Pick(
                     leaderboardSchema.properties.leaderboard.items,
-                    ["score", "rank", "mode"]
+                    ["score", "mode"]
                 ),
                 ...SafeType.CreateErrors([
                     "badRequest",
@@ -30,17 +34,100 @@ export default (async (fastify, _opts) => {
                     "forbidden",
                 ]),
             },
-            summary: "",
+            summary: "Creates a user's score and rank on the leaderboard.",
         },
         handler: async function (request: any, reply: any) {
-            // arreglar esos anys
             const query = await runPreparedQuery(addUserToLeaderboard, {
                 selfId: request.params.selfId,
                 score: request.body.score,
-                rank: request.body.rank,
                 mode: request.body.mode,
             });
             return sendOk(reply, 201, query[0]);
+        },
+    });
+
+    fastify.put("", {
+        onRequest: [decorators.authenticateSelf],
+        schema: {
+            body: SafeType.Pick(
+                leaderboardSchema.properties.leaderboard.items,
+                ["score"]
+            ),
+            params: SafeType.Object({
+                gameMode: SafeType.Pick(MelodleGameSchema, ["gameMode"]),
+                selfId: SafeType.Pick(ParamsSchema, ["selfId"]),
+            }),
+            tags: ["Leaderboards"] satisfies MelodleTagName[],
+            response: {
+                201: SafeType.Pick(
+                    leaderboardSchema.properties.leaderboard.items,
+                    ["score"]
+                ),
+                ...SafeType.CreateErrors([
+                    "badRequest",
+                    "notFound",
+                    "unauthorized",
+                    "forbidden",
+                ]),
+            },
+            summary: "Updates user's score.",
+        },
+        handler: async function (request: any, reply: any) {
+            const query = await runPreparedQuery(updateScore, {
+                selfId: request.params.selfId,
+                score: request.body.score,
+                gameMode: request.params.gameMode,
+            });
+
+            if (query.length === 0) {
+                return sendError(reply, "badRequest", "Couldn't update.");
+            }
+            return sendOk(reply, 200, query[0]);
+        },
+    });
+
+    fastify.delete("", {
+        onRequest: [decorators.authenticateSelf()],
+        schema: {
+            params: SafeType.Object({
+                selfId: SafeType.Pick(ParamsSchema, ["selfId"]),
+                mode: SafeType.Pick(ParamsSchema, ["gameMode"]),
+            }),
+            tags: ["Leaderboards"] satisfies MelodleTagName[],
+            response: {
+                200: SafeType.Object({
+                    blocked: SafeType.Boolean(),
+                    username: SafeType.String(),
+                }),
+                ...SafeType.CreateErrors([
+                    "badRequest",
+                    "notFound",
+                    "unauthorized",
+                ]),
+            },
+            summary: "Unblock a user.",
+        },
+        handler: async function (request, reply) {
+            const queryResult = await runPreparedQuery(
+                deleteRankingData,
+                request.params
+            );
+
+            switch (queryResult.length) {
+                case 0:
+                    return sendError(
+                        reply,
+                        "notFound",
+                        "Could not find relationship with user."
+                    );
+                case 1:
+                    return sendOk(reply, 200, {
+                        blocked: false,
+                        username: queryResult[0].targetUsername,
+                    });
+                default:
+                    throw "Something went wrong";
+            }
         },
     });
 }) satisfies FastifyPluginAsyncTypebox;

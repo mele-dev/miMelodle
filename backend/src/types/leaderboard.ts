@@ -24,6 +24,7 @@ export const leaderboardSchema = SafeType.Object(
                                 "Players' position ordered from higest to lowest score.",
                         })
                     ),
+                    mode: SafeType.StringEnum(["guessLine", "guessSong"]),
                 }),
             ])
         ),
