@@ -5,18 +5,17 @@ import {
     leaderBoardRangeSchema,
     leaderboardSchema,
 } from "../../types/leaderboard.js";
-import { gameModeArraySchema } from "../../types/melodle.js";
+import { MelodleGameSchema } from "../../types/melodle.js";
 import { decorators } from "../../services/decorators.js";
 import { runPreparedQuery } from "../../services/database.js";
+import { getGlobalLeaderboard } from "../../queries/dml.queries.js";
+import { sendOk } from "../../utils/reply.js";
 
 const leaderboards: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
     fastify.get("/", {
         onRequest: [decorators.noSecurity],
         schema: {
-            querystring: SafeType.Object({
-                ...gamemodesch.properties,
-                ...leaderBoardRangeSchema.properties,
-            }),
+            querystring: SafeType.Pick(MelodleGameSchema, ["gameMode"]),
             response: {
                 200: leaderboardSchema,
                 ...SafeType.CreateErrors([]),
@@ -27,15 +26,10 @@ const leaderboards: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
             security: [],
         },
         async handler(request, reply) {
-            // const result = await runPreparedQuery(getglo, {
-            //     ...request.query,
-            //     username: request.query.query,
-            //     rankThreshold: 0.15,
-            // });
-            // return sendOk(reply, 200, {
-            //     matches: result,
-            //     totalPages: result[0]?.totalPages ?? 0,
-            // });
+            const result = await runPreparedQuery(getGlobalLeaderboard, {
+                gameMode: request.query.gameMode,
+            });
+            return sendOk(reply, 200, { leaderboard: result });
         },
     });
 };

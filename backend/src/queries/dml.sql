@@ -284,14 +284,18 @@ INTO "guessSongAttempts" ("guessedAt", "guessedSpotifyTrackId", "gameId")
 VALUES (NOW(), :trackId!, :gameId!) RETURNING *;
 
 /* @name getGlobalLeaderboard */
-SELECT *
-FROM "ranking"
-WHERE "mode" = :gameMode AND "global" = true
-ORDER BY "score" DESC;
+SELECT
+    u.id,
+    u.username,
+    u.name,
+    u."profilePictureId",
+    r.score,
+    r.rank
+FROM "ranking" r
+join public.users u on r."userId" = u.id
+WHERE "mode" = :gameMode
+    ORDER BY "score" DESC LIMIT 50;
 
-select * from streaks;
-select * from ranking;
-
-INSERT INTO "streaks" values(1, 1, 200, NOW(), 200);
-
-INSERT INTO "ranking" values(1, 1, 100, 100, true, 'guessSong');
+/* @name addUserToLeaderboard */
+insert into ranking("userId", "score", "rank", "mode")
+values (:selfId!, :score, :rank, :mode) RETURNING *: ;
