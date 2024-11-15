@@ -65,19 +65,17 @@ export class HomeArtistsService {
 
         try {
             if (artist!.isFavorite) {
-                const result =
-                    await putUsersSelfSelfIdArtistsSpotifyArtistIdFavorite(
-                        userId,
-                        artistsId,
-                        { isFavorite: false }
-                    );
+                await putUsersSelfSelfIdArtistsSpotifyArtistIdFavorite(
+                    userId,
+                    artistsId,
+                    { isFavorite: false }
+                );
             } else {
-                const result =
-                    await putUsersSelfSelfIdArtistsSpotifyArtistIdFavorite(
-                        userId,
-                        artistsId,
-                        { isFavorite: true }
-                    );
+                await putUsersSelfSelfIdArtistsSpotifyArtistIdFavorite(
+                    userId,
+                    artistsId,
+                    { isFavorite: true }
+                );
             }
         } catch (e) {
             if (isAxiosError(e)) {
