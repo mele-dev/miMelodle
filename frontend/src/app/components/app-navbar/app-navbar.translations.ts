@@ -25,14 +25,16 @@ export const navbarDict = {
         en: "Friend Requests",
         es: "Solicitudes de amistad",
     },
+    blocked: {
+        en: "Blocked",
+        es: "Bloqueados",
+    },
 } as const satisfies Translations;
 
 @Injectable({
     providedIn: "root",
 })
-export class AppNavbarTranslator extends TranslatorService<
-    typeof navbarDict
-> {
+export class AppNavbarTranslator extends TranslatorService<typeof navbarDict> {
     public override getAllTranslations() {
         return navbarDict;
     }

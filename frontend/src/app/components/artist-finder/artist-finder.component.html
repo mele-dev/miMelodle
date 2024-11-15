@@ -15,7 +15,7 @@
 />
 
 <hlm-table class="h-96 w-96 overflow-y-scroll scroll-auto">
-    @for (artist of matchedArtists(); track artist.spotifyArtistId) {
+    @for (artist of matchedArtists(); track artist.id) {
         <hlm-trow class="flex py-2">
             <hlm-td>
                 <img src="{{artist.images[0].url}}" class="w-12 h-12 rounded-3xl">
@@ -31,7 +31,7 @@
                 </div>
             </hlm-td>
             <hlm-td>
-                <button (click)="this.addArtist(artist.spotifyArtistId)">
+                <button (click)="this.addArtist(artist.id)">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"

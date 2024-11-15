@@ -1328,11 +1328,11 @@
                                     ]
                                 },
                                 "example": {
-                                    "name": "Miss Dianna Moen V",
-                                    "username": "Dianna_Moen",
+                                    "name": "Ms. Jacquelyn Kris II",
+                                    "username": "Jacquelyn.Kris24",
                                     "password": "Fake123!",
-                                    "email": "Dianna.Moen45@yahoo.com",
-                                    "profilePictureId": 1
+                                    "email": "Jacquelyn_Kris@yahoo.com",
+                                    "profilePictureId": 2
                                 }
                             }
                         }
@@ -1415,18 +1415,18 @@
                                 },
                                 "example": [
                                     {
-                                        "name": "Mr. Leon Ward III",
-                                        "username": "Leon.Ward26",
+                                        "name": "Mrs. Kristie Kutch Sr.",
+                                        "username": "Kristie.Kutch",
                                         "password": "Fake123!",
-                                        "email": "Leon.Ward44@gmail.com",
-                                        "profilePictureId": 12
+                                        "email": "Kristie.Kutch33@gmail.com",
+                                        "profilePictureId": 6
                                     },
                                     {
-                                        "name": "Dr. Jonathon Mills I",
-                                        "username": "Jonathon_Mills",
+                                        "name": "Dr. Barry Keebler MD",
+                                        "username": "Barry.Keebler",
                                         "password": "Fake123!",
-                                        "email": "Jonathon.Mills@hotmail.com",
-                                        "profilePictureId": 5
+                                        "email": "Barry.Keebler26@hotmail.com",
+                                        "profilePictureId": 1
                                     }
                                 ]
                             }
@@ -1689,6 +1689,383 @@
                                 "schema": {
                                     "type": "object",
                                     "properties": {
+                                        "tracks": {
+                                            "type": "object",
+                                            "properties": {
+                                                "limit": { "type": "integer" },
+                                                "href": { "type": "string" },
+                                                "next": {
+                                                    "anyOf": [
+                                                        { "type": "string" },
+                                                        { "type": "null" }
+                                                    ]
+                                                },
+                                                "previous": {
+                                                    "anyOf": [
+                                                        { "type": "string" },
+                                                        { "type": "null" }
+                                                    ]
+                                                },
+                                                "total": { "type": "integer" },
+                                                "offset": { "type": "integer" },
+                                                "items": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "artists": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "external_urls": {
+                                                                            "additionalProperties": true,
+                                                                            "type": "object",
+                                                                            "properties": {
+                                                                                "spotify": {
+                                                                                    "type": "string"
+                                                                                }
+                                                                            },
+                                                                            "required": [
+                                                                                "spotify"
+                                                                            ]
+                                                                        },
+                                                                        "href": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "id": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "name": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "type": {
+                                                                            "type": "string",
+                                                                            "enum": [
+                                                                                "artist"
+                                                                            ]
+                                                                        },
+                                                                        "uri": {
+                                                                            "type": "string"
+                                                                        }
+                                                                    },
+                                                                    "required": [
+                                                                        "external_urls",
+                                                                        "href",
+                                                                        "id",
+                                                                        "name",
+                                                                        "type",
+                                                                        "uri"
+                                                                    ]
+                                                                }
+                                                            },
+                                                            "available_markets": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "minLength": 2,
+                                                                    "maxLength": 2,
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "disc_number": {
+                                                                "type": "integer"
+                                                            },
+                                                            "duration_ms": {
+                                                                "type": "integer"
+                                                            },
+                                                            "explicit": {
+                                                                "type": "boolean"
+                                                            },
+                                                            "external_urls": {
+                                                                "additionalProperties": true,
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "spotify": {
+                                                                        "type": "string"
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "spotify"
+                                                                ]
+                                                            },
+                                                            "href": {
+                                                                "type": "string"
+                                                            },
+                                                            "id": {
+                                                                "type": "string"
+                                                            },
+                                                            "is_playable": {
+                                                                "type": "boolean"
+                                                            },
+                                                            "linked_from": {
+                                                                "additionalProperties": true,
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "external_urls": {
+                                                                        "additionalProperties": true,
+                                                                        "type": "object",
+                                                                        "properties": {
+                                                                            "spotify": {
+                                                                                "type": "string"
+                                                                            }
+                                                                        },
+                                                                        "required": [
+                                                                            "spotify"
+                                                                        ]
+                                                                    },
+                                                                    "href": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "id": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": [
+                                                                            "track"
+                                                                        ]
+                                                                    },
+                                                                    "uri": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            },
+                                                            "restrictions": {
+                                                                "type": "string"
+                                                            },
+                                                            "name": {
+                                                                "type": "string"
+                                                            },
+                                                            "preview_url": {
+                                                                "anyOf": [
+                                                                    {
+                                                                        "type": "string"
+                                                                    },
+                                                                    {
+                                                                        "type": "null"
+                                                                    }
+                                                                ]
+                                                            },
+                                                            "track_number": {
+                                                                "type": "integer"
+                                                            },
+                                                            "type": {
+                                                                "type": "string",
+                                                                "enum": [
+                                                                    "track"
+                                                                ]
+                                                            },
+                                                            "uri": {
+                                                                "type": "string"
+                                                            },
+                                                            "is_local": {
+                                                                "type": "boolean"
+                                                            },
+                                                            "album": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "album_type": {
+                                                                        "type": "string",
+                                                                        "pattern": "^(album|single|compilation)$"
+                                                                    },
+                                                                    "available_markets": {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "minLength": 2,
+                                                                            "maxLength": 2,
+                                                                            "type": "string"
+                                                                        }
+                                                                    },
+                                                                    "external_urls": {
+                                                                        "additionalProperties": true,
+                                                                        "type": "object",
+                                                                        "properties": {
+                                                                            "spotify": {
+                                                                                "type": "string"
+                                                                            }
+                                                                        },
+                                                                        "required": [
+                                                                            "spotify"
+                                                                        ]
+                                                                    },
+                                                                    "id": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "href": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "images": {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "type": "object",
+                                                                            "properties": {
+                                                                                "url": {
+                                                                                    "type": "string"
+                                                                                },
+                                                                                "width": {
+                                                                                    "anyOf": [
+                                                                                        {
+                                                                                            "type": "integer"
+                                                                                        },
+                                                                                        {
+                                                                                            "type": "null"
+                                                                                        }
+                                                                                    ]
+                                                                                },
+                                                                                "height": {
+                                                                                    "anyOf": [
+                                                                                        {
+                                                                                            "type": "integer"
+                                                                                        },
+                                                                                        {
+                                                                                            "type": "null"
+                                                                                        }
+                                                                                    ]
+                                                                                }
+                                                                            },
+                                                                            "required": [
+                                                                                "url",
+                                                                                "width",
+                                                                                "height"
+                                                                            ]
+                                                                        }
+                                                                    },
+                                                                    "name": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "release_date": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "release_date_precision": {
+                                                                        "type": "string",
+                                                                        "pattern": "^(year|month|day)$"
+                                                                    },
+                                                                    "total_tracks": {
+                                                                        "type": "integer"
+                                                                    },
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": [
+                                                                            "album"
+                                                                        ]
+                                                                    },
+                                                                    "uri": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "artists": {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "type": "object",
+                                                                            "properties": {
+                                                                                "external_urls": {
+                                                                                    "additionalProperties": true,
+                                                                                    "type": "object",
+                                                                                    "properties": {
+                                                                                        "spotify": {
+                                                                                            "type": "string"
+                                                                                        }
+                                                                                    },
+                                                                                    "required": [
+                                                                                        "spotify"
+                                                                                    ]
+                                                                                },
+                                                                                "href": {
+                                                                                    "type": "string"
+                                                                                },
+                                                                                "id": {
+                                                                                    "type": "string"
+                                                                                },
+                                                                                "name": {
+                                                                                    "type": "string"
+                                                                                },
+                                                                                "type": {
+                                                                                    "type": "string",
+                                                                                    "enum": [
+                                                                                        "artist"
+                                                                                    ]
+                                                                                },
+                                                                                "uri": {
+                                                                                    "type": "string"
+                                                                                }
+                                                                            },
+                                                                            "required": [
+                                                                                "external_urls",
+                                                                                "href",
+                                                                                "id",
+                                                                                "name",
+                                                                                "type",
+                                                                                "uri"
+                                                                            ]
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "album_type",
+                                                                    "available_markets",
+                                                                    "external_urls",
+                                                                    "id",
+                                                                    "href",
+                                                                    "images",
+                                                                    "name",
+                                                                    "release_date",
+                                                                    "release_date_precision",
+                                                                    "total_tracks",
+                                                                    "type",
+                                                                    "uri",
+                                                                    "artists"
+                                                                ]
+                                                            },
+                                                            "external_ids": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "isrc": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "ean": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "upc": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            },
+                                                            "popularity": {
+                                                                "minimum": 0,
+                                                                "maximum": 100,
+                                                                "type": "number"
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "artists",
+                                                            "available_markets",
+                                                            "disc_number",
+                                                            "duration_ms",
+                                                            "explicit",
+                                                            "external_urls",
+                                                            "href",
+                                                            "id",
+                                                            "name",
+                                                            "track_number",
+                                                            "type",
+                                                            "uri",
+                                                            "is_local",
+                                                            "album",
+                                                            "external_ids",
+                                                            "popularity"
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            "required": [
+                                                "limit",
+                                                "href",
+                                                "next",
+                                                "previous",
+                                                "total",
+                                                "offset",
+                                                "items"
+                                            ]
+                                        },
                                         "artists": {
                                             "type": "object",
                                             "properties": {
@@ -1711,23 +2088,37 @@
                                                 "items": {
                                                     "type": "array",
                                                     "items": {
-                                                        "title": "artistSchema",
                                                         "type": "object",
                                                         "properties": {
+                                                            "external_urls": {
+                                                                "additionalProperties": true,
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "spotify": {
+                                                                        "type": "string"
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "spotify"
+                                                                ]
+                                                            },
+                                                            "href": {
+                                                                "type": "string"
+                                                            },
+                                                            "id": {
+                                                                "type": "string"
+                                                            },
                                                             "name": {
-                                                                "description": "Name of the artist, does not have to be unique.",
                                                                 "type": "string"
                                                             },
-                                                            "spotifyArtistId": {
-                                                                "description": "Identifier for an artist given by spotify",
-                                                                "type": "string"
+                                                            "type": {
+                                                                "type": "string",
+                                                                "enum": [
+                                                                    "artist"
+                                                                ]
                                                             },
-                                                            "genres": {
-                                                                "type": "array",
-                                                                "items": {
-                                                                    "description": "Genres associated with the artist.",
-                                                                    "type": "string"
-                                                                }
+                                                            "uri": {
+                                                                "type": "string"
                                                             },
                                                             "followers": {
                                                                 "type": "object",
@@ -1743,8 +2134,7 @@
                                                                         ]
                                                                     },
                                                                     "total": {
-                                                                        "description": "The number of followers the artist has.",
-                                                                        "type": "number"
+                                                                        "type": "integer"
                                                                     }
                                                                 },
                                                                 "required": [
@@ -1752,9 +2142,11 @@
                                                                     "total"
                                                                 ]
                                                             },
-                                                            "popularity": {
-                                                                "description": "The popularity of the artist. The value will be between 0 and 100, with 100 being the most popular. The artist's popularity is calculated from the popularity of all the artist's tracks.",
-                                                                "type": "number"
+                                                            "genres": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "string"
+                                                                }
                                                             },
                                                             "images": {
                                                                 "type": "array",
@@ -1792,28 +2184,23 @@
                                                                     ]
                                                                 }
                                                             },
-                                                            "externalUrls": {
-                                                                "additionalProperties": true,
-                                                                "type": "object",
-                                                                "properties": {
-                                                                    "spotify": {
-                                                                        "description": "Url that will allow users to be redirected to the artist's profile on Spotify.",
-                                                                        "type": "string"
-                                                                    }
-                                                                },
-                                                                "required": [
-                                                                    "spotify"
-                                                                ]
+                                                            "popularity": {
+                                                                "minimum": 0,
+                                                                "maximum": 100,
+                                                                "type": "number"
                                                             }
                                                         },
                                                         "required": [
+                                                            "external_urls",
+                                                            "href",
+                                                            "id",
                                                             "name",
-                                                            "spotifyArtistId",
-                                                            "genres",
+                                                            "type",
+                                                            "uri",
                                                             "followers",
-                                                            "popularity",
+                                                            "genres",
                                                             "images",
-                                                            "externalUrls"
+                                                            "popularity"
                                                         ]
                                                     }
                                                 }
@@ -2985,159 +3372,6 @@
                                         "statusCode": {
                                             "type": "number",
                                             "enum": [401]
-                                        },
-                                        "error": { "type": "string" },
-                                        "message": { "type": "string" }
-                                    },
-                                    "required": [
-                                        "statusCode",
-                                        "error",
-                                        "message"
-                                    ]
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/users/self/{selfId}/game": {
-            "post": {
-                "summary": "Start a new melodle game.",
-                "tags": ["Melodle"],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "id": {
-                                        "description": "Unique identifier for a config.",
-                                        "type": "integer"
-                                    },
-                                    "mode": {
-                                        "type": "string",
-                                        "pattern": "^(Guess Line|Guess Song)$"
-                                    },
-                                    "onlyFavoriteArtists": {
-                                        "description": "Whether to pick from any artist or only favorited ones.",
-                                        "type": "boolean"
-                                    },
-                                    "fromArtists": {
-                                        "description": "The artists we can choose from, by their spotify ids.",
-                                        "type": "array",
-                                        "items": {
-                                            "description": "Identifier for an artist given by spotify",
-                                            "type": "string"
-                                        }
-                                    }
-                                },
-                                "required": [
-                                    "id",
-                                    "mode",
-                                    "onlyFavoriteArtists",
-                                    "fromArtists"
-                                ]
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "parameters": [
-                    {
-                        "schema": { "type": "integer" },
-                        "in": "path",
-                        "name": "selfId",
-                        "required": true,
-                        "description": "A numeric identifier for a user. Generated by the backend, unique and unchangeable."
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Default Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "gameId": {
-                                            "description": "A unique identifier for a melodle game.",
-                                            "type": "integer"
-                                        },
-                                        "config": {
-                                            "type": "object",
-                                            "properties": {
-                                                "id": {
-                                                    "description": "Unique identifier for a config.",
-                                                    "type": "integer"
-                                                },
-                                                "mode": {
-                                                    "type": "string",
-                                                    "pattern": "^(Guess Line|Guess Song)$"
-                                                },
-                                                "onlyFavoriteArtists": {
-                                                    "description": "Whether to pick from any artist or only favorited ones.",
-                                                    "type": "boolean"
-                                                },
-                                                "fromArtists": {
-                                                    "description": "The artists we can choose from, by their spotify ids.",
-                                                    "type": "array",
-                                                    "items": {
-                                                        "description": "Identifier for an artist given by spotify",
-                                                        "type": "string"
-                                                    }
-                                                }
-                                            },
-                                            "required": [
-                                                "id",
-                                                "mode",
-                                                "onlyFavoriteArtists",
-                                                "fromArtists"
-                                            ]
-                                        }
-                                    },
-                                    "required": ["gameId", "config"]
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "unauthorized",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "description": "unauthorized",
-                                    "additionalProperties": true,
-                                    "type": "object",
-                                    "properties": {
-                                        "statusCode": {
-                                            "type": "number",
-                                            "enum": [401]
-                                        },
-                                        "error": { "type": "string" },
-                                        "message": { "type": "string" }
-                                    },
-                                    "required": [
-                                        "statusCode",
-                                        "error",
-                                        "message"
-                                    ]
-                                }
-                            }
-                        }
-                    },
-                    "425": {
-                        "description": "tooEarly",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "description": "tooEarly",
-                                    "additionalProperties": true,
-                                    "type": "object",
-                                    "properties": {
-                                        "statusCode": {
-                                            "type": "number",
-                                            "enum": [425]
                                         },
                                         "error": { "type": "string" },
                                         "message": { "type": "string" }
@@ -4845,30 +5079,426 @@
                                             "items": {
                                                 "type": "object",
                                                 "properties": {
-                                                    "trackSnippet": {
-                                                        "type": "string"
-                                                    },
                                                     "isCorrectAlbum": {
                                                         "type": "boolean"
                                                     },
                                                     "isCorrectTrack": {
                                                         "type": "boolean"
                                                     },
+                                                    "guessedTrack": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "artists": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "external_urls": {
+                                                                            "additionalProperties": true,
+                                                                            "type": "object",
+                                                                            "properties": {
+                                                                                "spotify": {
+                                                                                    "type": "string"
+                                                                                }
+                                                                            },
+                                                                            "required": [
+                                                                                "spotify"
+                                                                            ]
+                                                                        },
+                                                                        "href": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "id": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "name": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "type": {
+                                                                            "type": "string",
+                                                                            "enum": [
+                                                                                "artist"
+                                                                            ]
+                                                                        },
+                                                                        "uri": {
+                                                                            "type": "string"
+                                                                        }
+                                                                    },
+                                                                    "required": [
+                                                                        "external_urls",
+                                                                        "href",
+                                                                        "id",
+                                                                        "name",
+                                                                        "type",
+                                                                        "uri"
+                                                                    ]
+                                                                }
+                                                            },
+                                                            "available_markets": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "minLength": 2,
+                                                                    "maxLength": 2,
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "disc_number": {
+                                                                "type": "integer"
+                                                            },
+                                                            "duration_ms": {
+                                                                "type": "integer"
+                                                            },
+                                                            "explicit": {
+                                                                "type": "boolean"
+                                                            },
+                                                            "external_urls": {
+                                                                "additionalProperties": true,
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "spotify": {
+                                                                        "type": "string"
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "spotify"
+                                                                ]
+                                                            },
+                                                            "href": {
+                                                                "type": "string"
+                                                            },
+                                                            "id": {
+                                                                "type": "string"
+                                                            },
+                                                            "is_playable": {
+                                                                "type": "boolean"
+                                                            },
+                                                            "linked_from": {
+                                                                "additionalProperties": true,
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "external_urls": {
+                                                                        "additionalProperties": true,
+                                                                        "type": "object",
+                                                                        "properties": {
+                                                                            "spotify": {
+                                                                                "type": "string"
+                                                                            }
+                                                                        },
+                                                                        "required": [
+                                                                            "spotify"
+                                                                        ]
+                                                                    },
+                                                                    "href": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "id": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": [
+                                                                            "track"
+                                                                        ]
+                                                                    },
+                                                                    "uri": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            },
+                                                            "restrictions": {
+                                                                "type": "string"
+                                                            },
+                                                            "name": {
+                                                                "type": "string"
+                                                            },
+                                                            "preview_url": {
+                                                                "anyOf": [
+                                                                    {
+                                                                        "type": "string"
+                                                                    },
+                                                                    {
+                                                                        "type": "null"
+                                                                    }
+                                                                ]
+                                                            },
+                                                            "track_number": {
+                                                                "type": "integer"
+                                                            },
+                                                            "type": {
+                                                                "type": "string",
+                                                                "enum": [
+                                                                    "track"
+                                                                ]
+                                                            },
+                                                            "uri": {
+                                                                "type": "string"
+                                                            },
+                                                            "is_local": {
+                                                                "type": "boolean"
+                                                            },
+                                                            "album": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "album_type": {
+                                                                        "type": "string",
+                                                                        "pattern": "^(album|single|compilation)$"
+                                                                    },
+                                                                    "available_markets": {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "minLength": 2,
+                                                                            "maxLength": 2,
+                                                                            "type": "string"
+                                                                        }
+                                                                    },
+                                                                    "external_urls": {
+                                                                        "additionalProperties": true,
+                                                                        "type": "object",
+                                                                        "properties": {
+                                                                            "spotify": {
+                                                                                "type": "string"
+                                                                            }
+                                                                        },
+                                                                        "required": [
+                                                                            "spotify"
+                                                                        ]
+                                                                    },
+                                                                    "id": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "href": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "images": {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "type": "object",
+                                                                            "properties": {
+                                                                                "url": {
+                                                                                    "type": "string"
+                                                                                },
+                                                                                "width": {
+                                                                                    "anyOf": [
+                                                                                        {
+                                                                                            "type": "integer"
+                                                                                        },
+                                                                                        {
+                                                                                            "type": "null"
+                                                                                        }
+                                                                                    ]
+                                                                                },
+                                                                                "height": {
+                                                                                    "anyOf": [
+                                                                                        {
+                                                                                            "type": "integer"
+                                                                                        },
+                                                                                        {
+                                                                                            "type": "null"
+                                                                                        }
+                                                                                    ]
+                                                                                }
+                                                                            },
+                                                                            "required": [
+                                                                                "url",
+                                                                                "width",
+                                                                                "height"
+                                                                            ]
+                                                                        }
+                                                                    },
+                                                                    "name": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "release_date": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "release_date_precision": {
+                                                                        "type": "string",
+                                                                        "pattern": "^(year|month|day)$"
+                                                                    },
+                                                                    "total_tracks": {
+                                                                        "type": "integer"
+                                                                    },
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": [
+                                                                            "album"
+                                                                        ]
+                                                                    },
+                                                                    "uri": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "artists": {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "type": "object",
+                                                                            "properties": {
+                                                                                "external_urls": {
+                                                                                    "additionalProperties": true,
+                                                                                    "type": "object",
+                                                                                    "properties": {
+                                                                                        "spotify": {
+                                                                                            "type": "string"
+                                                                                        }
+                                                                                    },
+                                                                                    "required": [
+                                                                                        "spotify"
+                                                                                    ]
+                                                                                },
+                                                                                "href": {
+                                                                                    "type": "string"
+                                                                                },
+                                                                                "id": {
+                                                                                    "type": "string"
+                                                                                },
+                                                                                "name": {
+                                                                                    "type": "string"
+                                                                                },
+                                                                                "type": {
+                                                                                    "type": "string",
+                                                                                    "enum": [
+                                                                                        "artist"
+                                                                                    ]
+                                                                                },
+                                                                                "uri": {
+                                                                                    "type": "string"
+                                                                                }
+                                                                            },
+                                                                            "required": [
+                                                                                "external_urls",
+                                                                                "href",
+                                                                                "id",
+                                                                                "name",
+                                                                                "type",
+                                                                                "uri"
+                                                                            ]
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "album_type",
+                                                                    "available_markets",
+                                                                    "external_urls",
+                                                                    "id",
+                                                                    "href",
+                                                                    "images",
+                                                                    "name",
+                                                                    "release_date",
+                                                                    "release_date_precision",
+                                                                    "total_tracks",
+                                                                    "type",
+                                                                    "uri",
+                                                                    "artists"
+                                                                ]
+                                                            },
+                                                            "external_ids": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "isrc": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "ean": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "upc": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            },
+                                                            "popularity": {
+                                                                "minimum": 0,
+                                                                "maximum": 100,
+                                                                "type": "number"
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "artists",
+                                                            "available_markets",
+                                                            "disc_number",
+                                                            "duration_ms",
+                                                            "explicit",
+                                                            "external_urls",
+                                                            "href",
+                                                            "id",
+                                                            "name",
+                                                            "track_number",
+                                                            "type",
+                                                            "uri",
+                                                            "is_local",
+                                                            "album",
+                                                            "external_ids",
+                                                            "popularity"
+                                                        ]
+                                                    },
                                                     "guessedTrackNameHint": {
                                                         "description": "The title of the guessed track, showing every spot where their characters coincide with the ones from the hidden track.",
                                                         "type": "string",
                                                         "example": "Dó__e está_ lo_ ladro_e_"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "isCorrectAlbum",
+                                                    "isCorrectTrack",
+                                                    "guessedTrack",
+                                                    "guessedTrackNameHint"
+                                                ]
+                                            }
+                                        },
+                                        "artists": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "external_urls": {
+                                                        "additionalProperties": true,
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "spotify": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "required": ["spotify"]
                                                     },
-                                                    "guessedTrackSpotifyId": {
+                                                    "href": {
                                                         "type": "string"
                                                     },
-                                                    "guessedTrackName": {
+                                                    "id": { "type": "string" },
+                                                    "name": {
                                                         "type": "string"
                                                     },
-                                                    "guessedTrackAlbumName": {
-                                                        "type": "string"
+                                                    "type": {
+                                                        "type": "string",
+                                                        "enum": ["artist"]
                                                     },
-                                                    "guessedTrackAlbumImages": {
+                                                    "uri": { "type": "string" },
+                                                    "followers": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "href": {
+                                                                "anyOf": [
+                                                                    {
+                                                                        "type": "string"
+                                                                    },
+                                                                    {
+                                                                        "type": "null"
+                                                                    }
+                                                                ]
+                                                            },
+                                                            "total": {
+                                                                "type": "integer"
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "href",
+                                                            "total"
+                                                        ]
+                                                    },
+                                                    "genres": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "images": {
                                                         "type": "array",
                                                         "items": {
                                                             "type": "object",
@@ -4903,43 +5533,55 @@
                                                                 "height"
                                                             ]
                                                         }
-                                                    }
-                                                },
-                                                "required": [
-                                                    "isCorrectAlbum",
-                                                    "isCorrectTrack",
-                                                    "guessedTrackNameHint",
-                                                    "guessedTrackSpotifyId",
-                                                    "guessedTrackName",
-                                                    "guessedTrackAlbumName",
-                                                    "guessedTrackAlbumImages"
-                                                ]
-                                            }
-                                        },
-                                        "artists": {
-                                            "type": "array",
-                                            "items": {
-                                                "title": "artistSchema",
-                                                "type": "object",
-                                                "properties": {
-                                                    "spotifyArtistId": {
-                                                        "description": "Identifier for an artist given by spotify",
-                                                        "type": "string"
                                                     },
-                                                    "name": {
-                                                        "description": "Name of the artist, does not have to be unique.",
-                                                        "type": "string"
+                                                    "popularity": {
+                                                        "minimum": 0,
+                                                        "maximum": 100,
+                                                        "type": "number"
                                                     }
                                                 },
                                                 "required": [
-                                                    "spotifyArtistId",
-                                                    "name"
+                                                    "external_urls",
+                                                    "href",
+                                                    "id",
+                                                    "name",
+                                                    "type",
+                                                    "uri",
+                                                    "followers",
+                                                    "genres",
+                                                    "images",
+                                                    "popularity"
                                                 ]
                                             }
                                         },
+                                        "snippet": { "type": "string" },
                                         "album": {
                                             "type": "object",
                                             "properties": {
+                                                "album_type": {
+                                                    "type": "string",
+                                                    "pattern": "^(album|single|compilation)$"
+                                                },
+                                                "available_markets": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "minLength": 2,
+                                                        "maxLength": 2,
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "external_urls": {
+                                                    "additionalProperties": true,
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "spotify": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "required": ["spotify"]
+                                                },
+                                                "id": { "type": "string" },
+                                                "href": { "type": "string" },
                                                 "images": {
                                                     "type": "array",
                                                     "items": {
@@ -4977,14 +5619,392 @@
                                                     }
                                                 },
                                                 "name": { "type": "string" },
-                                                "genres": {
+                                                "release_date": {
+                                                    "type": "string"
+                                                },
+                                                "release_date_precision": {
+                                                    "type": "string",
+                                                    "pattern": "^(year|month|day)$"
+                                                },
+                                                "total_tracks": {
+                                                    "type": "integer"
+                                                },
+                                                "type": {
+                                                    "type": "string",
+                                                    "enum": ["album"]
+                                                },
+                                                "uri": { "type": "string" },
+                                                "artists": {
                                                     "type": "array",
                                                     "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "external_urls": {
+                                                                "additionalProperties": true,
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "spotify": {
+                                                                        "type": "string"
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "spotify"
+                                                                ]
+                                                            },
+                                                            "href": {
+                                                                "type": "string"
+                                                            },
+                                                            "id": {
+                                                                "type": "string"
+                                                            },
+                                                            "name": {
+                                                                "type": "string"
+                                                            },
+                                                            "type": {
+                                                                "type": "string",
+                                                                "enum": [
+                                                                    "artist"
+                                                                ]
+                                                            },
+                                                            "uri": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "external_urls",
+                                                            "href",
+                                                            "id",
+                                                            "name",
+                                                            "type",
+                                                            "uri"
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "correctTrack": {
+                                            "type": "object",
+                                            "properties": {
+                                                "artists": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "external_urls": {
+                                                                "additionalProperties": true,
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "spotify": {
+                                                                        "type": "string"
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "spotify"
+                                                                ]
+                                                            },
+                                                            "href": {
+                                                                "type": "string"
+                                                            },
+                                                            "id": {
+                                                                "type": "string"
+                                                            },
+                                                            "name": {
+                                                                "type": "string"
+                                                            },
+                                                            "type": {
+                                                                "type": "string",
+                                                                "enum": [
+                                                                    "artist"
+                                                                ]
+                                                            },
+                                                            "uri": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "external_urls",
+                                                            "href",
+                                                            "id",
+                                                            "name",
+                                                            "type",
+                                                            "uri"
+                                                        ]
+                                                    }
+                                                },
+                                                "available_markets": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "minLength": 2,
+                                                        "maxLength": 2,
                                                         "type": "string"
                                                     }
                                                 },
-                                                "label": { "type": "string" }
-                                            }
+                                                "disc_number": {
+                                                    "type": "integer"
+                                                },
+                                                "duration_ms": {
+                                                    "type": "integer"
+                                                },
+                                                "explicit": {
+                                                    "type": "boolean"
+                                                },
+                                                "external_urls": {
+                                                    "additionalProperties": true,
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "spotify": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "required": ["spotify"]
+                                                },
+                                                "href": { "type": "string" },
+                                                "id": { "type": "string" },
+                                                "is_playable": {
+                                                    "type": "boolean"
+                                                },
+                                                "linked_from": {
+                                                    "additionalProperties": true,
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "external_urls": {
+                                                            "additionalProperties": true,
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "spotify": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "spotify"
+                                                            ]
+                                                        },
+                                                        "href": {
+                                                            "type": "string"
+                                                        },
+                                                        "id": {
+                                                            "type": "string"
+                                                        },
+                                                        "type": {
+                                                            "type": "string",
+                                                            "enum": ["track"]
+                                                        },
+                                                        "uri": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                },
+                                                "restrictions": {
+                                                    "type": "string"
+                                                },
+                                                "name": { "type": "string" },
+                                                "preview_url": {
+                                                    "anyOf": [
+                                                        { "type": "string" },
+                                                        { "type": "null" }
+                                                    ]
+                                                },
+                                                "track_number": {
+                                                    "type": "integer"
+                                                },
+                                                "type": {
+                                                    "type": "string",
+                                                    "enum": ["track"]
+                                                },
+                                                "uri": { "type": "string" },
+                                                "is_local": {
+                                                    "type": "boolean"
+                                                },
+                                                "album": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "album_type": {
+                                                            "type": "string",
+                                                            "pattern": "^(album|single|compilation)$"
+                                                        },
+                                                        "available_markets": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "minLength": 2,
+                                                                "maxLength": 2,
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "external_urls": {
+                                                            "additionalProperties": true,
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "spotify": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "spotify"
+                                                            ]
+                                                        },
+                                                        "id": {
+                                                            "type": "string"
+                                                        },
+                                                        "href": {
+                                                            "type": "string"
+                                                        },
+                                                        "images": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "url": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "width": {
+                                                                        "anyOf": [
+                                                                            {
+                                                                                "type": "integer"
+                                                                            },
+                                                                            {
+                                                                                "type": "null"
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "height": {
+                                                                        "anyOf": [
+                                                                            {
+                                                                                "type": "integer"
+                                                                            },
+                                                                            {
+                                                                                "type": "null"
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "url",
+                                                                    "width",
+                                                                    "height"
+                                                                ]
+                                                            }
+                                                        },
+                                                        "name": {
+                                                            "type": "string"
+                                                        },
+                                                        "release_date": {
+                                                            "type": "string"
+                                                        },
+                                                        "release_date_precision": {
+                                                            "type": "string",
+                                                            "pattern": "^(year|month|day)$"
+                                                        },
+                                                        "total_tracks": {
+                                                            "type": "integer"
+                                                        },
+                                                        "type": {
+                                                            "type": "string",
+                                                            "enum": ["album"]
+                                                        },
+                                                        "uri": {
+                                                            "type": "string"
+                                                        },
+                                                        "artists": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "external_urls": {
+                                                                        "additionalProperties": true,
+                                                                        "type": "object",
+                                                                        "properties": {
+                                                                            "spotify": {
+                                                                                "type": "string"
+                                                                            }
+                                                                        },
+                                                                        "required": [
+                                                                            "spotify"
+                                                                        ]
+                                                                    },
+                                                                    "href": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "id": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "name": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": [
+                                                                            "artist"
+                                                                        ]
+                                                                    },
+                                                                    "uri": {
+                                                                        "type": "string"
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "external_urls",
+                                                                    "href",
+                                                                    "id",
+                                                                    "name",
+                                                                    "type",
+                                                                    "uri"
+                                                                ]
+                                                            }
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "album_type",
+                                                        "available_markets",
+                                                        "external_urls",
+                                                        "id",
+                                                        "href",
+                                                        "images",
+                                                        "name",
+                                                        "release_date",
+                                                        "release_date_precision",
+                                                        "total_tracks",
+                                                        "type",
+                                                        "uri",
+                                                        "artists"
+                                                    ]
+                                                },
+                                                "external_ids": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "isrc": {
+                                                            "type": "string"
+                                                        },
+                                                        "ean": {
+                                                            "type": "string"
+                                                        },
+                                                        "upc": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                },
+                                                "popularity": {
+                                                    "minimum": 0,
+                                                    "maximum": 100,
+                                                    "type": "number"
+                                                }
+                                            },
+                                            "required": [
+                                                "artists",
+                                                "available_markets",
+                                                "disc_number",
+                                                "duration_ms",
+                                                "explicit",
+                                                "external_urls",
+                                                "href",
+                                                "id",
+                                                "name",
+                                                "track_number",
+                                                "type",
+                                                "uri",
+                                                "is_local",
+                                                "album",
+                                                "external_ids",
+                                                "popularity"
+                                            ]
                                         }
                                     },
                                     "required": ["attempts", "artists"]
@@ -5214,30 +6234,426 @@
                                             "items": {
                                                 "type": "object",
                                                 "properties": {
-                                                    "trackSnippet": {
-                                                        "type": "string"
-                                                    },
                                                     "isCorrectAlbum": {
                                                         "type": "boolean"
                                                     },
                                                     "isCorrectTrack": {
                                                         "type": "boolean"
                                                     },
+                                                    "guessedTrack": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "artists": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "external_urls": {
+                                                                            "additionalProperties": true,
+                                                                            "type": "object",
+                                                                            "properties": {
+                                                                                "spotify": {
+                                                                                    "type": "string"
+                                                                                }
+                                                                            },
+                                                                            "required": [
+                                                                                "spotify"
+                                                                            ]
+                                                                        },
+                                                                        "href": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "id": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "name": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "type": {
+                                                                            "type": "string",
+                                                                            "enum": [
+                                                                                "artist"
+                                                                            ]
+                                                                        },
+                                                                        "uri": {
+                                                                            "type": "string"
+                                                                        }
+                                                                    },
+                                                                    "required": [
+                                                                        "external_urls",
+                                                                        "href",
+                                                                        "id",
+                                                                        "name",
+                                                                        "type",
+                                                                        "uri"
+                                                                    ]
+                                                                }
+                                                            },
+                                                            "available_markets": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "minLength": 2,
+                                                                    "maxLength": 2,
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "disc_number": {
+                                                                "type": "integer"
+                                                            },
+                                                            "duration_ms": {
+                                                                "type": "integer"
+                                                            },
+                                                            "explicit": {
+                                                                "type": "boolean"
+                                                            },
+                                                            "external_urls": {
+                                                                "additionalProperties": true,
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "spotify": {
+                                                                        "type": "string"
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "spotify"
+                                                                ]
+                                                            },
+                                                            "href": {
+                                                                "type": "string"
+                                                            },
+                                                            "id": {
+                                                                "type": "string"
+                                                            },
+                                                            "is_playable": {
+                                                                "type": "boolean"
+                                                            },
+                                                            "linked_from": {
+                                                                "additionalProperties": true,
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "external_urls": {
+                                                                        "additionalProperties": true,
+                                                                        "type": "object",
+                                                                        "properties": {
+                                                                            "spotify": {
+                                                                                "type": "string"
+                                                                            }
+                                                                        },
+                                                                        "required": [
+                                                                            "spotify"
+                                                                        ]
+                                                                    },
+                                                                    "href": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "id": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": [
+                                                                            "track"
+                                                                        ]
+                                                                    },
+                                                                    "uri": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            },
+                                                            "restrictions": {
+                                                                "type": "string"
+                                                            },
+                                                            "name": {
+                                                                "type": "string"
+                                                            },
+                                                            "preview_url": {
+                                                                "anyOf": [
+                                                                    {
+                                                                        "type": "string"
+                                                                    },
+                                                                    {
+                                                                        "type": "null"
+                                                                    }
+                                                                ]
+                                                            },
+                                                            "track_number": {
+                                                                "type": "integer"
+                                                            },
+                                                            "type": {
+                                                                "type": "string",
+                                                                "enum": [
+                                                                    "track"
+                                                                ]
+                                                            },
+                                                            "uri": {
+                                                                "type": "string"
+                                                            },
+                                                            "is_local": {
+                                                                "type": "boolean"
+                                                            },
+                                                            "album": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "album_type": {
+                                                                        "type": "string",
+                                                                        "pattern": "^(album|single|compilation)$"
+                                                                    },
+                                                                    "available_markets": {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "minLength": 2,
+                                                                            "maxLength": 2,
+                                                                            "type": "string"
+                                                                        }
+                                                                    },
+                                                                    "external_urls": {
+                                                                        "additionalProperties": true,
+                                                                        "type": "object",
+                                                                        "properties": {
+                                                                            "spotify": {
+                                                                                "type": "string"
+                                                                            }
+                                                                        },
+                                                                        "required": [
+                                                                            "spotify"
+                                                                        ]
+                                                                    },
+                                                                    "id": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "href": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "images": {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "type": "object",
+                                                                            "properties": {
+                                                                                "url": {
+                                                                                    "type": "string"
+                                                                                },
+                                                                                "width": {
+                                                                                    "anyOf": [
+                                                                                        {
+                                                                                            "type": "integer"
+                                                                                        },
+                                                                                        {
+                                                                                            "type": "null"
+                                                                                        }
+                                                                                    ]
+                                                                                },
+                                                                                "height": {
+                                                                                    "anyOf": [
+                                                                                        {
+                                                                                            "type": "integer"
+                                                                                        },
+                                                                                        {
+                                                                                            "type": "null"
+                                                                                        }
+                                                                                    ]
+                                                                                }
+                                                                            },
+                                                                            "required": [
+                                                                                "url",
+                                                                                "width",
+                                                                                "height"
+                                                                            ]
+                                                                        }
+                                                                    },
+                                                                    "name": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "release_date": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "release_date_precision": {
+                                                                        "type": "string",
+                                                                        "pattern": "^(year|month|day)$"
+                                                                    },
+                                                                    "total_tracks": {
+                                                                        "type": "integer"
+                                                                    },
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": [
+                                                                            "album"
+                                                                        ]
+                                                                    },
+                                                                    "uri": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "artists": {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "type": "object",
+                                                                            "properties": {
+                                                                                "external_urls": {
+                                                                                    "additionalProperties": true,
+                                                                                    "type": "object",
+                                                                                    "properties": {
+                                                                                        "spotify": {
+                                                                                            "type": "string"
+                                                                                        }
+                                                                                    },
+                                                                                    "required": [
+                                                                                        "spotify"
+                                                                                    ]
+                                                                                },
+                                                                                "href": {
+                                                                                    "type": "string"
+                                                                                },
+                                                                                "id": {
+                                                                                    "type": "string"
+                                                                                },
+                                                                                "name": {
+                                                                                    "type": "string"
+                                                                                },
+                                                                                "type": {
+                                                                                    "type": "string",
+                                                                                    "enum": [
+                                                                                        "artist"
+                                                                                    ]
+                                                                                },
+                                                                                "uri": {
+                                                                                    "type": "string"
+                                                                                }
+                                                                            },
+                                                                            "required": [
+                                                                                "external_urls",
+                                                                                "href",
+                                                                                "id",
+                                                                                "name",
+                                                                                "type",
+                                                                                "uri"
+                                                                            ]
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "album_type",
+                                                                    "available_markets",
+                                                                    "external_urls",
+                                                                    "id",
+                                                                    "href",
+                                                                    "images",
+                                                                    "name",
+                                                                    "release_date",
+                                                                    "release_date_precision",
+                                                                    "total_tracks",
+                                                                    "type",
+                                                                    "uri",
+                                                                    "artists"
+                                                                ]
+                                                            },
+                                                            "external_ids": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "isrc": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "ean": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "upc": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            },
+                                                            "popularity": {
+                                                                "minimum": 0,
+                                                                "maximum": 100,
+                                                                "type": "number"
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "artists",
+                                                            "available_markets",
+                                                            "disc_number",
+                                                            "duration_ms",
+                                                            "explicit",
+                                                            "external_urls",
+                                                            "href",
+                                                            "id",
+                                                            "name",
+                                                            "track_number",
+                                                            "type",
+                                                            "uri",
+                                                            "is_local",
+                                                            "album",
+                                                            "external_ids",
+                                                            "popularity"
+                                                        ]
+                                                    },
                                                     "guessedTrackNameHint": {
                                                         "description": "The title of the guessed track, showing every spot where their characters coincide with the ones from the hidden track.",
                                                         "type": "string",
                                                         "example": "Dó__e está_ lo_ ladro_e_"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "isCorrectAlbum",
+                                                    "isCorrectTrack",
+                                                    "guessedTrack",
+                                                    "guessedTrackNameHint"
+                                                ]
+                                            }
+                                        },
+                                        "artists": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "external_urls": {
+                                                        "additionalProperties": true,
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "spotify": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "required": ["spotify"]
                                                     },
-                                                    "guessedTrackSpotifyId": {
+                                                    "href": {
                                                         "type": "string"
                                                     },
-                                                    "guessedTrackName": {
+                                                    "id": { "type": "string" },
+                                                    "name": {
                                                         "type": "string"
                                                     },
-                                                    "guessedTrackAlbumName": {
-                                                        "type": "string"
+                                                    "type": {
+                                                        "type": "string",
+                                                        "enum": ["artist"]
                                                     },
-                                                    "guessedTrackAlbumImages": {
+                                                    "uri": { "type": "string" },
+                                                    "followers": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "href": {
+                                                                "anyOf": [
+                                                                    {
+                                                                        "type": "string"
+                                                                    },
+                                                                    {
+                                                                        "type": "null"
+                                                                    }
+                                                                ]
+                                                            },
+                                                            "total": {
+                                                                "type": "integer"
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "href",
+                                                            "total"
+                                                        ]
+                                                    },
+                                                    "genres": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "images": {
                                                         "type": "array",
                                                         "items": {
                                                             "type": "object",
@@ -5272,43 +6688,55 @@
                                                                 "height"
                                                             ]
                                                         }
-                                                    }
-                                                },
-                                                "required": [
-                                                    "isCorrectAlbum",
-                                                    "isCorrectTrack",
-                                                    "guessedTrackNameHint",
-                                                    "guessedTrackSpotifyId",
-                                                    "guessedTrackName",
-                                                    "guessedTrackAlbumName",
-                                                    "guessedTrackAlbumImages"
-                                                ]
-                                            }
-                                        },
-                                        "artists": {
-                                            "type": "array",
-                                            "items": {
-                                                "title": "artistSchema",
-                                                "type": "object",
-                                                "properties": {
-                                                    "spotifyArtistId": {
-                                                        "description": "Identifier for an artist given by spotify",
-                                                        "type": "string"
                                                     },
-                                                    "name": {
-                                                        "description": "Name of the artist, does not have to be unique.",
-                                                        "type": "string"
+                                                    "popularity": {
+                                                        "minimum": 0,
+                                                        "maximum": 100,
+                                                        "type": "number"
                                                     }
                                                 },
                                                 "required": [
-                                                    "spotifyArtistId",
-                                                    "name"
+                                                    "external_urls",
+                                                    "href",
+                                                    "id",
+                                                    "name",
+                                                    "type",
+                                                    "uri",
+                                                    "followers",
+                                                    "genres",
+                                                    "images",
+                                                    "popularity"
                                                 ]
                                             }
                                         },
+                                        "snippet": { "type": "string" },
                                         "album": {
                                             "type": "object",
                                             "properties": {
+                                                "album_type": {
+                                                    "type": "string",
+                                                    "pattern": "^(album|single|compilation)$"
+                                                },
+                                                "available_markets": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "minLength": 2,
+                                                        "maxLength": 2,
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "external_urls": {
+                                                    "additionalProperties": true,
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "spotify": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "required": ["spotify"]
+                                                },
+                                                "id": { "type": "string" },
+                                                "href": { "type": "string" },
                                                 "images": {
                                                     "type": "array",
                                                     "items": {
@@ -5346,14 +6774,392 @@
                                                     }
                                                 },
                                                 "name": { "type": "string" },
-                                                "genres": {
+                                                "release_date": {
+                                                    "type": "string"
+                                                },
+                                                "release_date_precision": {
+                                                    "type": "string",
+                                                    "pattern": "^(year|month|day)$"
+                                                },
+                                                "total_tracks": {
+                                                    "type": "integer"
+                                                },
+                                                "type": {
+                                                    "type": "string",
+                                                    "enum": ["album"]
+                                                },
+                                                "uri": { "type": "string" },
+                                                "artists": {
                                                     "type": "array",
                                                     "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "external_urls": {
+                                                                "additionalProperties": true,
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "spotify": {
+                                                                        "type": "string"
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "spotify"
+                                                                ]
+                                                            },
+                                                            "href": {
+                                                                "type": "string"
+                                                            },
+                                                            "id": {
+                                                                "type": "string"
+                                                            },
+                                                            "name": {
+                                                                "type": "string"
+                                                            },
+                                                            "type": {
+                                                                "type": "string",
+                                                                "enum": [
+                                                                    "artist"
+                                                                ]
+                                                            },
+                                                            "uri": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "external_urls",
+                                                            "href",
+                                                            "id",
+                                                            "name",
+                                                            "type",
+                                                            "uri"
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "correctTrack": {
+                                            "type": "object",
+                                            "properties": {
+                                                "artists": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "external_urls": {
+                                                                "additionalProperties": true,
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "spotify": {
+                                                                        "type": "string"
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "spotify"
+                                                                ]
+                                                            },
+                                                            "href": {
+                                                                "type": "string"
+                                                            },
+                                                            "id": {
+                                                                "type": "string"
+                                                            },
+                                                            "name": {
+                                                                "type": "string"
+                                                            },
+                                                            "type": {
+                                                                "type": "string",
+                                                                "enum": [
+                                                                    "artist"
+                                                                ]
+                                                            },
+                                                            "uri": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "external_urls",
+                                                            "href",
+                                                            "id",
+                                                            "name",
+                                                            "type",
+                                                            "uri"
+                                                        ]
+                                                    }
+                                                },
+                                                "available_markets": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "minLength": 2,
+                                                        "maxLength": 2,
                                                         "type": "string"
                                                     }
                                                 },
-                                                "label": { "type": "string" }
-                                            }
+                                                "disc_number": {
+                                                    "type": "integer"
+                                                },
+                                                "duration_ms": {
+                                                    "type": "integer"
+                                                },
+                                                "explicit": {
+                                                    "type": "boolean"
+                                                },
+                                                "external_urls": {
+                                                    "additionalProperties": true,
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "spotify": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "required": ["spotify"]
+                                                },
+                                                "href": { "type": "string" },
+                                                "id": { "type": "string" },
+                                                "is_playable": {
+                                                    "type": "boolean"
+                                                },
+                                                "linked_from": {
+                                                    "additionalProperties": true,
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "external_urls": {
+                                                            "additionalProperties": true,
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "spotify": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "spotify"
+                                                            ]
+                                                        },
+                                                        "href": {
+                                                            "type": "string"
+                                                        },
+                                                        "id": {
+                                                            "type": "string"
+                                                        },
+                                                        "type": {
+                                                            "type": "string",
+                                                            "enum": ["track"]
+                                                        },
+                                                        "uri": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                },
+                                                "restrictions": {
+                                                    "type": "string"
+                                                },
+                                                "name": { "type": "string" },
+                                                "preview_url": {
+                                                    "anyOf": [
+                                                        { "type": "string" },
+                                                        { "type": "null" }
+                                                    ]
+                                                },
+                                                "track_number": {
+                                                    "type": "integer"
+                                                },
+                                                "type": {
+                                                    "type": "string",
+                                                    "enum": ["track"]
+                                                },
+                                                "uri": { "type": "string" },
+                                                "is_local": {
+                                                    "type": "boolean"
+                                                },
+                                                "album": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "album_type": {
+                                                            "type": "string",
+                                                            "pattern": "^(album|single|compilation)$"
+                                                        },
+                                                        "available_markets": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "minLength": 2,
+                                                                "maxLength": 2,
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "external_urls": {
+                                                            "additionalProperties": true,
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "spotify": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "spotify"
+                                                            ]
+                                                        },
+                                                        "id": {
+                                                            "type": "string"
+                                                        },
+                                                        "href": {
+                                                            "type": "string"
+                                                        },
+                                                        "images": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "url": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "width": {
+                                                                        "anyOf": [
+                                                                            {
+                                                                                "type": "integer"
+                                                                            },
+                                                                            {
+                                                                                "type": "null"
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "height": {
+                                                                        "anyOf": [
+                                                                            {
+                                                                                "type": "integer"
+                                                                            },
+                                                                            {
+                                                                                "type": "null"
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "url",
+                                                                    "width",
+                                                                    "height"
+                                                                ]
+                                                            }
+                                                        },
+                                                        "name": {
+                                                            "type": "string"
+                                                        },
+                                                        "release_date": {
+                                                            "type": "string"
+                                                        },
+                                                        "release_date_precision": {
+                                                            "type": "string",
+                                                            "pattern": "^(year|month|day)$"
+                                                        },
+                                                        "total_tracks": {
+                                                            "type": "integer"
+                                                        },
+                                                        "type": {
+                                                            "type": "string",
+                                                            "enum": ["album"]
+                                                        },
+                                                        "uri": {
+                                                            "type": "string"
+                                                        },
+                                                        "artists": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "external_urls": {
+                                                                        "additionalProperties": true,
+                                                                        "type": "object",
+                                                                        "properties": {
+                                                                            "spotify": {
+                                                                                "type": "string"
+                                                                            }
+                                                                        },
+                                                                        "required": [
+                                                                            "spotify"
+                                                                        ]
+                                                                    },
+                                                                    "href": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "id": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "name": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": [
+                                                                            "artist"
+                                                                        ]
+                                                                    },
+                                                                    "uri": {
+                                                                        "type": "string"
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "external_urls",
+                                                                    "href",
+                                                                    "id",
+                                                                    "name",
+                                                                    "type",
+                                                                    "uri"
+                                                                ]
+                                                            }
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "album_type",
+                                                        "available_markets",
+                                                        "external_urls",
+                                                        "id",
+                                                        "href",
+                                                        "images",
+                                                        "name",
+                                                        "release_date",
+                                                        "release_date_precision",
+                                                        "total_tracks",
+                                                        "type",
+                                                        "uri",
+                                                        "artists"
+                                                    ]
+                                                },
+                                                "external_ids": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "isrc": {
+                                                            "type": "string"
+                                                        },
+                                                        "ean": {
+                                                            "type": "string"
+                                                        },
+                                                        "upc": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                },
+                                                "popularity": {
+                                                    "minimum": 0,
+                                                    "maximum": 100,
+                                                    "type": "number"
+                                                }
+                                            },
+                                            "required": [
+                                                "artists",
+                                                "available_markets",
+                                                "disc_number",
+                                                "duration_ms",
+                                                "explicit",
+                                                "external_urls",
+                                                "href",
+                                                "id",
+                                                "name",
+                                                "track_number",
+                                                "type",
+                                                "uri",
+                                                "is_local",
+                                                "album",
+                                                "external_ids",
+                                                "popularity"
+                                            ]
                                         }
                                     },
                                     "required": ["attempts", "artists"]

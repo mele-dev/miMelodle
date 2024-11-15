@@ -12,7 +12,7 @@ export const authGuard: CanActivateFn = (_route, _state) => {
 
     if (localStorage.getItem("userInfo") !== null) {
         toast(dict().alreadyLoggedIn);
-        safeRouter.navigate(["/app"]);
+        safeRouter.navigate("/app");
         return false;
     }
 
