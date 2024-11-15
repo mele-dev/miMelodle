@@ -14,11 +14,15 @@ import { lucideMusic, lucideStar, lucideStarOff } from "@ng-icons/lucide";
 import { provideIcons } from "@ng-icons/core";
 import { CommonModule } from "@angular/common";
 import { CollectionArtistCardTranslator } from "./collection-artist-card.translations";
+import { StarComponent } from "../../icons/star/star.component";
+import { MusicComponent } from "../../icons/music/music.component";
+import { XComponent } from "../../icons/x/x.component";
+import { GrayStarComponent } from "../../icons/gray-star/gray-star.component";
 
 @Component({
     selector: "app-collection-artist-card",
     standalone: true,
-    imports: [CommonModule],
+    imports: [CommonModule, StarComponent, MusicComponent, XComponent, GrayStarComponent],
     providers: [provideIcons({ lucideMusic, lucideStar, lucideStarOff })],
     templateUrl: "./collection-artist-card.component.html",
 })
