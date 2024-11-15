@@ -10,6 +10,7 @@ import { authCallbackGuard } from "./guards/auth-callback.guard";
 import { AppLayoutPage } from "./app-layout/app-layout.page";
 import { authGuard } from "./guards/auth.guard";
 import { HomePage } from "./home/home.page";
+import { LeaderboardComponent } from "./components/leaderboard/leaderboard.component";
 
 export const routes = [
     {
@@ -59,7 +60,7 @@ export const routes = [
             },
             {
                 path: "leaderboards",
-                component: TODOComponent,
+                component: LeaderboardComponent,
             },
             {
                 path: "melodle/guess_line/:gameId",

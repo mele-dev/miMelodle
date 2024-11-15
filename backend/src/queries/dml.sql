@@ -308,8 +308,32 @@ SET "score"  = :score
 WHERE "userId" = :selfId AND "mode" = :gameMode
 RETURNING "score";
 
-
-
 /* @name addUserToLeaderboard */
 insert into ranking("userId", "score", "mode")
-values (:selfId!, :score, :mode) RETURNING *;
+values (:selfId, :score, :mode) RETURNING *;
+
+/* @name getFriendsLeaderboard */
+SELECT
+    u."id",
+    u."username",
+    u."name",
+    u."profilePictureId",
+    r."score",
+    r."mode"
+FROM "ranking" r
+JOIN public.users u ON r."userId" = u."id"
+WHERE r."mode" = :gameMode
+  AND (
+    u."id" = :selfId
+    OR u."id" IN (
+      SELECT "user2Id"
+      FROM "friendships"
+      WHERE "userId" = :selfId
+        AND status = 'accepted'
+      UNION
+      SELECT "userId"
+      FROM "friendships"
+      WHERE "user2Id" = :selfId
+        AND status = 'accepted'
+    )
+  );

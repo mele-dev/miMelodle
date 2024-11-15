@@ -98,7 +98,6 @@ CREATE TABLE ranking
 (
     "userId" BIGINT REFERENCES users (id)   NOT NULL,
     "score"  BIGINT     DEFAULT 0           NOT NULL,
-    "rank"   BIGINT NULL,
     "mode"   "gameMode" DEFAULT 'guessLine' NOT NULL
 );
 
