@@ -87,4 +87,9 @@ export class SelfService {
 
         return this._iconService.getProfilePicture(info.profilePictureFile);
     });
+
+    public logOut() {
+        this._localStorage.removeItem("userInfo");
+        this._safeRouter.navigate(["/auth"]);
+    }
 }

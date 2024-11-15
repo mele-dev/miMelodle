@@ -5,7 +5,12 @@ import { LanguagePickerComponent } from "../language-picker/language-picker.comp
 import { AppNavbarTranslator } from "./app-navbar.translations";
 import { HlmIconModule } from "@spartan-ng/ui-icon-helm";
 import { provideIcons } from "@ng-icons/core";
-import { lucideBell, lucideLogOut, lucideBellPlus, lucideCircleSlash } from "@ng-icons/lucide";
+import {
+    lucideBell,
+    lucideLogOut,
+    lucideBellPlus,
+    lucideCircleSlash,
+} from "@ng-icons/lucide";
 import { LocalStorageService } from "../../services/local-storage.service";
 import {
     BrnPopoverCloseDirective,
@@ -22,25 +27,33 @@ import { BackendIcon } from "../../types/backend-icon";
 import { HlmButtonModule } from "@spartan-ng/ui-button-helm";
 import { FriendshipsComponent } from "../friendships/friendships.component";
 import { BlockingComponent } from "../blocking/blocking.component";
+import { SelfService } from "../../services/self.service";
 
 @Component({
     selector: "app-app-navbar",
     standalone: true,
     imports: [
-    RouterLink,
-    LanguagePickerComponent,
-    HlmIconModule,
-    BrnPopoverCloseDirective,
-    BrnPopoverComponent,
-    BrnPopoverContentDirective,
-    BrnPopoverTriggerDirective,
-    HlmPopoverCloseDirective,
-    HlmPopoverContentDirective,
-    HlmButtonModule,
-    FriendshipsComponent,
-    BlockingComponent
-],
-    providers: [provideIcons({ lucideBell, lucideLogOut, lucideBellPlus, lucideCircleSlash })],
+        RouterLink,
+        LanguagePickerComponent,
+        HlmIconModule,
+        BrnPopoverCloseDirective,
+        BrnPopoverComponent,
+        BrnPopoverContentDirective,
+        BrnPopoverTriggerDirective,
+        HlmPopoverCloseDirective,
+        HlmPopoverContentDirective,
+        HlmButtonModule,
+        FriendshipsComponent,
+        BlockingComponent,
+    ],
+    providers: [
+        provideIcons({
+            lucideBell,
+            lucideLogOut,
+            lucideBellPlus,
+            lucideCircleSlash,
+        }),
+    ],
     templateUrl: "./app-navbar.component.html",
 })
 export class AppNavbarComponent {
@@ -48,10 +61,5 @@ export class AppNavbarComponent {
     safeRouter = inject(SafeRoutingService);
     chosenIcon = signal<BackendIcon | undefined>(undefined);
     sanitizer = inject(DomSanitizer);
-    private readonly _localStorage = inject(LocalStorageService);
-
-    logOut() {
-        this._localStorage.removeItem("userInfo");
-        this.safeRouter.navigate(["/auth"]);
-    }
+    selfService = inject(SelfService);
 }

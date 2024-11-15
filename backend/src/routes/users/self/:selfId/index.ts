@@ -31,6 +31,7 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                     ]).properties,
                     profilePictureFile:
                         profilePictureSchema.properties.filename,
+                    profilePictureId: profilePictureSchema.properties.id,
                 }),
                 ...SafeType.CreateErrors(["unauthorized"]),
             },

@@ -35,7 +35,7 @@
                         <app-icon-picker
                             [icons]="this.allIcons ?? []"
                             [columns]="4"
-                            [(selectedIcon)]="this.chosenIcon"
+                            (selectedIconChange)="this.chosenIcon.set($event)"
                         ></app-icon-picker>
                     </div>
                 </brn-popover>
@@ -141,15 +141,29 @@
             <p hlmCardContent>
                 <label class="my-4 block" hlmLabel>
                     Old Password
-                    <input class="mt-1.5 w-full" type="password" hlmInput />
+                    <input
+                        class="mt-1.5 w-full"
+                        id="oldPassword"
+                        type="password"
+                        hlmInput
+                        [formControl]="changePasasword.controls.oldPassword"
+                    />
                 </label>
                 <label class="my-4 block" hlmLabel>
                     New Password
-                    <input class="mt-1.5 w-full" type="password" hlmInput />
+                    <input
+                        class="mt-1.5 w-full"
+                        id="newPassword"
+                        type="password"
+                        hlmInput
+                        [formControl]="changePasasword.controls.password"
+                    />
                 </label>
             </p>
             <div hlmCardFooter>
-                <button hlmBtn>Save Password</button>
+                <button (click)="this.changePassword()" hlmBtn>
+                    Save Password
+                </button>
             </div>
         </section>
     </div>
@@ -163,7 +177,13 @@
                 </p>
             </div>
             <div hlmCardFooter>
-                <button variant="destructive" hlmBtn>Delete Account</button>
+                <button
+                    variant="destructive"
+                    (click)="this.deleteAccount()"
+                    hlmBtn
+                >
+                    Delete Account
+                </button>
             </div>
         </section>
     </div>

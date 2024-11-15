@@ -40,7 +40,7 @@ SELECT *
 RETURNING 1 AS output;
 
 /* @name getSelfuser */
-SELECT pp.filename AS "profilePictureFile", u.name, u.email, u.username, u.id
+SELECT pp.filename AS "profilePictureFile", u.name, u.email, u.username, u.id, u."profilePictureId"
   FROM users u
            INNER JOIN public."profilePictures" pp ON pp.id = u."profilePictureId"
  WHERE u.id = :selfId!;

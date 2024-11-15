@@ -36,6 +36,7 @@ import {
 import { ClientValidationService } from "../../services/client-validation.service";
 import { putUsersSelfSelfIdBody } from "../../../apiCodegen/backend-zod";
 import {
+    deleteUsersSelfSelfId,
     getPublicIcons,
     getPublicIconsFilename,
     putUsersSelfSelfId,
@@ -71,6 +72,7 @@ import {
     HlmPopoverCloseDirective,
     HlmPopoverContentDirective,
 } from "@spartan-ng/ui-popover-helm";
+import { throwDialogContentAlreadyAttachedError } from "@angular/cdk/dialog";
 
 @Component({
     selector: "app-user-config",
@@ -129,6 +131,7 @@ import {
 })
 export class UserConfigPage implements OnInit {
     private _validator = inject(ClientValidationService);
+    private _localStorage = inject(LocalStorageService);
     chosenIcon = signal<BackendIcon | undefined>(undefined);
     public selfService = inject(SelfService);
     public userIconSVG = "";
@@ -164,6 +167,26 @@ export class UserConfigPage implements OnInit {
         }
     );
 
+    changePasasword = this.builder.group(
+        {
+            password: this.builder.control(
+                "",
+                [],
+                this._validator.Schema(this.schema.shape.password)
+            ),
+            oldPassword: this.builder.control(
+                "",
+                [],
+                this._validator.Schema(this.schema.shape.oldPassword)
+            ),
+        } satisfies Partial<{
+            [k in keyof PutUsersSelfSelfIdBody]: unknown;
+        }>,
+        {
+            asyncValidators: this._validator.Schema(this.schema),
+        }
+    );
+
     activeTab = input("Tab 0");
 
     lotsOfTabs = Array.from({ length: 30 })
@@ -175,7 +198,6 @@ export class UserConfigPage implements OnInit {
     constructor() {
         effect(async () => {
             this.userIconSVG = (await this.selfService.userIconSVG()) ?? "";
-            console.log(this.chosenIcon);
             this.user.patchValue({
                 profilePictureId: this.chosenIcon()?.id ?? -1,
             });
@@ -185,6 +207,13 @@ export class UserConfigPage implements OnInit {
     private validateUsername() {
         const thisBinding = this;
         return async function (control: AbstractControl) {
+            if (
+                control.value ===
+                (await thisBinding.selfService.waitForUserInfoSnapshot())
+                    .username
+            ) {
+                return null;
+            }
             const output =
                 (await thisBinding._validator.Schema(
                     thisBinding.schema.shape.username
@@ -197,6 +226,12 @@ export class UserConfigPage implements OnInit {
     private validateEmail() {
         const thisBinding = this;
         return async function (control: { value: string }) {
+            if (
+                control.value ===
+                (await thisBinding.selfService.waitForUserInfoSnapshot()).email
+            ) {
+                return null;
+            }
             return (
                 (await thisBinding._validator.Schema(
                     thisBinding.schema.shape.email
@@ -209,20 +244,20 @@ export class UserConfigPage implements OnInit {
     async onSubmit() {
         try {
             const userInfo = await this.selfService.waitForUserInfoSnapshot();
-            const rawValue = this.user.getRawValue();
             const result = await putUsersSelfSelfId(userInfo.id, {
-                ...rawValue,
-                password: rawValue.oldPassword,
+                ...this.user.getRawValue(),
+                password: this.user.getRawValue().oldPassword,
             });
             this.safeRouter.navigate(["/app"]);
         } catch (e) {
             console.error(e);
-            toast("Error al guardar datos");
+            toast("Failed to change user configs.");
         }
     }
 
     async ngOnInit(): Promise<void> {
         const iconsInfo = (await getPublicIcons()).data;
+        const userInfo = await this.selfService.waitForUserInfoSnapshot();
 
         this.allIcons = await Promise.all(
             iconsInfo.map(async (icon) => ({
@@ -234,7 +269,36 @@ export class UserConfigPage implements OnInit {
         );
 
         this.chosenIcon.set(
-            this.allIcons.find((v) => v.filename === "default.svg")
+            this.allIcons.find((v) => v.id === userInfo.profilePictureId)
         );
+    }
+
+    public async changePassword() {
+        try {
+            const userInfo = await this.selfService.waitForUserInfoSnapshot();
+            const result = await putUsersSelfSelfId(userInfo.id, {
+                ...this.changePasasword.getRawValue(),
+                email: userInfo.email,
+                name: userInfo.name,
+                profilePictureId: userInfo.profilePictureId,
+                username: userInfo.username,
+            });
+            this.selfService.logOut();
+        } catch (e) {
+            console.error(e);
+            toast("Failed to change password.");
+        }
+    }
+
+    public async deleteAccount() {
+        try {
+            const userInfo = await this.selfService.waitForUserInfoSnapshot();
+            const result = await deleteUsersSelfSelfId(userInfo.id);
+            this.selfService.logOut();
+            toast("Account deleted successfully.");
+        } catch (e) {
+            console.error(e);
+            toast("Failed to delete account.");
+        }
     }
 }
