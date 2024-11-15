@@ -1,0 +1,1 @@
+<app-wordle-text [text]="this.value()" [isPending]="true"></app-wordle-text>

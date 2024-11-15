@@ -37,7 +37,7 @@ export class QueryParamsService {
     remove(params: string[]) {
         const mappedParams = Object.fromEntries(params.map((p) => [p, null]));
 
-        this.router.navigate([], {
+          this.router.navigate("", {
             relativeTo: this.route,
             queryParams: mappedParams,
             queryParamsHandling: "merge",

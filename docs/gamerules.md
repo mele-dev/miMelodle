@@ -12,5 +12,4 @@
 -   Después de cinco canciones erróneas, se le da un último intento al usuario,
     esta vez mostrándole un snippet de la canción.
 
--   Después de seis canciones erroneas, la partida ya no vale puntos. El usuario
-    puede seguir adivinando, y cuando él decida se le muestra la solución.
+-   Después de seis canciones erroneas, el usuario pierde la partida.

@@ -1,14 +1,21 @@
-import { getSeveralTracks, TrackObject } from "../apiCodegen/spotify.js";
+import {
+    getMultipleArtists,
+    getSeveralTracks,
+    TrackObject,
+} from "../apiCodegen/spotify.js";
 import { getGuessSongFromUser } from "../queries/dml.queries.js";
 import {
     GuessSongHints,
     GuessSongGameInformation,
 } from "../types/guessSong.js";
 import { runPreparedQuery } from "./database.js";
+import MusixmatchAPI from "../musixmatch-api/musixmatch.js";
+import { RequireSpotify } from "../spotify/helpers.js";
+import { DeepRequired } from "ts-essentials";
 
 export function checkSongGuess(opts: {
-    targetTrack: TrackObject;
-    trackToCompare: TrackObject;
+    targetTrack: DeepRequired<TrackObject>;
+    trackToCompare: DeepRequired<TrackObject>;
 }): GuessSongHints {
     const { targetTrack, trackToCompare } = opts;
 
@@ -23,12 +30,9 @@ export function checkSongGuess(opts: {
 
     return {
         isCorrectAlbum: targetTrack.album?.id === trackToCompare.album?.id,
-        guessedTrackAlbumName: trackToCompare.album?.name!,
-        isCorrectTrack: targetTrack.id === trackToCompare.id,
-        guessedTrackSpotifyId: trackToCompare.id!,
+        guessedTrack: trackToCompare,
         guessedTrackNameHint: titleHint ?? "",
-        guessedTrackName: trackToCompare.name!,
-        guessedTrackAlbumImages: trackToCompare.album?.images ?? [],
+        isCorrectTrack: targetTrack.id === trackToCompare.id,
     };
 }
 
@@ -73,11 +77,15 @@ export async function getGuessSongInformation(opts: {
 
     const idsToFetch = [hiddenTrackId, ...idsExceptHidden].join(",");
 
-    const tracksInfo = await getSeveralTracks({
+    const tracksInfo = (await getSeveralTracks({
         ids: idsToFetch,
-    });
+    })) as RequireSpotify<typeof getSeveralTracks>;
 
-    const hiddenTrack = tracksInfo.tracks.find((t) => t.id === hiddenTrackId);
+    const hiddenTrack = tracksInfo.tracks.find((t) => t.id === hiddenTrackId)!;
+
+    const artists = (await getMultipleArtists({
+        ids: hiddenTrack.artists.map((a) => a.id).join(","),
+    })) as RequireSpotify<typeof getMultipleArtists>;
 
     const attemptHints: GuessSongHints[] = [];
 
@@ -108,26 +116,40 @@ export async function getGuessSongInformation(opts: {
 
     const albumInfo = hiddenTrack?.album;
 
-    const albumHints: Partial<GuessSongGameInformation["album"]> = {
+    let albumHints: GuessSongGameInformation["album"] = {
         images: albumInfo?.images,
     };
 
-    if (attemptHints.some((a) => a.isCorrectAlbum)) {
-        albumHints.name = albumInfo?.name;
+    const hasWon = attemptHints.some((a) => a.isCorrectAlbum);
+
+    if (hasWon) {
+        albumHints = albumInfo;
     }
+
+    const gameHasEnded = gameInfo.length >= 6 || hasWon;
 
     return {
         status: "Success",
         hints: {
             attempts: attemptHints,
             album: albumHints,
-            artists:
-                hiddenTrack?.artists?.map((artist) => {
-                    return {
-                        name: artist.name!,
-                        spotifyArtistId: artist.id!,
-                    };
-                }) ?? [],
+            artists: artists.artists,
+            snippet: gameInfo[0].snippet ?? undefined,
+            correctTrack: gameHasEnded ? hiddenTrack : undefined,
         },
     };
+}
+
+export async function getTrackSnippet(trackIsrc: string) {
+    const api = new MusixmatchAPI();
+
+    const result = await api.getTrackSnippet({
+        track_isrc: trackIsrc,
+    });
+
+    if (result.headers.status_code === 404) {
+        return undefined;
+    }
+
+    return result.expect().snippet.snippet_body;
 }

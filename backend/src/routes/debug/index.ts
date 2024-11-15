@@ -20,7 +20,6 @@ import { search } from "../../apiCodegen/spotify.js";
 import { isAxiosError } from "axios";
 import {
     getAllTracksFromArtist,
-    getRandomTrackFromArtists,
 } from "../../spotify/helpers.js";
 
 export default (async (fastify) => {
@@ -111,7 +110,7 @@ export default (async (fastify) => {
                 const artist = (
                     await search({
                         type: ["artist"],
-                        q: "el cuarteto de nos",
+                        q: "queen",
                     })
                 ).artists!.items![0];
 
