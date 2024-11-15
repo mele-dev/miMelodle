@@ -1,0 +1,213 @@
+@if (this.gameInfo()) {
+<header
+    class="my-5 h-48 w-full overflow-hidden rounded-2xl border border-muted bg-cover bg-center"
+    style="background-image: url({{ this.gameInfo()!.album!.images?.[0]?.url }});"
+>
+    <div
+        class="flex h-full w-full flex-row justify-between gap-6 p-6 backdrop-blur backdrop-brightness-50"
+    >
+        <!-- TODO: Get artist image, not album image. -->
+        <a
+            [href]="this.gameInfo()?.artists?.[0]?.external_urls?.spotify"
+            class="aspect-square h-full w-fit"
+        >
+            <img
+                [src]="this.gameInfo()?.artists?.[0]?.images?.[0]?.url"
+                alt=""
+                class="aspect-square h-full rounded-xl shadow hover:scale-105 transition-transform"
+            />
+        </a>
+        <div class="flex w-full flex-col justify-center gap-4">
+            <div
+                class="w-full rounded bg-muted/80 text-5xl shadow grayscale backdrop-blur"
+                [classList]="{
+        'bg-opacity-0': this.hasEnded(),
+        }"
+            >
+                @if (!this.hasEnded()){ <span class="invisible"> Shh </span>}
+                @else {
+                <span class="text-5xl"
+                    >{{ this.gameInfo()?.correctTrack?.name }}</span
+                >
+                }
+            </div>
+            <span class="text-3xl drop-shadow"
+                >{{ this.dict().by(this.gameInfo()?.artists ?? []) }}</span
+            >
+        </div>
+    </div>
+</header>
+<section class="my-5 mb-20 grid grid-cols-1 gap-4 px-6">
+    @for (attempt of this.computedAttempts(); track $index) {
+    <article
+        class="w-full overflow-hidden rounded-2xl border border-muted bg-cover bg-center"
+        style="background-image: url({{ attempt.guessedTrack.album.images[0].url }});"
+    >
+        <div
+            class="flex h-full w-full flex-row justify-between gap-6 p-6 backdrop-blur backdrop-brightness-50"
+        >
+            <div class="flex h-full shrink-0 items-center">
+                <div class="relative">
+                    <a
+                        class="aspect-square h-full w-fit"
+                        [href]="attempt.guessedTrack.album.external_urls.spotify"
+                    >
+                        <img
+                            [src]="attempt.guessedTrack.album.images[0].url"
+                            alt=""
+                            class="my-auto aspect-square h-32 rounded-xl shadow hover:scale-105 transition-transform"
+                        />
+                    </a>
+                    <div
+                        class="absolute bottom-2 right-2 z-10 flex h-5 w-5 items-center justify-center rounded-full"
+                        [ngClass]="{
+                            'bg-green-500': attempt.isCorrectAlbum,
+                            'bg-red-500': !attempt.isCorrectAlbum,
+                        }"
+                    >
+                        @if (attempt.isCorrectAlbum) {
+                        <hlm-icon name="lucideCheck" size="sm"></hlm-icon>
+                        } @else {
+
+                        <hlm-icon name="lucideX" size="sm"></hlm-icon>
+                        }
+                    </div>
+                </div>
+            </div>
+            <a
+                class="flex w-full flex-col justify-center gap-4 group"
+                [href]="attempt.guessedTrack.external_urls.spotify"
+            >
+                <app-wordle-text
+                    class="group-hover:scale-105 w-fit transition-all"
+                    [text]="attempt.guessedTrackNameHint"
+                    [isPending]="false"
+                ></app-wordle-text>
+                <span class="text-3xl drop-shadow">
+                    {{ this.dict().from(attempt.guessedTrack.album.name)
+                    }}</span
+                >
+            </a>
+        </div>
+    </article>
+    @if ($index === 4 && !attempt.isCorrectTrack) {
+    <article
+        class="w-full rounded-2xl border border-muted bg-accent p-6 text-accent-foreground"
+    >
+        <h2>{{ this.dict().snippet }}</h2>
+        <p class="text-2xl">
+            {{ this.gameInfo()?.snippet ?? "We could not find lyrics for this
+            track." }}
+        </p>
+    </article>
+    } } @if (!hasEnded()) {
+    <article
+        (click)="this.focusInput()"
+        class="relative w-full overflow-hidden rounded-2xl border border-muted focus-within:border-fuchsia-500"
+    >
+        <div
+            class="flex h-full w-full flex-row justify-between gap-6 p-6 backdrop-blur backdrop-brightness-50"
+        >
+            <div class="flex w-full flex-col justify-center gap-4">
+                <app-wordle-text
+                    [text]="this.shownValue()"
+                    [isPending]="true"
+                    [selection]="this.selection"
+                ></app-wordle-text>
+            </div>
+        </div>
+        <input
+            #hiddenInput
+            (input)="this.onInput()"
+            (keydown)="this.keyDown($event)"
+            (keyup)="this.onInput()"
+            (click)="this.onInput()"
+            class="absolute h-0 opacity-0"
+            [(ngModel)]="this.value"
+        />
+    </article>
+    } @if (this.hasEnded()) {
+    <div class="mt-5 flex flex-col items-center gap-5">
+        @if (this.hasWon()) {
+        <h1
+            class="mx-auto bg-gradient-to-r from-purple-500 via-fuchsia-500 via-[30%] to-orange-500 to-[calc(100%+15rem)] bg-clip-text text-6xl font-extrabold text-transparent"
+        >
+            {{ this.dict().wonTitle }}
+        </h1>
+        } @if (this.hasLost()) {
+        <h1 class="mx-auto text-6xl font-extrabold">
+            {{ this.dict().lostTitle }}
+        </h1>
+        }
+        <iframe
+            class="rounded-2xl"
+            [src]="this.sanitizer.bypassSecurityTrustResourceUrl(this.embedSrc()!)"
+            width="100%"
+            height="352"
+            frameborder="0"
+            allowfullscreen=""
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy"
+        ></iframe>
+        <div class="mt-2 flex w-fit justify-between gap-20">
+            <a
+                [href]="this.router.createLink('/app/leaderboards')"
+                hlmBtn
+                variant="ghost"
+                class="text-xl font-bold"
+                >{{ this.dict().seeFriends }}</a
+            >
+            <a
+                [href]="this.router.createLink('/app/game')"
+                hlmBtn
+                variant="ghost"
+                class="text-xl font-bold"
+                >{{ this.dict().playAgain }}</a
+            >
+        </div>
+    </div>
+    }
+</section>
+}
+
+<hlm-dialog #pickTrackDialog>
+    <hlm-dialog-content
+        *brnDialogContent="let ctx"
+        class="w-fit max-w-screen-sm"
+    >
+        <h1 class="text-md font-extrabold">Which track did you mean?</h1>
+        @if (this.trackOptions() === undefined) {
+        <h1>Loading!</h1>
+        } @else {
+        <hlm-scroll-area
+            track="vertical"
+            class="h-96 w-[36rem] overflow-hidden"
+        >
+            @for (track of this.trackOptions()?.items ; track track.id) {
+            <button
+                (click)="this.submitAttempt(track)"
+                type="button"
+                class="m-2 flex w-[35rem] items-center gap-2 overflow-hidden text-ellipsis rounded p-2 hover:bg-muted"
+            >
+                <img
+                    [src]="track.album.images[0].url"
+                    class="h-20 w-20 rounded"
+                    alt=""
+                />
+                <div
+                    class="flex w-full flex-col items-start overflow-hidden text-ellipsis text-nowrap"
+                >
+                    <span class="block text-ellipsis"> {{ track.name }} </span>
+                    <span class="block w-full text-ellipsis text-left text-sm">
+                        By {{ this.dict().stringifyArtists(track.artists) }}
+                    </span>
+                    <span class="block w-full text-ellipsis text-left text-sm">
+                        From {{ track.album.name }}
+                    </span>
+                </div>
+            </button>
+            }
+        </hlm-scroll-area>
+        }
+    </hlm-dialog-content>
+</hlm-dialog>

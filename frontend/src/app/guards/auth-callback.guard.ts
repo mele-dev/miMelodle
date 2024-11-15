@@ -20,7 +20,7 @@ export const authCallbackGuard: CanActivateFn = async (route, _state) => {
     if (!parsed.success) {
         console.error("Bad queryparams for auth: ", parsed.error);
         toast(dict().authError);
-        safeRouter.navigate(["/auth/"]);
+        safeRouter.navigate("/auth/");
         return false;
     }
 
@@ -29,6 +29,6 @@ export const authCallbackGuard: CanActivateFn = async (route, _state) => {
         id: parsed.data.selfId,
     });
 
-    safeRouter.navigate(["/app"]);
+    safeRouter.navigate("/app");
     return true;
 };

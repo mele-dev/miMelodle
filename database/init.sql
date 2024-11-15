@@ -65,7 +65,9 @@ CREATE TABLE "savedArtists" (
     "userId"          BIGINT REFERENCES users (id) NOT NULL,
     "spotifyArtistId" TEXT                         NOT NULL,
     "savedAt"         timestamptz DEFAULT NOW()    NOT NULL,
-    "isFavorite"      bool        DEFAULT FALSE    NOT NULL
+    "isFavorite"      bool        DEFAULT FALSE    NOT NULL,
+    CONSTRAINT unique_user_spotify_artist UNIQUE ("userId", "spotifyArtistId")
+
 );
 
 CREATE TABLE streaks (
@@ -80,6 +82,7 @@ CREATE TABLE "guessSongGames" (
     id               SERIAL PRIMARY KEY,
     "userId"         BIGINT REFERENCES users (id) NOT NULL,
     "spotifyTrackId" TEXT                         NOT NULL,
+    "snippet"        TEXT                         NULL,
     "createdAt"      timestamptz DEFAULT NOW()    NOT NULL
 );
 
