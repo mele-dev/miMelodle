@@ -4,7 +4,9 @@ import {
     ArtistDiscographyAlbumObject,
     getAnAlbumsTracks,
     getAnArtistsAlbums,
+    getTrack,
     SimplifiedTrackObject,
+    TrackObject,
 } from "../apiCodegen/spotify.js";
 import { DeepRequired } from "ts-essentials";
 
@@ -58,7 +60,7 @@ export async function getRandomTrackFromArtists(opts: {
     groups: AlbumBaseAlbumType[];
     mustHaveLyrics?: "TODO" | true;
 }): Promise<{
-    track: SimplifiedTrackObject;
+    track: TrackObject;
     album: ArtistDiscographyAlbumObject;
 } | null> {
     // I don't want to modify a parameter, so I make a copy instead of shuffling
@@ -108,7 +110,7 @@ export async function getRandomTrackFromArtists(opts: {
             }
 
             return {
-                track: faker.helpers.arrayElement(tracks.items),
+                track: await getTrack(faker.helpers.arrayElement(tracks.items).id!),
                 album: chosenAlbum,
             };
         }

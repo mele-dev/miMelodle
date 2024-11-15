@@ -96,13 +96,17 @@ export class MusixMatchResponse<TTSchema extends TSchema> {
      * @returns The current `MusixMatchResponse` instance, with `body` typed as `Static<TTSchema>` if successful.
      */
     public expect(
-        errorMessage: string = "Asserted ok when status is not 200."
-    ): MusixMatchResponse<TTSchema> & { body: Static<TTSchema> } {
-        if (!this.isOk()) {
-            throw new Error(errorMessage, {
-                cause: this,
-            });
+        errorMessage?: string
+    ): Static<TTSchema> {
+        const code = this.headers.status_code;
+        if (!this.isOk() || !this.parse()) {
+            throw new Error(
+                `Asserted ok when status is ${code}. ` + errorMessage,
+                {
+                    cause: this,
+                }
+            );
         }
-        return this;
+        return this.body;
     }
 }

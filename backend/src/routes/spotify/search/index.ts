@@ -4,7 +4,11 @@ import { SafeType } from "../../../utils/typebox.js";
 import { queryStringSchema } from "../../../types/querystring.js";
 import { MelodleTagName } from "../../../plugins/swagger.js";
 import { search, SearchItemsResponse } from "../../../apiCodegen/spotify.js";
-import { artistSchema, createSpotifyPagination } from "../../../types/spotify.js";
+import {
+    createSpotifyPagination,
+    spotifyArtistSchema,
+    spotifyTrackSchema,
+} from "../../../types/spotify.js";
 import { sendOk } from "../../../utils/reply.js";
 import { RequireSpotify } from "../../../spotify/helpers.js";
 
@@ -21,17 +25,8 @@ export default (async (fastify) => {
             response: {
                 200: SafeType.Partial(
                     SafeType.Object({
-                        artists: createSpotifyPagination(
-                            SafeType.Pick(artistSchema, [
-                                "name",
-                                "spotifyArtistId",
-                                "genres",
-                                "followers",
-                                "popularity",
-                                "images",
-                                "externalUrls",
-                            ])
-                        ),
+                        tracks: createSpotifyPagination(spotifyTrackSchema),
+                        artists: createSpotifyPagination(spotifyArtistSchema),
                     } satisfies Partial<
                         Record<keyof SearchItemsResponse, unknown>
                     >)
@@ -51,18 +46,7 @@ export default (async (fastify) => {
                 offset: request.query.page * request.query.pageSize,
             })) as Partial<RequireSpotify<typeof search>>;
 
-            return sendOk(reply, 200, {
-                artists: result.artists
-                    ? {
-                          ...result.artists,
-                          items: result?.artists.items.map((item) => ({
-                              ...item,
-                              spotifyArtistId: item.id,
-                              externalUrls: item.external_urls,
-                          })),
-                      }
-                    : undefined,
-            });
+            return sendOk(reply, 200, result);
         },
     });
 }) satisfies FastifyPluginAsyncTypebox;

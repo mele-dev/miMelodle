@@ -201,10 +201,20 @@ WITH similarity AS (SELECT u.*, similarity(u.username, :username!) AS "rank!" FR
                         WHERE "rank!" >= :rankThreshold!
     )
 SELECT u.*, pp.filename AS "profilePictureFilename", CEIL(COUNT(*) OVER () / :pageSize!::FLOAT) AS "totalPages!"
-FROM filtered_users u
-         INNER JOIN "profilePictures" pp ON u."profilePictureId" = pp.id
-ORDER BY "rank!" DESC, levenshtein(u.username, :username!) LIMIT :pageSize!
-OFFSET :pageSize!::INT * :page!::INT;
+  FROM filtered_users u
+           INNER JOIN "profilePictures" pp ON u."profilePictureId" = pp.id
+ ORDER BY "rank!" DESC, levenshtein(u.username, :username!)
+ LIMIT :pageSize! OFFSET :pageSize!::INT * :page!::INT;
+ 
+/* @name addArtistToHome */
+INSERT INTO "savedArtists"("userId", "spotifyArtistId")
+values (:selfId!, :spotifyArtistId!)
+returning *;
+
+/* @name addArtistToHome */
+INSERT INTO "savedArtists"("userId", "spotifyArtistId")
+values (:selfId!, :spotifyArtistId!)
+returning *;
 
 /* @name addArtistToHome */
 INSERT INTO "savedArtists"("userId", "spotifyArtistId")
@@ -235,7 +245,7 @@ SELECT "spotifyArtistId", "isFavorite"
 from "savedArtists"
 where "userId" = :selfId!;
 
-/* @name createGuessLineGame */
+/* @name createGuessSongGame */
 WITH "newestGame" AS (SELECT *
                       FROM "guessSongGames" gsg
                       WHERE "userId" = :selfId!
@@ -253,8 +263,8 @@ SELECT CASE
     ), "insertGame"
     AS (
 INSERT
-INTO "guessSongGames" ("userId", "createdAt", "spotifyTrackId")
-SELECT :selfId!, NOW(), :spotifyTrackId!
+INTO "guessSongGames" ("userId", "createdAt", "spotifyTrackId", "snippet")
+SELECT :selfId!, NOW(), :spotifyTrackId!, :snippet
 WHERE EXISTS (
     SELECT 1
     FROM "canCreateGame"
@@ -336,3 +346,4 @@ WHERE r."mode" = :gameMode
         AND status = 'accepted'
     )
   );
+
