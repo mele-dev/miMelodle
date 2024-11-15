@@ -10,7 +10,7 @@ export const collectionArtistCardDict = {
         en: "Are you sure you want to delete?",
         es: "¿Estás seguro de que quieres eliminar?"
     },
-    si: {
+    yes: {
         en: "Yes",
         es: "Si"
     },

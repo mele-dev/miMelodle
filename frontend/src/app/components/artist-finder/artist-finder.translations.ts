@@ -7,7 +7,7 @@ import {
 export const artistFinderDict = {
     errorToast: {
         en: "Artist already on home page.",
-        es: "Ese artista ya está en tu home page.",
+        es: "Ese artista ya está en tu pantalla de inicio.",
     },
     successToast: {
         en: "Added successfully!",
@@ -15,7 +15,7 @@ export const artistFinderDict = {
     },
     title: {
         en: "Search an artist",
-        es: "Busca un artista",
+        es: "Buscar un artista",
     },
     subtitle: {
         en: "by their name",

@@ -15,6 +15,7 @@ import { FormsModule } from "@angular/forms";
 import { LocalStorageService } from "../../services/local-storage.service";
 import { HomeArtistsService } from "../../services/saved-artists.service";
 import { ArtistFinderTranslator } from "./artist-finder.translations";
+import { SelfService } from "../../services/self.service";
 
 type SearchedArtist = GetSpotifySearch200Artists["items"][number];
 
@@ -29,6 +30,7 @@ export class ArtistFinderComponent {
     usersFilter = signal<string>("");
     matchedArtists = signal<SearchedArtist[]>([]);
     private _localStorage = inject(LocalStorageService);
+    private _selfService = inject(SelfService);
     public homeArtistsService = inject(HomeArtistsService);
 
     async search() {
@@ -49,7 +51,7 @@ export class ArtistFinderComponent {
     }
 
     public async addArtist(spotifyId: string) {
-        const userId = this._localStorage.getItem("userInfo")?.id;
+        const userId = (await this._selfService.waitForUserInfoSnapshot()).id;
 
         if (userId === undefined) {
             return;

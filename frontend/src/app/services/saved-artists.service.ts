@@ -24,9 +24,10 @@ export class HomeArtistsService {
 
     public artists = this._artists.asReadonly();
     private _localStorage = inject(LocalStorageService);
+    private _selfService = inject(SelfService);
 
     public async loadData() {
-        const userId = this._localStorage.getItem("userInfo")?.id;
+        const userId = (await this._selfService.waitForUserInfoSnapshot()).id;
 
         if (userId === undefined) {
             return;
@@ -38,7 +39,7 @@ export class HomeArtistsService {
     }
 
     public async deleteArtist(artistsId: string) {
-        const userId = this._localStorage.getItem("userInfo")?.id;
+        const userId = (await this._selfService.waitForUserInfoSnapshot()).id;
 
         if (userId === undefined) {
             return;
@@ -49,40 +50,33 @@ export class HomeArtistsService {
             artistsId
         );
 
-        await this.loadData()
+        await this.loadData();
     }
 
     public async setArtistToFavorite(artistsId: string, isIt: boolean) {
-        const userId = this._localStorage.getItem("userInfo")?.id;
+        const userId = (await this._selfService.waitForUserInfoSnapshot()).id;
         if (userId === undefined) {
             return;
         }
 
-        try{
-            console.log('here')
-            const result =await  putUsersSelfSelfIdArtistsSpotifyArtistIdFavorite(
-                userId,
-                artistsId,
-                { isFavorite: isIt }
-            );
-            console.log(result)
-        } catch(e){
-            console.error(e)
-            console.log(isAxiosError(e))
-
-            if(isAxiosError(e)){
-                console.log(e.message)
-                toast(e.message)
+        try {
+            const result =
+                await putUsersSelfSelfIdArtistsSpotifyArtistIdFavorite(
+                    userId,
+                    artistsId,
+                    { isFavorite: isIt }
+                );
+        } catch (e) {
+            if (isAxiosError(e)) {
+                toast(e.message);
             }
         }
 
-        
-        
-        await this.loadData()
+        await this.loadData();
     }
 
-    public async addNewArtist(artists : GetUsersSelfSelfIdArtists200Item[]) {
-        this._artists.set(artists as Artist[])
+    public async addNewArtist(artists: GetUsersSelfSelfIdArtists200Item[]) {
+        this._artists.set(artists as Artist[]);
     }
 
     public formatNumber(num: number) {
