@@ -42,7 +42,7 @@ export async function executeTransaction<TReturn>(
     transaction: () => Promise<TReturn>
 ) {
     try {
-        //await runPreparedQuery(beginTransaction, {});
+        await runPreparedQuery(beginTransaction, {});
         const output = await transaction();
         await runPreparedQuery(commitTransaction, {});
         return output;

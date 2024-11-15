@@ -35,7 +35,7 @@ export class HomeArtistsService {
 
         const data = await getUsersSelfSelfIdArtists(userId);
 
-        this._artists.set(data.data as Artist[]);
+        this._artists.set(data.data);
     }
 
     public async deleteArtist(artistsId: string) {
