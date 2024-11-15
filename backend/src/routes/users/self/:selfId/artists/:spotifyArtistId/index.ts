@@ -104,7 +104,7 @@ export default (async (fastify) => {
                     request.params
                 );
 
-                return sendOk(reply, 200, { name: artist.name as string });
+                return sendOk(reply, 200, { name: artist.name!});
             } catch {
                 return sendError(
                     reply,

@@ -79,10 +79,8 @@ export default (async (fastify, _opts) => {
                 });
 
                 return sendOk(reply, 200, output);
-            } catch (e) {
-                if (isAxiosError(e)) {
-                    return sendError(reply,"notFound","There's no artists to get.");
-                }
+            } catch {
+                return sendError(reply,"notFound","There's no artists to get.");
             }
         },
     });
