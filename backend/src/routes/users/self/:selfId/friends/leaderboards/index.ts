@@ -10,6 +10,7 @@ import {
     addUserToLeaderboard,
     getGlobalLeaderboard,
     getFriendsLeaderboard,
+    updateScore,
 } from "../../../../../../queries/dml.queries.js";
 import { ParamsSchema } from "../../../../../../types/params.js";
 import { MelodleGameSchema } from "../../../../../../types/melodle.js";
@@ -19,20 +20,20 @@ export default (async (fastify, _opts) => {
     fastify.get("/", {
         onRequest: [decorators.authenticateSelf()],
         schema: {
-            params: SafeType.Pick(ParamsSchema, ["selfId", "gameMode"]),
+            params: SafeType.Pick(ParamsSchema, ["selfId"]),
+            querystring: SafeType.Pick(queryStringSchema, ["gameMode"]),
             response: {
                 200: leaderboardSchema,
-                ...SafeType.CreateErrors([]),
+                ...SafeType.CreateErrors(["unauthorized"]),
             },
             summary: "Get friends leaderboard for a given game mode.",
             tags: ["Leaderboards"] satisfies MelodleTagName[],
-            security: [],
         },
         async handler(request, reply) {
-            const result = await runPreparedQuery(
-                getFriendsLeaderboard,
-                request.params
-            );
+            const result = await runPreparedQuery(getFriendsLeaderboard, {
+                ...request.params,
+                ...request.query,
+            });
             return sendOk(reply, 200, { leaderboard: result });
         },
     });
@@ -69,46 +70,48 @@ export default (async (fastify, _opts) => {
             return sendOk(reply, 201, query[0]);
         },
     });
-    // fastify.put("", {
-    //     onRequest: [decorators.authenticateSelf],
-    //     schema: {
-    //         body: SafeType.Pick(
-    //             leaderboardSchema.properties.leaderboard.items,
-    //             ["score"]
-    //         ),
-    //         params: SafeType.Pick(ParamsSchema, ["selfId", "gameMode"]),
-    //         tags: ["Leaderboards"] satisfies MelodleTagName[],
-    //         response: {
-    //             201: SafeType.Pick(
-    //                 leaderboardSchema.properties.leaderboard.items,
-    //                 ["score"]
-    //             ),
-    //             ...SafeType.CreateErrors([
-    //                 "badRequest",
-    //                 "notFound",
-    //                 "unauthorized",
-    //                 "forbidden",
-    //             ]),
-    //         },
-    //         summary: "Updates user's score.",
-    //     },
-    //     handler: async function (request: any, reply: any) {
-    //         const query = await runPreparedQuery(updateScore, {
-    //             selfId: request.params.selfId,
-    //             score: request.body.score,
-    //             gameMode: request.params.gameMode,
-    //         });
-    //         if (query.length === 0) {
-    //             return sendError(reply, "badRequest", "Couldn't update.");
-    //         }
-    //         return sendOk(reply, 200, query[0]);
-    //     },
-    // });
+
+    fastify.put("", {
+        onRequest: [decorators.authenticateSelf()],
+        schema: {
+            body: SafeType.Pick(
+                leaderboardSchema.properties.leaderboard.items,
+                ["score"]
+            ),
+            params: SafeType.Pick(ParamsSchema, ["selfId", "gameMode"]),
+            tags: ["Leaderboards"] satisfies MelodleTagName[],
+            response: {
+                201: SafeType.Pick(
+                    leaderboardSchema.properties.leaderboard.items,
+                    ["score"]
+                ),
+                ...SafeType.CreateErrors([
+                    "badRequest",
+                    "notFound",
+                    "unauthorized",
+                    "forbidden",
+                ]),
+            },
+            summary: "Updates user's score.",
+        },
+        handler: async function (request: any, reply: any) {
+            const query = await runPreparedQuery(updateScore, {
+                ...request.params,
+                ...request.body,
+                ...request.params,
+            });
+            if (query.length === 0) {
+                return sendError(reply, "badRequest", "Couldn't update.");
+            }
+            return sendOk(reply, 200, query[0]);
+        },
+    });
 
     fastify.delete("", {
         onRequest: [decorators.authenticateSelf()],
         schema: {
-            params: SafeType.Pick(ParamsSchema, ["selfId", "gameMode"]),
+            params: SafeType.Pick(ParamsSchema, ["selfId"]),
+            querystring: SafeType.Pick(queryStringSchema, ["gameMode"]),
             tags: ["Leaderboards"] satisfies MelodleTagName[],
             response: {
                 200: SafeType.Pick(MelodleGameSchema, ["userId"]),
@@ -121,10 +124,10 @@ export default (async (fastify, _opts) => {
             summary: "Deletes user's score.",
         },
         handler: async function (request, reply) {
-            const queryResult = await runPreparedQuery(
-                deleteRankingData,
-                request.params
-            );
+            const queryResult = await runPreparedQuery(deleteRankingData, {
+                ...request.params,
+                ...request.query,
+            });
             switch (queryResult.length) {
                 case 0:
                     return sendError(

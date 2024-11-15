@@ -290,7 +290,6 @@ SELECT
     u.name,
     u."profilePictureId",
     r.score,
-    r.rank,
     r."mode"
 FROM "ranking" r
 join public.users u on r."userId" = u.id
