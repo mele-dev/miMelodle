@@ -17,6 +17,10 @@ export const collectionArtistCardDict = {
     goBack: {
         en: "Go back",
         es: "Volver"
+    },
+    backendError: {
+        en: "Something went wrong",
+        es: "Algo salió mal"
     }
 } as const satisfies Translations;
 

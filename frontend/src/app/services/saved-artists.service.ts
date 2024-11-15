@@ -13,6 +13,8 @@ import { toast } from "ngx-sonner";
 import { isAxiosError } from "axios";
 import { JsonPipe } from "@angular/common";
 import { getFollowed } from "../../apiCodegen/spotify";
+import { TranslatorService } from "./translator.service";
+import { CollectionArtistCardTranslator } from "../components/collection-artist-card/collection-artist-card.translations";
 
 export type Artist = GetUsersSelfSelfIdArtists200Item;
 
@@ -21,7 +23,7 @@ export type Artist = GetUsersSelfSelfIdArtists200Item;
 })
 export class HomeArtistsService {
     private _artists = signal<Artist[]>([]);
-
+    dict = inject(CollectionArtistCardTranslator).dict;
     public artists = this._artists.asReadonly();
     private _localStorage = inject(LocalStorageService);
     private _selfService = inject(SelfService);
@@ -79,7 +81,7 @@ export class HomeArtistsService {
             }
         } catch (e) {
             if (isAxiosError(e)) {
-                toast(e.message);
+                toast(this.dict().backendError);
             }
         }
 
