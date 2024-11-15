@@ -7,8 +7,8 @@ export const collectionArtistCardDict = {
         es: "seguidores",
     },
     deleteDialog: {
-        en: "Are you sure you want to delete?",
-        es: "¿Estás seguro de que quieres eliminar?"
+        en: (valueName: string) => `Are you sure you want to delete ${valueName}?` as const,
+        es: (valueName: string) => `¿Estás seguro que quieres eliminar a ${valueName}?` as const,
     },
     yes: {
         en: "Yes",
