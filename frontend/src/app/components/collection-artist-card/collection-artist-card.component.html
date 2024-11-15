@@ -33,12 +33,7 @@
 
                     @if (artist.isFavorite) {
                         <button
-                            (click)="
-                                this.favorite(
-                                    artist.data.spotifyArtistId,
-                                    false
-                                )
-                            "
+                            (click)="this.favorite(artist.data.spotifyArtistId)"
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -58,7 +53,7 @@
                             [disabled]="this.favoriteArtists().length > 3"
                             class="cursor-pointer disabled:cursor-not-allowed"
                             (click)="
-                                this.favorite(artist.data.spotifyArtistId, true)
+                                this.favorite(artist.data.spotifyArtistId)
                             "
                         >
                             <svg

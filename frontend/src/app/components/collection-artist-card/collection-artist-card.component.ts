@@ -40,8 +40,8 @@ export class CollectionArtistCardComponent implements OnInit {
         await this.homeArtistsService.deleteArtist(id);
     }
 
-    public async favorite(id: string, favorite: boolean) {
-        await this.homeArtistsService.setArtistToFavorite(id, favorite);
+    public async favorite(id: string) {
+        await this.homeArtistsService.artistFavoriteToogle(id);
     }
 
     public favoriteArtists = computed(() => {

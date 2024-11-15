@@ -53,19 +53,32 @@ export class HomeArtistsService {
         await this.loadData();
     }
 
-    public async setArtistToFavorite(artistsId: string, isIt: boolean) {
+    public async artistFavoriteToogle(artistsId: string) {
         const userId = (await this._selfService.waitForUserInfoSnapshot()).id;
         if (userId === undefined) {
             return;
         }
 
+        const artist = this._artists().find((a) => {
+            return a.data.spotifyArtistId === artistsId;
+        });
+
         try {
-            const result =
-                await putUsersSelfSelfIdArtistsSpotifyArtistIdFavorite(
-                    userId,
-                    artistsId,
-                    { isFavorite: isIt }
-                );
+            if (artist!.isFavorite) {
+                const result =
+                    await putUsersSelfSelfIdArtistsSpotifyArtistIdFavorite(
+                        userId,
+                        artistsId,
+                        { isFavorite: false }
+                    );
+            } else {
+                const result =
+                    await putUsersSelfSelfIdArtistsSpotifyArtistIdFavorite(
+                        userId,
+                        artistsId,
+                        { isFavorite: true }
+                    );
+            }
         } catch (e) {
             if (isAxiosError(e)) {
                 toast(e.message);
