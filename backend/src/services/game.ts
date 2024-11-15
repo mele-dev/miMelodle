@@ -4,14 +4,12 @@ import {
     TrackObject,
 } from "../apiCodegen/spotify.js";
 import { getGuessSongFromUser } from "../queries/dml.queries.js";
-import {
-    GuessSongHints,
-    GuessSongGameInformation,
-} from "../types/guessSong.js";
+import { GuessSongHints, GuessSongGameInformation } from "../types/game.js";
 import { runPreparedQuery } from "./database.js";
 import MusixmatchAPI from "../musixmatch-api/musixmatch.js";
 import { RequireSpotify } from "../spotify/helpers.js";
 import { DeepRequired } from "ts-essentials";
+import { faker } from "@faker-js/faker";
 
 export function checkSongGuess(opts: {
     targetTrack: DeepRequired<TrackObject>;
@@ -152,4 +150,26 @@ export async function getTrackSnippet(trackIsrc: string) {
     }
 
     return result.expect().snippet.snippet_body;
+}
+
+export async function getTrackLine(trackIsrc: string) {
+    const api = new MusixmatchAPI();
+
+    const lyricsResponse = await api.getTrackLyrics({
+        track_isrc: trackIsrc,
+    });
+
+    if (!lyricsResponse.parse()) {
+        return null;
+    }
+
+    const lyrics = lyricsResponse.body.lyrics.lyrics_body;
+
+    const filtered = lyrics.split(
+        "\n...\n\n******* This Lyrics is NOT for Commercial use *******"
+    )[0];
+
+    const split = filtered.split("\n").filter(Boolean);
+
+    return faker.helpers.arrayElement(split);
 }

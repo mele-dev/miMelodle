@@ -17,7 +17,7 @@ export default (async (fastify) => {
                 200: guessSongGameInformationSchema,
                 ...SafeType.CreateErrors(["unauthorized", "notFound"]),
             },
-            summary: "Get information about a melodle game.",
+            summary: "Get information about a guess line game.",
             description: undefined,
             tags: ["User", "Melodle"] satisfies MelodleTagName[],
         },

@@ -1,16 +1,16 @@
 import { Static } from "@sinclair/typebox";
 import { SafeType } from "../utils/typebox.js";
 import {
-    artistSchema,
     simplifiedAlbumSchema,
     spotifyArtistSchema,
     spotifyImagesSchema,
     spotifyTrackSchema,
 } from "./spotify.js";
 
-export const commonGuessSongPropertiesSchema = SafeType.Object({
+export const commonGamePropertiesSchema = SafeType.Object({
     artistSpotifyId: SafeType.String(),
     artistsSpotifyIds: SafeType.Array(SafeType.String()),
+    trackSpotifyIds: SafeType.Array(SafeType.String()),
     guessedTrackSpotifyId: SafeType.String(),
     guessedTrackName: SafeType.String(),
     guessedTrackAlbumName: SafeType.String(),
@@ -18,6 +18,22 @@ export const commonGuessSongPropertiesSchema = SafeType.Object({
     artistImages: spotifyImagesSchema,
     correctTrack: spotifyTrackSchema,
 });
+
+export const guessLineHintSchema = SafeType.Object({
+    snippetHint: SafeType.WithExamples(SafeType.String({
+        description: `\
+The guessed snippet, showing every spot where their characters coincide with the target snippet.
+Characters which appear on the line but are on the wrong spot are marked with ~.
+Characters that do not appear on the line are marked with _.
+`
+    }), ["Dó__e está_ lo_ ladro_e_"]),
+});
+
+export const guessLineGameInformationSchema = SafeType.Object({
+    attempts: SafeType.Array(guessLineHintSchema),
+    track: spotifyTrackSchema,
+    snippetLength: SafeType.Integer(),
+})
 
 export const guessSongHintsSchema =  SafeType.Object({
     isCorrectAlbum: SafeType.Boolean(),
@@ -36,6 +52,7 @@ export const guessSongHintsListSchema = SafeType.Array(guessSongHintsSchema, {
     description:
         "Hints for every attempt made thus far, ordered from oldest to newest.",
 });
+
 export const guessSongGameInformationSchema = SafeType.Object({
     attempts: guessSongHintsListSchema,
     artists: SafeType.Array(spotifyArtistSchema),

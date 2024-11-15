@@ -8,7 +8,8 @@ CREATE EXTENSION IF NOT EXISTS fuzzystrmatch;
 
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
 
-CREATE TABLE "profilePictures" (
+CREATE TABLE "profilePictures"
+(
     id         SERIAL PRIMARY KEY,
     "filename" TEXT UNIQUE NOT NULL
 );
@@ -17,7 +18,8 @@ CREATE DOMAIN email_domain AS VARCHAR(254) CHECK ( value ~ '^[a-zA-Z0-9._%+-]+@[
 
 CREATE DOMAIN username_domain AS VARCHAR(50) CHECK ( LENGTH(value) >= 3 AND value ~ '^[a-zA-Z0-9\.-_]+$' );
 
-CREATE OR REPLACE FUNCTION get_default_profile_picture() RETURNS BIGINT AS $$
+CREATE OR REPLACE FUNCTION get_default_profile_picture() RETURNS BIGINT AS
+$$
 DECLARE
     default_id BIGINT;
 BEGIN
@@ -27,7 +29,8 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TABLE users (
+CREATE TABLE users
+(
     id                 SERIAL PRIMARY KEY,
     username           username_domain UNIQUE                   NOT NULL,
     -- https://stackoverflow.com/questions/386294/what-is-the-maximum-length-of-a-valid-email-address
@@ -41,7 +44,8 @@ CREATE TABLE users (
 
 CREATE TYPE "friendshipStatus" AS ENUM ('pending', 'accepted');
 
-CREATE TABLE friendships (
+CREATE TABLE friendships
+(
     id          SERIAL PRIMARY KEY,
     "userId"    BIGINT REFERENCES users (id)         NOT NULL,
     "user2Id"   BIGINT REFERENCES users (id)         NOT NULL,
@@ -53,14 +57,16 @@ CREATE TABLE friendships (
 -- Optimize username for fuzzy searching.
 CREATE INDEX users_username_trgm_idx ON users USING gin (username gin_trgm_ops);
 
-CREATE TABLE blocks (
+CREATE TABLE blocks
+(
     "userWhoBlocksId" BIGINT REFERENCES users (id) NOT NULL,
     "blockedUserId"   BIGINT REFERENCES users (id) NOT NULL,
     "createdAt"       timestamptz DEFAULT NOW()    NOT NULL,
     PRIMARY KEY ("userWhoBlocksId", "blockedUserId")
 );
 
-CREATE TABLE "savedArtists" (
+CREATE TABLE "savedArtists"
+(
     id                SERIAL PRIMARY KEY,
     "userId"          BIGINT REFERENCES users (id) NOT NULL,
     "spotifyArtistId" TEXT                         NOT NULL,
@@ -70,7 +76,8 @@ CREATE TABLE "savedArtists" (
 
 );
 
-CREATE TABLE streaks (
+CREATE TABLE streaks
+(
     id            SERIAL PRIMARY KEY,
     "userId"      BIGINT REFERENCES users (id) NOT NULL,
     "streakCount" BIGINT      DEFAULT 0        NOT NULL,
@@ -85,7 +92,8 @@ CREATE TABLE streaks (
 --     "musixmatchId" TEXT NOT NULL UNIQUE
 -- );
 
-CREATE TABLE "guessSongGames" (
+CREATE TABLE "guessSongGames"
+(
     id               SERIAL PRIMARY KEY,
     "userId"         BIGINT REFERENCES users (id) NOT NULL,
     "spotifyTrackId" TEXT                         NOT NULL,
@@ -93,19 +101,39 @@ CREATE TABLE "guessSongGames" (
     "createdAt"      timestamptz DEFAULT NOW()    NOT NULL
 );
 
-CREATE TABLE "guessSongAttempts" (
+CREATE TABLE "guessSongAttempts"
+(
     "gameId"                BIGINT REFERENCES "guessSongGames" (id) NOT NULL,
     "guessedSpotifyTrackId" TEXT                                    NOT NULL,
     "guessedAt"             timestamptz                             NOT NULL,
     PRIMARY KEY ("gameId", "guessedSpotifyTrackId")
 );
 
-CREATE TABLE "gameConfig" (
+CREATE TABLE "gameConfig"
+(
     id       SERIAL PRIMARY KEY,
     "userId" BIGINT REFERENCES users (id) NOT NULL
 );
 
-CREATE TABLE "chosenArtistInConfig" (
+CREATE TABLE "guessLineGame"
+(
+    id               SERIAL PRIMARY KEY,
+    "userId"         BIGINT REFERENCES users (id) NOT NULL,
+    "spotifyTrackId" TEXT                         NOT NULL,
+    "snippet"        TEXT                         NOT NULL,
+    "createdAt"      timestamptz DEFAULT NOW()    NOT NULL
+);
+
+CREATE TABLE "guessLineAttempts"
+(
+    "gameId"         BIGINT REFERENCES "guessSongGames" (id) NOT NULL,
+    "guessedSnippet" TEXT                                    NOT NULL,
+    "guessedAt"      timestamptz                             NOT NULL,
+    PRIMARY KEY ("gameId", "guessedSnippet")
+);
+
+CREATE TABLE "chosenArtistInConfig"
+(
     "gameConfigId"    BIGINT REFERENCES "gameConfig" (id) NOT NULL,
     "spotifyArtistId" TEXT                                NOT NULL,
     PRIMARY KEY ("gameConfigId", "spotifyArtistId")
@@ -113,16 +141,18 @@ CREATE TABLE "chosenArtistInConfig" (
 
 CREATE OR REPLACE FUNCTION encrypt_password(
     password TEXT
-) RETURNS TEXT AS $$
+) RETURNS TEXT AS
+$$
 BEGIN
     RETURN crypt(password, gen_salt('bf'));
 END;
 $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION check_password(
-    encrypted_password   TEXT,
+    encrypted_password TEXT,
     unencrypted_password TEXT
-) RETURNS BOOLEAN AS $$
+) RETURNS BOOLEAN AS
+$$
 BEGIN
     RETURN encrypted_password = crypt(unencrypted_password, encrypted_password);
 END;
