@@ -224,6 +224,11 @@ INSERT INTO "savedArtists"("userId", "spotifyArtistId")
 values (:selfId!, :spotifyArtistId!)
 returning *;
 
+/* @name addArtistToHome */
+INSERT INTO "savedArtists"("userId", "spotifyArtistId")
+values (:selfId!, :spotifyArtistId!)
+returning *;
+
 /* @name deleteArtistFromHome */
 DELETE
 FROM "savedArtists"
@@ -249,6 +254,7 @@ WHERE "userId" = :selfId! AND "isFavorite" = true;
 SELECT "spotifyArtistId", "isFavorite"
 from "savedArtists"
 where "userId" = :selfId!;
+
 /* @name createGuessSongGame */
   WITH "newestGame"    AS (
       SELECT * FROM "guessSongGames" gsg WHERE "userId" = :selfId! ORDER BY gsg."createdAt" DESC LIMIT 1
