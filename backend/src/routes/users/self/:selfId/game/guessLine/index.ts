@@ -11,7 +11,7 @@ import { faker } from "@faker-js/faker";
 import { getSeveralTracks } from "../../../../../../apiCodegen/spotify.js";
 import { sendError, sendOk } from "../../../../../../utils/reply.js";
 import { runPreparedQuery } from "../../../../../../services/database.js";
-import { insertGuessLineAttempt } from "../../../../../../queries/dml.queries.js";
+import { insertGuessLineGame } from "../../../../../../queries/dml.queries.js";
 import { getTrackLine } from "../../../../../../services/game.js";
 
 export default (async (fastify) => {
@@ -53,7 +53,7 @@ export default (async (fastify) => {
                 }
 
                 const queryResult = await runPreparedQuery(
-                    insertGuessLineAttempt,
+                    insertGuessLineGame,
                     {
                         ...request.params,
                         snippet: line,

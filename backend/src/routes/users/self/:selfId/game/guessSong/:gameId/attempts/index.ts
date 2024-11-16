@@ -41,6 +41,7 @@ export default (async (fastify) => {
                 ...request.params,
                 newGuess: request.body.guessedTrackSpotifyId,
             });
+
             switch (result.status) {
                 case "RepeatedTrack":
                     return sendError(reply, "conflict", result.status);
@@ -52,6 +53,8 @@ export default (async (fastify) => {
                     return sendError(reply, "notFound", result.status);
                 case "AlreadyWon":
                     return sendError(reply, "gone", result.status);
+                case "NotYourGame":
+                    return sendError(reply, "unauthorized", result.status);
                 case "Success":
                     break;
                 default:

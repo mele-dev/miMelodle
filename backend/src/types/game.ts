@@ -20,22 +20,30 @@ export const commonGamePropertiesSchema = SafeType.Object({
 });
 
 export const guessLineHintSchema = SafeType.Object({
-    snippetHint: SafeType.WithExamples(SafeType.String({
-        description: `\
+    snippetHint: SafeType.WithExamples(
+        SafeType.String({
+            description: `\
 The guessed snippet, showing every spot where their characters coincide with the target snippet.
 Characters which appear on the line but are on the wrong spot are marked with ~.
 Characters that do not appear on the line are marked with _.
-`
-    }), ["Dó__e está_ lo_ ladro_e_"]),
+`,
+        }),
+        ["Dó__e está_ lo_ ladro_e_"]
+    ),
+    guessedLine: SafeType.String(),
 });
 
 export const guessLineGameInformationSchema = SafeType.Object({
     attempts: SafeType.Array(guessLineHintSchema),
-    track: spotifyTrackSchema,
     snippetLength: SafeType.Integer(),
-})
+    track: spotifyTrackSchema,
+});
 
-export const guessSongHintsSchema =  SafeType.Object({
+export type GuessLineGameInformation = Static<
+    typeof guessLineGameInformationSchema
+>;
+
+export const guessSongHintsSchema = SafeType.Object({
     isCorrectAlbum: SafeType.Boolean(),
     isCorrectTrack: SafeType.Boolean(),
     guessedTrack: spotifyTrackSchema,
@@ -45,7 +53,7 @@ export const guessSongHintsSchema =  SafeType.Object({
                 "The title of the guessed track, showing every spot where their characters coincide with the ones from the hidden track.",
         }),
         ["Dó__e está_ lo_ ladro_e_"]
-    )
+    ),
 });
 
 export const guessSongHintsListSchema = SafeType.Array(guessSongHintsSchema, {
@@ -58,7 +66,7 @@ export const guessSongGameInformationSchema = SafeType.Object({
     artists: SafeType.Array(spotifyArtistSchema),
     snippet: SafeType.Optional(SafeType.String()),
     album: SafeType.Optional(SafeType.Partial(simplifiedAlbumSchema)),
-    correctTrack: SafeType.Optional(spotifyTrackSchema)
+    correctTrack: SafeType.Optional(spotifyTrackSchema),
 });
 
 export type GuessSongGameInformation = Static<

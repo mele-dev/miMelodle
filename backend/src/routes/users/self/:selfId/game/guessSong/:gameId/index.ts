@@ -25,6 +25,7 @@ export default (async (fastify) => {
             const result = await getGuessSongInformation(request.params);
             switch (result.status) {
                 case "RepeatedTrack":
+                case "NotYourGame":
                 case "AttemptsExhausted":
                 case "AlreadyWon":
                     // This should never happen.
