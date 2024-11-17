@@ -1,0 +1,17 @@
+@for (char of this.text(); track $index) {
+    <span
+        [ngClass]="{
+            'inline-block h-[1.2em] min-w-[0.5ch] -translate-y-1/2 border border-transparent text-foreground opacity-0 transition-all duration-500 ease-in-out': true,
+            '[&]:translate-y-0 [&]:opacity-100': this.show,
+            'border-b-amber-500':
+                this.hints()[$index].isInWrongPlace && this.show,
+            'border-b-emerald-500': this.hints()[$index].isCorrect && this.show,
+            'border-b-slate-500': this.hints()[$index].isWrong && this.show,
+            'animate-bounce': this.isCorrect(),
+        }"
+        [style.transitionDelay.ms]="25 * $index"
+        [style.animationDelay.ms]="-1000 + 1000 / this.text().length * $index"
+        style="animation-duration: 1s"
+        >{{ char }}</span
+    >
+}

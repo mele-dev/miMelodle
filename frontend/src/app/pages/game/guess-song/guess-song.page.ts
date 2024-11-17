@@ -179,7 +179,6 @@ export class GuessSongPage implements OnInit {
         this.trackSelectionDialog.open();
 
         const result = await getSpotifySearch({
-            // TODO: Check how to filter query properly.
             query: `${query} artist:${this.gameInfo()?.artists[0].name}`,
             page: 0,
             pageSize: getSpotifySearchQueryPageSizeMax,
@@ -201,7 +200,7 @@ export class GuessSongPage implements OnInit {
             }
         );
 
-        this.load();
+        this.gameInfo.set(result.data);
     }
 
     async load() {

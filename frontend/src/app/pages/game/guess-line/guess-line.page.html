@@ -1,7 +1,12 @@
 @if (this.gameInfo()) {
-<div class="mx-auto mt-5 flex w-fit flex-col gap-8 px-4 items-center">
-    <section class="w-fit text-lg min-w-[50%]">
-        <span class="text-sm">Guess the line from</span>
+<div
+    class="mx-auto my-5 mb-[25dvh] flex w-full flex-col items-center gap-8 px-4"
+>
+    <section class="w-fit min-w-[50%] text-lg">
+        <span class="text-sm">
+            Guess the line of {{ this.gameInfo()!.snippetLength }} characters
+            from
+        </span>
         <ul class="w-full">
             <app-track-list-item
                 [readonly]="true"
@@ -9,13 +14,88 @@
             ></app-track-list-item>
         </ul>
     </section>
-    <section class="flex w-full flex-col items-center gap-5">
-        @for (i of this.attemptIndexes; track i) {
-        <app-wordle-text
-            [text]="this.placeholderText()!"
-            [isPending]="true"
-        ></app-wordle-text>
+    <form class="flex w-full flex-col items-center gap-5">
+        @for (attempt of this.attempts; track $index) { @if (this.hint($index))
+        {
+        <app-guess-line-wordle-text
+            [text]="this.hint($index)!.guessedLine"
+            [hintString]="this.hint($index)!.snippetHint"
+            class="text-4xl"
+        >
+        </app-guess-line-wordle-text>
+        } @else {
+        <div
+            [ngClass]="{
+                'w-96': true,
+            }"
+        >
+            <input
+                class="w-full"
+                type="text"
+                [disabled]="!this.isCurrentAttempt($index) || this.hasEnded()"
+                [name]="'attempt-' + $index"
+                (keydown)="$event.key === 'Enter' ? this.submitAttempt() : ''"
+                hlmInput
+                [maxlength]="this.gameInfo()!.snippetLength"
+                [(ngModel)]="this.attempts[$index]"
+            />
+            <p
+                [ngClass]="{
+                    'invisible': !this.isCurrentAttempt($index),
+                }"
+            >
+                @if (this.hasWon()) {
+                <span> You didn't even need every attempt! </span>
+                } @else {
+                <span>
+                    {{ this.attempts[$index].length }} / {{
+                    this.gameInfo()!.snippetLength }}
+                </span>
+                }
+            </p>
+        </div>
+        } }
+    </form>
+    @if (this.hasEnded()) {
+    <div class="mt-5 flex w-full flex-col items-center gap-5">
+        @if (this.hasWon()) {
+        <h1
+            class="mx-auto bg-gradient-to-r from-purple-500 via-fuchsia-500 via-[30%] to-orange-500 to-[calc(100%+15rem)] bg-clip-text text-6xl font-extrabold text-transparent"
+        >
+            {{ this.dict().wonTitle }}
+        </h1>
+        } @if (this.hasLost()) {
+        <h1 class="mx-auto text-6xl font-extrabold">
+            {{ this.dict().lostTitle }}
+        </h1>
         }
-    </section>
+        <iframe
+            class="rounded-2xl"
+            [src]="this.sanitizer.bypassSecurityTrustResourceUrl(this.embedSrc()!)"
+            width="100%"
+            height="352"
+            frameborder="0"
+            allowfullscreen=""
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy"
+        ></iframe>
+        <div class="mt-2 flex w-fit justify-between gap-20">
+            <a
+                [href]="this.router.createLink('/app/leaderboards')"
+                hlmBtn
+                variant="ghost"
+                class="text-xl font-bold"
+                >{{ this.dict().seeFriends }}</a
+            >
+            <a
+                [href]="this.router.createLink('/app/game')"
+                hlmBtn
+                variant="ghost"
+                class="text-xl font-bold"
+                >{{ this.dict().playAgain }}</a
+            >
+        </div>
+    </div>
+    }
 </div>
 }

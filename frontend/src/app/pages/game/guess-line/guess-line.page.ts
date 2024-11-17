@@ -10,23 +10,35 @@ import { SelfService } from "../../../services/self.service";
 import {
     getUsersSelfSelfIdGameGuessLineGameId,
     GetUsersSelfSelfIdGameGuessLineGameId200,
+    postUsersSelfSelfIdGameGuessLineGameIdAttempts,
 } from "../../../../apiCodegen/backend";
 import { DomSanitizer } from "@angular/platform-browser";
 import { SafeRoutingService } from "../../../services/safe-routing.service";
 import { GuessSongTranslator } from "../guess-song/guess-song.translations";
 import { z } from "zod";
 import { toast } from "ngx-sonner";
-import { JsonPipe } from "@angular/common";
+import { CommonModule, JsonPipe } from "@angular/common";
 import { TrackListItemComponent } from "../../../components/track-list-item/track-list-item.component";
-import {
-    WordleTextComponent,
-    WordleTextModifiers,
-} from "../../../components/wordle-text/wordle-text.component";
+import { WordleTextComponent } from "../../../components/wordle-text/wordle-text.component";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { HlmInputModule } from "@spartan-ng/ui-input-helm";
+import { GuessLineWordleTextComponent } from "../../../components/guess-line-wordle-text/guess-line-wordle-text.component";
+import { HlmButtonModule } from "@spartan-ng/ui-button-helm";
 
 @Component({
     selector: "app-guess-line",
     standalone: true,
-    imports: [JsonPipe, TrackListItemComponent, WordleTextComponent],
+    imports: [
+        JsonPipe,
+        TrackListItemComponent,
+        WordleTextComponent,
+        ReactiveFormsModule,
+        FormsModule,
+        HlmInputModule,
+        CommonModule,
+        HlmButtonModule,
+        GuessLineWordleTextComponent,
+    ],
     templateUrl: "./guess-line.page.html",
 })
 export class GuessLinePage implements OnInit {
@@ -51,23 +63,77 @@ export class GuessLinePage implements OnInit {
     // Use this to iterate six times in template.
     attemptIndexes = Array(6).fill(NaN);
 
+    placeholder = signal("");
+
     gameInfo = signal<GetUsersSelfSelfIdGameGuessLineGameId200 | undefined>(
         undefined
     );
 
-    placeholderText = computed(() => {
+    hasWon = computed(() => {
+        return this.gameInfo()?.attempts.some(
+            (a) => !a.snippetHint.includes("~") && !a.snippetHint.includes("_")
+        );
+    });
+
+    hasLost = computed(() => {
         const info = this.gameInfo();
+        const hasWon = this.hasWon();
 
         if (!info) {
-            return undefined;
+            return false;
         }
 
-        return Array(info.snippetLength)
-            .fill({
-                hint: "Wrong",
-                char: "-",
-            } satisfies WordleTextModifiers);
+        return !hasWon && info.attempts.length >= 6;
     });
+
+    hasEnded = computed(() => {
+        return this.hasWon() || this.hasLost();
+    });
+
+    embedSrc = computed(() => {
+        const info = this.gameInfo();
+
+        if (info === undefined) {
+            return undefined
+        }
+
+        return `https://open.spotify.com/embed/track/${info.track.id}?utm_source=generator`;
+    });
+
+    async submitAttempt() {
+        const self = await this._self.waitForUserInfoSnapshot();
+        console.log("hi");
+        if (this.currentAttempt.length !== this.gameInfo()?.snippetLength) {
+            toast("Write the full length of the string.");
+            return;
+        }
+
+        const result = await postUsersSelfSelfIdGameGuessLineGameIdAttempts(
+            self.id,
+            this.ids().gameId,
+            {
+                guessedLine: this.currentAttempt,
+            }
+        );
+
+        this.gameInfo.set(result.data);
+    }
+
+    get currentAttempt() {
+        return this.attempts[this.gameInfo()?.attempts.length ?? 0];
+    }
+
+    attempts = Array(6)
+        .fill(0)
+        .map(() => "");
+
+    isCurrentAttempt(i: number) {
+        return this.gameInfo()!.attempts.length === i;
+    }
+
+    hint(attemptNumber: number) {
+        return this.gameInfo()?.attempts?.at(attemptNumber);
+    }
 
     async load() {
         const self = await this._self.waitForUserInfoSnapshot();
@@ -76,6 +142,8 @@ export class GuessLinePage implements OnInit {
                 self.id,
                 this.ids().gameId
             );
+
+            this.placeholder.set(".".repeat(result.data.snippetLength));
 
             this.gameInfo.set(result.data);
         } catch (e) {
