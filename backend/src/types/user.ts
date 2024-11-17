@@ -33,11 +33,11 @@ export const userSchema = SafeType.Object(
             description: "A password.",
         }),
         spotifyId: SafeType.String({
-            description:
-                "The user's id to use to connect with spotify services. " +
-                "It is not stored within the database, but some requests " +
-                "need it to function.",
-        }),
+                description:
+                    "The user's id to use to connect with spotify services. " +
+                    "It is not stored within the database, but some requests " +
+                    "need it to function.",
+            }),
         profilePictureId: SafeType.Integer({
             description:
                 "The id to the profile picture of the user. " +
