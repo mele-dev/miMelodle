@@ -211,14 +211,6 @@ INSERT INTO "savedArtists"("userId", "spotifyArtistId")
 values (:selfId!, :spotifyArtistId!)
 returning *;
 
-/* @name addArtistToHome */
-INSERT INTO "savedArtists"("userId", "spotifyArtistId")
-values (:selfId!, :spotifyArtistId!)
-returning *;
-
-/* @name addArtistToHome */
-INSERT INTO "savedArtists"("userId", "spotifyArtistId")
-values (:selfId!, :spotifyArtistId!) returning *;
 
 /* @name deleteArtistFromHome */
 DELETE
