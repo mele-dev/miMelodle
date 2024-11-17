@@ -37,6 +37,7 @@ export const guessLineGameInformationSchema = SafeType.Object({
     attempts: SafeType.Array(guessLineHintSchema),
     snippetLength: SafeType.Integer(),
     track: spotifyTrackSchema,
+    snippet: SafeType.Optional(SafeType.String()),
 });
 
 export type GuessLineGameInformation = Static<

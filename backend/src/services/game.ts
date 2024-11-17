@@ -237,11 +237,11 @@ export async function getGuessLineInformation(opts: {
             snippetHint: attempt
                 .split("")
                 .map((char, i) => {
-                    if (char === hiddenSnippet[i]) {
+                    if (char.toLowerCase() === hiddenSnippet[i].toLowerCase()) {
                         return hiddenSnippet[i];
                     }
 
-                    if (hiddenSnippet.includes(char)) {
+                    if (hiddenSnippet.toLowerCase().includes(char.toLowerCase())) {
                         return "~";
                     }
 
@@ -251,6 +251,10 @@ export async function getGuessLineInformation(opts: {
             guessedLine: attempt,
         };
     });
+
+    const hasWon = attempts.some(a => a.toLowerCase() === hiddenSnippet.toLowerCase());
+    const hasLost = !hasWon && attempts.length >= 6;
+    const hasEnded = hasWon || hasLost;
 
     const track = (await getTrack(
         gameInfo[0].spotifyTrackId
@@ -262,6 +266,7 @@ export async function getGuessLineInformation(opts: {
             attempts: attemptHints,
             snippetLength: hiddenSnippet.length,
             track,
+            snippet: hasEnded ? hiddenSnippet : undefined,
         },
     };
 }
