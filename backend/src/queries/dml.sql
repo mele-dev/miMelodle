@@ -40,7 +40,7 @@ SELECT *
 RETURNING 1 AS output;
 
 /* @name getSelfuser */
-SELECT pp.filename AS "profilePictureFile", u.name, u.email, u.username, u.id
+SELECT pp.filename AS "profilePictureFile", u.name, u.email, u.username, u.id, u."spotifyId"
   FROM users u
            INNER JOIN public."profilePictures" pp ON pp.id = u."profilePictureId"
  WHERE u.id = :selfId!;
@@ -224,10 +224,6 @@ INSERT INTO "savedArtists"("userId", "spotifyArtistId")
 values (:selfId!, :spotifyArtistId!)
 returning *;
 
-/* @name addArtistToHome */
-INSERT INTO "savedArtists"("userId", "spotifyArtistId")
-values (:selfId!, :spotifyArtistId!)
-returning *;
 
 /* @name deleteArtistFromHome */
 DELETE
