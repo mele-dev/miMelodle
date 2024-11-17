@@ -38,6 +38,10 @@ DELETE
 FROM "profilePictures" RETURNING 1 AS output;
 
 /* @name getSelfuser */
+SELECT pp.filename AS "profilePictureFile", u.name, u.email, u.username, u.id, u."spotifyId"
+  FROM users u
+           INNER JOIN public."profilePictures" pp ON pp.id = u."profilePictureId"
+ WHERE u.id = :selfId!;
 SELECT pp.filename AS "profilePictureFile", u.name, u.email, u.username, u.id
 FROM users u
          INNER JOIN public."profilePictures" pp ON pp.id = u."profilePictureId"
