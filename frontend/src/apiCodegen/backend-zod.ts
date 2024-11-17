@@ -222,6 +222,58 @@ export const getArtistsArtistNameResponse = zod.array(
 );
 
 /**
+ * @summary Fetches global leaderboard information.
+ */
+export const getLeaderboardsQueryGameModesItemRegExp = new RegExp(
+    "^(Guess Line|Guess Song)$"
+);
+export const getLeaderboardsQueryAmountMax = 50;
+
+export const getLeaderboardsQueryParams = zod.object({
+    gameModes: zod.array(
+        zod.string().regex(getLeaderboardsQueryGameModesItemRegExp)
+    ),
+    start: zod.number(),
+    amount: zod.number().max(getLeaderboardsQueryAmountMax),
+});
+
+export const getLeaderboardsResponseLeaderboardItemUsernameMin = 3;
+
+export const getLeaderboardsResponseLeaderboardItemUsernameMax = 50;
+
+export const getLeaderboardsResponseLeaderboardItemUsernameRegExp = new RegExp(
+    "^[a-zA-Z0-9\\.-_]+$"
+);
+export const getLeaderboardsResponseLeaderboardItemNameMax = 25;
+
+export const getLeaderboardsResponse = zod.object({
+    leaderboard: zod.array(
+        zod
+            .object({
+                id: zod.number(),
+                username: zod
+                    .string()
+                    .min(getLeaderboardsResponseLeaderboardItemUsernameMin)
+                    .max(getLeaderboardsResponseLeaderboardItemUsernameMax)
+                    .regex(
+                        getLeaderboardsResponseLeaderboardItemUsernameRegExp
+                    ),
+                name: zod
+                    .string()
+                    .min(1)
+                    .max(getLeaderboardsResponseLeaderboardItemNameMax),
+                profilePictureFilename: zod.string(),
+            })
+            .and(
+                zod.object({
+                    score: zod.number(),
+                    rank: zod.number(),
+                })
+            )
+    ),
+});
+
+/**
  * @summary Get current state of application.
  */
 export const getDebugSnapshotResponseUsersItemNameMax = 25;
@@ -298,58 +350,6 @@ export const getDebugSnapshotResponse = zod.object({
  * @summary Reset the application state to a certain snapshot.
  */
 export const putDebugSnapshotResponse = zod.enum(["TODO!"]);
-
-/**
- * @summary Fetches global leaderboard information.
- */
-export const getLeaderboardsQueryGameModesItemRegExp = new RegExp(
-    "^(Guess Line|Guess Song)$"
-);
-export const getLeaderboardsQueryAmountMax = 50;
-
-export const getLeaderboardsQueryParams = zod.object({
-    gameModes: zod.array(
-        zod.string().regex(getLeaderboardsQueryGameModesItemRegExp)
-    ),
-    start: zod.number(),
-    amount: zod.number().max(getLeaderboardsQueryAmountMax),
-});
-
-export const getLeaderboardsResponseLeaderboardItemUsernameMin = 3;
-
-export const getLeaderboardsResponseLeaderboardItemUsernameMax = 50;
-
-export const getLeaderboardsResponseLeaderboardItemUsernameRegExp = new RegExp(
-    "^[a-zA-Z0-9\\.-_]+$"
-);
-export const getLeaderboardsResponseLeaderboardItemNameMax = 25;
-
-export const getLeaderboardsResponse = zod.object({
-    leaderboard: zod.array(
-        zod
-            .object({
-                id: zod.number(),
-                username: zod
-                    .string()
-                    .min(getLeaderboardsResponseLeaderboardItemUsernameMin)
-                    .max(getLeaderboardsResponseLeaderboardItemUsernameMax)
-                    .regex(
-                        getLeaderboardsResponseLeaderboardItemUsernameRegExp
-                    ),
-                name: zod
-                    .string()
-                    .min(1)
-                    .max(getLeaderboardsResponseLeaderboardItemNameMax),
-                profilePictureFilename: zod.string(),
-            })
-            .and(
-                zod.object({
-                    score: zod.number(),
-                    rank: zod.number(),
-                })
-            )
-    ),
-});
 
 /**
  * This endpoint retrieves the lyrics for a given track using its Musixmatch ID
@@ -858,6 +858,7 @@ export const getUsersSelfSelfIdResponse = zod.object({
         .regex(getUsersSelfSelfIdResponseEmailRegExp),
     name: zod.string().min(1).max(getUsersSelfSelfIdResponseNameMax),
     id: zod.number(),
+    spotifyId: zod.string().optional(),
     profilePictureFile: zod.string(),
 });
 

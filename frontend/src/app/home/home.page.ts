@@ -17,24 +17,30 @@ import {
 } from "@spartan-ng/ui-dialog-brain";
 import { HlmLabelDirective } from "@spartan-ng/ui-label-helm";
 import { HlmInputDirective } from "@spartan-ng/ui-input-helm";
+import { ArtistFinderComponent } from "../components/artist-finder/artist-finder.component";
+import { CollectionArtistCardComponent } from "../components/collection-artist-card/collection-artist-card.component";
 
 @Component({
     selector: "app-home",
     standalone: true,
     imports: [
-        UserFinderComponent,
-        BrnDialogTriggerDirective,
-        BrnDialogContentDirective,
-        HlmDialogComponent,
-        HlmDialogContentComponent,
-        HlmDialogHeaderComponent,
-        HlmDialogFooterComponent,
-        HlmDialogTitleDirective,
-        HlmDialogDescriptionDirective,
-        HlmLabelDirective,
-        HlmInputDirective,
-        HlmButtonDirective,
-    ],
+    ArtistFinderComponent,
+    UserFinderComponent,
+    BrnDialogTriggerDirective,
+    BrnDialogContentDirective,
+    HlmDialogComponent,
+    HlmDialogContentComponent,
+    HlmDialogHeaderComponent,
+    HlmDialogFooterComponent,
+    HlmDialogTitleDirective,
+    HlmDialogDescriptionDirective,
+    HlmLabelDirective,
+    HlmInputDirective,
+    HlmButtonDirective,
+    ArtistFinderComponent,
+    CollectionArtistCardComponent
+],
     templateUrl: "./home.page.html",
 })
-export class HomePage {}
+export class HomePage {
+}
