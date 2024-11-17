@@ -1,1 +1,21 @@
-<p>guess-line works!</p>
+@if (this.gameInfo()) {
+<div class="mx-auto mt-5 flex w-fit flex-col gap-8 px-4 items-center">
+    <section class="w-fit text-lg min-w-[50%]">
+        <span class="text-sm">Guess the line from</span>
+        <ul class="w-full">
+            <app-track-list-item
+                [readonly]="true"
+                [track]="this.gameInfo()!.track"
+            ></app-track-list-item>
+        </ul>
+    </section>
+    <section class="flex w-full flex-col items-center gap-5">
+        @for (i of this.attemptIndexes; track i) {
+        <app-wordle-text
+            [text]="this.placeholderText()!"
+            [isPending]="true"
+        ></app-wordle-text>
+        }
+    </section>
+</div>
+}

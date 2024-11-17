@@ -1,6 +1,6 @@
 import { Component, inject } from "@angular/core";
 import { RouterLink } from "@angular/router";
-import { SafeRoutingService } from "../../services/safe-routing.service";
+import { AllMelodlePaths, SafeRoutingService } from "../../services/safe-routing.service";
 import { LanguagePickerComponent } from "../language-picker/language-picker.component";
 import { AppNavbarTranslator } from "./app-navbar.translations";
 import { HlmIconModule } from "@spartan-ng/ui-icon-helm";
@@ -17,7 +17,6 @@ import { SelfService } from "../../services/self.service";
 import { LoadProfilePictureDirective } from "../../directives/load-profile-picture.directive";
 import { CommonModule, JsonPipe } from "@angular/common";
 import { HlmTabsModule } from "@spartan-ng/ui-tabs-helm";
-import { AllMelodlePaths } from "../../app.routes";
 import { HlmMenuModule } from "@spartan-ng/ui-menu-helm";
 import { BrnMenuModule } from "@spartan-ng/ui-menu-brain";
 import {
@@ -26,7 +25,6 @@ import {
 } from "../../services/language-manager.service";
 import { supportedLanguages } from "../../globalConstants";
 import { UnreachableCaseError } from "ts-essentials";
-import { assertUnreachable } from "../../utils/utils";
 
 @Component({
     selector: "app-app-navbar",

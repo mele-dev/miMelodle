@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, inject, signal } from "@angular/core";
+import { Component, computed, inject, signal } from "@angular/core";
 import { provideIcons } from "@ng-icons/core";
 import { lucideArrowUpDown, lucidePlus } from "@ng-icons/lucide";
 import { HlmButtonModule } from "@spartan-ng/ui-button-helm";
@@ -11,11 +11,21 @@ import {
     ArtistListItemComponent,
 } from "../../../components/artist-list-item/artist-list-item.component";
 import { CrFancyButtonStylesDirective } from "../../../directives/styling/cr-fancy-button-styles.directive";
-import { postUsersSelfSelfIdGameGuessSong } from "../../../../apiCodegen/backend";
+import {
+    postUsersSelfSelfIdGameGuessLine,
+    postUsersSelfSelfIdGameGuessSong,
+} from "../../../../apiCodegen/backend";
 import { SelfService } from "../../../services/self.service";
 import { SafeRoutingService } from "../../../services/safe-routing.service";
 import { isAxiosError } from "axios";
 import { toast } from "ngx-sonner";
+import { CreateGameTranslations } from "./create-game.translations";
+import { hardCodedArtists } from "./hard-coded-artists";
+import {
+    TrackListItem,
+    TrackListItemComponent,
+} from "../../../components/track-list-item/track-list-item.component";
+import { hardCodedTracks } from "./hard-coded-tracks";
 
 @Component({
     selector: "app-create-game",
@@ -28,216 +38,57 @@ import { toast } from "ngx-sonner";
         HlmScrollAreaModule,
         ArtistListItemComponent,
         CrFancyButtonStylesDirective,
+        TrackListItemComponent,
     ],
     providers: [provideIcons({ lucideArrowUpDown, lucidePlus })],
     templateUrl: "./create-game.page.html",
 })
 export class CreateGamePage {
-    readonly titles = ["line!", "song!"] as const;
+    dict = inject(CreateGameTranslations).dict;
+    readonly titles = computed(() => {
+        return [this.dict().line, this.dict().song] as const;
+    });
+
     private readonly _self = inject(SelfService);
     private readonly _router = inject(SafeRoutingService);
-    private selectedIndex = 0;
+    private selectedIndex = signal(0);
 
-    selected: (typeof this.titles)[number] = "line!";
+    selected = computed(() => {
+        const val = this.titles()[this.selectedIndex()];
+        return {
+            isLine: val == this.dict().line,
+            isSong: val == this.dict().song,
+        } as const;
+    });
 
-    artists = signal([
-        {
-            name: "El Cuarteto De Nos",
-            id: "13JJKrUewC1CJYmIDXQNoH",
-            genres: ["rock uruguayo"],
-            followers: {
-                href: null,
-                total: 2377072,
-            },
-            popularity: 71,
-            images: [
-                {
-                    url: "https://i.scdn.co/image/ab6761610000e5eb4e75c94ad7365dfcdb3201bf",
-                    width: 640,
-                    height: 640,
-                },
-                {
-                    url: "https://i.scdn.co/image/ab676161000051744e75c94ad7365dfcdb3201bf",
-                    width: 320,
-                    height: 320,
-                },
-                {
-                    url: "https://i.scdn.co/image/ab6761610000f1784e75c94ad7365dfcdb3201bf",
-                    width: 160,
-                    height: 160,
-                },
-            ],
-            external_urls: {
-                spotify:
-                    "https://open.spotify.com/artist/13JJKrUewC1CJYmIDXQNoH",
-            },
-        },
-        {
-            name: "Cuco",
-            id: "2Tglaf8nvDzwSQnpSrjLHP",
-            genres: ["bedroom pop", "dream pop"],
-            followers: {
-                href: null,
-                total: 3022285,
-            },
-            popularity: 70,
-            images: [
-                {
-                    url: "https://i.scdn.co/image/ab6761610000e5eb23b561fde78304112ee9f847",
-                    width: 640,
-                    height: 640,
-                },
-                {
-                    url: "https://i.scdn.co/image/ab6761610000517423b561fde78304112ee9f847",
-                    width: 320,
-                    height: 320,
-                },
-                {
-                    url: "https://i.scdn.co/image/ab6761610000f17823b561fde78304112ee9f847",
-                    width: 160,
-                    height: 160,
-                },
-            ],
-            external_urls: {
-                spotify:
-                    "https://open.spotify.com/artist/2Tglaf8nvDzwSQnpSrjLHP",
-            },
-        },
-        {
-            name: "King Crimson",
-            id: "7M1FPw29m5FbicYzS2xdpi",
-            genres: [
-                "art rock",
-                "instrumental rock",
-                "jazz rock",
-                "progressive rock",
-                "psychedelic rock",
-                "symphonic rock",
-                "zolo",
-            ],
-            followers: {
-                href: null,
-                total: 1200510,
-            },
-            popularity: 57,
-            images: [
-                {
-                    url: "https://i.scdn.co/image/ab6761610000e5eb7c1c2fcf5a73dbfa60a40a18",
-                    width: 640,
-                    height: 640,
-                },
-                {
-                    url: "https://i.scdn.co/image/ab676161000051747c1c2fcf5a73dbfa60a40a18",
-                    width: 320,
-                    height: 320,
-                },
-                {
-                    url: "https://i.scdn.co/image/ab6761610000f1787c1c2fcf5a73dbfa60a40a18",
-                    width: 160,
-                    height: 160,
-                },
-            ],
-            external_urls: {
-                spotify:
-                    "https://open.spotify.com/artist/7M1FPw29m5FbicYzS2xdpi",
-            },
-        },
-        {
-            name: "Shakira",
-            id: "0EmeFodog0BfCgMzAIvKQp",
-            genres: ["colombian pop", "dance pop", "latin pop", "pop"],
-            followers: {
-                href: null,
-                total: 35212904,
-            },
-            popularity: 88,
-            images: [
-                {
-                    url: "https://i.scdn.co/image/ab6761610000e5eb2528c726e5ddb90a7197e527",
-                    width: 640,
-                    height: 640,
-                },
-                {
-                    url: "https://i.scdn.co/image/ab676161000051742528c726e5ddb90a7197e527",
-                    width: 320,
-                    height: 320,
-                },
-                {
-                    url: "https://i.scdn.co/image/ab6761610000f1782528c726e5ddb90a7197e527",
-                    width: 160,
-                    height: 160,
-                },
-            ],
-            external_urls: {
-                spotify:
-                    "https://open.spotify.com/artist/0EmeFodog0BfCgMzAIvKQp",
-            },
-        },
-        {
-            name: "KAROL G",
-            id: "790FomKkXshlbRYZFtlgla",
-            genres: ["reggaeton", "reggaeton colombiano", "urbano latino"],
-            followers: {
-                href: null,
-                total: 51695843,
-            },
-            popularity: 91,
-            images: [
-                {
-                    url: "https://i.scdn.co/image/ab6761610000e5eb4b0754aefc9db490e02205ec",
-                    width: 640,
-                    height: 640,
-                },
-                {
-                    url: "https://i.scdn.co/image/ab676161000051744b0754aefc9db490e02205ec",
-                    width: 320,
-                    height: 320,
-                },
-                {
-                    url: "https://i.scdn.co/image/ab6761610000f1784b0754aefc9db490e02205ec",
-                    width: 160,
-                    height: 160,
-                },
-            ],
-            external_urls: {
-                spotify:
-                    "https://open.spotify.com/artist/790FomKkXshlbRYZFtlgla",
-            },
-        },
-    ] as any as ArtistListItem[]);
+    artists = signal(hardCodedArtists);
+    tracks = signal(hardCodedTracks);
 
     next() {
-        this.selectedIndex++;
-        this.selectedIndex %= this.titles.length;
-        this.selected = this.titles[this.selectedIndex];
-    }
-
-    remove(artist: ArtistListItem) {
-        this.artists.set(
-            this.artists().filter(
-                (a) => a.id !== artist.id
-            )
+        this.selectedIndex.set(
+            (this.selectedIndex() + 1) % this.titles().length
         );
     }
 
-    async submit() {
-        if (this.selected === "line!") {
-            toast("TODO! Try a different game mode.");
-            return;
-        }
+    removeArtist(artist: ArtistListItem) {
+        this.artists.set(this.artists().filter((a) => a.id !== artist.id));
+    }
 
+    removeTrack(track: TrackListItem) {
+        this.tracks.set(this.tracks().filter((t) => t.id !== track.id));
+    }
+
+    async createGameFromTracks(tracks: TrackListItem[]) {
         const user = await this._self.waitForUserInfoSnapshot();
 
         try {
             toast("Creating game, hold on tight!");
-            const result = await postUsersSelfSelfIdGameGuessSong(user.id, {
-                fromArtists: this.artists().map(
-                    (artist) => artist.id
-                ),
+            const result = await postUsersSelfSelfIdGameGuessLine(user.id, {
+                fromTracks: tracks.map((t) => t.id),
             });
             toast("Game created!");
-            this._router.navigate("/app/game/guess_song/:gameId", {
-                ids: { gameId: result.data.gameId },
+            return this._router.navigate("/app/game/guess_line/:gameId", {
+                ids: result.data,
             });
         } catch (e) {
             if (isAxiosError(e)) {
@@ -246,5 +97,38 @@ export class CreateGamePage {
                 console.log(e.response?.data);
             }
         }
+    }
+
+    async createGameFromArtists(artists: ArtistListItem[]) {
+        const user = await this._self.waitForUserInfoSnapshot();
+
+        try {
+            toast("Creating game, hold on tight!");
+            const result = await postUsersSelfSelfIdGameGuessSong(user.id, {
+                fromArtists: artists.map((artist) => artist.id),
+            });
+            toast("Game created!");
+            return this._router.navigate("/app/game/guess_song/:gameId", {
+                ids: result.data,
+            });
+        } catch (e) {
+            if (isAxiosError(e)) {
+                toast("Error while submitting attempt");
+                console.log(e);
+                console.log(e.response?.data);
+            }
+        }
+    }
+
+    async submit() {
+        if (this.selected().isLine) {
+            return await this.createGameFromTracks(this.tracks());
+        }
+
+        if (this.selected().isSong) {
+            return await this.createGameFromArtists(this.artists());
+        }
+
+        toast("TODO! Try a different game mode.");
     }
 }

@@ -3,7 +3,7 @@
         <button
             type="button"
             [innerHTML]="this.sanitizer.bypassSecurityTrustHtml(icon.svg)"
-            class="aspect-square w-full rounded-lg bg-white p-2 transition-transform hover:scale-110"
+            class="aspect-square w-full h-full rounded-lg bg-white p-2 transition-transform hover:scale-110"
             (click)="this.selectedIcon.set(icon)"
         ></button>
     }
