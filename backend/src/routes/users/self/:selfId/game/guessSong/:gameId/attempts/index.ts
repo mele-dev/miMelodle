@@ -9,7 +9,7 @@ import {
 } from "../../../../../../../../types/guessSong.js";
 import { runPreparedQuery } from "../../../../../../../../services/database.js";
 import { sendError, sendOk } from "../../../../../../../../utils/reply.js";
-import { insertGuessSongAttempt } from "../../../../../../../../queries/dml.queries.js";
+import { insertGuessSongAttempt, updateScore } from "../../../../../../../../queries/dml.queries.js";
 import { getGuessSongInformation } from "../../../../../../../../services/game.js";
 import { UnreachableCaseError } from "ts-essentials";
 
@@ -62,6 +62,8 @@ export default (async (fastify) => {
                 gameId: request.params.gameId,
                 trackId: request.body.guessedTrackSpotifyId,
             });
+
+            //const updateScore = await runPreparedQuery(updateScore, {})
 
             if (queryResult.length !== 1) {
                 // I'm not sure which code to use here.

@@ -43,6 +43,10 @@ const leaderboardTranslations = {
         en: "Friends",
         es: "Amigos",
     },
+    filter: {
+        en: "Just friends",
+        es: "Solo amigos"
+    }
 } as const satisfies Translations;
 
 @Injectable({

@@ -1,0 +1,37 @@
+<hlm-table hlmCardContent class="h-96 w-96 justify-self-center">
+    @for (
+        user of this.leaderboard();
+        track user.id
+    ) {
+        <hlm-trow
+            [ngClass]="{
+                'bg-violet-500 bg-opacity-55':
+                    user.id ===
+                    this.localService.getItem('userInfo')!.id,
+            }"
+            class="flex py-2"
+        >
+            <hlm-td> </hlm-td>
+            <hlm-td
+                class="flex flex-grow gap-2 bg-center backdrop-blur-md"
+            >
+                <div class="flex flex-col">
+                    <div>
+                        <span class="text-lx font-bold">{{
+                            user.name
+                        }}</span>
+                    </div>
+                    <div>
+                        <span>&#64;</span
+                        ><span class="text-lx">{{
+                            user.username
+                        }}</span>
+                    </div>
+                </div>
+            </hlm-td>
+            <hlm-td class="text-lx font-bold">
+                {{ user.score }} P
+            </hlm-td>
+        </hlm-trow>
+    }
+</hlm-table>

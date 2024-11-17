@@ -306,7 +306,7 @@ FROM "ranking"
 WHERE "userId" = :selfId
   AND "mode" = :gameMode RETURNING "userId";
   
-  /* @name updateScore */
+/* @name updateScore */
 UPDATE ranking
 SET "score"  = :score
 WHERE "userId" = :selfId AND "mode" = :gameMode

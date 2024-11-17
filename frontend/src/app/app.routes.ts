@@ -11,7 +11,6 @@ import { AppLayoutPage } from "./app-layout/app-layout.page";
 import { authGuard } from "./guards/auth.guard";
 import { HomePage } from "./home/home.page";
 import { LeaderboardComponent } from "./components/leaderboard/leaderboard.component";
-import { FriendsLeaderboardComponent } from "./components/friends-leaderboard/friends-leaderboard.component";
 
 export const routes = [
     {
@@ -64,10 +63,6 @@ export const routes = [
                 component: LeaderboardComponent,
             
             },
-            {
-                path:"leaderboards/friends",
-                component: FriendsLeaderboardComponent
-            }
         ],
     },
     {

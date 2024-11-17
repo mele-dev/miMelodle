@@ -33,44 +33,55 @@ import { HlmTabsListComponent } from "../../../../libs/ui/ui-tabs-helm/src/lib/h
 import { GetLeaderboardsGameMode200LeaderboardItem } from "../../../apiCodegen/backend";
 import {
     HlmTabsContentDirective,
+    HlmTabsModule,
     HlmTabsTriggerDirective,
 } from "@spartan-ng/ui-tabs-helm";
+import { LeaderboardTableComponent } from "../leaderboard-table/leaderboard-table.component";
+import { HlmSwitchComponent } from "../../../../libs/ui/ui-switch-helm/src/lib/hlm-switch.component";
+import { HlmLabelDirective } from "@spartan-ng/ui-label-helm";
+import { HlmToggleDirective } from "@spartan-ng/ui-toggle-helm";
+import { BrnToggleDirective } from '@spartan-ng/ui-toggle-brain';
+
 
 @Component({
     selector: "app-leaderboard",
     standalone: true,
     imports: [
-        HlmTableComponent,
-        HlmTrowComponent,
-        HlmTdComponent,
-        TrophyComponent,
-        HlmThComponent,
-        CommonModule,
-        HlmIconComponent,
-        XComponent,
-        RouterLink,
-        HlmTabsComponent,
-        HlmTabsContentDirective,
-        HlmTabsListComponent,
-        HlmTabsTriggerDirective,
-    ],
+    HlmTableComponent,
+    HlmTrowComponent,
+    HlmTdComponent,
+    TrophyComponent,
+    HlmThComponent,
+    CommonModule,
+    HlmIconComponent,
+    XComponent,
+    RouterLink,
+    HlmTabsComponent,
+    HlmTabsContentDirective,
+    HlmTabsListComponent,
+    HlmTabsTriggerDirective,
+    LeaderboardTableComponent,
+    HlmSwitchComponent,
+    HlmLabelDirective,
+    HlmToggleDirective, BrnToggleDirective,
+],
     providers: [provideIcons({ lucideChevronRight, lucideChevronLeft })],
 
     templateUrl: "./leaderboard.component.html",
 })
 export class LeaderboardComponent implements OnInit {
-    public leaderboard = input();
+    public leaderboard = input<GetLeaderboardsGameMode200LeaderboardItem[]>();
 
     dict = inject(LeaderboardTranslator).dict;
     @ViewChild("dialog") dialog!: ElementRef<HTMLDialogElement>;
-    public localService = inject(LocalStorageService);
 
     public leaderboardService = inject(LeaderboardsService);
-    sanitizer = inject(DomSanitizer);
-    public iconsService = inject(IconCacheService);
+
+    isChecked : boolean = false;
 
     ngOnInit() {
         this.leaderboardService.reloadGlobals();
+        this.leaderboardService.reloadFriends();
     }
 
     public deleteAllData(gameMode: string) {
@@ -85,4 +96,14 @@ export class LeaderboardComponent implements OnInit {
     public closeDialog() {
         this.dialog.nativeElement.close();
     }
+
+    public filterFriends(){
+        if(!this.isChecked){
+            this.isChecked = true;
+            return
+        }
+        this.isChecked = false;
+        return
+    }
+
 }

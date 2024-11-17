@@ -29,23 +29,30 @@ export class LeaderboardsService {
     private _globalLeaderboard = signal<
         GetLeaderboardsGameMode200LeaderboardItem[]
     >([]);
-    
 
-    public friendsSongLeaderboard = computed(()=> {
-        return this._friendsLeaderboard().filter((user) => user.mode === 'guessSong')
-    })
+    public friendsSongLeaderboard = computed(() => {
+        return this._friendsLeaderboard().filter(
+            (user) => user.mode === "guessSong"
+        );
+    });
 
-    public friendsLineLeaderboard = computed(()=> {
-        return this._friendsLeaderboard().filter((user) => user.mode === 'guessLine')
-    })
+    public friendsLineLeaderboard = computed(() => {
+        return this._friendsLeaderboard().filter(
+            (user) => user.mode === "guessLine"
+        );
+    });
 
-    public globalLineLeaderboard = computed(()=> {
-        return this._globalLeaderboard().filter((user) => user.mode === 'guessLine')
-    })
+    public globalLineLeaderboard = computed(() => {
+        return this._globalLeaderboard().filter(
+            (user) => user.mode === "guessLine"
+        );
+    });
 
-    public globalSongLeaderboard = computed(()=> {
-        return this._globalLeaderboard().filter((user) => user.mode === 'guessSong')
-    })
+    public globalSongLeaderboard = computed(() => {
+        return this._globalLeaderboard().filter(
+            (user) => user.mode === "guessSong"
+        );
+    });
 
     private _selfService = inject(SelfService);
     private _icons = inject(IconCacheService);
@@ -54,19 +61,29 @@ export class LeaderboardsService {
 
     public async reloadGlobals() {
         const lineMode = await getLeaderboardsGameMode("guessLine");
-        this._globalLeaderboard.set(lineMode.data.leaderboard);
-
         const songMode = await getLeaderboardsGameMode("guessSong");
-        this._globalLeaderboard.set(songMode.data.leaderboard);
+        this._globalLeaderboard.update((currentValue) => [
+            ...currentValue,
+            ...lineMode.data.leaderboard,
+            ...songMode.data.leaderboard,
+        ]);
+        console.log(await this._globalLeaderboard());
     }
 
     public async reloadFriends() {
-        const userId = (await this._selfService.waitForUserInfoSnapshot()).id
-        const lineMode = await getUsersSelfSelfIdFriendsLeaderboards(userId,{gameMode: "guessLine"});
-        this._friendsLeaderboard.set(lineMode.data.leaderboard);
+        const userId = (await this._selfService.waitForUserInfoSnapshot()).id;
+        const lineMode = await getUsersSelfSelfIdFriendsLeaderboards(userId, {
+            gameMode: "guessLine",
+        });
 
-        const songMode = await getUsersSelfSelfIdFriendsLeaderboards(userId,{gameMode: "guessSong"});
-        this._friendsLeaderboard.set(songMode.data.leaderboard);
+        const songMode = await getUsersSelfSelfIdFriendsLeaderboards(userId, {
+            gameMode: "guessSong",
+        });
+        this._friendsLeaderboard.update((currentValue) => [
+            ...currentValue,
+            ...lineMode.data.leaderboard,
+            ...songMode.data.leaderboard,
+        ]);
     }
 
     public async deleteData(mode: string) {
