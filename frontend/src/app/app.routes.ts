@@ -62,13 +62,12 @@ export const routes = [
             {
                 path: "leaderboards",
                 component: LeaderboardComponent,
-                children: [
-                    {
-                        path: "friends",
-                        component: FriendsLeaderboardComponent,
-                    },
-                ],
+            
             },
+            {
+                path:"leaderboards/friends",
+                component: FriendsLeaderboardComponent
+            }
         ],
     },
     {

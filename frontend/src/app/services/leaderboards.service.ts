@@ -10,41 +10,64 @@ import {
     GetLeaderboardsGameMode200LeaderboardItem,
     GetLeaderboardsGameMode200LeaderboardItemAllOf,
     GetLeaderboardsGameMode200LeaderboardItemAllOfTwo,
+    getUsersSelfSelfIdFriendsLeaderboards,
 } from "../../apiCodegen/backend";
 import { SelfService } from "./self.service";
 import { toast } from "ngx-sonner";
 import { LeaderboardTranslator } from "../components/leaderboard/leaderboard.translations";
 import { IconCacheService } from "./icon-cache.service";
+import { getUsersSelfSelfIdFriendsLeaderboardsResponseLeaderboardItemNameMax } from "../../apiCodegen/backend-zod";
 
 @Injectable({
     providedIn: "root",
 })
 export class LeaderboardsService {
-    private _friendsLeaderboard = signal([]);
-    private _friendsService = inject(FriendsService);
-    private _globalLineLeaderboard = signal<
+    private _friendsLeaderboard = signal<
         GetLeaderboardsGameMode200LeaderboardItem[]
     >([]);
-    private _globalSongLeaderboard = signal<
+
+    private _globalLeaderboard = signal<
         GetLeaderboardsGameMode200LeaderboardItem[]
     >([]);
-    private _localStorage = inject(LocalStorageService);
-    public globalLineLeaderboard = this._globalLineLeaderboard.asReadonly();
-    public globalSongLeaderboard = this._globalSongLeaderboard.asReadonly();
+    
+
+    public friendsSongLeaderboard = computed(()=> {
+        return this._friendsLeaderboard().filter((user) => user.mode === 'guessSong')
+    })
+
+    public friendsLineLeaderboard = computed(()=> {
+        return this._friendsLeaderboard().filter((user) => user.mode === 'guessLine')
+    })
+
+    public globalLineLeaderboard = computed(()=> {
+        return this._globalLeaderboard().filter((user) => user.mode === 'guessLine')
+    })
+
+    public globalSongLeaderboard = computed(()=> {
+        return this._globalLeaderboard().filter((user) => user.mode === 'guessSong')
+    })
+
     private _selfService = inject(SelfService);
-    private _icons = inject(IconCacheService)
+    private _icons = inject(IconCacheService);
 
     dict = inject(LeaderboardTranslator).dict;
 
     public async reloadGlobals() {
         const lineMode = await getLeaderboardsGameMode("guessLine");
-        this._globalLineLeaderboard.set(lineMode.data.leaderboard)
+        this._globalLeaderboard.set(lineMode.data.leaderboard);
 
         const songMode = await getLeaderboardsGameMode("guessSong");
-        this._globalSongLeaderboard.set(songMode.data.leaderboard);
+        this._globalLeaderboard.set(songMode.data.leaderboard);
     }
 
-    public reloadFriendsLeaderboard() {}
+    public async reloadFriends() {
+        const userId = (await this._selfService.waitForUserInfoSnapshot()).id
+        const lineMode = await getUsersSelfSelfIdFriendsLeaderboards(userId,{gameMode: "guessLine"});
+        this._friendsLeaderboard.set(lineMode.data.leaderboard);
+
+        const songMode = await getUsersSelfSelfIdFriendsLeaderboards(userId,{gameMode: "guessSong"});
+        this._friendsLeaderboard.set(songMode.data.leaderboard);
+    }
 
     public async deleteData(mode: string) {
         const userId = (await this._selfService.waitForUserInfoSnapshot()).id;
@@ -52,7 +75,7 @@ export class LeaderboardsService {
         const result = deleteUsersSelfSelfIdFriendsLeaderboards(userId, {
             gameMode: mode,
         });
-        console.log((await result).status)
+        console.log((await result).status);
         if ((await result).status === 404) {
             toast(this.dict().toastError);
         } else if ((await result).status === 200) {

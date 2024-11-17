@@ -2,7 +2,10 @@ import {
     Component,
     ElementRef,
     inject,
+    input,
+    Input,
     OnInit,
+    signal,
     ViewChild,
     ViewChildren,
 } from "@angular/core";
@@ -24,6 +27,14 @@ import { SafeRoutingService } from "../../services/safe-routing.service";
 import { provideIcons } from "@ng-icons/core";
 import { lucideChevronLeft, lucideChevronRight } from "@ng-icons/lucide";
 import { LocalStorageService } from "../../services/local-storage.service";
+import { RouterLink } from "@angular/router";
+import { HlmTabsComponent } from "../../../../libs/ui/ui-tabs-helm/src/lib/hlm-tabs.component";
+import { HlmTabsListComponent } from "../../../../libs/ui/ui-tabs-helm/src/lib/hlm-tabs-list.component";
+import { GetLeaderboardsGameMode200LeaderboardItem } from "../../../apiCodegen/backend";
+import {
+    HlmTabsContentDirective,
+    HlmTabsTriggerDirective,
+} from "@spartan-ng/ui-tabs-helm";
 
 @Component({
     selector: "app-leaderboard",
@@ -37,26 +48,23 @@ import { LocalStorageService } from "../../services/local-storage.service";
         CommonModule,
         HlmIconComponent,
         XComponent,
+        RouterLink,
+        HlmTabsComponent,
+        HlmTabsContentDirective,
+        HlmTabsListComponent,
+        HlmTabsTriggerDirective,
     ],
     providers: [provideIcons({ lucideChevronRight, lucideChevronLeft })],
 
     templateUrl: "./leaderboard.component.html",
 })
 export class LeaderboardComponent implements OnInit {
+    public leaderboard = input();
+
     dict = inject(LeaderboardTranslator).dict;
     @ViewChild("dialog") dialog!: ElementRef<HTMLDialogElement>;
-    router = inject(SafeRoutingService);
-    public localService = inject(LocalStorageService)
+    public localService = inject(LocalStorageService);
 
-    readonly titles = ["line", "song"] as const;
-    selected: (typeof this.titles)[number] = "line";
-    private selectedIndex = 0;
-
-    next() {
-        this.selectedIndex++;
-        this.selectedIndex %= this.titles.length;
-        this.selected = this.titles[this.selectedIndex];
-    }
     public leaderboardService = inject(LeaderboardsService);
     sanitizer = inject(DomSanitizer);
     public iconsService = inject(IconCacheService);
@@ -76,14 +84,5 @@ export class LeaderboardComponent implements OnInit {
 
     public closeDialog() {
         this.dialog.nativeElement.close();
-    }
-
-    public toogleRoutes(goTo: string) {
-        if (goTo === "friends") {
-            this.router.navigate("/app/leaderboards/friends");
-            return;
-        }
-        this.router.navigate("/app/leaderboards");
-        return;
     }
 }
