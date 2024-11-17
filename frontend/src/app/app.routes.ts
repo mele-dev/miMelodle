@@ -10,13 +10,8 @@ import { authCallbackGuard } from "./guards/auth-callback.guard";
 import { AppLayoutPage } from "./app-layout/app-layout.page";
 import { authGuard } from "./guards/auth.guard";
 import { HomePage } from "./home/home.page";
-<<<<<<< HEAD
 import { LeaderboardComponent } from "./components/leaderboard/leaderboard.component";
-=======
-import { CreateGamePage } from "./pages/game/create-game/create-game.page";
-import { GuessLinePage } from "./pages/game/guess-line/guess-line.page";
-import { GuessSongPage } from "./pages/game/guess-song/guess-song.page";
->>>>>>> main
+import { FriendsLeaderboardComponent } from "./components/friends-leaderboard/friends-leaderboard.component";
 
 export const routes = [
     {
@@ -67,18 +62,12 @@ export const routes = [
             {
                 path: "leaderboards",
                 component: LeaderboardComponent,
-            },
-            {
-                path: "game",
-                component: CreateGamePage,
-            },
-            {
-                path: "game/guess_line/:gameId",
-                component: GuessLinePage,
-            },
-            {
-                path: "game/guess_song/:gameId",
-                component: GuessSongPage,
+                children: [
+                    {
+                        path: "friends",
+                        component: FriendsLeaderboardComponent,
+                    },
+                ],
             },
         ],
     },

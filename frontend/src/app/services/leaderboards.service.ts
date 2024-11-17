@@ -1,7 +1,20 @@
 import { computed, inject, Injectable, signal } from "@angular/core";
 import { FriendsService } from "./friends.service";
 import { LocalStorageService } from "./local-storage.service";
-import { getLeaderboards, GetLeaderboards200, GetLeaderboardsParams } from "../../apiCodegen/backend";
+import { MelodleGameMode } from "../globalConstants";
+import {
+    deleteUsersSelfSelfIdFriendsLeaderboards,
+    DeleteUsersSelfSelfIdFriendsLeaderboardsParams,
+    getLeaderboardsGameMode,
+    GetLeaderboardsGameMode200,
+    GetLeaderboardsGameMode200LeaderboardItem,
+    GetLeaderboardsGameMode200LeaderboardItemAllOf,
+    GetLeaderboardsGameMode200LeaderboardItemAllOfTwo,
+} from "../../apiCodegen/backend";
+import { SelfService } from "./self.service";
+import { toast } from "ngx-sonner";
+import { LeaderboardTranslator } from "../components/leaderboard/leaderboard.translations";
+import { IconCacheService } from "./icon-cache.service";
 
 @Injectable({
     providedIn: "root",
@@ -9,23 +22,41 @@ import { getLeaderboards, GetLeaderboards200, GetLeaderboardsParams } from "../.
 export class LeaderboardsService {
     private _friendsLeaderboard = signal([]);
     private _friendsService = inject(FriendsService);
-    private _globalLeaderboard = signal<GetLeaderboards200[]>([]);
-    private _localStorage = inject(LocalStorageService)
-    public globalLeaderboard = this._globalLeaderboard.asReadonly()
+    private _globalLineLeaderboard = signal<
+        GetLeaderboardsGameMode200LeaderboardItem[]
+    >([]);
+    private _globalSongLeaderboard = signal<
+        GetLeaderboardsGameMode200LeaderboardItem[]
+    >([]);
+    private _localStorage = inject(LocalStorageService);
+    public globalLineLeaderboard = this._globalLineLeaderboard.asReadonly();
+    public globalSongLeaderboard = this._globalSongLeaderboard.asReadonly();
+    private _selfService = inject(SelfService);
+    private _icons = inject(IconCacheService)
 
-    public friendsOnLeaderboard = computed(() => {
-        return this._globalLeaderboard().filter((f) =>
-            this._friendsService.friends().find(f)
-        );
-    });
+    dict = inject(LeaderboardTranslator).dict;
 
-    private async getGlobal(gameMode: GetLeaderboardsParams){
-        const result = await getLeaderboards(gameMode);
+    public async reloadGlobals() {
+        const lineMode = await getLeaderboardsGameMode("guessLine");
+        this._globalLineLeaderboard.set(lineMode.data.leaderboard)
 
-        this._globalLeaderboard.set(result.data as GetLeaderboards200[]);
+        const songMode = await getLeaderboardsGameMode("guessSong");
+        this._globalSongLeaderboard.set(songMode.data.leaderboard);
     }
 
-    public getFriendsLeaderboard(){
+    public reloadFriendsLeaderboard() {}
 
+    public async deleteData(mode: string) {
+        const userId = (await this._selfService.waitForUserInfoSnapshot()).id;
+
+        const result = deleteUsersSelfSelfIdFriendsLeaderboards(userId, {
+            gameMode: mode,
+        });
+        console.log((await result).status)
+        if ((await result).status === 404) {
+            toast(this.dict().toastError);
+        } else if ((await result).status === 200) {
+            toast(this.dict().toastSuccess(mode));
+        }
     }
 }

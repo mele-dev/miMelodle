@@ -78,7 +78,6 @@ export class AppNavbarComponent {
     currentSection() {
         const url = this.safeRouter.url;
         return {
-            game: url.startsWith("/app/game" satisfies AllMelodlePaths),
             home: url.startsWith("/app/home" satisfies AllMelodlePaths),
             leaderboards: url.startsWith(
                 "/app/leaderboards" satisfies AllMelodlePaths

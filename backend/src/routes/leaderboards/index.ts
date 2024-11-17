@@ -12,10 +12,10 @@ import { getGlobalLeaderboard } from "../../queries/dml.queries.js";
 import { sendOk } from "../../utils/reply.js";
 
 const leaderboards: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
-    fastify.get("/", {
+    fastify.get("/:gameMode", {
         onRequest: [decorators.noSecurity],
         schema: {
-            querystring: SafeType.Pick(MelodleGameSchema, ["gameMode"]),
+            params: SafeType.Pick(MelodleGameSchema, ["gameMode"]),
             response: {
                 200: leaderboardSchema,
                 ...SafeType.CreateErrors([]),
@@ -27,7 +27,7 @@ const leaderboards: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
         },
         async handler(request, reply) {
             const result = await runPreparedQuery(getGlobalLeaderboard, {
-                gameMode: request.query.gameMode,
+                gameMode: request.params.gameMode,
             });
             return sendOk(reply, 200, { leaderboard: result });
         },

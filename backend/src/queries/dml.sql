@@ -42,10 +42,6 @@ SELECT pp.filename AS "profilePictureFile", u.name, u.email, u.username, u.id, u
   FROM users u
            INNER JOIN public."profilePictures" pp ON pp.id = u."profilePictureId"
  WHERE u.id = :selfId!;
-SELECT pp.filename AS "profilePictureFile", u.name, u.email, u.username, u.id
-FROM users u
-         INNER JOIN public."profilePictures" pp ON pp.id = u."profilePictureId"
-WHERE u.id = :selfId!;
 
 /* @name insertIcon */
 INSERT
@@ -295,11 +291,14 @@ SELECT
     u.username,
     u.name,
     u."profilePictureId",
+    pp.filename AS "profilePictureFilename",
     r.score,
     r."mode"
 FROM "ranking" r
-join public.users u on r."userId" = u.id
-WHERE "mode" = :gameMode;
+JOIN public.users u ON r."userId" = u.id
+LEFT JOIN public."profilePictures" pp ON pp.id = u."profilePictureId"
+WHERE r."mode" = :gameMode
+ORDER BY r.score DESC;
 
 /* @name deleteRankingData */
 DELETE
@@ -323,10 +322,12 @@ SELECT
     u."username",
     u."name",
     u."profilePictureId",
+    pp.filename AS "profilePictureFilename",
     r."score",
     r."mode"
 FROM "ranking" r
 JOIN public.users u ON r."userId" = u."id"
+LEFT JOIN public."profilePictures" pp ON pp.id = u."profilePictureId"
 WHERE r."mode" = :gameMode
   AND (
     u."id" = :selfId
@@ -341,5 +342,6 @@ WHERE r."mode" = :gameMode
       WHERE "user2Id" = :selfId
         AND status = 'accepted'
     )
-  );
+  )
+ORDER BY r."score" DESC;
 

@@ -12,6 +12,7 @@ export const leaderboardSchema = SafeType.Object(
                     "username",
                     "name",
                     "profilePictureId",
+                    "profilePictureFilename"
                 ]),
                 SafeType.Object({
                     score: SafeType.Number({
