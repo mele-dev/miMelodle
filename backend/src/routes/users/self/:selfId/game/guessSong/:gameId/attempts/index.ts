@@ -97,11 +97,7 @@ export default (async (fastify) => {
                 );
             }
 
-            if (
-                queryResult[0].guessedSpotifyTrackId ===
-                request.body.guessedTrackSpotifyId
-            )
-                return sendOk(reply, 201, result.hints);
+            return sendOk(reply, 201, result.hints);
         },
     });
 }) satisfies FastifyPluginAsyncTypebox;
