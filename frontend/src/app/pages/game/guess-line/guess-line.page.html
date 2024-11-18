@@ -4,8 +4,7 @@
 >
     <section class="w-fit min-w-[50%] text-lg">
         <span class="text-sm">
-            Guess the line of {{ this.gameInfo()!.snippetLength }} characters
-            from
+            {{ this.dict().guessLineOf(this.gameInfo()!.snippetLength) }}
         </span>
         <ul class="w-full">
             <app-track-list-item
@@ -14,7 +13,7 @@
             ></app-track-list-item>
         </ul>
     </section>
-    <form class="flex w-full flex-col items-center gap-5">
+    <form class="justify flex w-full flex-col items-center gap-5">
         @for (attempt of this.attempts; track $index) { @if (this.hint($index))
         {
         <app-guess-line-wordle-text
@@ -45,7 +44,7 @@
                 }"
             >
                 @if (this.hasWon()) {
-                <span> You didn't even need every attempt! </span>
+                <span>{{ this.dict().notEveryAttempt }}</span>
                 } @else {
                 <span>
                     {{ this.attempts[$index].length }} / {{

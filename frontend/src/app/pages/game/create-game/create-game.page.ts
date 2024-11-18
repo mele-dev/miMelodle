@@ -82,20 +82,27 @@ export class CreateGamePage {
         const user = await this._self.waitForUserInfoSnapshot();
 
         try {
-            toast("Creating game, hold on tight!");
+            toast(this.dict().creatingGame);
             const result = await postUsersSelfSelfIdGameGuessLine(user.id, {
                 fromTracks: tracks.map((t) => t.id),
             });
-            toast("Game created!");
+            toast(this.dict().gameCreated);
             return this._router.navigate("/app/game/guess_line/:gameId", {
                 ids: result.data,
             });
         } catch (e) {
             if (isAxiosError(e)) {
-                toast("Error while submitting attempt");
-                console.log(e);
                 console.log(e.response?.data);
+            } else {
+                console.log(e);
             }
+
+            toast(this.dict().errorWhileCreatingGame, {
+                action: {
+                    label: this.dict().retry,
+                    onClick: () => this.createGameFromTracks(tracks),
+                },
+            });
         }
     }
 
@@ -103,20 +110,27 @@ export class CreateGamePage {
         const user = await this._self.waitForUserInfoSnapshot();
 
         try {
-            toast("Creating game, hold on tight!");
+            toast(this.dict().creatingGame);
             const result = await postUsersSelfSelfIdGameGuessSong(user.id, {
                 fromArtists: artists.map((artist) => artist.id),
             });
-            toast("Game created!");
+            toast(this.dict().gameCreated);
             return this._router.navigate("/app/game/guess_song/:gameId", {
                 ids: result.data,
             });
         } catch (e) {
             if (isAxiosError(e)) {
-                toast("Error while submitting attempt");
-                console.log(e);
                 console.log(e.response?.data);
+            } else {
+                console.log(e);
             }
+
+            toast(this.dict().errorWhileCreatingGame, {
+                action: {
+                    label: this.dict().retry,
+                    onClick: () => this.createGameFromArtists(artists),
+                },
+            });
         }
     }
 
@@ -129,6 +143,6 @@ export class CreateGamePage {
             return await this.createGameFromArtists(this.artists());
         }
 
-        toast("TODO! Try a different game mode.");
+        toast(this.dict().TODOGamemode);
     }
 }

@@ -24,6 +24,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HlmInputModule } from "@spartan-ng/ui-input-helm";
 import { GuessLineWordleTextComponent } from "../../../components/guess-line-wordle-text/guess-line-wordle-text.component";
 import { HlmButtonModule } from "@spartan-ng/ui-button-helm";
+import { GuessLineTranslator } from "./guess-line.translations";
 
 @Component({
     selector: "app-guess-line",
@@ -46,7 +47,7 @@ export class GuessLinePage implements OnInit {
     private _self = inject(SelfService);
     sanitizer = inject(DomSanitizer);
     router = inject(SafeRoutingService);
-    dict = inject(GuessSongTranslator).dict;
+    dict = inject(GuessLineTranslator).dict;
     ids = computed(() => {
         const schema = z.object({ gameId: z.coerce.number().positive() });
         const parsed = schema.safeParse({
@@ -94,7 +95,7 @@ export class GuessLinePage implements OnInit {
         const info = this.gameInfo();
 
         if (info === undefined) {
-            return undefined
+            return undefined;
         }
 
         return `https://open.spotify.com/embed/track/${info.track.id}?utm_source=generator`;
@@ -102,9 +103,9 @@ export class GuessLinePage implements OnInit {
 
     async submitAttempt() {
         const self = await this._self.waitForUserInfoSnapshot();
-        console.log("hi");
+
         if (this.currentAttempt.length !== this.gameInfo()?.snippetLength) {
-            toast("Write the full length of the string.");
+            toast(this.dict().writeFullLength);
             return;
         }
 
@@ -147,9 +148,9 @@ export class GuessLinePage implements OnInit {
 
             this.gameInfo.set(result.data);
         } catch (e) {
-            toast("There was an error while fetching game information.", {
+            toast(this.dict().errorFetchingInformation, {
                 action: {
-                    label: "Retry",
+                    label: this.dict().retry,
                     onClick: () => this.load(),
                 },
                 duration: Infinity,

@@ -26,9 +26,29 @@ const translations = {
         es: "De estas canciones",
     },
     play: {
-    en: "Play",
-    es: "Jugar",
-  }
+        en: "Play",
+        es: "Jugar",
+    },
+    creatingGame: {
+        en: "Creating game, hold on tight!",
+        es: "¡Creando partida, prepárate!",
+    },
+    gameCreated: {
+        en: "Game created!",
+        es: "¡Partida creada!",
+    },
+    errorWhileCreatingGame: {
+        en: "Error while creating game",
+        es: "Error al crear partida",
+    },
+    retry: {
+        en: "Retry",
+        es: "Reintentar",
+    },
+    TODOGamemode: {
+        en: "TODO! Try a different game mode",
+        es: "¡Por hacer! Prueba otro modo de juego.",
+    },
 } as const satisfies Translations;
 
 @Injectable({
