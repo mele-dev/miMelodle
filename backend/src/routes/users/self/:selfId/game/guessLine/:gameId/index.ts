@@ -4,8 +4,8 @@ import { ParamsSchema } from "../../../../../../../types/params.js";
 import { SafeType } from "../../../../../../../utils/typebox.js";
 import { MelodleTagName } from "../../../../../../../plugins/swagger.js";
 import { sendError, sendOk } from "../../../../../../../utils/reply.js";
-import { guessSongGameInformationSchema } from "../../../../../../../types/game.js";
-import { getGuessSongInformation } from "../../../../../../../services/game.js";
+import { guessLineGameInformationSchema } from "../../../../../../../types/game.js";
+import { getGuessLineInformation } from "../../../../../../../services/game.js";
 import { UnreachableCaseError } from "ts-essentials";
 
 export default (async (fastify) => {
@@ -14,25 +14,24 @@ export default (async (fastify) => {
         schema: {
             params: SafeType.Pick(ParamsSchema, ["selfId", "gameId"]),
             response: {
-                200: guessSongGameInformationSchema,
-                ...SafeType.CreateErrors(["unauthorized", "notFound"]),
+                200: guessLineGameInformationSchema,
+                ...SafeType.CreateErrors(["unauthorized", "notFound", "badRequest"]),
             },
-            summary: "Get information about a melodle game.",
+            summary: "Get information about a guess line game.",
             description: undefined,
             tags: ["User", "Melodle"] satisfies MelodleTagName[],
         },
         async handler(request, reply) {
-            const result = await getGuessSongInformation(request.params);
+            const result = await getGuessLineInformation(request.params);
             switch (result.status) {
-                case "RepeatedTrack":
-                case "NotYourGame":
                 case "AttemptsExhausted":
                 case "AlreadyWon":
+                case "WrongGuessLength":
+                case "NotYourGame":
+                case "RepeatedLine":
                     // This should never happen.
                     throw result.status;
                 case "NoGame":
-                    return sendError(reply, "notFound", result.status);
-                case "TrackNotFound":
                     return sendError(reply, "notFound", result.status);
                 case "Success":
                     break;

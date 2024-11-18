@@ -1,17 +1,23 @@
 import {
     getMultipleArtists,
     getSeveralTracks,
+    getTrack,
     TrackObject,
 } from "../apiCodegen/spotify.js";
-import { getGuessSongFromUser } from "../queries/dml.queries.js";
+import {
+    getGuessLineFromUser,
+    getGuessSongFromUser,
+} from "../queries/dml.queries.js";
 import {
     GuessSongHints,
     GuessSongGameInformation,
-} from "../types/guessSong.js";
+    GuessLineGameInformation,
+} from "../types/game.js";
 import { runPreparedQuery } from "./database.js";
 import MusixmatchAPI from "../musixmatch-api/musixmatch.js";
 import { RequireSpotify } from "../spotify/helpers.js";
 import { DeepRequired } from "ts-essentials";
+import { faker } from "@faker-js/faker";
 
 export function checkSongGuess(opts: {
     targetTrack: DeepRequired<TrackObject>;
@@ -39,6 +45,7 @@ export function checkSongGuess(opts: {
 type GuessSongResult =
     | { status: "NoGame" }
     | { status: "AttemptsExhausted" }
+    | { status: "NotYourGame" }
     | { status: "RepeatedTrack" }
     | { status: "TrackNotFound" }
     | { status: "AlreadyWon" }
@@ -58,6 +65,10 @@ export async function getGuessSongInformation(opts: {
 
     if (gameInfo.length === 0) {
         return { status: "NoGame" };
+    }
+
+    if (opts.newGuess && gameInfo[0].userId !== opts.selfId) {
+        return { status: "NotYourGame" };
     }
 
     if (opts.newGuess && gameInfo.length >= 6) {
@@ -156,4 +167,110 @@ export async function getTrackSnippet(trackIsrc: string) {
     }
 
     return result.expect().snippet.snippet_body;
+}
+
+export async function getTrackLine(trackIsrc: string) {
+    const api = new MusixmatchAPI();
+
+    const lyricsResponse = await api.getTrackLyrics({
+        track_isrc: trackIsrc,
+    });
+
+    if (!lyricsResponse.parse()) {
+        return null;
+    }
+
+    const lyrics = lyricsResponse.body.lyrics.lyrics_body;
+
+    const filtered = lyrics.split(
+        "\n...\n\n******* This Lyrics is NOT for Commercial use *******"
+    )[0];
+
+    const split = filtered.split("\n").filter(Boolean);
+
+    return faker.helpers.arrayElement(split);
+}
+
+type GuessLineResult =
+    | { status: "NoGame" }
+    | { status: "NotYourGame" }
+    | { status: "AttemptsExhausted" }
+    | { status: "RepeatedLine" }
+    | { status: "AlreadyWon" }
+    | { status: "WrongGuessLength" }
+    | { status: "Success"; hints: GuessLineGameInformation };
+
+export async function getGuessLineInformation(opts: {
+    selfId: number;
+    gameId: number;
+    newGuess?: string;
+}): Promise<GuessLineResult> {
+    const gameInfo = await runPreparedQuery(getGuessLineFromUser, opts);
+
+    if (gameInfo.length === 0) {
+        return { status: "NoGame" };
+    }
+
+    if (opts.newGuess && gameInfo[0].userId !== opts.selfId) {
+        return { status: "NotYourGame" };
+    }
+
+    if (opts.newGuess && gameInfo.length >= 6) {
+        return { status: "AttemptsExhausted" };
+    }
+
+    // TODO: remove assertion (should go away when re-running init)
+    const hiddenSnippet = gameInfo[0].snippet!;
+
+    const attempts = gameInfo.map((i) => i.guessedSnippet).filter(Boolean);
+
+    if (opts.newGuess && attempts.includes(opts.newGuess)) {
+        return { status: "RepeatedLine" };
+    }
+
+    if (opts.newGuess && attempts.includes(hiddenSnippet)) {
+        return { status: "AlreadyWon" };
+    }
+
+    if (opts.newGuess) {
+        attempts.push(opts.newGuess);
+    }
+
+    const attemptHints = attempts.map((attempt) => {
+        return {
+            snippetHint: attempt
+                .split("")
+                .map((char, i) => {
+                    if (char.toLowerCase() === hiddenSnippet[i].toLowerCase()) {
+                        return hiddenSnippet[i];
+                    }
+
+                    if (hiddenSnippet.toLowerCase().includes(char.toLowerCase())) {
+                        return "~";
+                    }
+
+                    return "_";
+                })
+                .join(""),
+            guessedLine: attempt,
+        };
+    });
+
+    const hasWon = attempts.some(a => a.toLowerCase() === hiddenSnippet.toLowerCase());
+    const hasLost = !hasWon && attempts.length >= 6;
+    const hasEnded = hasWon || hasLost;
+
+    const track = (await getTrack(
+        gameInfo[0].spotifyTrackId
+    )) as RequireSpotify<typeof getTrack>;
+
+    return {
+        status: "Success",
+        hints: {
+            attempts: attemptHints,
+            snippetLength: hiddenSnippet.length,
+            track,
+            snippet: hasEnded ? hiddenSnippet : undefined,
+        },
+    };
 }

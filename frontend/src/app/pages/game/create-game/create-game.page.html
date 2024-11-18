@@ -1,31 +1,30 @@
-<!-- FIXME: Translate page -->
 <div
     class="mx-auto mt-10 flex w-full max-w-lg flex-col items-start gap-5 rounded-xl bg-gradient-to-b from-neutral-800 to-zinc-900 to-80% p-10"
 >
     <div class="flex w-full items-baseline justify-between">
         <h1
-            class="flex w-full flex-row items-baseline justify-between overflow-hidden text-4xl leading-[3rem]"
+            class="flex w-full flex-row items-baseline justify-between overflow-hidden text-3xl leading-[3rem]"
         >
             <span>
-                Let's guess a
+                {{ this.dict().letsGuess }}
                 <span
                     class="inline-block transition-transform duration-500"
                     [ngClass]="{
-                        '': this.selected === 'line!',
-                        'translate-y-[150%]': this.selected === 'song!',
+                        '': this.selected().isSong,
+                        'translate-y-[150%]': this.selected().isSong,
                     }"
                 >
                     <span
                         class="inline-block w-0"
-                        [attr.aria-hidden]="selected !== 'line!'"
+                        [attr.aria-hidden]="!this.selected().isLine"
                     >
-                        line!
+                        {{ this.dict().line }}
                     </span>
                     <span
                         class="inline-block -translate-y-[150%]"
-                        [attr.aria-hidden]="selected !== 'song!'"
+                        [attr.aria-hidden]="!this.selected().isSong"
                     >
-                        song!
+                        {{ this.dict().song }}
                     </span>
                 </span>
             </span>
@@ -41,23 +40,68 @@
             <hlm-icon name="lucideArrowUpDown"></hlm-icon>
         </button>
     </div>
-    <div class="w-full">
-        <div class="flex flex-row items-baseline justify-between">
-            <h2 class="text-lg font-bold">From these artists</h2>
-            <button type="button" hlmBtn variant="ghost" size="icon">
-                <hlm-icon name="lucidePlus"></hlm-icon>
-            </button>
-        </div>
-        <hlm-scroll-area class="gradient-mask-t-0 h-[26rem] w-full" track="vertical" visibility="hover">
-            <div class="flex flex-col gap-2 rounded">
-                @for (artist of this.artists(); track artist.id) {
-                <app-artist-list-item
-                    [artist]="artist"
-                    (destroy)="this.remove($event)"
-                ></app-artist-list-item>
-                }
+    <div class="nowrap relative w-full overflow-x-hidden">
+        <div
+            class="w-full transition-all duration-300 ease-in-out"
+            [ngClass]="{
+                'opacity-0 pointer-events-none invisible': !this.selected().isSong,
+            }"
+            [ariaDisabled]="!this.selected().isSong"
+        >
+            <div class="flex flex-row items-baseline justify-between">
+                <h2 class="text-lg font-bold">{{ this.dict().fromArtists }}</h2>
+                <button type="button" hlmBtn variant="ghost" size="icon">
+                    <hlm-icon name="lucidePlus"></hlm-icon>
+                </button>
             </div>
-        </hlm-scroll-area>
+            <hlm-scroll-area
+                class="gradient-mask-t-0 h-[26rem] w-full"
+                track="vertical"
+                visibility="hover"
+            >
+                <div class="flex flex-col gap-2 rounded">
+                    @for (artist of this.artists(); track artist.id) {
+                    <app-artist-list-item
+                        [artist]="artist"
+                        (destroy)="this.removeArtist($event)"
+                        (play)="this.createGameFromArtists([artist])"
+                    ></app-artist-list-item>
+                    }
+                </div>
+            </hlm-scroll-area>
+        </div>
+        <div
+            class="absolute left-full top-0 w-full transition-all duration-300"
+            [ngClass]="{
+                '-translate-x-[100%]': this.selected().isLine,
+                'pointer-events-none opacity-0 invisible': !this.selected().isLine,
+            }"
+            [ariaDisabled]="!this.selected().isLine"
+        >
+            <div class="flex flex-row items-baseline justify-between">
+                <h2 class="text-lg font-bold">{{ this.dict().fromTracks }}</h2>
+                <button type="button" hlmBtn variant="ghost" size="icon">
+                    <hlm-icon name="lucidePlus"></hlm-icon>
+                </button>
+            </div>
+            <hlm-scroll-area
+                [autoWidthDisabled]="true"
+                class="h-[26rem] w-full"
+                track="vertical"
+                visibility="hover"
+            >
+                <!-- TODO: Make scrollarea with predictable width. -->
+                <ul class="flex w-[27rem] flex-col gap-2 rounded">
+                    @for (track of this.tracks(); track track.id) {
+                    <app-track-list-item
+                        [track]="track"
+                        (destroy)="this.removeTrack($event)"
+                        (play)="this.createGameFromTracks([track])"
+                    ></app-track-list-item>
+                    }
+                </ul>
+            </hlm-scroll-area>
+        </div>
     </div>
     <button
         type="button"
@@ -65,6 +109,6 @@
         [disabled]="this.artists().length === 0"
         (click)="this.submit()"
     >
-        Play!
+        {{ this.dict().play }}
     </button>
 </div>

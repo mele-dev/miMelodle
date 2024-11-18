@@ -224,8 +224,13 @@ SELECT "spotifyArtistId", "isFavorite"
                             ORDER BY gsg."createdAt" DESC
                             LIMIT 1)
      , "canCreateGame" AS (SELECT CASE
+<<<<<<< HEAD
+                                      WHEN :allowMultipleGamesADay!                                      THEN TRUE
+                                      WHEN (SELECT "createdAt":: DATE FROM "newestGame") != CURRENT_DATE THEN TRUE
+=======
                                       WHEN :allowMultipleGamesADay!                                     THEN TRUE
                                       WHEN (SELECT "createdAt"::DATE FROM "newestGame") != CURRENT_DATE THEN TRUE
+>>>>>>> main
                                       ELSE FALSE
                                   END AS "canCreate")
      , "insertGame"
@@ -241,7 +246,11 @@ SELECT (SELECT "canCreate" FROM "canCreateGame"), "insertGame".id
                    WHERE gsg."userId" = :selfId! AND gsg.id = :gameId!
                    ORDER BY gsg."createdAt"
                    LIMIT 6)
+<<<<<<< HEAD
 SELECT game.*, gsa.*, ranking.score
+=======
+SELECT *
+>>>>>>> main
   FROM "game"
            LEFT JOIN public."guessSongAttempts" gsa ON "game".id = gsa."gameId"
            LEFT JOIN ranking ON ranking."userId" = :selfId!;
@@ -253,6 +262,7 @@ SELECT game.*, gsa.*, ranking.score
    VALUES (NOW(), :trackId!, :gameId!)
 RETURNING *;
 
+<<<<<<< HEAD
 /* @name getGlobalLeaderboard */
 SELECT u.id, u.username, u.name, u."profilePictureId", pp.filename AS "profilePictureFilename", r.score, r."mode"
   FROM "ranking" r
@@ -303,7 +313,7 @@ SELECT u."id"
                                         WHERE "user2Id" = :selfId!
                                           AND status = 'accepted'))
  ORDER BY r."score" DESC;
-
+=======
 /* @name insertGuessLineGame */
   WITH "newestGame"    AS (SELECT *
                              FROM "guessLineGame" gsl
@@ -337,3 +347,4 @@ SELECT *
      INTO "guessLineAttempts" ("guessedAt", "guessedSnippet", "gameId")
    VALUES (NOW(), :guessedSnippet!, :gameId!)
 RETURNING *;
+>>>>>>> main

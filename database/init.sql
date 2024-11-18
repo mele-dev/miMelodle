@@ -13,6 +13,7 @@ CREATE TABLE "profilePictures" (
     "filename" TEXT UNIQUE NOT NULL
 );
 
+-- https://stackoverflow.com/questions/386294/what-is-the-maximum-length-of-a-valid-email-address
 CREATE DOMAIN email_domain AS VARCHAR(254) CHECK ( value ~ '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$' );
 
 CREATE DOMAIN username_domain AS VARCHAR(50) CHECK ( LENGTH(value) >= 3 AND value ~ '^[a-zA-Z0-9\.-_]+$' );
@@ -30,7 +31,6 @@ $$ LANGUAGE plpgsql;
 CREATE TABLE users (
     id                 SERIAL PRIMARY KEY,
     username           username_domain UNIQUE                   NOT NULL,
-    -- https://stackoverflow.com/questions/386294/what-is-the-maximum-length-of-a-valid-email-address
     email              email_domain UNIQUE                      NOT NULL,
     "passwordHash"     TEXT                                     NULL,
     "spotifyId"        TEXT UNIQUE                              NULL,
@@ -79,13 +79,6 @@ CREATE TABLE ranking (
     PRIMARY KEY ("userId", "mode")
 );
 
--- We can get all the info from a request to spotify for cheap, we don't need a
--- separate table.
--- CREATE TABLE songs (
---     id             SERIAL PRIMARY KEY,
---     "musixmatchId" TEXT NOT NULL UNIQUE
--- );
-
 CREATE TABLE "guessSongGames" (
     id               SERIAL PRIMARY KEY,
     "userId"         BIGINT REFERENCES users (id) ON DELETE CASCADE NOT NULL,
@@ -101,15 +94,20 @@ CREATE TABLE "guessSongAttempts" (
     PRIMARY KEY ("gameId", "guessedSpotifyTrackId")
 );
 
-CREATE TABLE "gameConfig" (
-    id       SERIAL PRIMARY KEY,
-    "userId" BIGINT REFERENCES users (id) ON DELETE CASCADE NOT NULL
+CREATE TABLE "guessLineGame" (
+    id               SERIAL PRIMARY KEY,
+    "userId"         BIGINT REFERENCES users (id) NOT NULL,
+    "spotifyTrackId" TEXT                         NOT NULL,
+    "snippet"        TEXT                         NOT NULL,
+    "createdAt"      timestamptz DEFAULT NOW()    NOT NULL
 );
 
-CREATE TABLE "chosenArtistInConfig" (
-    "gameConfigId"    BIGINT REFERENCES "gameConfig" (id) ON DELETE CASCADE NOT NULL,
-    "spotifyArtistId" TEXT                                                  NOT NULL,
-    PRIMARY KEY ("gameConfigId", "spotifyArtistId")
+
+CREATE TABLE "guessLineAttempts" (
+    "gameId"         BIGINT REFERENCES "guessLineGame" (id) NOT NULL,
+    "guessedSnippet" TEXT                                   NOT NULL,
+    "guessedAt"      timestamptz                            NOT NULL,
+    PRIMARY KEY ("gameId", "guessedSnippet")
 );
 
 CREATE OR REPLACE FUNCTION encrypt_password(
