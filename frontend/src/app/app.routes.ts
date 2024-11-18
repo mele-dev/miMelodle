@@ -11,6 +11,9 @@ import { AppLayoutPage } from "./app-layout/app-layout.page";
 import { authGuard } from "./guards/auth.guard";
 import { HomePage } from "./home/home.page";
 import { LeaderboardComponent } from "./components/leaderboard/leaderboard.component";
+import { GuessSongPage } from "./pages/game/guess-song/guess-song.page";
+import { GuessLinePage } from "./pages/game/guess-line/guess-line.page";
+import { CreateGamePage } from "./pages/game/create-game/create-game.page";
 
 export const routes = [
     {
@@ -61,7 +64,19 @@ export const routes = [
             {
                 path: "leaderboards",
                 component: LeaderboardComponent,
-            
+
+            },
+            {
+                path: "game",
+                component: CreateGamePage,
+            },
+            {
+                path: "game/guess_line/:gameId",
+                component: GuessLinePage,
+            },
+            {
+                path: "game/guess_song/:gameId",
+                component: GuessSongPage,
             },
         ],
     },

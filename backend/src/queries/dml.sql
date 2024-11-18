@@ -242,7 +242,7 @@ SELECT (SELECT "canCreate" FROM "canCreateGame"), "insertGame".id
                    WHERE gsg."userId" = :selfId! AND gsg.id = :gameId!
                    ORDER BY gsg."createdAt"
                    LIMIT 6)
-SELECT *
+SELECT game.*, gsa.*, ranking.score
   FROM "game"
            LEFT JOIN public."guessSongAttempts" gsa ON "game".id = gsa."gameId"
            LEFT JOIN ranking ON ranking."userId" = :selfId!;
