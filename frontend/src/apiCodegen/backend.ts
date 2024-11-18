@@ -252,25 +252,6 @@ export const PostUsersSelfSelfIdGameGuessSongGameIdAttempts201CorrectTrackAlbumT
         album: "album",
     } as const;
 
-export type PostUsersSelfSelfIdGameGuessSongGameIdAttempts201CorrectTrackAlbum =
-    {
-        /** @pattern ^(album|single|compilation)$ */
-        album_type: string;
-        artists: PostUsersSelfSelfIdGameGuessSongGameIdAttempts201CorrectTrackAlbumArtistsItem[];
-        available_markets: string[];
-        external_urls: PostUsersSelfSelfIdGameGuessSongGameIdAttempts201CorrectTrackAlbumExternalUrls;
-        href: string;
-        id: string;
-        images: PostUsersSelfSelfIdGameGuessSongGameIdAttempts201CorrectTrackAlbumImagesItem[];
-        name: string;
-        release_date: string;
-        /** @pattern ^(year|month|day)$ */
-        release_date_precision: string;
-        total_tracks: number;
-        type: PostUsersSelfSelfIdGameGuessSongGameIdAttempts201CorrectTrackAlbumType;
-        uri: string;
-    };
-
 export type PostUsersSelfSelfIdGameGuessSongGameIdAttempts201CorrectTrackAlbumImagesItemWidth =
     number | null;
 
@@ -315,13 +296,24 @@ export type PostUsersSelfSelfIdGameGuessSongGameIdAttempts201CorrectTrackAlbumAr
         uri: string;
     };
 
-export type PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AttemptsItem = {
-    guessedTrack: PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AttemptsItemGuessedTrack;
-    /** The title of the guessed track, showing every spot where their characters coincide with the ones from the hidden track. */
-    guessedTrackNameHint: string;
-    isCorrectAlbum: boolean;
-    isCorrectTrack: boolean;
-};
+export type PostUsersSelfSelfIdGameGuessSongGameIdAttempts201CorrectTrackAlbum =
+    {
+        /** @pattern ^(album|single|compilation)$ */
+        album_type: string;
+        artists: PostUsersSelfSelfIdGameGuessSongGameIdAttempts201CorrectTrackAlbumArtistsItem[];
+        available_markets: string[];
+        external_urls: PostUsersSelfSelfIdGameGuessSongGameIdAttempts201CorrectTrackAlbumExternalUrls;
+        href: string;
+        id: string;
+        images: PostUsersSelfSelfIdGameGuessSongGameIdAttempts201CorrectTrackAlbumImagesItem[];
+        name: string;
+        release_date: string;
+        /** @pattern ^(year|month|day)$ */
+        release_date_precision: string;
+        total_tracks: number;
+        type: PostUsersSelfSelfIdGameGuessSongGameIdAttempts201CorrectTrackAlbumType;
+        uri: string;
+    };
 
 export type PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AttemptsItemGuessedTrackType =
     (typeof PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AttemptsItemGuessedTrackType)[keyof typeof PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AttemptsItemGuessedTrackType];
@@ -398,34 +390,6 @@ export type PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AttemptsItemGuessed
         uri: string;
     };
 
-export type PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AttemptsItemGuessedTrackAlbumType =
-    (typeof PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AttemptsItemGuessedTrackAlbumType)[keyof typeof PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AttemptsItemGuessedTrackAlbumType];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AttemptsItemGuessedTrackAlbumType =
-    {
-        album: "album",
-    } as const;
-
-export type PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AttemptsItemGuessedTrackAlbum =
-    {
-        /** @pattern ^(album|single|compilation)$ */
-        album_type: string;
-        artists: PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AttemptsItemGuessedTrackAlbumArtistsItem[];
-        available_markets: string[];
-        external_urls: PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AttemptsItemGuessedTrackAlbumExternalUrls;
-        href: string;
-        id: string;
-        images: PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AttemptsItemGuessedTrackAlbumImagesItem[];
-        name: string;
-        release_date: string;
-        /** @pattern ^(year|month|day)$ */
-        release_date_precision: string;
-        total_tracks: number;
-        type: PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AttemptsItemGuessedTrackAlbumType;
-        uri: string;
-    };
-
 export type PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AttemptsItemGuessedTrack =
     {
         album: PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AttemptsItemGuessedTrackAlbum;
@@ -454,6 +418,23 @@ export type PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AttemptsItemGuessed
         uri: string;
     };
 
+export type PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AttemptsItem = {
+    guessedTrack: PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AttemptsItemGuessedTrack;
+    /** The title of the guessed track, showing every spot where their characters coincide with the ones from the hidden track. */
+    guessedTrackNameHint: string;
+    isCorrectAlbum: boolean;
+    isCorrectTrack: boolean;
+};
+
+export type PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AttemptsItemGuessedTrackAlbumType =
+    (typeof PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AttemptsItemGuessedTrackAlbumType)[keyof typeof PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AttemptsItemGuessedTrackAlbumType];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AttemptsItemGuessedTrackAlbumType =
+    {
+        album: "album",
+    } as const;
+
 export type PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AttemptsItemGuessedTrackAlbumImagesItemWidth =
     number | null;
 
@@ -471,6 +452,25 @@ export type PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AttemptsItemGuessed
     {
         spotify: string;
         [key: string]: unknown;
+    };
+
+export type PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AttemptsItemGuessedTrackAlbum =
+    {
+        /** @pattern ^(album|single|compilation)$ */
+        album_type: string;
+        artists: PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AttemptsItemGuessedTrackAlbumArtistsItem[];
+        available_markets: string[];
+        external_urls: PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AttemptsItemGuessedTrackAlbumExternalUrls;
+        href: string;
+        id: string;
+        images: PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AttemptsItemGuessedTrackAlbumImagesItem[];
+        name: string;
+        release_date: string;
+        /** @pattern ^(year|month|day)$ */
+        release_date_precision: string;
+        total_tracks: number;
+        type: PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AttemptsItemGuessedTrackAlbumType;
+        uri: string;
     };
 
 export type PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AttemptsItemGuessedTrackAlbumArtistsItemType =
@@ -560,24 +560,6 @@ export const PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AlbumType = {
     album: "album",
 } as const;
 
-export type PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AlbumImagesItemWidth =
-    number | null;
-
-export type PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AlbumImagesItemHeight =
-    number | null;
-
-export type PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AlbumImagesItem = {
-    height: PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AlbumImagesItemHeight;
-    url: string;
-    width: PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AlbumImagesItemWidth;
-};
-
-export type PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AlbumExternalUrls =
-    {
-        spotify: string;
-        [key: string]: unknown;
-    };
-
 export type PostUsersSelfSelfIdGameGuessSongGameIdAttempts201Album = {
     /** @pattern ^(album|single|compilation)$ */
     album_type?: string;
@@ -595,6 +577,24 @@ export type PostUsersSelfSelfIdGameGuessSongGameIdAttempts201Album = {
     type?: PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AlbumType;
     uri?: string;
 };
+
+export type PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AlbumImagesItemWidth =
+    number | null;
+
+export type PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AlbumImagesItemHeight =
+    number | null;
+
+export type PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AlbumImagesItem = {
+    height: PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AlbumImagesItemHeight;
+    url: string;
+    width: PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AlbumImagesItemWidth;
+};
+
+export type PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AlbumExternalUrls =
+    {
+        spotify: string;
+        [key: string]: unknown;
+    };
 
 export type PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AlbumArtistsItemType =
     (typeof PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AlbumArtistsItemType)[keyof typeof PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AlbumArtistsItemType];
@@ -623,6 +623,60 @@ export type PostUsersSelfSelfIdGameGuessSongGameIdAttempts201AlbumArtistsItem =
 
 export type PostUsersSelfSelfIdGameGuessSongGameIdAttemptsBody = {
     guessedTrackSpotifyId: string;
+};
+
+export type PostUsersSelfSelfIdGameGuessLineGameIdAttempts500StatusCode =
+    (typeof PostUsersSelfSelfIdGameGuessLineGameIdAttempts500StatusCode)[keyof typeof PostUsersSelfSelfIdGameGuessLineGameIdAttempts500StatusCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const PostUsersSelfSelfIdGameGuessLineGameIdAttempts500StatusCode = {
+    NUMBER_500: 500,
+} as const;
+
+/**
+ * internalServerError
+ */
+export type PostUsersSelfSelfIdGameGuessLineGameIdAttempts500 = {
+    error: string;
+    message: string;
+    statusCode: PostUsersSelfSelfIdGameGuessLineGameIdAttempts500StatusCode;
+    [key: string]: unknown;
+};
+
+export type PostUsersSelfSelfIdGameGuessLineGameIdAttempts410StatusCode =
+    (typeof PostUsersSelfSelfIdGameGuessLineGameIdAttempts410StatusCode)[keyof typeof PostUsersSelfSelfIdGameGuessLineGameIdAttempts410StatusCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const PostUsersSelfSelfIdGameGuessLineGameIdAttempts410StatusCode = {
+    NUMBER_410: 410,
+} as const;
+
+/**
+ * gone
+ */
+export type PostUsersSelfSelfIdGameGuessLineGameIdAttempts410 = {
+    error: string;
+    message: string;
+    statusCode: PostUsersSelfSelfIdGameGuessLineGameIdAttempts410StatusCode;
+    [key: string]: unknown;
+};
+
+export type PostUsersSelfSelfIdGameGuessLineGameIdAttempts409StatusCode =
+    (typeof PostUsersSelfSelfIdGameGuessLineGameIdAttempts409StatusCode)[keyof typeof PostUsersSelfSelfIdGameGuessLineGameIdAttempts409StatusCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const PostUsersSelfSelfIdGameGuessLineGameIdAttempts409StatusCode = {
+    NUMBER_409: 409,
+} as const;
+
+/**
+ * conflict
+ */
+export type PostUsersSelfSelfIdGameGuessLineGameIdAttempts409 = {
+    error: string;
+    message: string;
+    statusCode: PostUsersSelfSelfIdGameGuessLineGameIdAttempts409StatusCode;
+    [key: string]: unknown;
 };
 
 export type PostUsersSelfSelfIdGameGuessLineGameIdAttempts404StatusCode =
@@ -661,11 +715,208 @@ export type PostUsersSelfSelfIdGameGuessLineGameIdAttempts401 = {
     [key: string]: unknown;
 };
 
-export type PostUsersSelfSelfIdGameGuessLineGameIdAttempts200 = {
-    /** For every letter given returns a hint, in order. */
-    guessLineHints: string[];
-    input: string;
-    won: boolean;
+export type PostUsersSelfSelfIdGameGuessLineGameIdAttempts400StatusCode =
+    (typeof PostUsersSelfSelfIdGameGuessLineGameIdAttempts400StatusCode)[keyof typeof PostUsersSelfSelfIdGameGuessLineGameIdAttempts400StatusCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const PostUsersSelfSelfIdGameGuessLineGameIdAttempts400StatusCode = {
+    NUMBER_400: 400,
+} as const;
+
+/**
+ * badRequest
+ */
+export type PostUsersSelfSelfIdGameGuessLineGameIdAttempts400 = {
+    error: string;
+    message: string;
+    statusCode: PostUsersSelfSelfIdGameGuessLineGameIdAttempts400StatusCode;
+    [key: string]: unknown;
+};
+
+export type PostUsersSelfSelfIdGameGuessLineGameIdAttempts201 = {
+    attempts: PostUsersSelfSelfIdGameGuessLineGameIdAttempts201AttemptsItem[];
+    snippetLength: number;
+    track: PostUsersSelfSelfIdGameGuessLineGameIdAttempts201Track;
+};
+
+export type PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackType =
+    (typeof PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackType)[keyof typeof PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackType];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackType = {
+    track: "track",
+} as const;
+
+export type PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackPreviewUrl =
+    | string
+    | null;
+
+export type PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackLinkedFromType =
+    (typeof PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackLinkedFromType)[keyof typeof PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackLinkedFromType];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackLinkedFromType =
+    {
+        track: "track",
+    } as const;
+
+export type PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackLinkedFromExternalUrls =
+    {
+        spotify: string;
+        [key: string]: unknown;
+    };
+
+export type PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackLinkedFrom = {
+    external_urls?: PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackLinkedFromExternalUrls;
+    href?: string;
+    id?: string;
+    type?: PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackLinkedFromType;
+    uri?: string;
+    [key: string]: unknown;
+};
+
+export type PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackExternalUrls =
+    {
+        spotify: string;
+        [key: string]: unknown;
+    };
+
+export type PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackExternalIds =
+    {
+        ean?: string;
+        isrc?: string;
+        upc?: string;
+    };
+
+export type PostUsersSelfSelfIdGameGuessLineGameIdAttempts201Track = {
+    album: PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackAlbum;
+    artists: PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackArtistsItem[];
+    available_markets: string[];
+    disc_number: number;
+    duration_ms: number;
+    explicit: boolean;
+    external_ids: PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackExternalIds;
+    external_urls: PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackExternalUrls;
+    href: string;
+    id: string;
+    is_local: boolean;
+    is_playable?: boolean;
+    linked_from?: PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackLinkedFrom;
+    name: string;
+    /**
+     * @minimum 0
+     * @maximum 100
+     */
+    popularity: number;
+    preview_url?: PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackPreviewUrl;
+    restrictions?: string;
+    track_number: number;
+    type: PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackType;
+    uri: string;
+};
+
+export type PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackArtistsItemType =
+    (typeof PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackArtistsItemType)[keyof typeof PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackArtistsItemType];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackArtistsItemType =
+    {
+        artist: "artist",
+    } as const;
+
+export type PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackArtistsItemExternalUrls =
+    {
+        spotify: string;
+        [key: string]: unknown;
+    };
+
+export type PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackArtistsItem =
+    {
+        external_urls: PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackArtistsItemExternalUrls;
+        href: string;
+        id: string;
+        name: string;
+        type: PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackArtistsItemType;
+        uri: string;
+    };
+
+export type PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackAlbumType =
+    (typeof PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackAlbumType)[keyof typeof PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackAlbumType];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackAlbumType = {
+    album: "album",
+} as const;
+
+export type PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackAlbumImagesItemWidth =
+    number | null;
+
+export type PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackAlbumImagesItemHeight =
+    number | null;
+
+export type PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackAlbumImagesItem =
+    {
+        height: PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackAlbumImagesItemHeight;
+        url: string;
+        width: PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackAlbumImagesItemWidth;
+    };
+
+export type PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackAlbumExternalUrls =
+    {
+        spotify: string;
+        [key: string]: unknown;
+    };
+
+export type PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackAlbum = {
+    /** @pattern ^(album|single|compilation)$ */
+    album_type: string;
+    artists: PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackAlbumArtistsItem[];
+    available_markets: string[];
+    external_urls: PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackAlbumExternalUrls;
+    href: string;
+    id: string;
+    images: PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackAlbumImagesItem[];
+    name: string;
+    release_date: string;
+    /** @pattern ^(year|month|day)$ */
+    release_date_precision: string;
+    total_tracks: number;
+    type: PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackAlbumType;
+    uri: string;
+};
+
+export type PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackAlbumArtistsItemType =
+    (typeof PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackAlbumArtistsItemType)[keyof typeof PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackAlbumArtistsItemType];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackAlbumArtistsItemType =
+    {
+        artist: "artist",
+    } as const;
+
+export type PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackAlbumArtistsItemExternalUrls =
+    {
+        spotify: string;
+        [key: string]: unknown;
+    };
+
+export type PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackAlbumArtistsItem =
+    {
+        external_urls: PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackAlbumArtistsItemExternalUrls;
+        href: string;
+        id: string;
+        name: string;
+        type: PostUsersSelfSelfIdGameGuessLineGameIdAttempts201TrackAlbumArtistsItemType;
+        uri: string;
+    };
+
+export type PostUsersSelfSelfIdGameGuessLineGameIdAttempts201AttemptsItem = {
+    guessedLine: string;
+    /** The guessed snippet, showing every spot where their characters coincide with the target snippet.
+Characters which appear on the line but are on the wrong spot are marked with ~.
+Characters that do not appear on the line are marked with _.
+ */
+    snippetHint: string;
 };
 
 export type PostUsersSelfSelfIdGameGuessLineGameIdAttemptsBody = {
@@ -768,33 +1019,6 @@ export type GetUsersSelfSelfIdGameGuessSongGameId200CorrectTrackExternalIds = {
     upc?: string;
 };
 
-export type GetUsersSelfSelfIdGameGuessSongGameId200CorrectTrack = {
-    album: GetUsersSelfSelfIdGameGuessSongGameId200CorrectTrackAlbum;
-    artists: GetUsersSelfSelfIdGameGuessSongGameId200CorrectTrackArtistsItem[];
-    available_markets: string[];
-    disc_number: number;
-    duration_ms: number;
-    explicit: boolean;
-    external_ids: GetUsersSelfSelfIdGameGuessSongGameId200CorrectTrackExternalIds;
-    external_urls: GetUsersSelfSelfIdGameGuessSongGameId200CorrectTrackExternalUrls;
-    href: string;
-    id: string;
-    is_local: boolean;
-    is_playable?: boolean;
-    linked_from?: GetUsersSelfSelfIdGameGuessSongGameId200CorrectTrackLinkedFrom;
-    name: string;
-    /**
-     * @minimum 0
-     * @maximum 100
-     */
-    popularity: number;
-    preview_url?: GetUsersSelfSelfIdGameGuessSongGameId200CorrectTrackPreviewUrl;
-    restrictions?: string;
-    track_number: number;
-    type: GetUsersSelfSelfIdGameGuessSongGameId200CorrectTrackType;
-    uri: string;
-};
-
 export type GetUsersSelfSelfIdGameGuessSongGameId200CorrectTrackArtistsItemType =
     (typeof GetUsersSelfSelfIdGameGuessSongGameId200CorrectTrackArtistsItemType)[keyof typeof GetUsersSelfSelfIdGameGuessSongGameId200CorrectTrackArtistsItemType];
 
@@ -827,6 +1051,51 @@ export const GetUsersSelfSelfIdGameGuessSongGameId200CorrectTrackAlbumType = {
     album: "album",
 } as const;
 
+export type GetUsersSelfSelfIdGameGuessSongGameId200CorrectTrackAlbum = {
+    /** @pattern ^(album|single|compilation)$ */
+    album_type: string;
+    artists: GetUsersSelfSelfIdGameGuessSongGameId200CorrectTrackAlbumArtistsItem[];
+    available_markets: string[];
+    external_urls: GetUsersSelfSelfIdGameGuessSongGameId200CorrectTrackAlbumExternalUrls;
+    href: string;
+    id: string;
+    images: GetUsersSelfSelfIdGameGuessSongGameId200CorrectTrackAlbumImagesItem[];
+    name: string;
+    release_date: string;
+    /** @pattern ^(year|month|day)$ */
+    release_date_precision: string;
+    total_tracks: number;
+    type: GetUsersSelfSelfIdGameGuessSongGameId200CorrectTrackAlbumType;
+    uri: string;
+};
+
+export type GetUsersSelfSelfIdGameGuessSongGameId200CorrectTrack = {
+    album: GetUsersSelfSelfIdGameGuessSongGameId200CorrectTrackAlbum;
+    artists: GetUsersSelfSelfIdGameGuessSongGameId200CorrectTrackArtistsItem[];
+    available_markets: string[];
+    disc_number: number;
+    duration_ms: number;
+    explicit: boolean;
+    external_ids: GetUsersSelfSelfIdGameGuessSongGameId200CorrectTrackExternalIds;
+    external_urls: GetUsersSelfSelfIdGameGuessSongGameId200CorrectTrackExternalUrls;
+    href: string;
+    id: string;
+    is_local: boolean;
+    is_playable?: boolean;
+    linked_from?: GetUsersSelfSelfIdGameGuessSongGameId200CorrectTrackLinkedFrom;
+    name: string;
+    /**
+     * @minimum 0
+     * @maximum 100
+     */
+    popularity: number;
+    preview_url?: GetUsersSelfSelfIdGameGuessSongGameId200CorrectTrackPreviewUrl;
+    restrictions?: string;
+    track_number: number;
+    type: GetUsersSelfSelfIdGameGuessSongGameId200CorrectTrackType;
+    uri: string;
+};
+
 export type GetUsersSelfSelfIdGameGuessSongGameId200CorrectTrackAlbumImagesItemWidth =
     number | null;
 
@@ -845,24 +1114,6 @@ export type GetUsersSelfSelfIdGameGuessSongGameId200CorrectTrackAlbumExternalUrl
         spotify: string;
         [key: string]: unknown;
     };
-
-export type GetUsersSelfSelfIdGameGuessSongGameId200CorrectTrackAlbum = {
-    /** @pattern ^(album|single|compilation)$ */
-    album_type: string;
-    artists: GetUsersSelfSelfIdGameGuessSongGameId200CorrectTrackAlbumArtistsItem[];
-    available_markets: string[];
-    external_urls: GetUsersSelfSelfIdGameGuessSongGameId200CorrectTrackAlbumExternalUrls;
-    href: string;
-    id: string;
-    images: GetUsersSelfSelfIdGameGuessSongGameId200CorrectTrackAlbumImagesItem[];
-    name: string;
-    release_date: string;
-    /** @pattern ^(year|month|day)$ */
-    release_date_precision: string;
-    total_tracks: number;
-    type: GetUsersSelfSelfIdGameGuessSongGameId200CorrectTrackAlbumType;
-    uri: string;
-};
 
 export type GetUsersSelfSelfIdGameGuessSongGameId200CorrectTrackAlbumArtistsItemType =
     (typeof GetUsersSelfSelfIdGameGuessSongGameId200CorrectTrackAlbumArtistsItemType)[keyof typeof GetUsersSelfSelfIdGameGuessSongGameId200CorrectTrackAlbumArtistsItemType];
@@ -908,6 +1159,33 @@ export const GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrackTyp
 
 export type GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrackPreviewUrl =
     string | null;
+
+export type GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrack = {
+    album: GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrackAlbum;
+    artists: GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrackArtistsItem[];
+    available_markets: string[];
+    disc_number: number;
+    duration_ms: number;
+    explicit: boolean;
+    external_ids: GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrackExternalIds;
+    external_urls: GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrackExternalUrls;
+    href: string;
+    id: string;
+    is_local: boolean;
+    is_playable?: boolean;
+    linked_from?: GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrackLinkedFrom;
+    name: string;
+    /**
+     * @minimum 0
+     * @maximum 100
+     */
+    popularity: number;
+    preview_url?: GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrackPreviewUrl;
+    restrictions?: string;
+    track_number: number;
+    type: GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrackType;
+    uri: string;
+};
 
 export type GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrackLinkedFromType =
     (typeof GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrackLinkedFromType)[keyof typeof GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrackLinkedFromType];
@@ -972,33 +1250,6 @@ export type GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrackArti
         uri: string;
     };
 
-export type GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrack = {
-    album: GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrackAlbum;
-    artists: GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrackArtistsItem[];
-    available_markets: string[];
-    disc_number: number;
-    duration_ms: number;
-    explicit: boolean;
-    external_ids: GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrackExternalIds;
-    external_urls: GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrackExternalUrls;
-    href: string;
-    id: string;
-    is_local: boolean;
-    is_playable?: boolean;
-    linked_from?: GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrackLinkedFrom;
-    name: string;
-    /**
-     * @minimum 0
-     * @maximum 100
-     */
-    popularity: number;
-    preview_url?: GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrackPreviewUrl;
-    restrictions?: string;
-    track_number: number;
-    type: GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrackType;
-    uri: string;
-};
-
 export type GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrackAlbumType =
     (typeof GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrackAlbumType)[keyof typeof GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrackAlbumType];
 
@@ -1027,25 +1278,6 @@ export type GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrackAlbu
         [key: string]: unknown;
     };
 
-export type GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrackAlbum =
-    {
-        /** @pattern ^(album|single|compilation)$ */
-        album_type: string;
-        artists: GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrackAlbumArtistsItem[];
-        available_markets: string[];
-        external_urls: GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrackAlbumExternalUrls;
-        href: string;
-        id: string;
-        images: GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrackAlbumImagesItem[];
-        name: string;
-        release_date: string;
-        /** @pattern ^(year|month|day)$ */
-        release_date_precision: string;
-        total_tracks: number;
-        type: GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrackAlbumType;
-        uri: string;
-    };
-
 export type GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrackAlbumArtistsItemType =
     (typeof GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrackAlbumArtistsItemType)[keyof typeof GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrackAlbumArtistsItemType];
 
@@ -1071,6 +1303,25 @@ export type GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrackAlbu
         uri: string;
     };
 
+export type GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrackAlbum =
+    {
+        /** @pattern ^(album|single|compilation)$ */
+        album_type: string;
+        artists: GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrackAlbumArtistsItem[];
+        available_markets: string[];
+        external_urls: GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrackAlbumExternalUrls;
+        href: string;
+        id: string;
+        images: GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrackAlbumImagesItem[];
+        name: string;
+        release_date: string;
+        /** @pattern ^(year|month|day)$ */
+        release_date_precision: string;
+        total_tracks: number;
+        type: GetUsersSelfSelfIdGameGuessSongGameId200AttemptsItemGuessedTrackAlbumType;
+        uri: string;
+    };
+
 export type GetUsersSelfSelfIdGameGuessSongGameId200ArtistsItemType =
     (typeof GetUsersSelfSelfIdGameGuessSongGameId200ArtistsItemType)[keyof typeof GetUsersSelfSelfIdGameGuessSongGameId200ArtistsItemType];
 
@@ -1078,23 +1329,6 @@ export type GetUsersSelfSelfIdGameGuessSongGameId200ArtistsItemType =
 export const GetUsersSelfSelfIdGameGuessSongGameId200ArtistsItemType = {
     artist: "artist",
 } as const;
-
-export type GetUsersSelfSelfIdGameGuessSongGameId200ArtistsItem = {
-    external_urls: GetUsersSelfSelfIdGameGuessSongGameId200ArtistsItemExternalUrls;
-    followers: GetUsersSelfSelfIdGameGuessSongGameId200ArtistsItemFollowers;
-    genres: string[];
-    href: string;
-    id: string;
-    images: GetUsersSelfSelfIdGameGuessSongGameId200ArtistsItemImagesItem[];
-    name: string;
-    /**
-     * @minimum 0
-     * @maximum 100
-     */
-    popularity: number;
-    type: GetUsersSelfSelfIdGameGuessSongGameId200ArtistsItemType;
-    uri: string;
-};
 
 export type GetUsersSelfSelfIdGameGuessSongGameId200ArtistsItemImagesItemWidth =
     number | null;
@@ -1122,6 +1356,23 @@ export type GetUsersSelfSelfIdGameGuessSongGameId200ArtistsItemExternalUrls = {
     [key: string]: unknown;
 };
 
+export type GetUsersSelfSelfIdGameGuessSongGameId200ArtistsItem = {
+    external_urls: GetUsersSelfSelfIdGameGuessSongGameId200ArtistsItemExternalUrls;
+    followers: GetUsersSelfSelfIdGameGuessSongGameId200ArtistsItemFollowers;
+    genres: string[];
+    href: string;
+    id: string;
+    images: GetUsersSelfSelfIdGameGuessSongGameId200ArtistsItemImagesItem[];
+    name: string;
+    /**
+     * @minimum 0
+     * @maximum 100
+     */
+    popularity: number;
+    type: GetUsersSelfSelfIdGameGuessSongGameId200ArtistsItemType;
+    uri: string;
+};
+
 export type GetUsersSelfSelfIdGameGuessSongGameId200AlbumType =
     (typeof GetUsersSelfSelfIdGameGuessSongGameId200AlbumType)[keyof typeof GetUsersSelfSelfIdGameGuessSongGameId200AlbumType];
 
@@ -1129,24 +1380,6 @@ export type GetUsersSelfSelfIdGameGuessSongGameId200AlbumType =
 export const GetUsersSelfSelfIdGameGuessSongGameId200AlbumType = {
     album: "album",
 } as const;
-
-export type GetUsersSelfSelfIdGameGuessSongGameId200Album = {
-    /** @pattern ^(album|single|compilation)$ */
-    album_type?: string;
-    artists?: GetUsersSelfSelfIdGameGuessSongGameId200AlbumArtistsItem[];
-    available_markets?: string[];
-    external_urls?: GetUsersSelfSelfIdGameGuessSongGameId200AlbumExternalUrls;
-    href?: string;
-    id?: string;
-    images?: GetUsersSelfSelfIdGameGuessSongGameId200AlbumImagesItem[];
-    name?: string;
-    release_date?: string;
-    /** @pattern ^(year|month|day)$ */
-    release_date_precision?: string;
-    total_tracks?: number;
-    type?: GetUsersSelfSelfIdGameGuessSongGameId200AlbumType;
-    uri?: string;
-};
 
 export type GetUsersSelfSelfIdGameGuessSongGameId200AlbumImagesItemWidth =
     | number
@@ -1165,6 +1398,24 @@ export type GetUsersSelfSelfIdGameGuessSongGameId200AlbumImagesItem = {
 export type GetUsersSelfSelfIdGameGuessSongGameId200AlbumExternalUrls = {
     spotify: string;
     [key: string]: unknown;
+};
+
+export type GetUsersSelfSelfIdGameGuessSongGameId200Album = {
+    /** @pattern ^(album|single|compilation)$ */
+    album_type?: string;
+    artists?: GetUsersSelfSelfIdGameGuessSongGameId200AlbumArtistsItem[];
+    available_markets?: string[];
+    external_urls?: GetUsersSelfSelfIdGameGuessSongGameId200AlbumExternalUrls;
+    href?: string;
+    id?: string;
+    images?: GetUsersSelfSelfIdGameGuessSongGameId200AlbumImagesItem[];
+    name?: string;
+    release_date?: string;
+    /** @pattern ^(year|month|day)$ */
+    release_date_precision?: string;
+    total_tracks?: number;
+    type?: GetUsersSelfSelfIdGameGuessSongGameId200AlbumType;
+    uri?: string;
 };
 
 export type GetUsersSelfSelfIdGameGuessSongGameId200AlbumArtistsItemType =
@@ -1188,6 +1439,239 @@ export type GetUsersSelfSelfIdGameGuessSongGameId200AlbumArtistsItem = {
     name: string;
     type: GetUsersSelfSelfIdGameGuessSongGameId200AlbumArtistsItemType;
     uri: string;
+};
+
+export type GetUsersSelfSelfIdGameGuessLineGameId404StatusCode =
+    (typeof GetUsersSelfSelfIdGameGuessLineGameId404StatusCode)[keyof typeof GetUsersSelfSelfIdGameGuessLineGameId404StatusCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetUsersSelfSelfIdGameGuessLineGameId404StatusCode = {
+    NUMBER_404: 404,
+} as const;
+
+/**
+ * notFound
+ */
+export type GetUsersSelfSelfIdGameGuessLineGameId404 = {
+    error: string;
+    message: string;
+    statusCode: GetUsersSelfSelfIdGameGuessLineGameId404StatusCode;
+    [key: string]: unknown;
+};
+
+export type GetUsersSelfSelfIdGameGuessLineGameId401StatusCode =
+    (typeof GetUsersSelfSelfIdGameGuessLineGameId401StatusCode)[keyof typeof GetUsersSelfSelfIdGameGuessLineGameId401StatusCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetUsersSelfSelfIdGameGuessLineGameId401StatusCode = {
+    NUMBER_401: 401,
+} as const;
+
+/**
+ * unauthorized
+ */
+export type GetUsersSelfSelfIdGameGuessLineGameId401 = {
+    error: string;
+    message: string;
+    statusCode: GetUsersSelfSelfIdGameGuessLineGameId401StatusCode;
+    [key: string]: unknown;
+};
+
+export type GetUsersSelfSelfIdGameGuessLineGameId400StatusCode =
+    (typeof GetUsersSelfSelfIdGameGuessLineGameId400StatusCode)[keyof typeof GetUsersSelfSelfIdGameGuessLineGameId400StatusCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetUsersSelfSelfIdGameGuessLineGameId400StatusCode = {
+    NUMBER_400: 400,
+} as const;
+
+/**
+ * badRequest
+ */
+export type GetUsersSelfSelfIdGameGuessLineGameId400 = {
+    error: string;
+    message: string;
+    statusCode: GetUsersSelfSelfIdGameGuessLineGameId400StatusCode;
+    [key: string]: unknown;
+};
+
+export type GetUsersSelfSelfIdGameGuessLineGameId200 = {
+    attempts: GetUsersSelfSelfIdGameGuessLineGameId200AttemptsItem[];
+    snippetLength: number;
+    track: GetUsersSelfSelfIdGameGuessLineGameId200Track;
+};
+
+export type GetUsersSelfSelfIdGameGuessLineGameId200TrackType =
+    (typeof GetUsersSelfSelfIdGameGuessLineGameId200TrackType)[keyof typeof GetUsersSelfSelfIdGameGuessLineGameId200TrackType];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetUsersSelfSelfIdGameGuessLineGameId200TrackType = {
+    track: "track",
+} as const;
+
+export type GetUsersSelfSelfIdGameGuessLineGameId200TrackPreviewUrl =
+    | string
+    | null;
+
+export type GetUsersSelfSelfIdGameGuessLineGameId200TrackLinkedFromType =
+    (typeof GetUsersSelfSelfIdGameGuessLineGameId200TrackLinkedFromType)[keyof typeof GetUsersSelfSelfIdGameGuessLineGameId200TrackLinkedFromType];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetUsersSelfSelfIdGameGuessLineGameId200TrackLinkedFromType = {
+    track: "track",
+} as const;
+
+export type GetUsersSelfSelfIdGameGuessLineGameId200TrackLinkedFromExternalUrls =
+    {
+        spotify: string;
+        [key: string]: unknown;
+    };
+
+export type GetUsersSelfSelfIdGameGuessLineGameId200TrackLinkedFrom = {
+    external_urls?: GetUsersSelfSelfIdGameGuessLineGameId200TrackLinkedFromExternalUrls;
+    href?: string;
+    id?: string;
+    type?: GetUsersSelfSelfIdGameGuessLineGameId200TrackLinkedFromType;
+    uri?: string;
+    [key: string]: unknown;
+};
+
+export type GetUsersSelfSelfIdGameGuessLineGameId200TrackExternalUrls = {
+    spotify: string;
+    [key: string]: unknown;
+};
+
+export type GetUsersSelfSelfIdGameGuessLineGameId200TrackExternalIds = {
+    ean?: string;
+    isrc?: string;
+    upc?: string;
+};
+
+export type GetUsersSelfSelfIdGameGuessLineGameId200Track = {
+    album: GetUsersSelfSelfIdGameGuessLineGameId200TrackAlbum;
+    artists: GetUsersSelfSelfIdGameGuessLineGameId200TrackArtistsItem[];
+    available_markets: string[];
+    disc_number: number;
+    duration_ms: number;
+    explicit: boolean;
+    external_ids: GetUsersSelfSelfIdGameGuessLineGameId200TrackExternalIds;
+    external_urls: GetUsersSelfSelfIdGameGuessLineGameId200TrackExternalUrls;
+    href: string;
+    id: string;
+    is_local: boolean;
+    is_playable?: boolean;
+    linked_from?: GetUsersSelfSelfIdGameGuessLineGameId200TrackLinkedFrom;
+    name: string;
+    /**
+     * @minimum 0
+     * @maximum 100
+     */
+    popularity: number;
+    preview_url?: GetUsersSelfSelfIdGameGuessLineGameId200TrackPreviewUrl;
+    restrictions?: string;
+    track_number: number;
+    type: GetUsersSelfSelfIdGameGuessLineGameId200TrackType;
+    uri: string;
+};
+
+export type GetUsersSelfSelfIdGameGuessLineGameId200TrackArtistsItemType =
+    (typeof GetUsersSelfSelfIdGameGuessLineGameId200TrackArtistsItemType)[keyof typeof GetUsersSelfSelfIdGameGuessLineGameId200TrackArtistsItemType];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetUsersSelfSelfIdGameGuessLineGameId200TrackArtistsItemType = {
+    artist: "artist",
+} as const;
+
+export type GetUsersSelfSelfIdGameGuessLineGameId200TrackArtistsItemExternalUrls =
+    {
+        spotify: string;
+        [key: string]: unknown;
+    };
+
+export type GetUsersSelfSelfIdGameGuessLineGameId200TrackArtistsItem = {
+    external_urls: GetUsersSelfSelfIdGameGuessLineGameId200TrackArtistsItemExternalUrls;
+    href: string;
+    id: string;
+    name: string;
+    type: GetUsersSelfSelfIdGameGuessLineGameId200TrackArtistsItemType;
+    uri: string;
+};
+
+export type GetUsersSelfSelfIdGameGuessLineGameId200TrackAlbumType =
+    (typeof GetUsersSelfSelfIdGameGuessLineGameId200TrackAlbumType)[keyof typeof GetUsersSelfSelfIdGameGuessLineGameId200TrackAlbumType];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetUsersSelfSelfIdGameGuessLineGameId200TrackAlbumType = {
+    album: "album",
+} as const;
+
+export type GetUsersSelfSelfIdGameGuessLineGameId200TrackAlbumImagesItemWidth =
+    | number
+    | null;
+
+export type GetUsersSelfSelfIdGameGuessLineGameId200TrackAlbumImagesItemHeight =
+    number | null;
+
+export type GetUsersSelfSelfIdGameGuessLineGameId200TrackAlbumImagesItem = {
+    height: GetUsersSelfSelfIdGameGuessLineGameId200TrackAlbumImagesItemHeight;
+    url: string;
+    width: GetUsersSelfSelfIdGameGuessLineGameId200TrackAlbumImagesItemWidth;
+};
+
+export type GetUsersSelfSelfIdGameGuessLineGameId200TrackAlbumExternalUrls = {
+    spotify: string;
+    [key: string]: unknown;
+};
+
+export type GetUsersSelfSelfIdGameGuessLineGameId200TrackAlbumArtistsItemType =
+    (typeof GetUsersSelfSelfIdGameGuessLineGameId200TrackAlbumArtistsItemType)[keyof typeof GetUsersSelfSelfIdGameGuessLineGameId200TrackAlbumArtistsItemType];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetUsersSelfSelfIdGameGuessLineGameId200TrackAlbumArtistsItemType =
+    {
+        artist: "artist",
+    } as const;
+
+export type GetUsersSelfSelfIdGameGuessLineGameId200TrackAlbumArtistsItemExternalUrls =
+    {
+        spotify: string;
+        [key: string]: unknown;
+    };
+
+export type GetUsersSelfSelfIdGameGuessLineGameId200TrackAlbumArtistsItem = {
+    external_urls: GetUsersSelfSelfIdGameGuessLineGameId200TrackAlbumArtistsItemExternalUrls;
+    href: string;
+    id: string;
+    name: string;
+    type: GetUsersSelfSelfIdGameGuessLineGameId200TrackAlbumArtistsItemType;
+    uri: string;
+};
+
+export type GetUsersSelfSelfIdGameGuessLineGameId200TrackAlbum = {
+    /** @pattern ^(album|single|compilation)$ */
+    album_type: string;
+    artists: GetUsersSelfSelfIdGameGuessLineGameId200TrackAlbumArtistsItem[];
+    available_markets: string[];
+    external_urls: GetUsersSelfSelfIdGameGuessLineGameId200TrackAlbumExternalUrls;
+    href: string;
+    id: string;
+    images: GetUsersSelfSelfIdGameGuessLineGameId200TrackAlbumImagesItem[];
+    name: string;
+    release_date: string;
+    /** @pattern ^(year|month|day)$ */
+    release_date_precision: string;
+    total_tracks: number;
+    type: GetUsersSelfSelfIdGameGuessLineGameId200TrackAlbumType;
+    uri: string;
+};
+
+export type GetUsersSelfSelfIdGameGuessLineGameId200AttemptsItem = {
+    guessedLine: string;
+    /** The guessed snippet, showing every spot where their characters coincide with the target snippet.
+Characters which appear on the line but are on the wrong spot are marked with ~.
+Characters that do not appear on the line are marked with _.
+ */
+    snippetHint: string;
 };
 
 export type PostUsersSelfSelfIdGameGuessSong425StatusCode =
@@ -1254,84 +1738,69 @@ export type PostUsersSelfSelfIdGameGuessSongBody = {
     fromArtists: string[];
 };
 
-export type GetUsersSelfSelfIdGameGuessLine404StatusCode =
-    (typeof GetUsersSelfSelfIdGameGuessLine404StatusCode)[keyof typeof GetUsersSelfSelfIdGameGuessLine404StatusCode];
+export type PostUsersSelfSelfIdGameGuessLine425StatusCode =
+    (typeof PostUsersSelfSelfIdGameGuessLine425StatusCode)[keyof typeof PostUsersSelfSelfIdGameGuessLine425StatusCode];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetUsersSelfSelfIdGameGuessLine404StatusCode = {
+export const PostUsersSelfSelfIdGameGuessLine425StatusCode = {
+    NUMBER_425: 425,
+} as const;
+
+/**
+ * tooEarly
+ */
+export type PostUsersSelfSelfIdGameGuessLine425 = {
+    error: string;
+    message: string;
+    statusCode: PostUsersSelfSelfIdGameGuessLine425StatusCode;
+    [key: string]: unknown;
+};
+
+export type PostUsersSelfSelfIdGameGuessLine404StatusCode =
+    (typeof PostUsersSelfSelfIdGameGuessLine404StatusCode)[keyof typeof PostUsersSelfSelfIdGameGuessLine404StatusCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const PostUsersSelfSelfIdGameGuessLine404StatusCode = {
     NUMBER_404: 404,
 } as const;
 
 /**
  * notFound
  */
-export type GetUsersSelfSelfIdGameGuessLine404 = {
+export type PostUsersSelfSelfIdGameGuessLine404 = {
     error: string;
     message: string;
-    statusCode: GetUsersSelfSelfIdGameGuessLine404StatusCode;
+    statusCode: PostUsersSelfSelfIdGameGuessLine404StatusCode;
     [key: string]: unknown;
 };
 
-export type GetUsersSelfSelfIdGameGuessLine401StatusCode =
-    (typeof GetUsersSelfSelfIdGameGuessLine401StatusCode)[keyof typeof GetUsersSelfSelfIdGameGuessLine401StatusCode];
+export type PostUsersSelfSelfIdGameGuessLine401StatusCode =
+    (typeof PostUsersSelfSelfIdGameGuessLine401StatusCode)[keyof typeof PostUsersSelfSelfIdGameGuessLine401StatusCode];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetUsersSelfSelfIdGameGuessLine401StatusCode = {
+export const PostUsersSelfSelfIdGameGuessLine401StatusCode = {
     NUMBER_401: 401,
 } as const;
 
 /**
  * unauthorized
  */
-export type GetUsersSelfSelfIdGameGuessLine401 = {
+export type PostUsersSelfSelfIdGameGuessLine401 = {
     error: string;
     message: string;
-    statusCode: GetUsersSelfSelfIdGameGuessLine401StatusCode;
+    statusCode: PostUsersSelfSelfIdGameGuessLine401StatusCode;
     [key: string]: unknown;
 };
 
-export type GetUsersSelfSelfIdGameGuessLine200Config = {
-    /** The artists we can choose from, by their spotify ids. */
-    fromArtists: string[];
-    /** Unique identifier for a config. */
-    id: number;
-    /** @pattern ^(Guess Line|Guess Song)$ */
-    mode: string;
-    /** Whether to pick from any artist or only favorited ones. */
-    onlyFavoriteArtists: boolean;
-};
-
-export type GetUsersSelfSelfIdGameGuessLine200 = {
-    attempts: GetUsersSelfSelfIdGameGuessLine200Attempts;
-    config: GetUsersSelfSelfIdGameGuessLine200Config;
-    endingTime?: string;
+export type PostUsersSelfSelfIdGameGuessLine201 = {
     /** A unique identifier for a melodle game. */
     gameId: number;
-    /** @pattern ^(Guess Line|Guess Song)$ */
-    gameMode: string;
-    /** A numeric identifier for a user. Generated by the backend, unique and unchangeable. */
-    userId: number;
-    won?: boolean;
 };
 
-export type GetUsersSelfSelfIdGameGuessLine200AttemptsAnyOfTwoItem = {
-    guessedAt: string;
-    /**
-     * A line to match against the actual line of the song.
-     * @maxLength 1000
-     */
-    guessedLine: string;
+export type PostUsersSelfSelfIdGameGuessLineBody = {
+    /** The tracks we can choose from, by their spotify ids. */
+    fromTracks: string[];
 };
-
-export type GetUsersSelfSelfIdGameGuessLine200AttemptsAnyOfItem = {
-    guessedAt: string;
-    /** Identifier which can be used to fetch artist data from MusixMatch. */
-    guessedSongId: string;
-};
-
-export type GetUsersSelfSelfIdGameGuessLine200Attempts =
-    | GetUsersSelfSelfIdGameGuessLine200AttemptsAnyOfItem[]
-    | GetUsersSelfSelfIdGameGuessLine200AttemptsAnyOfTwoItem[];
 
 export type GetUsersSelfSelfIdFriendsLeaderboards401StatusCode =
     (typeof GetUsersSelfSelfIdFriendsLeaderboards401StatusCode)[keyof typeof GetUsersSelfSelfIdFriendsLeaderboards401StatusCode];
@@ -1351,18 +1820,22 @@ export type GetUsersSelfSelfIdFriendsLeaderboards401 = {
     [key: string]: unknown;
 };
 
-/**
- * A leaderboard of melodle users.
- */
-export type GetUsersSelfSelfIdFriendsLeaderboards200 = {
-    leaderboard: GetUsersSelfSelfIdFriendsLeaderboards200LeaderboardItem[];
-};
-
 export type GetUsersSelfSelfIdFriendsLeaderboards200LeaderboardItemAllOfTwo = {
     /** Players' position ordered from higest to lowest score. */
     rank: number;
     /** Score calculated by user performance within their games. */
     score: number;
+};
+
+export type GetUsersSelfSelfIdFriendsLeaderboards200LeaderboardItem =
+    GetUsersSelfSelfIdFriendsLeaderboards200LeaderboardItemAllOf &
+        GetUsersSelfSelfIdFriendsLeaderboards200LeaderboardItemAllOfTwo;
+
+/**
+ * A leaderboard of melodle users.
+ */
+export type GetUsersSelfSelfIdFriendsLeaderboards200 = {
+    leaderboard: GetUsersSelfSelfIdFriendsLeaderboards200LeaderboardItem[];
 };
 
 export type GetUsersSelfSelfIdFriendsLeaderboards200LeaderboardItemAllOf = {
@@ -1386,10 +1859,6 @@ export type GetUsersSelfSelfIdFriendsLeaderboards200LeaderboardItemAllOf = {
    */
     username: string;
 };
-
-export type GetUsersSelfSelfIdFriendsLeaderboards200LeaderboardItem =
-    GetUsersSelfSelfIdFriendsLeaderboards200LeaderboardItemAllOf &
-        GetUsersSelfSelfIdFriendsLeaderboards200LeaderboardItemAllOfTwo;
 
 export type GetUsersSelfSelfIdFriendsLeaderboardsParams = {
     /**
@@ -1995,12 +2464,27 @@ export type GetUsersSelfSelfIdGameHistory401 = {
 export type GetUsersSelfSelfIdGameHistory200ItemConfig = {
     /** The artists we can choose from, by their spotify ids. */
     fromArtists: string[];
+    /** The tracks we can choose from, by their spotify ids. */
+    fromTracks: string[];
     /** Unique identifier for a config. */
     id: number;
     /** @pattern ^(Guess Line|Guess Song)$ */
     mode: string;
     /** Whether to pick from any artist or only favorited ones. */
     onlyFavoriteArtists: boolean;
+};
+
+export type GetUsersSelfSelfIdGameHistory200Item = {
+    attempts: GetUsersSelfSelfIdGameHistory200ItemAttempts;
+    config: GetUsersSelfSelfIdGameHistory200ItemConfig;
+    endingTime?: string;
+    /** A unique identifier for a melodle game. */
+    gameId: number;
+    /** @pattern ^(Guess Line|Guess Song)$ */
+    gameMode: string;
+    /** A numeric identifier for a user. Generated by the backend, unique and unchangeable. */
+    userId: number;
+    won?: boolean;
 };
 
 export type GetUsersSelfSelfIdGameHistory200ItemAttemptsAnyOfTwoItem = {
@@ -2021,19 +2505,6 @@ export type GetUsersSelfSelfIdGameHistory200ItemAttemptsAnyOfItem = {
 export type GetUsersSelfSelfIdGameHistory200ItemAttempts =
     | GetUsersSelfSelfIdGameHistory200ItemAttemptsAnyOfItem[]
     | GetUsersSelfSelfIdGameHistory200ItemAttemptsAnyOfTwoItem[];
-
-export type GetUsersSelfSelfIdGameHistory200Item = {
-    attempts: GetUsersSelfSelfIdGameHistory200ItemAttempts;
-    config: GetUsersSelfSelfIdGameHistory200ItemConfig;
-    endingTime?: string;
-    /** A unique identifier for a melodle game. */
-    gameId: number;
-    /** @pattern ^(Guess Line|Guess Song)$ */
-    gameMode: string;
-    /** A numeric identifier for a user. Generated by the backend, unique and unchangeable. */
-    userId: number;
-    won?: boolean;
-};
 
 export type GetUsersSelfSelfIdFriends401StatusCode =
     (typeof GetUsersSelfSelfIdFriends401StatusCode)[keyof typeof GetUsersSelfSelfIdFriends401StatusCode];
@@ -2101,6 +2572,8 @@ export type GetUsersSelfSelfIdConfigsSuggest401 = {
 export type GetUsersSelfSelfIdConfigsSuggest200Item = {
     /** The artists we can choose from, by their spotify ids. */
     fromArtists: string[];
+    /** The tracks we can choose from, by their spotify ids. */
+    fromTracks: string[];
     /** @pattern ^(Guess Line|Guess Song)$ */
     mode: string;
     /** Whether to pick from any artist or only favorited ones. */
@@ -2153,6 +2626,8 @@ export type PutUsersSelfSelfIdConfigsMelodleConfigId401 = {
 export type PutUsersSelfSelfIdConfigsMelodleConfigId200 = {
     /** The artists we can choose from, by their spotify ids. */
     fromArtists: string[];
+    /** The tracks we can choose from, by their spotify ids. */
+    fromTracks: string[];
     /** Unique identifier for a config. */
     id: number;
     /** @pattern ^(Guess Line|Guess Song)$ */
@@ -2200,6 +2675,8 @@ export type DeleteUsersSelfSelfIdConfigsMelodleConfigId401 = {
 export type DeleteUsersSelfSelfIdConfigsMelodleConfigId200 = {
     /** The artists we can choose from, by their spotify ids. */
     fromArtists: string[];
+    /** The tracks we can choose from, by their spotify ids. */
+    fromTracks: string[];
     /** Unique identifier for a config. */
     id: number;
     /** @pattern ^(Guess Line|Guess Song)$ */
@@ -2229,6 +2706,8 @@ export type PostUsersSelfSelfIdConfigs401 = {
 export type PostUsersSelfSelfIdConfigs200 = {
     /** The artists we can choose from, by their spotify ids. */
     fromArtists: string[];
+    /** The tracks we can choose from, by their spotify ids. */
+    fromTracks: string[];
     /** Unique identifier for a config. */
     id: number;
     /** @pattern ^(Guess Line|Guess Song)$ */
@@ -2240,6 +2719,8 @@ export type PostUsersSelfSelfIdConfigs200 = {
 export type PostUsersSelfSelfIdConfigsBody = {
     /** The artists we can choose from, by their spotify ids. */
     fromArtists: string[];
+    /** The tracks we can choose from, by their spotify ids. */
+    fromTracks: string[];
     /** @pattern ^(Guess Line|Guess Song)$ */
     mode: string;
     /** Whether to pick from any artist or only favorited ones. */
@@ -2267,6 +2748,8 @@ export type GetUsersSelfSelfIdConfigs401 = {
 export type GetUsersSelfSelfIdConfigs200Item = {
     /** The artists we can choose from, by their spotify ids. */
     fromArtists: string[];
+    /** The tracks we can choose from, by their spotify ids. */
+    fromTracks: string[];
     /** Unique identifier for a config. */
     id: number;
     /** @pattern ^(Guess Line|Guess Song)$ */
@@ -2550,41 +3033,9 @@ export type GetUsersSelfSelfId200 = {
     username: string;
 };
 
-export type GetSpotifySearch200 = {
-    artists?: GetSpotifySearch200Artists;
-    tracks?: GetSpotifySearch200Tracks;
-};
-
 export type GetSpotifySearch200TracksPrevious = string | null;
 
 export type GetSpotifySearch200TracksNext = string | null;
-
-export type GetSpotifySearch200TracksItemsItem = {
-    album: GetSpotifySearch200TracksItemsItemAlbum;
-    artists: GetSpotifySearch200TracksItemsItemArtistsItem[];
-    available_markets: string[];
-    disc_number: number;
-    duration_ms: number;
-    explicit: boolean;
-    external_ids: GetSpotifySearch200TracksItemsItemExternalIds;
-    external_urls: GetSpotifySearch200TracksItemsItemExternalUrls;
-    href: string;
-    id: string;
-    is_local: boolean;
-    is_playable?: boolean;
-    linked_from?: GetSpotifySearch200TracksItemsItemLinkedFrom;
-    name: string;
-    /**
-     * @minimum 0
-     * @maximum 100
-     */
-    popularity: number;
-    preview_url?: GetSpotifySearch200TracksItemsItemPreviewUrl;
-    restrictions?: string;
-    track_number: number;
-    type: GetSpotifySearch200TracksItemsItemType;
-    uri: string;
-};
 
 export type GetSpotifySearch200Tracks = {
     href: string;
@@ -2594,6 +3045,11 @@ export type GetSpotifySearch200Tracks = {
     offset: number;
     previous: GetSpotifySearch200TracksPrevious;
     total: number;
+};
+
+export type GetSpotifySearch200 = {
+    artists?: GetSpotifySearch200Artists;
+    tracks?: GetSpotifySearch200Tracks;
 };
 
 export type GetSpotifySearch200TracksItemsItemType =
@@ -2637,6 +3093,33 @@ export type GetSpotifySearch200TracksItemsItemExternalIds = {
     ean?: string;
     isrc?: string;
     upc?: string;
+};
+
+export type GetSpotifySearch200TracksItemsItem = {
+    album: GetSpotifySearch200TracksItemsItemAlbum;
+    artists: GetSpotifySearch200TracksItemsItemArtistsItem[];
+    available_markets: string[];
+    disc_number: number;
+    duration_ms: number;
+    explicit: boolean;
+    external_ids: GetSpotifySearch200TracksItemsItemExternalIds;
+    external_urls: GetSpotifySearch200TracksItemsItemExternalUrls;
+    href: string;
+    id: string;
+    is_local: boolean;
+    is_playable?: boolean;
+    linked_from?: GetSpotifySearch200TracksItemsItemLinkedFrom;
+    name: string;
+    /**
+     * @minimum 0
+     * @maximum 100
+     */
+    popularity: number;
+    preview_url?: GetSpotifySearch200TracksItemsItemPreviewUrl;
+    restrictions?: string;
+    track_number: number;
+    type: GetSpotifySearch200TracksItemsItemType;
+    uri: string;
 };
 
 export type GetSpotifySearch200TracksItemsItemArtistsItemType =
@@ -2750,6 +3233,23 @@ export const GetSpotifySearch200ArtistsItemsItemType = {
     artist: "artist",
 } as const;
 
+export type GetSpotifySearch200ArtistsItemsItem = {
+    external_urls: GetSpotifySearch200ArtistsItemsItemExternalUrls;
+    followers: GetSpotifySearch200ArtistsItemsItemFollowers;
+    genres: string[];
+    href: string;
+    id: string;
+    images: GetSpotifySearch200ArtistsItemsItemImagesItem[];
+    name: string;
+    /**
+     * @minimum 0
+     * @maximum 100
+     */
+    popularity: number;
+    type: GetSpotifySearch200ArtistsItemsItemType;
+    uri: string;
+};
+
 export type GetSpotifySearch200ArtistsItemsItemImagesItemWidth = number | null;
 
 export type GetSpotifySearch200ArtistsItemsItemImagesItemHeight = number | null;
@@ -2772,23 +3272,6 @@ export type GetSpotifySearch200ArtistsItemsItemExternalUrls = {
     [key: string]: unknown;
 };
 
-export type GetSpotifySearch200ArtistsItemsItem = {
-    external_urls: GetSpotifySearch200ArtistsItemsItemExternalUrls;
-    followers: GetSpotifySearch200ArtistsItemsItemFollowers;
-    genres: string[];
-    href: string;
-    id: string;
-    images: GetSpotifySearch200ArtistsItemsItemImagesItem[];
-    name: string;
-    /**
-     * @minimum 0
-     * @maximum 100
-     */
-    popularity: number;
-    type: GetSpotifySearch200ArtistsItemsItemType;
-    uri: string;
-};
-
 export type GetSpotifySearchParams = {
     /**
      * The page to index into, starting at 0.
@@ -2803,6 +3286,75 @@ export type GetSpotifySearchParams = {
      */
     query: string;
     spotifyQueryType: string[];
+};
+
+export type PostDebugFakeUsers201Item = {
+    /**
+     * The user's email.
+     * @maxLength 254
+     * @pattern ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$
+     */
+    email: string;
+    /**
+     * The user's display name. It does not need to be unique.
+     * @minLength 1
+     * @maxLength 25
+     */
+    name: string;
+    /**
+     * A password.
+     * @minLength 3
+     * @maxLength 20
+     */
+    password: string;
+    /** The id to the profile picture of the user. These pictures cannot be uploaded, we store the options manually. */
+    profilePictureId: number;
+    /**
+   * The id to display to users. They must be unique, but the users can choose and change them.
+### Rules
+- Only accepts letters, digits and '.', '-', '_'.
+   * @minLength 3
+   * @maxLength 50
+   * @pattern ^[a-zA-Z0-9\.-_]+$
+   */
+    username: string;
+};
+
+export type PostDebugFakeUsersBody = {
+    /** The amount of users to generate. */
+    amount: number;
+};
+
+export type GetDebugFakeUser200 = {
+    /**
+     * The user's email.
+     * @maxLength 254
+     * @pattern ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$
+     */
+    email: string;
+    /**
+     * The user's display name. It does not need to be unique.
+     * @minLength 1
+     * @maxLength 25
+     */
+    name: string;
+    /**
+     * A password.
+     * @minLength 3
+     * @maxLength 20
+     */
+    password: string;
+    /** The id to the profile picture of the user. These pictures cannot be uploaded, we store the options manually. */
+    profilePictureId: number;
+    /**
+   * The id to display to users. They must be unique, but the users can choose and change them.
+### Rules
+- Only accepts letters, digits and '.', '-', '_'.
+   * @minLength 3
+   * @maxLength 50
+   * @pattern ^[a-zA-Z0-9\.-_]+$
+   */
+    username: string;
 };
 
 export type PostAuthRegister400StatusCode =
@@ -2896,75 +3448,6 @@ export type PostAuthLoginBody = {
      * @maxLength 20
      */
     password: string;
-};
-
-export type PostDebugFakeUsers201Item = {
-    /**
-     * The user's email.
-     * @maxLength 254
-     * @pattern ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$
-     */
-    email: string;
-    /**
-     * The user's display name. It does not need to be unique.
-     * @minLength 1
-     * @maxLength 25
-     */
-    name: string;
-    /**
-     * A password.
-     * @minLength 3
-     * @maxLength 20
-     */
-    password: string;
-    /** The id to the profile picture of the user. These pictures cannot be uploaded, we store the options manually. */
-    profilePictureId: number;
-    /**
-   * The id to display to users. They must be unique, but the users can choose and change them.
-### Rules
-- Only accepts letters, digits and '.', '-', '_'.
-   * @minLength 3
-   * @maxLength 50
-   * @pattern ^[a-zA-Z0-9\.-_]+$
-   */
-    username: string;
-};
-
-export type PostDebugFakeUsersBody = {
-    /** The amount of users to generate. */
-    amount: number;
-};
-
-export type GetDebugFakeUser200 = {
-    /**
-     * The user's email.
-     * @maxLength 254
-     * @pattern ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$
-     */
-    email: string;
-    /**
-     * The user's display name. It does not need to be unique.
-     * @minLength 1
-     * @maxLength 25
-     */
-    name: string;
-    /**
-     * A password.
-     * @minLength 3
-     * @maxLength 20
-     */
-    password: string;
-    /** The id to the profile picture of the user. These pictures cannot be uploaded, we store the options manually. */
-    profilePictureId: number;
-    /**
-   * The id to display to users. They must be unique, but the users can choose and change them.
-### Rules
-- Only accepts letters, digits and '.', '-', '_'.
-   * @minLength 3
-   * @maxLength 50
-   * @pattern ^[a-zA-Z0-9\.-_]+$
-   */
-    username: string;
 };
 
 export type GetUsersCheck200 = {
@@ -3132,58 +3615,6 @@ export type GetLyricsTrackMusixMatchId200 = {
     trackId: string;
 };
 
-export type GetLeaderboards200LeaderboardItemAllOfTwo = {
-    /** Players' position ordered from higest to lowest score. */
-    rank: number;
-    /** Score calculated by user performance within their games. */
-    score: number;
-};
-
-export type GetLeaderboards200LeaderboardItemAllOf = {
-    /** A numeric identifier for a user. Generated by the backend, unique and unchangeable. */
-    id: number;
-    /**
-     * The user's display name. It does not need to be unique.
-     * @minLength 1
-     * @maxLength 25
-     */
-    name: string;
-    /** File name required to fetch the image from the route to get specific user icons. */
-    profilePictureFilename: string;
-    /**
-   * The id to display to users. They must be unique, but the users can choose and change them.
-### Rules
-- Only accepts letters, digits and '.', '-', '_'.
-   * @minLength 3
-   * @maxLength 50
-   * @pattern ^[a-zA-Z0-9\.-_]+$
-   */
-    username: string;
-};
-
-export type GetLeaderboards200LeaderboardItem =
-    GetLeaderboards200LeaderboardItemAllOf &
-        GetLeaderboards200LeaderboardItemAllOfTwo;
-
-/**
- * A leaderboard of melodle users.
- */
-export type GetLeaderboards200 = {
-    leaderboard: GetLeaderboards200LeaderboardItem[];
-};
-
-export type GetLeaderboardsParams = {
-    gameModes: string[];
-    /**
-     * States when a range starts.
-     */
-    start: number;
-    /**
-     * A number which defines range size.
-     */
-    amount: number;
-};
-
 export type PutDebugSnapshot200 =
     (typeof PutDebugSnapshot200)[keyof typeof PutDebugSnapshot200];
 
@@ -3247,6 +3678,58 @@ export type GetDebugSnapshot200FriendsItem = {
 export type GetDebugSnapshot200 = {
     friends: GetDebugSnapshot200FriendsItem[];
     users: GetDebugSnapshot200UsersItem[];
+};
+
+export type GetLeaderboards200LeaderboardItemAllOfTwo = {
+    /** Players' position ordered from higest to lowest score. */
+    rank: number;
+    /** Score calculated by user performance within their games. */
+    score: number;
+};
+
+export type GetLeaderboards200LeaderboardItemAllOf = {
+    /** A numeric identifier for a user. Generated by the backend, unique and unchangeable. */
+    id: number;
+    /**
+     * The user's display name. It does not need to be unique.
+     * @minLength 1
+     * @maxLength 25
+     */
+    name: string;
+    /** File name required to fetch the image from the route to get specific user icons. */
+    profilePictureFilename: string;
+    /**
+   * The id to display to users. They must be unique, but the users can choose and change them.
+### Rules
+- Only accepts letters, digits and '.', '-', '_'.
+   * @minLength 3
+   * @maxLength 50
+   * @pattern ^[a-zA-Z0-9\.-_]+$
+   */
+    username: string;
+};
+
+export type GetLeaderboards200LeaderboardItem =
+    GetLeaderboards200LeaderboardItemAllOf &
+        GetLeaderboards200LeaderboardItemAllOfTwo;
+
+/**
+ * A leaderboard of melodle users.
+ */
+export type GetLeaderboards200 = {
+    leaderboard: GetLeaderboards200LeaderboardItem[];
+};
+
+export type GetLeaderboardsParams = {
+    gameModes: string[];
+    /**
+     * States when a range starts.
+     */
+    start: number;
+    /**
+     * A number which defines range size.
+     */
+    amount: number;
 };
 
 export type GetArtistsArtistName421StatusCode =
@@ -3556,6 +4039,19 @@ export const getArtistsArtistName = <
 };
 
 /**
+ * @summary Fetches global leaderboard information.
+ */
+export const getLeaderboards = <TData = AxiosResponse<GetLeaderboards200>>(
+    params: GetLeaderboardsParams,
+    options?: AxiosRequestConfig
+): Promise<TData> => {
+    return axios.get(`https://localhost/backend/leaderboards/`, {
+        ...options,
+        params: { ...params, ...options?.params },
+    });
+};
+
+/**
  * @summary Get current state of application.
  */
 export const getDebugSnapshot = <TData = AxiosResponse<GetDebugSnapshot200>>(
@@ -3585,19 +4081,6 @@ export const postDebugPlayground = <TData = AxiosResponse<void>>(
         undefined,
         options
     );
-};
-
-/**
- * @summary Fetches global leaderboard information.
- */
-export const getLeaderboards = <TData = AxiosResponse<GetLeaderboards200>>(
-    params: GetLeaderboardsParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://localhost/backend/leaderboards/`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
 };
 
 /**
@@ -3677,33 +4160,6 @@ export const getUsersCheck = <TData = AxiosResponse<GetUsersCheck200>>(
 };
 
 /**
- * All fake users have Fake123! as their password.
- * @summary Returns random, believable credentials for a user.
- */
-export const getDebugFakeUser = <TData = AxiosResponse<GetDebugFakeUser200>>(
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://localhost/backend/debug/fake/user`, options);
-};
-
-/**
- * We do not check if the user already exists, so this route may error. On error, we roll back any changes.
- * @summary Create a certain number of fake users.
- */
-export const postDebugFakeUsers = <
-    TData = AxiosResponse<PostDebugFakeUsers201Item[]>,
->(
-    postDebugFakeUsersBody: PostDebugFakeUsersBody,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.post(
-        `https://localhost/backend/debug/fake/users`,
-        postDebugFakeUsersBody,
-        options
-    );
-};
-
-/**
  * @summary Fetch a user's jwt token.
  */
 export const postAuthLogin = <TData = AxiosResponse<PostAuthLogin200>>(
@@ -3728,6 +4184,33 @@ export const postAuthRegister = <TData = AxiosResponse<PostAuthRegister200>>(
     return axios.post(
         `https://localhost/backend/auth/register`,
         postAuthRegisterBody,
+        options
+    );
+};
+
+/**
+ * All fake users have Fake123! as their password.
+ * @summary Returns random, believable credentials for a user.
+ */
+export const getDebugFakeUser = <TData = AxiosResponse<GetDebugFakeUser200>>(
+    options?: AxiosRequestConfig
+): Promise<TData> => {
+    return axios.get(`https://localhost/backend/debug/fake/user`, options);
+};
+
+/**
+ * We do not check if the user already exists, so this route may error. On error, we roll back any changes.
+ * @summary Create a certain number of fake users.
+ */
+export const postDebugFakeUsers = <
+    TData = AxiosResponse<PostDebugFakeUsers201Item[]>,
+>(
+    postDebugFakeUsersBody: PostDebugFakeUsersBody,
+    options?: AxiosRequestConfig
+): Promise<TData> => {
+    return axios.post(
+        `https://localhost/backend/debug/fake/users`,
+        postDebugFakeUsersBody,
         options
     );
 };
@@ -4117,16 +4600,18 @@ export const getUsersSelfSelfIdFriendsLeaderboards = <
 };
 
 /**
- * @summary Get information about a melodle game.
+ * @summary Start a new melodle game.
  */
-export const getUsersSelfSelfIdGameGuessLine = <
-    TData = AxiosResponse<GetUsersSelfSelfIdGameGuessLine200>,
+export const postUsersSelfSelfIdGameGuessLine = <
+    TData = AxiosResponse<PostUsersSelfSelfIdGameGuessLine201>,
 >(
     selfId: number,
+    postUsersSelfSelfIdGameGuessLineBody: PostUsersSelfSelfIdGameGuessLineBody,
     options?: AxiosRequestConfig
 ): Promise<TData> => {
-    return axios.get(
+    return axios.post(
         `https://localhost/backend/users/self/${selfId}/game/guessLine`,
+        postUsersSelfSelfIdGameGuessLineBody,
         options
     );
 };
@@ -4144,6 +4629,22 @@ export const postUsersSelfSelfIdGameGuessSong = <
     return axios.post(
         `https://localhost/backend/users/self/${selfId}/game/guessSong`,
         postUsersSelfSelfIdGameGuessSongBody,
+        options
+    );
+};
+
+/**
+ * @summary Get information about a guess line game.
+ */
+export const getUsersSelfSelfIdGameGuessLineGameId = <
+    TData = AxiosResponse<GetUsersSelfSelfIdGameGuessLineGameId200>,
+>(
+    selfId: number,
+    gameId: number,
+    options?: AxiosRequestConfig
+): Promise<TData> => {
+    return axios.get(
+        `https://localhost/backend/users/self/${selfId}/game/guessLine/${gameId}`,
         options
     );
 };
@@ -4168,7 +4669,7 @@ export const getUsersSelfSelfIdGameGuessSongGameId = <
  * @summary Submit a guess for a melodle game.
  */
 export const postUsersSelfSelfIdGameGuessLineGameIdAttempts = <
-    TData = AxiosResponse<PostUsersSelfSelfIdGameGuessLineGameIdAttempts200>,
+    TData = AxiosResponse<PostUsersSelfSelfIdGameGuessLineGameIdAttempts201>,
 >(
     selfId: number,
     gameId: number,
@@ -4208,10 +4709,10 @@ export type GetArtistsArtistMusixMatchIdResult =
 export type GetArtistsArtistNameResult = AxiosResponse<
     GetArtistsArtistName200Item[]
 >;
+export type GetLeaderboardsResult = AxiosResponse<GetLeaderboards200>;
 export type GetDebugSnapshotResult = AxiosResponse<GetDebugSnapshot200>;
 export type PutDebugSnapshotResult = AxiosResponse<PutDebugSnapshot200>;
 export type PostDebugPlaygroundResult = AxiosResponse<void>;
-export type GetLeaderboardsResult = AxiosResponse<GetLeaderboards200>;
 export type GetLyricsTrackMusixMatchIdResult =
     AxiosResponse<GetLyricsTrackMusixMatchId200>;
 export type GetPublicIconsFilenameResult = AxiosResponse<Blob>;
@@ -4219,12 +4720,12 @@ export type GetPublicIconsResult = AxiosResponse<GetPublicIcons200Item[]>;
 export type GetUsersUserIdResult = AxiosResponse<GetUsersUserId200>;
 export type GetUsersSearchResult = AxiosResponse<GetUsersSearch200>;
 export type GetUsersCheckResult = AxiosResponse<GetUsersCheck200>;
+export type PostAuthLoginResult = AxiosResponse<PostAuthLogin200>;
+export type PostAuthRegisterResult = AxiosResponse<PostAuthRegister200>;
 export type GetDebugFakeUserResult = AxiosResponse<GetDebugFakeUser200>;
 export type PostDebugFakeUsersResult = AxiosResponse<
     PostDebugFakeUsers201Item[]
 >;
-export type PostAuthLoginResult = AxiosResponse<PostAuthLogin200>;
-export type PostAuthRegisterResult = AxiosResponse<PostAuthRegister200>;
 export type GetSpotifySearchResult = AxiosResponse<GetSpotifySearch200>;
 export type GetAuthLoginSpotifyCallbackResult = AxiosResponse<unknown>;
 export type GetAuthRegisterSpotifyCallbackResult = AxiosResponse<unknown>;
@@ -4274,13 +4775,15 @@ export type PutUsersSelfSelfIdFriendsTargetUserIdResult =
     AxiosResponse<PutUsersSelfSelfIdFriendsTargetUserId200>;
 export type GetUsersSelfSelfIdFriendsLeaderboardsResult =
     AxiosResponse<GetUsersSelfSelfIdFriendsLeaderboards200>;
-export type GetUsersSelfSelfIdGameGuessLineResult =
-    AxiosResponse<GetUsersSelfSelfIdGameGuessLine200>;
+export type PostUsersSelfSelfIdGameGuessLineResult =
+    AxiosResponse<PostUsersSelfSelfIdGameGuessLine201>;
 export type PostUsersSelfSelfIdGameGuessSongResult =
     AxiosResponse<PostUsersSelfSelfIdGameGuessSong201>;
+export type GetUsersSelfSelfIdGameGuessLineGameIdResult =
+    AxiosResponse<GetUsersSelfSelfIdGameGuessLineGameId200>;
 export type GetUsersSelfSelfIdGameGuessSongGameIdResult =
     AxiosResponse<GetUsersSelfSelfIdGameGuessSongGameId200>;
 export type PostUsersSelfSelfIdGameGuessLineGameIdAttemptsResult =
-    AxiosResponse<PostUsersSelfSelfIdGameGuessLineGameIdAttempts200>;
+    AxiosResponse<PostUsersSelfSelfIdGameGuessLineGameIdAttempts201>;
 export type PostUsersSelfSelfIdGameGuessSongGameIdAttemptsResult =
     AxiosResponse<PostUsersSelfSelfIdGameGuessSongGameIdAttempts201>;

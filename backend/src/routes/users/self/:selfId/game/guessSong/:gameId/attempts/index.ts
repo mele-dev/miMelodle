@@ -4,9 +4,9 @@ import { MelodleTagName } from "../../../../../../../../plugins/swagger.js";
 import { decorators } from "../../../../../../../../services/decorators.js";
 import { ParamsSchema } from "../../../../../../../../types/params.js";
 import {
-    commonGuessSongPropertiesSchema,
+    commonGamePropertiesSchema,
     guessSongGameInformationSchema,
-} from "../../../../../../../../types/guessSong.js";
+} from "../../../../../../../../types/game.js";
 import { runPreparedQuery } from "../../../../../../../../services/database.js";
 import { sendError, sendOk } from "../../../../../../../../utils/reply.js";
 import { insertGuessSongAttempt } from "../../../../../../../../queries/dml.queries.js";
@@ -18,7 +18,7 @@ export default (async (fastify) => {
         onRequest: [decorators.authenticateSelf()],
         schema: {
             params: SafeType.Pick(ParamsSchema, ["selfId", "gameId"]),
-            body: SafeType.Pick(commonGuessSongPropertiesSchema, [
+            body: SafeType.Pick(commonGamePropertiesSchema, [
                 "guessedTrackSpotifyId",
             ]),
             response: {
@@ -41,6 +41,7 @@ export default (async (fastify) => {
                 ...request.params,
                 newGuess: request.body.guessedTrackSpotifyId,
             });
+
             switch (result.status) {
                 case "RepeatedTrack":
                     return sendError(reply, "conflict", result.status);
@@ -52,6 +53,8 @@ export default (async (fastify) => {
                     return sendError(reply, "notFound", result.status);
                 case "AlreadyWon":
                     return sendError(reply, "gone", result.status);
+                case "NotYourGame":
+                    return sendError(reply, "unauthorized", result.status);
                 case "Success":
                     break;
                 default:

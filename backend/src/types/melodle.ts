@@ -1,7 +1,7 @@
 import { Static } from "@sinclair/typebox";
 import { SafeType } from "../utils/typebox.js";
 import { userSchema } from "./user.js";
-import { artistSchema } from "./spotify.js";
+import { artistSchema, spotifyTrackSchema } from "./spotify.js";
 
 export const gameModes = ["Guess Line", "Guess Song"] as const;
 
@@ -18,6 +18,13 @@ export const melodleGameConfig = SafeType.Object({
         {
             description:
                 "The artists we can choose from, by their spotify ids.",
+        }
+    ),
+    fromTracks: SafeType.Array(
+        spotifyTrackSchema.properties.id,
+        {
+            description:
+                "The tracks we can choose from, by their spotify ids.",
         }
     ),
 });
@@ -77,8 +84,6 @@ export const MelodleGameSchema = SafeType.Object({
             endingTime: SafeType.String({ format: "date-time" }),
         })
     ).properties,
-    won: SafeType.Optional(SafeType.Boolean()),
-    endingTime: SafeType.Optional(SafeType.String({ format: "date-time" })),
     gameMode: SafeType.StringEnum([...gameModes]),
     config: melodleGameConfig,
 });

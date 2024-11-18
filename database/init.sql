@@ -93,6 +93,22 @@ CREATE TABLE "guessSongAttempts" (
     PRIMARY KEY ("gameId", "guessedSpotifyTrackId")
 );
 
+CREATE TABLE "guessLineGame" (
+    id               SERIAL PRIMARY KEY,
+    "userId"         BIGINT REFERENCES users (id) NOT NULL,
+    "spotifyTrackId" TEXT                         NOT NULL,
+    "snippet"        TEXT                         NOT NULL,
+    "createdAt"      timestamptz DEFAULT NOW()    NOT NULL
+);
+
+
+CREATE TABLE "guessLineAttempts" (
+    "gameId"         BIGINT REFERENCES "guessLineGame" (id) NOT NULL,
+    "guessedSnippet" TEXT                                   NOT NULL,
+    "guessedAt"      timestamptz                            NOT NULL,
+    PRIMARY KEY ("gameId", "guessedSnippet")
+);
+
 CREATE OR REPLACE FUNCTION encrypt_password(
     password TEXT
 ) RETURNS TEXT AS $$

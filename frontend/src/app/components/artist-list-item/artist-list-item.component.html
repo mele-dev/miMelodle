@@ -23,8 +23,17 @@
                 <button
                     [size]="'icon'"
                     hlmBtn
+                    [variant]="'ghost'"
+                    class="-mb-1 h-fit w-fit mr-2 sm:translate-y-[150%] bg-transparent p-1 drop-shadow transition-all duration-300 ease-in-out sm:rotate-[90deg] group-hover/card:rotate-0 group-focus-within/card:rotate-0 group-focus-within/card:translate-y-0 group-focus-within/card:duration-0 group-hover/card:translate-y-0"
+                    (click)="this.play.emit(this.artist())"
+                >
+                    <hlm-icon name="lucidePlay"></hlm-icon>
+                </button>
+                <button
+                    [size]="'icon'"
+                    hlmBtn
                     [variant]="'destructive'"
-                    class="-mb-1 h-fit w-fit sm:translate-y-[150%] bg-transparent p-1 drop-shadow transition-transform duration-300 ease-in-out group-focus-within/card:translate-y-0 group-focus-within/card:duration-0 group-hover/card:translate-y-0"
+                    class="-mb-1 h-fit w-fit delay-75 sm:translate-y-[150%] bg-transparent p-1 drop-shadow transition-all duration-300 ease-in-out sm:rotate-[90deg] sm:scale-75 group-focus-within/card:delay-0 group-focus-within/card:scale-100 group-hover/card:scale-100 group-hover/card:rotate-0 group-focus-within/card:rotate-0 group-focus-within/card:translate-y-0 group-focus-within/card:duration-0 group-hover/card:translate-y-0"
                     (click)="this.destroy.emit(this.artist())"
                 >
                     <hlm-icon name="lucideX"></hlm-icon>

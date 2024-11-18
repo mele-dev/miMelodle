@@ -6,7 +6,6 @@
     <div
         class="flex h-full w-full flex-row justify-between gap-6 p-6 backdrop-blur backdrop-brightness-50"
     >
-        <!-- TODO: Get artist image, not album image. -->
         <a
             [href]="this.gameInfo()?.artists?.[0]?.external_urls?.spotify"
             class="aspect-square h-full w-fit"
@@ -14,15 +13,15 @@
             <img
                 [src]="this.gameInfo()?.artists?.[0]?.images?.[0]?.url"
                 alt=""
-                class="aspect-square h-full rounded-xl shadow hover:scale-105 transition-transform"
+                class="aspect-square h-full rounded-xl shadow transition-transform hover:scale-105"
             />
         </a>
         <div class="flex w-full flex-col justify-center gap-4">
             <div
-                class="w-full rounded bg-muted/80 text-5xl shadow grayscale backdrop-blur"
-                [classList]="{
-        'bg-opacity-0': this.hasEnded(),
-        }"
+                [ngClass]="{
+                    'w-full rounded bg-muted/80 text-5xl shadow grayscale backdrop-blur': true,
+                    'bg-opacity-0': this.hasEnded(),
+                }"
             >
                 @if (!this.hasEnded()){ <span class="invisible"> Shh </span>}
                 @else {
@@ -55,7 +54,7 @@
                         <img
                             [src]="attempt.guessedTrack.album.images[0].url"
                             alt=""
-                            class="my-auto aspect-square h-32 rounded-xl shadow hover:scale-105 transition-transform"
+                            class="my-auto aspect-square h-32 rounded-xl shadow transition-transform hover:scale-105"
                         />
                     </a>
                     <div
@@ -75,11 +74,11 @@
                 </div>
             </div>
             <a
-                class="flex w-full flex-col justify-center gap-4 group"
+                class="group flex w-full flex-col justify-center gap-4"
                 [href]="attempt.guessedTrack.external_urls.spotify"
             >
                 <app-wordle-text
-                    class="group-hover:scale-105 w-fit transition-all"
+                    class="w-fit transition-all group-hover:scale-105"
                     [text]="attempt.guessedTrackNameHint"
                     [isPending]="false"
                 ></app-wordle-text>
