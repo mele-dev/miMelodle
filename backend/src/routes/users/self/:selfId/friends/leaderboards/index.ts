@@ -15,6 +15,7 @@ import {
 import { ParamsSchema } from "../../../../../../types/params.js";
 import { MelodleGameSchema } from "../../../../../../types/melodle.js";
 import { queryStringSchema } from "../../../../../../types/querystring.js";
+import { basePoints } from "../../../../../../services/score.js";
 
 export default (async (fastify, _opts) => {
     fastify.get("/", {
@@ -38,75 +39,6 @@ export default (async (fastify, _opts) => {
         },
     });
 
-    fastify.post("", {
-        onRequest: [decorators.authenticateSelf()],
-        schema: {
-            body: SafeType.Pick(
-                leaderboardSchema.properties.leaderboard.items,
-                ["score", "mode"]
-            ),
-            params: SafeType.Pick(ParamsSchema, ["selfId"]),
-            tags: ["Leaderboards"] satisfies MelodleTagName[],
-            response: {
-                201: SafeType.Pick(
-                    leaderboardSchema.properties.leaderboard.items,
-                    ["score", "mode"]
-                ),
-                ...SafeType.CreateErrors([
-                    "badRequest",
-                    "notFound",
-                    "unauthorized",
-                    "forbidden",
-                ]),
-            },
-            summary: "Creates a user's score and rank on the leaderboard.",
-        },
-        handler: async function (request, reply) {
-            const query = await runPreparedQuery(addUserToLeaderboard, {
-                selfId: request.params.selfId,
-                score: request.body.score,
-                mode: request.body.mode,
-            });
-            return sendOk(reply, 201, query[0]);
-        },
-    });
-
-    fastify.put("", {
-        onRequest: [decorators.authenticateSelf()],
-        schema: {
-            body: SafeType.Pick(
-                leaderboardSchema.properties.leaderboard.items,
-                ["score"]
-            ),
-            params: SafeType.Pick(ParamsSchema, ["selfId", "gameMode"]),
-            tags: ["Leaderboards"] satisfies MelodleTagName[],
-            response: {
-                201: SafeType.Pick(
-                    leaderboardSchema.properties.leaderboard.items,
-                    ["score"]
-                ),
-                ...SafeType.CreateErrors([
-                    "badRequest",
-                    "notFound",
-                    "unauthorized",
-                    "forbidden",
-                ]),
-            },
-            summary: "Updates user's score.",
-        },
-        handler: async function (request: any, reply: any) {
-            const query = await runPreparedQuery(updateScore, {
-                ...request.params,
-                ...request.body,
-                ...request.params,
-            });
-            if (query.length === 0) {
-                return sendError(reply, "badRequest", "Couldn't update.");
-            }
-            return sendOk(reply, 200, query[0]);
-        },
-    });
-
     fastify.delete("", {
         onRequest: [decorators.authenticateSelf()],
         schema: {
@@ -121,12 +53,13 @@ export default (async (fastify, _opts) => {
                     "unauthorized",
                 ]),
             },
-            summary: "Deletes user's score.",
+            summary: "Reset user's score.",
         },
         handler: async function (request, reply) {
             const queryResult = await runPreparedQuery(deleteRankingData, {
                 ...request.params,
                 ...request.query,
+                "baseScore": basePoints
             });
             switch (queryResult.length) {
                 case 0:

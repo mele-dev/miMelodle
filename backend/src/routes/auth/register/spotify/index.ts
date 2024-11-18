@@ -9,8 +9,7 @@ import {
 } from "../../../../services/database.js";
 import {
     addArtistToHome,
-    insertUserSpotify,
-    loginUserSpotify,
+    insertUser,
 } from "../../../../queries/dml.queries.js";
 import { JwtTokenContent } from "../../../../types/user.js";
 import {
@@ -18,15 +17,14 @@ import {
     spotifyCallbackGuard,
 } from "../../../../types/user.js";
 import { frontendPaths } from "../../../../services/urls.js";
-import { isAxiosError } from "axios";
+import { basePoints } from "../../../../services/score.js";
 
 export default (async (fastify) => {
     fastify.get("/callback", {
         onRequest: [decorators.noSecurity],
         schema: {
             response: {
-                300: SafeType.Any(),
-                // TODO: Implement correct error handling.
+                302: SafeType.Any(),
                 ...SafeType.CreateErrors([]),
             },
             summary: "Register a user through a spotify callback.",
@@ -69,22 +67,16 @@ export default (async (fastify) => {
             } satisfies Partial<spotifyCallback>);
 
             let result = await executeTransaction(async () => {
-                // TODO: Auto-generate username so that it cannot collide.
-                const result = await runPreparedQuery(insertUserSpotify, {
+                const result = await runPreparedQuery(insertUser, {
                     ...parsedUserInfo,
                     name: parsedUserInfo.username,
+                    baseGuessSongScore: basePoints,
+                    baseGuessLineScore: basePoints,
+                    artists:
+                        userFollows?.artists?.items
+                            ?.map((a) => a.id)
+                            ?.filter((s) => s !== undefined) ?? [],
                 });
-
-                if (userFollows.artists.items) {
-                    Promise.all(
-                        userFollows.artists.items.map((artist) =>
-                            runPreparedQuery(addArtistToHome, {
-                                selfId: result[0].id,
-                                spotifyArtistId: artist.id!,
-                            })
-                        )
-                    );
-                }
 
                 return result;
             });

@@ -42,7 +42,10 @@ type GuessSongResult =
     | { status: "RepeatedTrack" }
     | { status: "TrackNotFound" }
     | { status: "AlreadyWon" }
-    | { status: "Success"; hints: GuessSongGameInformation };
+    | {
+          status: "Success";
+          hints: GuessSongGameInformation & { currentScore: number };
+      };
 
 export async function getGuessSongInformation(opts: {
     selfId: number;
@@ -136,6 +139,7 @@ export async function getGuessSongInformation(opts: {
             artists: artists.artists,
             snippet: gameInfo[0].snippet ?? undefined,
             correctTrack: gameHasEnded ? hiddenTrack : undefined,
+            currentScore: gameInfo[0].score,
         },
     };
 }

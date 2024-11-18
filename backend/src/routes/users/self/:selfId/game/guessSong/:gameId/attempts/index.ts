@@ -9,9 +9,13 @@ import {
 } from "../../../../../../../../types/guessSong.js";
 import { runPreparedQuery } from "../../../../../../../../services/database.js";
 import { sendError, sendOk } from "../../../../../../../../utils/reply.js";
-import { insertGuessSongAttempt, updateScore } from "../../../../../../../../queries/dml.queries.js";
+import { insertGuessSongAttempt } from "../../../../../../../../queries/dml.queries.js";
 import { getGuessSongInformation } from "../../../../../../../../services/game.js";
 import { UnreachableCaseError } from "ts-essentials";
+import {
+    calculateScoreDecrement,
+    calculateScoreIncrement,
+} from "../../../../../../../../services/score.js";
 
 export default (async (fastify) => {
     fastify.post("", {
@@ -41,6 +45,7 @@ export default (async (fastify) => {
                 ...request.params,
                 newGuess: request.body.guessedTrackSpotifyId,
             });
+
             switch (result.status) {
                 case "RepeatedTrack":
                     return sendError(reply, "conflict", result.status);
@@ -58,15 +63,31 @@ export default (async (fastify) => {
                     throw new UnreachableCaseError(result);
             }
 
+            const hasWon = result.hints.attempts.some((a) => a.isCorrectTrack);
+            const hasLost = !hasWon && result.hints.attempts.length === 6;
+
+            let scoreDeviation = 0;
+
+            if (hasWon) {
+                scoreDeviation = calculateScoreIncrement(
+                    result.hints.currentScore,
+                    result.hints.attempts.length
+                );
+            }
+
+            if (hasLost) {
+                scoreDeviation = calculateScoreDecrement(
+                    result.hints.currentScore
+                );
+            }
+
             const queryResult = await runPreparedQuery(insertGuessSongAttempt, {
-                gameId: request.params.gameId,
+                ...request.params,
                 trackId: request.body.guessedTrackSpotifyId,
+                scoreDeviation,
             });
 
-            //const updateScore = await runPreparedQuery(updateScore, {})
-
             if (queryResult.length !== 1) {
-                // I'm not sure which code to use here.
                 return sendError(
                     reply,
                     "internalServerError",
@@ -74,10 +95,11 @@ export default (async (fastify) => {
                 );
             }
 
-
-            if (queryResult[0].guessedSpotifyTrackId === request.body.guessedTrackSpotifyId)
-
-            return sendOk(reply, 201, result.hints);
+            if (
+                queryResult[0].guessedSpotifyTrackId ===
+                request.body.guessedTrackSpotifyId
+            )
+                return sendOk(reply, 201, result.hints);
         },
     });
 }) satisfies FastifyPluginAsyncTypebox;

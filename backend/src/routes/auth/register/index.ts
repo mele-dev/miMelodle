@@ -10,6 +10,7 @@ import { insertUser } from "../../../queries/dml.queries.js";
 import { sendError, sendOk } from "../../../utils/reply.js";
 import { decorators } from "../../../services/decorators.js";
 import { MelodleTagName } from "../../../plugins/swagger.js";
+import { basePoints } from "../../../services/score.js";
 
 export default (async (fastify) => {
     fastify.post("", {
@@ -57,7 +58,12 @@ export default (async (fastify) => {
         },
 
         handler: async function (request, reply) {
-            const result = await runPreparedQuery(insertUser, request.body);
+            const result = await runPreparedQuery(insertUser, {
+                ...request.body,
+                baseGuessLineScore: basePoints,
+                baseGuessSongScore: basePoints,
+                artists: [],
+            });
 
             if (result.length !== 1) {
                 return sendError(

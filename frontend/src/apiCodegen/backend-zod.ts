@@ -222,6 +222,84 @@ export const getArtistsArtistNameResponse = zod.array(
 );
 
 /**
+ * @summary Get current state of application.
+ */
+export const getDebugSnapshotResponseUsersItemNameMax = 25;
+export const getDebugSnapshotResponseUsersItemEmailMax = 254;
+
+export const getDebugSnapshotResponseUsersItemEmailRegExp = new RegExp(
+    "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$"
+);
+export const getDebugSnapshotResponseUsersItemUsernameMin = 3;
+
+export const getDebugSnapshotResponseUsersItemUsernameMax = 50;
+
+export const getDebugSnapshotResponseUsersItemUsernameRegExp = new RegExp(
+    "^[a-zA-Z0-9\\.-_]+$"
+);
+export const getDebugSnapshotResponseFriendsItemFriendUsernameMin = 3;
+
+export const getDebugSnapshotResponseFriendsItemFriendUsernameMax = 50;
+
+export const getDebugSnapshotResponseFriendsItemFriendUsernameRegExp =
+    new RegExp("^[a-zA-Z0-9\\.-_]+$");
+export const getDebugSnapshotResponseFriendsItemUserUsernameMin = 3;
+
+export const getDebugSnapshotResponseFriendsItemUserUsernameMax = 50;
+
+export const getDebugSnapshotResponseFriendsItemUserUsernameRegExp = new RegExp(
+    "^[a-zA-Z0-9\\.-_]+$"
+);
+export const getDebugSnapshotResponseFriendsItemStatusRegExp = new RegExp(
+    "^(pending|blocked|accepted)$"
+);
+
+export const getDebugSnapshotResponse = zod.object({
+    users: zod.array(
+        zod.object({
+            name: zod
+                .string()
+                .min(1)
+                .max(getDebugSnapshotResponseUsersItemNameMax),
+            email: zod
+                .string()
+                .max(getDebugSnapshotResponseUsersItemEmailMax)
+                .regex(getDebugSnapshotResponseUsersItemEmailRegExp),
+            username: zod
+                .string()
+                .min(getDebugSnapshotResponseUsersItemUsernameMin)
+                .max(getDebugSnapshotResponseUsersItemUsernameMax)
+                .regex(getDebugSnapshotResponseUsersItemUsernameRegExp),
+            profilePictureId: zod.number(),
+            spotifyId: zod.string().optional(),
+        })
+    ),
+    friends: zod.array(
+        zod.object({
+            friendUsername: zod
+                .string()
+                .min(getDebugSnapshotResponseFriendsItemFriendUsernameMin)
+                .max(getDebugSnapshotResponseFriendsItemFriendUsernameMax)
+                .regex(getDebugSnapshotResponseFriendsItemFriendUsernameRegExp),
+            userUsername: zod
+                .string()
+                .min(getDebugSnapshotResponseFriendsItemUserUsernameMin)
+                .max(getDebugSnapshotResponseFriendsItemUserUsernameMax)
+                .regex(getDebugSnapshotResponseFriendsItemUserUsernameRegExp),
+            createdAt: zod.string().datetime(),
+            status: zod
+                .string()
+                .regex(getDebugSnapshotResponseFriendsItemStatusRegExp),
+        })
+    ),
+});
+
+/**
+ * @summary Reset the application state to a certain snapshot.
+ */
+export const putDebugSnapshotResponse = zod.enum(["TODO!"]);
+
+/**
  * @summary Fetches global leaderboard information.
  */
 export const getLeaderboardsGameModePathGameModeRegExp = new RegExp(
@@ -315,84 +393,6 @@ export const getPublicIconsResponseItem = zod.object({
     filename: zod.string(),
 });
 export const getPublicIconsResponse = zod.array(getPublicIconsResponseItem);
-
-/**
- * @summary Get current state of application.
- */
-export const getDebugSnapshotResponseUsersItemNameMax = 25;
-export const getDebugSnapshotResponseUsersItemEmailMax = 254;
-
-export const getDebugSnapshotResponseUsersItemEmailRegExp = new RegExp(
-    "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$"
-);
-export const getDebugSnapshotResponseUsersItemUsernameMin = 3;
-
-export const getDebugSnapshotResponseUsersItemUsernameMax = 50;
-
-export const getDebugSnapshotResponseUsersItemUsernameRegExp = new RegExp(
-    "^[a-zA-Z0-9\\.-_]+$"
-);
-export const getDebugSnapshotResponseFriendsItemFriendUsernameMin = 3;
-
-export const getDebugSnapshotResponseFriendsItemFriendUsernameMax = 50;
-
-export const getDebugSnapshotResponseFriendsItemFriendUsernameRegExp =
-    new RegExp("^[a-zA-Z0-9\\.-_]+$");
-export const getDebugSnapshotResponseFriendsItemUserUsernameMin = 3;
-
-export const getDebugSnapshotResponseFriendsItemUserUsernameMax = 50;
-
-export const getDebugSnapshotResponseFriendsItemUserUsernameRegExp = new RegExp(
-    "^[a-zA-Z0-9\\.-_]+$"
-);
-export const getDebugSnapshotResponseFriendsItemStatusRegExp = new RegExp(
-    "^(pending|blocked|accepted)$"
-);
-
-export const getDebugSnapshotResponse = zod.object({
-    users: zod.array(
-        zod.object({
-            name: zod
-                .string()
-                .min(1)
-                .max(getDebugSnapshotResponseUsersItemNameMax),
-            email: zod
-                .string()
-                .max(getDebugSnapshotResponseUsersItemEmailMax)
-                .regex(getDebugSnapshotResponseUsersItemEmailRegExp),
-            username: zod
-                .string()
-                .min(getDebugSnapshotResponseUsersItemUsernameMin)
-                .max(getDebugSnapshotResponseUsersItemUsernameMax)
-                .regex(getDebugSnapshotResponseUsersItemUsernameRegExp),
-            profilePictureId: zod.number(),
-            spotifyId: zod.string().optional(),
-        })
-    ),
-    friends: zod.array(
-        zod.object({
-            friendUsername: zod
-                .string()
-                .min(getDebugSnapshotResponseFriendsItemFriendUsernameMin)
-                .max(getDebugSnapshotResponseFriendsItemFriendUsernameMax)
-                .regex(getDebugSnapshotResponseFriendsItemFriendUsernameRegExp),
-            userUsername: zod
-                .string()
-                .min(getDebugSnapshotResponseFriendsItemUserUsernameMin)
-                .max(getDebugSnapshotResponseFriendsItemUserUsernameMax)
-                .regex(getDebugSnapshotResponseFriendsItemUserUsernameRegExp),
-            createdAt: zod.string().datetime(),
-            status: zod
-                .string()
-                .regex(getDebugSnapshotResponseFriendsItemStatusRegExp),
-        })
-    ),
-});
-
-/**
- * @summary Reset the application state to a certain snapshot.
- */
-export const putDebugSnapshotResponse = zod.enum(["TODO!"]);
 
 /**
  * Authentication is not needed to see public user information.
@@ -1416,46 +1416,7 @@ export const getUsersSelfSelfIdFriendsLeaderboardsResponse = zod.object({
 });
 
 /**
- * @summary Creates a user's score and rank on the leaderboard.
- */
-export const postUsersSelfSelfIdFriendsLeaderboardsParams = zod.object({
-    selfId: zod.number(),
-});
-
-export const postUsersSelfSelfIdFriendsLeaderboardsBodyModeRegExp = new RegExp(
-    "^(guessLine|guessSong)$"
-);
-
-export const postUsersSelfSelfIdFriendsLeaderboardsBody = zod.object({}).and(
-    zod.object({
-        score: zod.number(),
-        mode: zod
-            .string()
-            .regex(postUsersSelfSelfIdFriendsLeaderboardsBodyModeRegExp),
-    })
-);
-
-/**
- * @summary Updates user's score.
- */
-export const putUsersSelfSelfIdFriendsLeaderboardsPathGameModeRegExp =
-    new RegExp("^(guessLine|guessSong)$");
-
-export const putUsersSelfSelfIdFriendsLeaderboardsParams = zod.object({
-    selfId: zod.number(),
-    gameMode: zod
-        .string()
-        .regex(putUsersSelfSelfIdFriendsLeaderboardsPathGameModeRegExp),
-});
-
-export const putUsersSelfSelfIdFriendsLeaderboardsBody = zod.object({}).and(
-    zod.object({
-        score: zod.number(),
-    })
-);
-
-/**
- * @summary Deletes user's score.
+ * @summary Reset user's score.
  */
 export const deleteUsersSelfSelfIdFriendsLeaderboardsParams = zod.object({
     selfId: zod.number(),
@@ -1472,17 +1433,6 @@ export const deleteUsersSelfSelfIdFriendsLeaderboardsQueryParams = zod.object({
 
 export const deleteUsersSelfSelfIdFriendsLeaderboardsResponse = zod.object({
     userId: zod.number(),
-});
-
-/**
- * @summary Start a new melodle game.
- */
-export const postUsersSelfSelfIdGameGuessSongParams = zod.object({
-    selfId: zod.number(),
-});
-
-export const postUsersSelfSelfIdGameGuessSongBody = zod.object({
-    fromArtists: zod.array(zod.string()),
 });
 
 /**
@@ -1535,6 +1485,17 @@ export const getUsersSelfSelfIdGameGuessLineResponse = zod.object({
         onlyFavoriteArtists: zod.boolean(),
         fromArtists: zod.array(zod.string()),
     }),
+});
+
+/**
+ * @summary Start a new melodle game.
+ */
+export const postUsersSelfSelfIdGameGuessSongParams = zod.object({
+    selfId: zod.number(),
+});
+
+export const postUsersSelfSelfIdGameGuessSongBody = zod.object({
+    fromArtists: zod.array(zod.string()),
 });
 
 /**
@@ -1927,18 +1888,6 @@ export const getUsersSelfSelfIdGameGuessSongGameIdResponse = zod.object({
 /**
  * @summary Submit a guess for a melodle game.
  */
-export const postUsersSelfSelfIdGameGuessSongGameIdAttemptsParams = zod.object({
-    selfId: zod.number(),
-    gameId: zod.number(),
-});
-
-export const postUsersSelfSelfIdGameGuessSongGameIdAttemptsBody = zod.object({
-    guessedTrackSpotifyId: zod.string(),
-});
-
-/**
- * @summary Submit a guess for a melodle game.
- */
 export const postUsersSelfSelfIdGameGuessLineGameIdAttemptsParams = zod.object({
     selfId: zod.number(),
     gameId: zod.number(),
@@ -1967,3 +1916,15 @@ export const postUsersSelfSelfIdGameGuessLineGameIdAttemptsResponse =
         input: zod.string(),
         won: zod.boolean(),
     });
+
+/**
+ * @summary Submit a guess for a melodle game.
+ */
+export const postUsersSelfSelfIdGameGuessSongGameIdAttemptsParams = zod.object({
+    selfId: zod.number(),
+    gameId: zod.number(),
+});
+
+export const postUsersSelfSelfIdGameGuessSongGameIdAttemptsBody = zod.object({
+    guessedTrackSpotifyId: zod.string(),
+});
