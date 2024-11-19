@@ -37,6 +37,9 @@
             hlmBtn
             [routerLink]="this.safeRouter.createLink('/app/game')"
             variant="outline"
+            [ngClass]="{
+                underline: this.currentSection().game,
+            }"
         >
             {{ this.dict().play }}
         </a>
