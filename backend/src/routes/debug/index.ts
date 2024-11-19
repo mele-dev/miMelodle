@@ -17,10 +17,8 @@ import {
 import { friendSchema, User, userSchema } from "../../types/user.js";
 import { sendOk } from "../../utils/reply.js";
 import { isAxiosError } from "axios";
-import MusixmatchAPI from "../../musixmatch-api/musixmatch.js";
 import { search } from "../../apiCodegen/spotify.js";
-import { RequireSpotify } from "../../spotify/helpers.js";
-import { faker } from "@faker-js/faker";
+import { getGuessSongFromUser, getGuessSongFromUserDebug } from "../../queries/dml.queries.js";
 
 export default (async (fastify) => {
     if (typedEnv.NODE_ENV === "development") {
@@ -107,12 +105,12 @@ export default (async (fastify) => {
         },
         async handler(_request, reply) {
             try {
-                const tracks = await search({
-                    "q": "el cuarteto de nos",
-                    "type": ["track"],
+                const result = await runPreparedQuery(getGuessSongFromUser, {
+                    "gameId": 4,
+                    "selfId": 1,
                 })
 
-                return tracks.tracks?.items;
+                return result;
             } catch (e) {
                 if (isAxiosError(e)) {
                     return reply.code(e.status ?? 269).send(e.response?.data);
