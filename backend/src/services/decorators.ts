@@ -48,12 +48,7 @@ export const decorators = {
             try {
                 const tokenContent = await request.jwtVerify();
 
-                if (
-                    !Value.Check(
-                        jwtTokenContentSchema,
-                        tokenContent
-                    )
-                ) {
+                if (!Value.Check(jwtTokenContentSchema, tokenContent)) {
                     return sendError(
                         reply,
                         "unauthorized",

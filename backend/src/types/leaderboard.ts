@@ -7,16 +7,19 @@ export const leaderboardSchema = SafeType.Object(
     {
         leaderboard: SafeType.Array(
             SafeType.Intersect([
-                SafeType.Pick(userSchema, ["id", "username", "name", "profilePictureFilename"]),
+                SafeType.Pick(userSchema, [
+                    "id",
+                    "username",
+                    "name",
+                    "profilePictureId",
+                    "profilePictureFilename"
+                ]),
                 SafeType.Object({
                     score: SafeType.Number({
                         description:
                             "Score calculated by user performance within their games.",
                     }),
-                    rank: SafeType.Integer({
-                        description:
-                            "Players' position ordered from higest to lowest score.",
-                    }),
+                    mode: SafeType.StringEnum(["guessLine", "guessSong"]),
                 }),
             ])
         ),

@@ -222,58 +222,6 @@ export const getArtistsArtistNameResponse = zod.array(
 );
 
 /**
- * @summary Fetches global leaderboard information.
- */
-export const getLeaderboardsQueryGameModesItemRegExp = new RegExp(
-    "^(Guess Line|Guess Song)$"
-);
-export const getLeaderboardsQueryAmountMax = 50;
-
-export const getLeaderboardsQueryParams = zod.object({
-    gameModes: zod.array(
-        zod.string().regex(getLeaderboardsQueryGameModesItemRegExp)
-    ),
-    start: zod.number(),
-    amount: zod.number().max(getLeaderboardsQueryAmountMax),
-});
-
-export const getLeaderboardsResponseLeaderboardItemUsernameMin = 3;
-
-export const getLeaderboardsResponseLeaderboardItemUsernameMax = 50;
-
-export const getLeaderboardsResponseLeaderboardItemUsernameRegExp = new RegExp(
-    "^[a-zA-Z0-9\\.-_]+$"
-);
-export const getLeaderboardsResponseLeaderboardItemNameMax = 25;
-
-export const getLeaderboardsResponse = zod.object({
-    leaderboard: zod.array(
-        zod
-            .object({
-                id: zod.number(),
-                username: zod
-                    .string()
-                    .min(getLeaderboardsResponseLeaderboardItemUsernameMin)
-                    .max(getLeaderboardsResponseLeaderboardItemUsernameMax)
-                    .regex(
-                        getLeaderboardsResponseLeaderboardItemUsernameRegExp
-                    ),
-                name: zod
-                    .string()
-                    .min(1)
-                    .max(getLeaderboardsResponseLeaderboardItemNameMax),
-                profilePictureFilename: zod.string(),
-            })
-            .and(
-                zod.object({
-                    score: zod.number(),
-                    rank: zod.number(),
-                })
-            )
-    ),
-});
-
-/**
  * @summary Get current state of application.
  */
 export const getDebugSnapshotResponseUsersItemNameMax = 25;
@@ -350,6 +298,63 @@ export const getDebugSnapshotResponse = zod.object({
  * @summary Reset the application state to a certain snapshot.
  */
 export const putDebugSnapshotResponse = zod.enum(["TODO!"]);
+
+/**
+ * @summary Fetches global leaderboard information.
+ */
+export const getLeaderboardsGameModePathGameModeRegExp = new RegExp(
+    "^(guessLine|guessSong)$"
+);
+
+export const getLeaderboardsGameModeParams = zod.object({
+    gameMode: zod.string().regex(getLeaderboardsGameModePathGameModeRegExp),
+});
+
+export const getLeaderboardsGameModeResponseLeaderboardItemUsernameMin = 3;
+
+export const getLeaderboardsGameModeResponseLeaderboardItemUsernameMax = 50;
+
+export const getLeaderboardsGameModeResponseLeaderboardItemUsernameRegExp =
+    new RegExp("^[a-zA-Z0-9\\.-_]+$");
+export const getLeaderboardsGameModeResponseLeaderboardItemNameMax = 25;
+export const getLeaderboardsGameModeResponseLeaderboardItemModeRegExp =
+    new RegExp("^(guessLine|guessSong)$");
+
+export const getLeaderboardsGameModeResponse = zod.object({
+    leaderboard: zod.array(
+        zod
+            .object({
+                id: zod.number(),
+                username: zod
+                    .string()
+                    .min(
+                        getLeaderboardsGameModeResponseLeaderboardItemUsernameMin
+                    )
+                    .max(
+                        getLeaderboardsGameModeResponseLeaderboardItemUsernameMax
+                    )
+                    .regex(
+                        getLeaderboardsGameModeResponseLeaderboardItemUsernameRegExp
+                    ),
+                name: zod
+                    .string()
+                    .min(1)
+                    .max(getLeaderboardsGameModeResponseLeaderboardItemNameMax),
+                profilePictureId: zod.number(),
+                profilePictureFilename: zod.string(),
+            })
+            .and(
+                zod.object({
+                    score: zod.number(),
+                    mode: zod
+                        .string()
+                        .regex(
+                            getLeaderboardsGameModeResponseLeaderboardItemModeRegExp
+                        ),
+                })
+            )
+    ),
+});
 
 /**
  * This endpoint retrieves the lyrics for a given track using its Musixmatch ID
@@ -1024,7 +1029,7 @@ export const getUsersSelfSelfIdConfigsParams = zod.object({
 });
 
 export const getUsersSelfSelfIdConfigsResponseModeRegExp = new RegExp(
-    "^(Guess Line|Guess Song)$"
+    "^(guessLine|guessSong)$"
 );
 
 export const getUsersSelfSelfIdConfigsResponseItem = zod.object({
@@ -1046,7 +1051,7 @@ export const postUsersSelfSelfIdConfigsParams = zod.object({
 });
 
 export const postUsersSelfSelfIdConfigsBodyModeRegExp = new RegExp(
-    "^(Guess Line|Guess Song)$"
+    "^(guessLine|guessSong)$"
 );
 
 export const postUsersSelfSelfIdConfigsBody = zod.object({
@@ -1057,7 +1062,7 @@ export const postUsersSelfSelfIdConfigsBody = zod.object({
 });
 
 export const postUsersSelfSelfIdConfigsResponseModeRegExp = new RegExp(
-    "^(Guess Line|Guess Song)$"
+    "^(guessLine|guessSong)$"
 );
 
 export const postUsersSelfSelfIdConfigsResponse = zod.object({
@@ -1077,7 +1082,7 @@ export const deleteUsersSelfSelfIdConfigsMelodleConfigIdParams = zod.object({
 });
 
 export const deleteUsersSelfSelfIdConfigsMelodleConfigIdResponseModeRegExp =
-    new RegExp("^(Guess Line|Guess Song)$");
+    new RegExp("^(guessLine|guessSong)$");
 
 export const deleteUsersSelfSelfIdConfigsMelodleConfigIdResponse = zod.object({
     id: zod.number(),
@@ -1098,7 +1103,7 @@ export const putUsersSelfSelfIdConfigsMelodleConfigIdParams = zod.object({
 });
 
 export const putUsersSelfSelfIdConfigsMelodleConfigIdResponseModeRegExp =
-    new RegExp("^(Guess Line|Guess Song)$");
+    new RegExp("^(guessLine|guessSong)$");
 
 export const putUsersSelfSelfIdConfigsMelodleConfigIdResponse = zod.object({
     id: zod.number(),
@@ -1123,7 +1128,7 @@ export const getUsersSelfSelfIdConfigsSuggestQueryParams = zod.object({
 });
 
 export const getUsersSelfSelfIdConfigsSuggestResponseModeRegExp = new RegExp(
-    "^(Guess Line|Guess Song)$"
+    "^(guessLine|guessSong)$"
 );
 
 export const getUsersSelfSelfIdConfigsSuggestResponseItem = zod.object({
@@ -1183,10 +1188,10 @@ export const getUsersSelfSelfIdGameHistoryParams = zod.object({
 
 export const getUsersSelfSelfIdGameHistoryResponseAttemptsItemGuessedLineMax = 1000;
 export const getUsersSelfSelfIdGameHistoryResponseGameModeRegExp = new RegExp(
-    "^(Guess Line|Guess Song)$"
+    "^(guessLine|guessSong)$"
 );
 export const getUsersSelfSelfIdGameHistoryResponseConfigModeRegExp = new RegExp(
-    "^(Guess Line|Guess Song)$"
+    "^(guessLine|guessSong)$"
 );
 
 export const getUsersSelfSelfIdGameHistoryResponseItem = zod.object({
@@ -1354,28 +1359,19 @@ export const putUsersSelfSelfIdFriendsTargetUserIdResponse = zod.object({
 });
 
 /**
- * @summary Gets information about the user's friends leaderboard on the game mode.
+ * @summary Get friends leaderboard for a given game mode.
  */
 export const getUsersSelfSelfIdFriendsLeaderboardsParams = zod.object({
     selfId: zod.number(),
 });
 
-export const getUsersSelfSelfIdFriendsLeaderboardsQueryAmountMax = 50;
-export const getUsersSelfSelfIdFriendsLeaderboardsQueryGameModesItemRegExp =
-    new RegExp("^(Guess Line|Guess Song)$");
+export const getUsersSelfSelfIdFriendsLeaderboardsQueryGameModeRegExp =
+    new RegExp("^(guessLine|guessSong)$");
 
 export const getUsersSelfSelfIdFriendsLeaderboardsQueryParams = zod.object({
-    start: zod.number(),
-    amount: zod
-        .number()
-        .max(getUsersSelfSelfIdFriendsLeaderboardsQueryAmountMax),
-    gameModes: zod.array(
-        zod
-            .string()
-            .regex(
-                getUsersSelfSelfIdFriendsLeaderboardsQueryGameModesItemRegExp
-            )
-    ),
+    gameMode: zod
+        .string()
+        .regex(getUsersSelfSelfIdFriendsLeaderboardsQueryGameModeRegExp),
 });
 
 export const getUsersSelfSelfIdFriendsLeaderboardsResponseLeaderboardItemUsernameMin = 3;
@@ -1385,6 +1381,8 @@ export const getUsersSelfSelfIdFriendsLeaderboardsResponseLeaderboardItemUsernam
 export const getUsersSelfSelfIdFriendsLeaderboardsResponseLeaderboardItemUsernameRegExp =
     new RegExp("^[a-zA-Z0-9\\.-_]+$");
 export const getUsersSelfSelfIdFriendsLeaderboardsResponseLeaderboardItemNameMax = 25;
+export const getUsersSelfSelfIdFriendsLeaderboardsResponseLeaderboardItemModeRegExp =
+    new RegExp("^(guessLine|guessSong)$");
 
 export const getUsersSelfSelfIdFriendsLeaderboardsResponse = zod.object({
     leaderboard: zod.array(
@@ -1408,15 +1406,40 @@ export const getUsersSelfSelfIdFriendsLeaderboardsResponse = zod.object({
                     .max(
                         getUsersSelfSelfIdFriendsLeaderboardsResponseLeaderboardItemNameMax
                     ),
+                profilePictureId: zod.number(),
                 profilePictureFilename: zod.string(),
             })
             .and(
                 zod.object({
                     score: zod.number(),
-                    rank: zod.number(),
+                    mode: zod
+                        .string()
+                        .regex(
+                            getUsersSelfSelfIdFriendsLeaderboardsResponseLeaderboardItemModeRegExp
+                        ),
                 })
             )
     ),
+});
+
+/**
+ * @summary Reset user's score.
+ */
+export const deleteUsersSelfSelfIdFriendsLeaderboardsParams = zod.object({
+    selfId: zod.number(),
+});
+
+export const deleteUsersSelfSelfIdFriendsLeaderboardsQueryGameModeRegExp =
+    new RegExp("^(guessLine|guessSong)$");
+
+export const deleteUsersSelfSelfIdFriendsLeaderboardsQueryParams = zod.object({
+    gameMode: zod
+        .string()
+        .regex(deleteUsersSelfSelfIdFriendsLeaderboardsQueryGameModeRegExp),
+});
+
+export const deleteUsersSelfSelfIdFriendsLeaderboardsResponse = zod.object({
+    userId: zod.number(),
 });
 
 /**
@@ -1588,6 +1611,7 @@ export const getUsersSelfSelfIdGameGuessLineGameIdResponse = zod.object({
                 getUsersSelfSelfIdGameGuessLineGameIdResponseTrackPopularityMax
             ),
     }),
+    snippet: zod.string().optional(),
 });
 
 /**

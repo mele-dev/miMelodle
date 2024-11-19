@@ -101,7 +101,10 @@ export default (async (fastify) => {
 
                 const queryResult = await runPreparedQuery(
                     addArtistToHome,
-                    request.params
+                    {
+                        selfId: request.params.selfId,
+                        "artists": [request.params.spotifyArtistId]
+                    }
                 );
 
                 return sendOk(reply, 200, { name: artist.name!});

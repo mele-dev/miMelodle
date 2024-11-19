@@ -1,0 +1,120 @@
+@if(this.isChecked){
+    <div class="m-6 flex items-center justify-self-center">
+        <h1 class="p-2 text-4xl font-bold">{{ this.dict().titleFriends }}</h1>
+        <app-trophy></app-trophy>
+    </div>
+    <div class="flex h-full w-1/4 items-center gap-2 justify-self-center">
+        <hlm-tabs tab="leaderboards" class="w-full">
+            <hlm-tabs-list
+                class="grid w-full grid-cols-2"
+            >
+                <button hlmTabsTrigger="song">
+                    {{ this.dict().guessSong }}
+                </button>
+                <button hlmTabsTrigger="line">
+                    {{ this.dict().guessLine }}
+                </button>
+            </hlm-tabs-list>
+            <div hlmTabsContent="song">
+                <section hlmCard>
+                    <app-leaderboard-table
+                        [leaderboard]="
+                            this.leaderboardService.friendsSongLeaderboard()
+                        "
+                    ></app-leaderboard-table>
+                </section>
+            </div>
+            <div hlmTabsContent="line">
+                <section hlmCard>
+                    <app-leaderboard-table
+                        [leaderboard]="
+                            this.leaderboardService.friendsLineLeaderboard()
+                        "
+                    ></app-leaderboard-table>
+                </section>
+            </div>
+        </hlm-tabs>
+    </div>
+} @else {
+    <div class="m-6 flex items-center justify-self-center">
+        <h1 class="p-2 text-4xl font-bold">{{ this.dict().titleGlobal }}</h1>
+        <app-trophy></app-trophy>
+    </div>
+    <div class="flex h-full w-1/4 items-center gap-2 justify-self-center">
+        <hlm-tabs tab="leaderboards" class="w-full">
+            <hlm-tabs-list
+                class="grid w-full grid-cols-2"
+                aria-label="tabs example"
+            >
+                <button hlmTabsTrigger="song">
+                    {{ this.dict().guessSong }}
+                </button>
+                <button hlmTabsTrigger="line">
+                    {{ this.dict().guessLine }}
+                </button>
+            </hlm-tabs-list>
+            <div hlmTabsContent="song">
+                <section hlmCard>
+                    <app-leaderboard-table
+                        [leaderboard]="
+                            this.leaderboardService.globalSongLeaderboard()
+                        "
+                    ></app-leaderboard-table>
+                </section>
+            </div>
+            <div hlmTabsContent="line">
+                <section hlmCard>
+                    <app-leaderboard-table
+                        [leaderboard]="
+                            this.leaderboardService.globalLineLeaderboard()
+                        "
+                    ></app-leaderboard-table>
+                </section>
+            </div>
+        </hlm-tabs>
+    </div>
+}
+<button class="flex justify-self-center" size="lg" brnToggle hlm (click)="this.filterFriends()">
+    {{this.dict().filter}}
+  </button>
+
+<!-- TODO move to dangerzone-->
+<div class="flex justify-center">
+    <button
+        (click)="this.openDialog()"
+        class="rounded-full border-gray-500 px-6 py-3 text-white transition-all duration-700 hover:bg-gray-300 hover:text-black hover:shadow-lg focus:outline-none"
+    >
+        {{ this.dict().deleteDataButton }}
+    </button>
+</div>
+<dialog
+    #dialog
+    class="relative mx-auto w-full max-w-lg space-y-6 rounded-xl bg-white p-8 text-center shadow-2xl ring-1 ring-gray-900/10"
+>
+    <div class="space-y-4">
+        <button
+            class="absolute right-2 top-1 size-3 px-6 py-3 text-black"
+            (click)="this.closeDialog()"
+        >
+            ✖
+        </button>
+        <p class="text-lg font-bold text-gray-600">
+            {{ this.dict().deleteDialog }}
+        </p>
+    </div>
+
+    <div class="flex justify-between space-x-4">
+        <button
+            class="flex-1 rounded-lg bg-fuchsia-500 px-6 py-3 font-semibold text-white transition hover:bg-fuchsia-700 focus:outline-none focus:ring-4 focus:ring-red-400 focus:ring-opacity-50"
+            (click)="this.deleteAllData('guessLine')"
+        >
+            {{ this.dict().guessLine }}
+        </button>
+        <button
+            class="flex-1 rounded-lg bg-fuchsia-500 px-6 py-3 font-semibold text-white transition hover:bg-fuchsia-700 focus:outline-none focus:ring-4 focus:ring-red-400 focus:ring-opacity-50"
+            (click)="this.deleteAllData('guessSong')"
+        >
+            {{ this.dict().guessSong }}
+        </button>
+    </div>
+</dialog>

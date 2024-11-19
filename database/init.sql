@@ -42,54 +42,55 @@ CREATE TABLE users (
 CREATE TYPE "friendshipStatus" AS ENUM ('pending', 'accepted');
 
 CREATE TABLE friendships (
-    "userId"    BIGINT REFERENCES users (id)         NOT NULL,
-    "user2Id"   BIGINT REFERENCES users (id)         NOT NULL,
-    "createdAt" timestamptz        DEFAULT NOW()     NOT NULL,
-    status      "friendshipStatus" DEFAULT 'pending' NOT NULL,
-    CHECK ( "userId" <> "user2Id" ),
-    PRIMARY KEY ("userId", "user2Id")
+    id          SERIAL PRIMARY KEY,
+    "userId"    BIGINT REFERENCES users (id) ON DELETE CASCADE NOT NULL,
+    "user2Id"   BIGINT REFERENCES users (id) ON DELETE CASCADE NOT NULL,
+    "createdAt" timestamptz        DEFAULT NOW()               NOT NULL,
+    status      "friendshipStatus" DEFAULT 'pending'           NOT NULL,
+    CHECK ( "userId" <> friendships."user2Id" )
 );
 
 -- Optimize username for fuzzy searching.
 CREATE INDEX users_username_trgm_idx ON users USING gin (username gin_trgm_ops);
 
 CREATE TABLE blocks (
-    "userWhoBlocksId" BIGINT REFERENCES users (id) NOT NULL,
-    "blockedUserId"   BIGINT REFERENCES users (id) NOT NULL,
-    "createdAt"       timestamptz DEFAULT NOW()    NOT NULL,
+    "userWhoBlocksId" BIGINT REFERENCES users (id) ON DELETE CASCADE NOT NULL,
+    "blockedUserId"   BIGINT REFERENCES users (id) ON DELETE CASCADE NOT NULL,
+    "createdAt"       timestamptz DEFAULT NOW()                      NOT NULL,
     PRIMARY KEY ("userWhoBlocksId", "blockedUserId")
 );
 
 CREATE TABLE "savedArtists" (
     id                SERIAL PRIMARY KEY,
-    "userId"          BIGINT REFERENCES users (id) NOT NULL,
-    "spotifyArtistId" TEXT                         NOT NULL,
-    "savedAt"         timestamptz DEFAULT NOW()    NOT NULL,
-    "isFavorite"      bool        DEFAULT FALSE    NOT NULL,
+    "userId"          BIGINT REFERENCES users (id) ON DELETE CASCADE NOT NULL,
+    "spotifyArtistId" TEXT                                           NOT NULL,
+    "savedAt"         timestamptz DEFAULT NOW()                      NOT NULL,
+    "isFavorite"      bool        DEFAULT FALSE                      NOT NULL,
     CONSTRAINT unique_user_spotify_artist UNIQUE ("userId", "spotifyArtistId")
 
 );
 
-CREATE TABLE streaks (
-    id            SERIAL PRIMARY KEY,
-    "userId"      BIGINT REFERENCES users (id) NOT NULL,
-    "streakCount" BIGINT      DEFAULT 0        NOT NULL,
-    "lastUpdated" timestamptz DEFAULT NOW()    NOT NULL,
-    "maxStreak"   INTEGER     DEFAULT 0        NOT NULL
+CREATE TYPE "gameMode" AS ENUM ('guessLine', 'guessSong');
+
+CREATE TABLE ranking (
+    "userId" BIGINT REFERENCES users (id) ON DELETE CASCADE NOT NULL,
+    "score"  BIGINT     DEFAULT 0                           NOT NULL,
+    "mode"   "gameMode" DEFAULT 'guessLine'                 NOT NULL,
+    PRIMARY KEY ("userId", "mode")
 );
 
 CREATE TABLE "guessSongGames" (
     id               SERIAL PRIMARY KEY,
-    "userId"         BIGINT REFERENCES users (id) NOT NULL,
-    "spotifyTrackId" TEXT                         NOT NULL,
-    "snippet"        TEXT                         NULL,
-    "createdAt"      timestamptz DEFAULT NOW()    NOT NULL
+    "userId"         BIGINT REFERENCES users (id) ON DELETE CASCADE NOT NULL,
+    "spotifyTrackId" TEXT                                           NOT NULL,
+    "snippet"        TEXT                                           NULL,
+    "createdAt"      timestamptz DEFAULT NOW()                      NOT NULL
 );
 
 CREATE TABLE "guessSongAttempts" (
-    "gameId"                BIGINT REFERENCES "guessSongGames" (id) NOT NULL,
-    "guessedSpotifyTrackId" TEXT                                    NOT NULL,
-    "guessedAt"             timestamptz                             NOT NULL,
+    "gameId"                BIGINT REFERENCES "guessSongGames" (id) ON DELETE CASCADE NOT NULL,
+    "guessedSpotifyTrackId" TEXT                                                      NOT NULL,
+    "guessedAt"             timestamptz                                               NOT NULL,
     PRIMARY KEY ("gameId", "guessedSpotifyTrackId")
 );
 
