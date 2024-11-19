@@ -8,7 +8,10 @@ import {
 import { MelodleGameSchema } from "../../types/melodle.js";
 import { decorators } from "../../services/decorators.js";
 import { runPreparedQuery } from "../../services/database.js";
-import { getGlobalLeaderboard } from "../../queries/dml.queries.js";
+import {
+    getGlobalLeaderboard,
+    getLeaderboard,
+} from "../../queries/dml.queries.js";
 import { sendOk } from "../../utils/reply.js";
 
 const leaderboards: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
@@ -26,8 +29,9 @@ const leaderboards: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
             security: [],
         },
         async handler(request, reply) {
-            const result = await runPreparedQuery(getGlobalLeaderboard, {
+            const result = await runPreparedQuery(getLeaderboard, {
                 gameMode: request.params.gameMode,
+                filterByFriends: false,
             });
             return sendOk(reply, 200, { leaderboard: result });
         },

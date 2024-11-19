@@ -11,6 +11,7 @@ import {
     getGlobalLeaderboard,
     getFriendsLeaderboard,
     updateScore,
+    getLeaderboard,
 } from "../../../../../../queries/dml.queries.js";
 import { ParamsSchema } from "../../../../../../types/params.js";
 import { MelodleGameSchema } from "../../../../../../types/melodle.js";
@@ -31,8 +32,9 @@ export default (async (fastify, _opts) => {
             tags: ["Leaderboards"] satisfies MelodleTagName[],
         },
         async handler(request, reply) {
-            const result = await runPreparedQuery(getFriendsLeaderboard, {
+            const result = await runPreparedQuery(getLeaderboard, {
                 ...request.params,
+                filterByFriends: true,
                 ...request.query,
             });
             return sendOk(reply, 200, { leaderboard: result });
