@@ -49,10 +49,10 @@ export class HomePage {
     isEmpty: boolean | undefined;
     ngOnInit() {
         this.getUsername();
-        this.isEmptyy();
+        this.isItEmpty();
     }
 
-    public async isEmptyy() {
+    public async isItEmpty() {
         const userId = (await this.selfService.waitForUserInfoSnapshot()).id;
         try {
             const result = await getUsersSelfSelfIdArtists(userId);
