@@ -40,6 +40,7 @@ import { HlmScrollAreaModule } from "@spartan-ng/ui-scrollarea-helm";
 import { SafeRoutingService } from "../../../services/safe-routing.service";
 import { HlmButtonModule } from "@spartan-ng/ui-button-helm";
 import { DomSanitizer } from "@angular/platform-browser";
+import { SafePipe } from "../../../pipes/safe.pipe";
 
 @Component({
     selector: "app-guess-song",
@@ -54,6 +55,7 @@ import { DomSanitizer } from "@angular/platform-browser";
         HlmDialogModule,
         HlmScrollAreaModule,
         HlmButtonModule,
+        SafePipe,
     ],
     providers: [provideIcons({ lucideCheck, lucideX })],
     templateUrl: "./guess-song.page.html",
