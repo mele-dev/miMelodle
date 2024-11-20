@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal } from "@angular/core";
+import { Component, effect, EventEmitter, inject, Output, signal } from "@angular/core";
 import { TranslatorService } from "../../services/translator.service";
 import { getFollowed, GetFollowedType } from "../../../apiCodegen/spotify";
 import {
@@ -32,6 +32,8 @@ export class ArtistFinderComponent {
     private _localStorage = inject(LocalStorageService);
     private _selfService = inject(SelfService);
     public homeArtistsService = inject(HomeArtistsService);
+
+    @Output() artistAdded = new EventEmitter<string>();
 
     async search() {
         console.info(this.usersFilter());
@@ -69,5 +71,7 @@ export class ArtistFinderComponent {
             toast(this.dict().errorToast);
             return;
         }
+
+            this.artistAdded.emit("not empty")
     }
 }
