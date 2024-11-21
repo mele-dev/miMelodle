@@ -18,11 +18,13 @@ import { StarComponent } from "../../icons/star/star.component";
 import { MusicComponent } from "../../icons/music/music.component";
 import { XComponent } from "../../icons/x/x.component";
 import { GrayStarComponent } from "../../icons/gray-star/gray-star.component";
+import { AllMelodlePaths, SafeRoutingService } from "../../services/safe-routing.service";
+import { RouterLink } from "@angular/router";
 
 @Component({
     selector: "app-collection-artist-card",
     standalone: true,
-    imports: [CommonModule, StarComponent, MusicComponent, XComponent, GrayStarComponent],
+    imports: [CommonModule, MusicComponent, XComponent, RouterLink],
     providers: [provideIcons({ lucideMusic, lucideStar, lucideStarOff })],
     templateUrl: "./collection-artist-card.component.html",
 })
@@ -30,6 +32,7 @@ export class CollectionArtistCardComponent implements OnInit {
     public homeArtistsService = inject(HomeArtistsService);
     dict = inject(CollectionArtistCardTranslator).dict;
     @ViewChildren('dialog') dialogs!: QueryList<ElementRef>;
+    safeRouter = inject(SafeRoutingService);
 
     public async ngOnInit() {
         await this.homeArtistsService.loadData();
@@ -61,8 +64,5 @@ export class CollectionArtistCardComponent implements OnInit {
         );
         dialog?.nativeElement.close();
     }
-
-    onClick() {
-        // logica para comenzar el juego (llamar al endpoint)
-    }
+    
 }

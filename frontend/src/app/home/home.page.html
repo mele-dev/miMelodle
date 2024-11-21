@@ -1,15 +1,41 @@
-<p>home works!</p>
-<hlm-dialog>
-    <button brnDialogTrigger hlmBtn>Buscar usuario</button>
-    <hlm-dialog-content *brnDialogContent="let ctx">
-        <app-user-finder></app-user-finder>
-    </hlm-dialog-content>
-</hlm-dialog>
+@if (this.isEmpty){
+    <div class="flex my-64 flex-col items-center justify-center">
+        <hlm-dialog>
+            <button
+                brnDialogTrigger
+                class="align-center trnasition-transform m-5 animate-pulse hover:scale-110"
+            >
+                <app-plus></app-plus>
+            </button>
+            <hlm-dialog-content *brnDialogContent="let ctx2">
+                <app-artist-finder></app-artist-finder>
+            </hlm-dialog-content>
+        </hlm-dialog>
+        <h1
+            class="mx-auto bg-gradient-to-r from-purple-500 via-fuchsia-500 via-[30%] to-orange-500 to-[calc(100%+15rem)] bg-clip-text text-center text-3xl font-extrabold text-transparent"
+        >
+            {{this.dict().empty}}
+        </h1>
+    </div>
 
-<hlm-dialog>
-    <button brnDialogTrigger hlmBtn>Buscar artista</button>
-    <hlm-dialog-content *brnDialogContent="let ctx2">
-        <app-artist-finder></app-artist-finder>
-    </hlm-dialog-content>
-</hlm-dialog>
-<app-collection-artist-card></app-collection-artist-card>
+} @else {
+    <div class="relative flex h-28 w-full items-center justify-between">
+        <h1
+            class="bg-gradient-to-r from-purple-500 via-fuchsia-500 via-[30%] to-orange-500 to-[calc(100%+15rem)] bg-clip-text text-3xl font-extrabold text-transparent"
+        >
+            {{this.dict().welcome(this.name!)}}
+        </h1>
+        <hlm-dialog>
+            <button
+                brnDialogTrigger
+                class="m-5 transition-transform hover:scale-110"
+            >
+                <app-plus></app-plus>
+            </button>
+            <hlm-dialog-content *brnDialogContent="let ctx2">
+                <app-artist-finder></app-artist-finder>
+            </hlm-dialog-content>
+        </hlm-dialog>
+    </div>
+    <app-collection-artist-card></app-collection-artist-card>
+}
