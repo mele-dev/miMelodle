@@ -1,6 +1,39 @@
 import { inject, Injectable } from "@angular/core";
-import { NavigationExtras, Router } from "@angular/router";
-import { AllMelodlePaths } from "../app.routes";
+import { NavigationExtras, Route, Router, Routes } from "@angular/router";
+import { routes } from "../app.routes";
+
+
+export type AllMelodlePaths = ExtractRoutes<typeof routes>;
+
+// Extract ALL paths (including those without components)
+type ExtractAllPaths<TRoute extends Route, TBasePath extends string = ""> =
+    // If the route has children, extract from children recursively
+    TRoute extends {
+        path: infer P;
+        children: infer C extends Routes;
+    }
+        ?
+              | `${TBasePath}/${P & string}`
+              | ExtractRoutes<C, `${TBasePath}/${P & string}`>
+        : // Otherwise, return the current path
+          TRoute extends { path: infer P }
+          ? `${TBasePath}/${P & string}`
+          : never;
+
+// Helper to iterate over all routes and apply the extraction logic
+type ExtractRoutes<
+    TRoutes extends Routes,
+    TBasePath extends string = "",
+> = TRoutes[number] extends infer R extends Route
+    ? ExtractAllPaths<R, TBasePath>
+    : never;
+
+type ExtractPathParams<TPath extends string> =
+    TPath extends `${string}/:${infer Param}/${infer Rest}`
+        ? Param | ExtractPathParams<`/${Rest}`>
+        : TPath extends `${string}/:${infer Param}`
+          ? Param
+          : never;
 
 @Injectable({
     providedIn: "root",
@@ -8,16 +41,29 @@ import { AllMelodlePaths } from "../app.routes";
 export class SafeRoutingService {
     readonly router = inject(Router);
 
-    // TODO
-    public navigate<TRoute extends AllMelodlePaths>(
-        paths: TRoute[],
-        extras?: NavigationExtras
+    public navigate<TRoute extends AllMelodlePaths | "">(
+        path: TRoute,
+        extras?: NavigationExtras & {
+            ids?: { [K in ExtractPathParams<TRoute>]: string | number };
+        }
     ) {
-        this.router.navigate(paths, extras);
+        this.router.navigate([this.createLink(path, extras?.ids)], extras);
     }
 
+    public createLink<TRoute extends AllMelodlePaths | "">(
+        path: TRoute,
+        ids?: { [K in ExtractPathParams<TRoute>]: string | number }
+    ) {
+        let builtPath: string = path;
+        if (ids) {
+            for (const [key, val] of Object.entries<string | number>(ids)) {
+                builtPath = builtPath.replace(`:${key}`, val.toString());
+            }
+        }
+        return builtPath;
+    }
 
-    public createLink<TRoute extends AllMelodlePaths>(path: TRoute) {
-        return path;
+    public get url(): string {
+        return this.router.url;
     }
 }

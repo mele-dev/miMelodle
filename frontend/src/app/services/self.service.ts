@@ -57,7 +57,7 @@ export class SelfService {
 
             if (id === undefined) {
                 toast(this._authDict().lacksAuthError);
-                this._safeRouter.navigate(["/auth"]);
+                this._safeRouter.navigate("/auth");
                 return;
             }
 
@@ -69,7 +69,7 @@ export class SelfService {
             console.error(e);
             if (isAxiosError(e) && e.status === 401) {
                 toast(this._authDict().lacksAuthError);
-                this._safeRouter.navigate(["/auth"]);
+                this._safeRouter.navigate("/auth");
                 return;
             }
 
@@ -90,6 +90,6 @@ export class SelfService {
 
     public logOut() {
         this._localStorage.removeItem("userInfo");
-        this._safeRouter.navigate(["/auth"]);
+        this._safeRouter.navigate("/auth");
     }
 }

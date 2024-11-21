@@ -24,6 +24,13 @@ export async function mockUser(): Promise<MockUser> {
     const suffix = faker.person.suffix();
     const profilePictures = await runPreparedQuery(selectAllIcons, {});
 
+    if (profilePictures.length === 0) {
+        profilePictures.push({
+            id: 1,
+            filename: "This profile picture wont work.",
+        });
+    }
+
     const output: MockUser = {
         name: `${prefix} ${firstName} ${lastName} ${suffix}`,
         username: faker.internet.userName({ firstName, lastName }),

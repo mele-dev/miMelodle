@@ -1,9 +1,3 @@
-<div class="space-y-2">
-    <h4 class="font-medium leading-none">
-        {{ this.dict().title }}
-    </h4>
-</div>
-<br />
 <div class="grid gap-2">
     @for (user of this.blockingService.blockedUsers(); track $index) {
         <div class="flex items-baseline gap-2">
@@ -22,5 +16,7 @@
                 unblock
             </button>
         </div>
+    } @empty {
+        You have not blocked anyone.
     }
 </div>

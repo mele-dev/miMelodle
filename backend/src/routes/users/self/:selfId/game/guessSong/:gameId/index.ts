@@ -4,7 +4,7 @@ import { ParamsSchema } from "../../../../../../../types/params.js";
 import { SafeType } from "../../../../../../../utils/typebox.js";
 import { MelodleTagName } from "../../../../../../../plugins/swagger.js";
 import { sendError, sendOk } from "../../../../../../../utils/reply.js";
-import { guessSongGameInformationSchema } from "../../../../../../../types/guessSong.js";
+import { guessSongGameInformationSchema } from "../../../../../../../types/game.js";
 import { getGuessSongInformation } from "../../../../../../../services/game.js";
 import { UnreachableCaseError } from "ts-essentials";
 
@@ -25,6 +25,7 @@ export default (async (fastify) => {
             const result = await getGuessSongInformation(request.params);
             switch (result.status) {
                 case "RepeatedTrack":
+                case "NotYourGame":
                 case "AttemptsExhausted":
                 case "AlreadyWon":
                     // This should never happen.

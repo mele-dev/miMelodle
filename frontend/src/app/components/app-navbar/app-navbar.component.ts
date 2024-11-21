@@ -1,33 +1,34 @@
-import { Component, inject, OnInit, signal } from "@angular/core";
+import { Component, inject } from "@angular/core";
 import { RouterLink } from "@angular/router";
-import { SafeRoutingService } from "../../services/safe-routing.service";
+import { AllMelodlePaths, SafeRoutingService } from "../../services/safe-routing.service";
 import { LanguagePickerComponent } from "../language-picker/language-picker.component";
 import { AppNavbarTranslator } from "./app-navbar.translations";
 import { HlmIconModule } from "@spartan-ng/ui-icon-helm";
 import { provideIcons } from "@ng-icons/core";
 import {
-    lucideBell,
     lucideLogOut,
     lucideBellPlus,
     lucideCircleSlash,
 } from "@ng-icons/lucide";
+import { lucideBell } from "@ng-icons/lucide";
 import { LocalStorageService } from "../../services/local-storage.service";
-import {
-    BrnPopoverCloseDirective,
-    BrnPopoverComponent,
-    BrnPopoverContentDirective,
-    BrnPopoverTriggerDirective,
-} from "@spartan-ng/ui-popover-brain";
-import {
-    HlmPopoverCloseDirective,
-    HlmPopoverContentDirective,
-} from "@spartan-ng/ui-popover-helm";
+import { BrnPopoverModule } from "@spartan-ng/ui-popover-brain";
+import { HlmPopoverModule } from "@spartan-ng/ui-popover-helm";
 import { DomSanitizer } from "@angular/platform-browser";
-import { BackendIcon } from "../../types/backend-icon";
 import { HlmButtonModule } from "@spartan-ng/ui-button-helm";
 import { FriendshipsComponent } from "../friendships/friendships.component";
 import { BlockingComponent } from "../blocking/blocking.component";
 import { SelfService } from "../../services/self.service";
+import { LoadProfilePictureDirective } from "../../directives/load-profile-picture.directive";
+import { CommonModule, JsonPipe } from "@angular/common";
+import { HlmTabsModule } from "@spartan-ng/ui-tabs-helm";
+import { HlmMenuModule } from "@spartan-ng/ui-menu-helm";
+import { BrnMenuModule } from "@spartan-ng/ui-menu-brain";
+import {
+    Language,
+    LanguageManagerService,
+} from "../../services/language-manager.service";
+import { supportedLanguages } from "../../globalConstants";
 
 @Component({
     selector: "app-app-navbar",
@@ -36,22 +37,21 @@ import { SelfService } from "../../services/self.service";
         RouterLink,
         LanguagePickerComponent,
         HlmIconModule,
-        BrnPopoverCloseDirective,
-        BrnPopoverComponent,
-        BrnPopoverContentDirective,
-        BrnPopoverTriggerDirective,
-        HlmPopoverCloseDirective,
-        HlmPopoverContentDirective,
+        HlmPopoverModule,
+        BrnPopoverModule,
         HlmButtonModule,
         FriendshipsComponent,
         BlockingComponent,
+        LoadProfilePictureDirective,
+        JsonPipe,
+        HlmTabsModule,
+        CommonModule,
+        HlmMenuModule,
+        BrnMenuModule,
     ],
     providers: [
         provideIcons({
             lucideBell,
-            lucideLogOut,
-            lucideBellPlus,
-            lucideCircleSlash,
         }),
     ],
     templateUrl: "./app-navbar.component.html",
@@ -59,7 +59,40 @@ import { SelfService } from "../../services/self.service";
 export class AppNavbarComponent {
     dict = inject(AppNavbarTranslator).dict;
     safeRouter = inject(SafeRoutingService);
-    chosenIcon = signal<BackendIcon | undefined>(undefined);
     sanitizer = inject(DomSanitizer);
-    selfService = inject(SelfService);
+    private _self = inject(SelfService);
+    private _localStorage = inject(LocalStorageService);
+    currentLanguage = inject(LanguageManagerService).currentLanguage;
+    supportedLanguages = supportedLanguages;
+    selfInfo = this._self.getUserInfo();
+
+    langLongName(lang: Language) {
+        switch (lang) {
+            case "en":
+                return "English";
+            case "es":
+                return "Español";
+        }
+    }
+
+    currentSection() {
+        const url = this.safeRouter.url;
+        return {
+            game: url.startsWith("/app/game" satisfies AllMelodlePaths),
+            home: url.startsWith("/app/home" satisfies AllMelodlePaths),
+            leaderboards: url.startsWith(
+                "/app/leaderboards" satisfies AllMelodlePaths
+            ),
+            profile: url.startsWith("/app/profile" satisfies AllMelodlePaths),
+        } as const;
+    }
+
+    ngOnInit() {
+        this.safeRouter.router.url;
+    }
+
+    logOut() {
+        this._localStorage.removeItem("userInfo");
+        this.safeRouter.navigate("/auth");
+    }
 }

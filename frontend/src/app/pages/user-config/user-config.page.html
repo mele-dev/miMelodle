@@ -114,7 +114,7 @@
                                     for="username"
                                     class="text-right"
                                 >
-                                    >{{this.dict().password}}</label
+                                    {{this.dict().password}}</label
                                 >
                                 <input
                                     hlmInput
@@ -175,57 +175,91 @@
     </div>
     <div hlmTabsContent="danger">
         <section hlmCard>
+            
             <div hlmCardHeader>
                 <h3 hlmCardTitle>{{this.dict().deleteAccount}}</h3>
-                <p hlmCardDescription>{{this.dict().questionAccount}}</p>
+                <p hlmCardDescription>{{this.dict().accountExplanation}}</p>
             </div>
             <div hlmCardFooter>
-                <button
-                    variant="destructive"
-                    (click)="this.deleteAccount()"
-                    hlmBtn
-                >
-                    {{this.dict().deleteAccount}}
-                </button>
-                
+                <hlm-dialog>
+                    <button variant="destructive" id="edit-profile" brnDialogTrigger hlmBtn>
+                        {{this.dict().deleteAccount}}
+                    </button>
+                    <hlm-dialog-content
+                        class="sm:max-w-[425px]"
+                        *brnDialogContent="let ctx"
+                    >
+                        <hlm-dialog-header>
+                            <h3 hlmDialogTitle>{{this.dict().questionAccount}}</h3>
+                        </hlm-dialog-header>
+                        <div class="grid gap-4 py-4">
+                            <div class="grid grid-cols-4 items-center gap-4">
+                                <label
+                                    hlmLabel
+                                    for="username"
+                                    class="text-right"
+                                >
+                                    {{this.dict().password}}</label
+                                >
+                                <input
+                                    hlmInput
+                                    id="userPassword"
+                                    value=""
+                                    type="password"
+                                    placeholder="*************"
+                                    class="col-span-3"
+                                    [formControl]="user.controls.oldPassword"
+                                />
+                            </div>
+                        </div>
+                        <hlm-dialog-footer>
+                            <button variant="destructive" class="cursor-not-allowed" hlmBtn (click)="this.deleteAccount()" type="submit">
+                                {{this.dict().delete}}
+                            </button>
+                        </hlm-dialog-footer>
+                    </hlm-dialog-content>
+                </hlm-dialog>
             </div>
         </section>
         <section hlmCard>
             <div hlmCardHeader>
                 <h3 hlmCardTitle>{{this.dict().deleteRanking}}</h3>
-                <p hlmCardDescription>{{this.dict().questionRanking}}</p>
+                <p hlmCardDescription>{{this.dict().rankingExplanation}}</p>
             </div>
             <div hlmCardFooter>
-                <button
-                    variant="destructive"
-                    hlmBtn
-                    brnDialogTrigger>
-
-                >
-                    {{this.dict().deleteRanking}}
-                </button>
                 <hlm-dialog>
+                    <button variant="destructive" id="edit-profile" brnDialogTrigger hlmBtn>
+                        {{this.dict().deleteRanking}}
+                    </button>
                     <hlm-dialog-content
                         class="sm:max-w-[425px]"
                         *brnDialogContent="let ctx"
                     >
+                        <hlm-dialog-header>
+                            <h3 hlmDialogTitle>{{this.dict().questionRanking}}</h3>
+                        </hlm-dialog-header>
                         <div class="grid gap-4 py-4">
                             <div class="grid grid-cols-4 items-center gap-4">
-                                <label hlmLabel for="gameMode" class="text-right"
-                                    
-                                    >{{this.dict().gameMode}}</label
+                                <label
+                                    hlmLabel
+                                    for="username"
+                                    class="text-right"
+                                >
+                                    {{this.dict().gameMode}}</label
                                 >
                                 <input
                                     hlmInput
-                                    id="gameMode"
+                                    id="userPassword"
                                     value=""
                                     class="col-span-3"
+                                    placeholder="guessLine | guessSong"
+                                    [(ngModel)]="gameMode"
                                 />
                             </div>
                         </div>
                         <hlm-dialog-footer>
-                            <button hlmBtn (click)="this.deleteAllData(gameMode.value)" type="submit">
-                                {{this.dict().save}}
+                            <button variant="destructive" hlmBtn (click)="this.deleteAllData()" type="submit">
+                                {{this.dict().delete}}
                             </button>
                         </hlm-dialog-footer>
                     </hlm-dialog-content>

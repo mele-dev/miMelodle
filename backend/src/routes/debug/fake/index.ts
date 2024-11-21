@@ -9,6 +9,8 @@ import {
     runPreparedQuery,
 } from "../../../services/database.js";
 import { insertUser } from "../../../queries/dml.queries.js";
+import { basePoints } from "../../../services/score.js";
+import { faker } from "@faker-js/faker";
 
 export default (async (fastify) => {
     fastify.get("/user", {
@@ -58,7 +60,20 @@ export default (async (fastify) => {
 
             await executeTransaction(async () => {
                 for (const user of users) {
-                    await runPreparedQuery(insertUser, user);
+                    await runPreparedQuery(insertUser, {
+                        ...user,
+                        baseGuessLineScore: Math.round(
+                            basePoints *
+                                faker.number.float({ min: 0.5, max: 10 })
+                        ),
+                        baseGuessSongScore:
+                            basePoints *
+                            Math.round(
+                                basePoints *
+                                    faker.number.float({ min: 0.5, max: 10 })
+                            ),
+                        artists: [],
+                    });
                 }
             });
 

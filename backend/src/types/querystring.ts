@@ -1,4 +1,5 @@
 import { SafeType } from "../utils/typebox.js";
+import { MelodleGameSchema } from "./melodle.js";
 
 export const queryStringSchema = SafeType.Object({
     spotifySearchQuery: SafeType.String({
@@ -12,7 +13,7 @@ The artist and year filters can be used while searching albums, artists and trac
 The album filter can be used while searching albums and tracks.
 The genre filter can be used while searching artists and tracks.
 The isrc and track filters can be used while searching tracks.
-The upc, tag:new and tag:hipster filters can only be used while searching albums. The tag:new filter will return albums released in the past two weeks and tag:hipster can be used to return only albums with the lowest 10% popularity.`
+The upc, tag:new and tag:hipster filters can only be used while searching albums. The tag:new filter will return albums released in the past two weeks and tag:hipster can be used to return only albums with the lowest 10% popularity.`,
     }),
     query: SafeType.String({
         minLength: 3,
@@ -39,4 +40,5 @@ The upc, tag:new and tag:hipster filters can only be used while searching albums
             "audiobook",
         ])
     ),
+    gameMode: MelodleGameSchema.properties.gameMode,
 });

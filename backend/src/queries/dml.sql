@@ -2,17 +2,34 @@
 SELECT *
   FROM users;
 
+/* @name insertUser */
+  WITH "insertedUser"         AS ( INSERT INTO users (username,
+                                                      email,
+                                                      "passwordHash",
+                                                      "spotifyId",
+                                                      "profilePictureId",
+                                                      name
+      ) VALUES ( :username!, :email!, :password, :spotifyId
+               , CASE
+                     WHEN :profilePictureId::BIGINT IS NULL THEN get_default_profile_picture()
+                     ELSE :profilePictureId::BIGINT
+                 END
+               , :name!) RETURNING id)
+     , "guessLineLeaderboard"
+                              AS ( INSERT INTO ranking ("userId", score, mode) SELECT id, :baseGuessLineScore!, 'guessLine' FROM "insertedUser" RETURNING *)
+     , "guessSongLeaderboard"
+                              AS ( INSERT INTO ranking ("userId", score, mode) SELECT id, :baseGuessSongScore!, 'guessSong' FROM "insertedUser" RETURNING *)
+     , "artists"
+                              AS ( INSERT INTO "savedArtists" ("userId", "spotifyArtistId") SELECT (SELECT id FROM "insertedUser"), UNNEST(:artists!::TEXT[]))
+SELECT id
+  FROM "insertedUser";
+
+
 /* @name loginUser */
 SELECT id
   FROM users
  WHERE email = :emailOrUsername!
     OR username = :emailOrUsername! AND check_password("passwordHash", :password!);
-
-/* @name insertUser */
-   INSERT
-     INTO users (username, email, "passwordHash", "spotifyId", "profilePictureId", name)
-   VALUES (:username!, :email!, encrypt_password(:password!), default, :profilePictureId!, :name!)
-RETURNING id;
 
 /* @name updateUser */
    UPDATE users
@@ -40,7 +57,7 @@ SELECT *
 RETURNING 1 AS output;
 
 /* @name getSelfuser */
-SELECT pp.filename AS "profilePictureFile", u.name, u.email, u.username, u.id, u."profilePictureId"
+SELECT pp.filename AS "profilePictureFile", u.name, u.email, u.username, u.id, u."profilePictureId", u."spotifyId"
   FROM users u
            INNER JOIN public."profilePictures" pp ON pp.id = u."profilePictureId"
  WHERE u.id = :selfId!;
@@ -80,51 +97,27 @@ SELECT f."user2Id"
     OR "userId" = :selfId!;
 
 /* @name deleteFriend */
-     WITH target AS (
-         SELECT *
-           FROM users u
-          WHERE u.id = :targetUserId!
-          LIMIT 1
-     )
+     WITH target AS (SELECT * FROM users u WHERE u.id = :targetUserId! LIMIT 1)
    DELETE
      FROM friendships f
     WHERE (f."userId" = :selfId! AND f."user2Id" = :targetUserId!)
        OR (f."userId" = :targetUserId! AND f."user2Id" = :selfId!)
-RETURNING (
-    SELECT username
-      FROM target
-) AS "targetUsername!";
+RETURNING (SELECT username FROM target) AS "targetUsername!";
 
 /* @name addNewFriend */
-     WITH target AS (
-         SELECT *
-           FROM users u
-          WHERE u.id = :targetUserId!
-          LIMIT 1
-     )
+     WITH target AS (SELECT * FROM users u WHERE u.id = :targetUserId! LIMIT 1)
    INSERT
      INTO friendships ("userId", "user2Id")
    VALUES (:selfId!, :targetUserId!)
-RETURNING status, (
-    SELECT username
-      FROM target
-) AS "targetUsername!";
+RETURNING status, (SELECT username FROM target) AS "targetUsername!";
 
 /* @name acceptRequest */
-     WITH target AS (
-         SELECT *
-           FROM users u
-          WHERE u.id = :targetUserId!
-          LIMIT 1
-     )
+     WITH target AS (SELECT * FROM users u WHERE u.id = :targetUserId! LIMIT 1)
    UPDATE friendships f
       SET status = 'accepted'
     WHERE (f."userId" = :selfId! AND f."user2Id" = :targetUserId!)
        OR (f."userId" = :targetUserId! AND f."user2Id" = :selfId!)
-RETURNING status, (
-    SELECT username
-      FROM target
-) AS "targetUsername!";
+RETURNING status, (SELECT username FROM target) AS "targetUsername!";
 
 /* @name getStatus */
 SELECT status
@@ -133,35 +126,19 @@ SELECT status
     OR (f."userId" = :targetUserId! AND f."user2Id" = :selfId!);
 
 /* @name blockUser */
-     WITH target AS (
-         SELECT *
-           FROM users u
-          WHERE u.id = :targetUserId!
-          LIMIT 1
-     )
+     WITH target AS (SELECT * FROM users u WHERE u.id = :targetUserId! LIMIT 1)
    INSERT
      INTO blocks("userWhoBlocksId", "blockedUserId")
    VALUES (:selfId!, :targetUserId!)
-RETURNING (
-    SELECT username
-      FROM target
-) AS "targetUsername!";
+RETURNING (SELECT username FROM target) AS "targetUsername!";
 
 /* @name unblockUser */
-     WITH target AS (
-         SELECT *
-           FROM users u
-          WHERE u.id = :targetUserId!
-          LIMIT 1
-     )
+     WITH target AS (SELECT * FROM users u WHERE u.id = :targetUserId! LIMIT 1)
    DELETE
      FROM blocks
     WHERE "userWhoBlocksId" = :selfId!
       AND "blockedUserId" = :targetUserId!
-RETURNING (
-    SELECT username
-      FROM target
-) AS "targetUsername!";
+RETURNING (SELECT username FROM target) AS "targetUsername!";
 
 /* @name getBlockedUsers */
 SELECT u.*, pp.filename AS "profilePictureFilename"
@@ -187,12 +164,6 @@ SELECT *
   FROM blocks b
  WHERE (b."blockedUserId" = :selfId! AND b."userWhoBlocksId" = :targetUserId!);
 
-/* @name insertUserSpotify */
-   INSERT
-     INTO users (username, email, "passwordHash", "spotifyId", "profilePictureId", name)
-   VALUES (:username!, :email!, default, :spotifyId!, default, :name!)
-RETURNING id;
-
 /* @name loginUserSpotify */
 SELECT u.id
   FROM users u
@@ -205,64 +176,170 @@ SELECT u.username, u.email
     OR u.email = :email;
 
 /* @name searchUser */
-  WITH similarity     AS (
-      SELECT u.*, similarity(u.username, :username!) AS "rank!" FROM users u
-  ),
-       filtered_users AS (
-      SELECT *
-        FROM similarity
-       WHERE "rank!" >= :rankThreshold!
-  )
+  WITH similarity     AS (SELECT u.*, similarity(u.username, :username!) AS "rank!" FROM users u)
+     , filtered_users AS (SELECT * FROM similarity WHERE "rank!" >= :rankThreshold!)
 SELECT u.*, pp.filename AS "profilePictureFilename", CEIL(COUNT(*) OVER () / :pageSize!::FLOAT) AS "totalPages!"
   FROM filtered_users u
            INNER JOIN "profilePictures" pp ON u."profilePictureId" = pp.id
  ORDER BY "rank!" DESC, levenshtein(u.username, :username!)
  LIMIT :pageSize! OFFSET :pageSize!::INT * :page!::INT;
 
-/* @name createGuessLineGame */
-  WITH "newestGame"    AS (
-      SELECT * FROM "guessSongGames" gsg WHERE "userId" = :selfId! ORDER BY gsg."createdAt" DESC LIMIT 1
-  ),
-       "canCreateGame" AS (
-      SELECT CASE
-                 WHEN :allowMultipleGamesADay! THEN TRUE
-                 WHEN (
-                          SELECT "createdAt"::DATE
-                            FROM "newestGame"
-                      ) != CURRENT_DATE        THEN TRUE
-                 ELSE FALSE
-             END AS "canCreate"
-  ),
-       "insertGame"
-                       AS ( INSERT INTO "guessSongGames" ("userId", "createdAt", "spotifyTrackId") SELECT :selfId!, NOW(), :spotifyTrackId!
-                                                                                                    WHERE EXISTS (
-                                                                                                        SELECT 1
-                                                                                                          FROM "canCreateGame"
-                                                                                                         WHERE "canCreate" = TRUE
-                                                                                                    ) RETURNING id
-  )
-SELECT (
-    SELECT "canCreate"
-      FROM "canCreateGame"
-)
-     , "insertGame".id
+/* @name addArtistToHome */
+   INSERT
+     INTO "savedArtists"("userId", "spotifyArtistId")
+   SELECT :selfId!, UNNEST(:artists!::TEXT[])
+RETURNING *;
+
+/* @name deleteArtistFromHome */
+   DELETE
+     FROM "savedArtists"
+    WHERE "userId" = :selfId!
+      AND "spotifyArtistId" = :spotifyArtistId!
+RETURNING *;
+
+
+/* @name changeFavorite */
+   UPDATE "savedArtists"
+      SET "isFavorite" = :isFavorite!
+    WHERE "userId" = :selfId!
+      AND "spotifyArtistId" = :spotifyArtistId!
+RETURNING "isFavorite";
+
+/* @name countFavorites */
+SELECT COUNT(*)
+  FROM "savedArtists"
+ WHERE "userId" = :selfId!
+   AND "isFavorite" = TRUE;
+
+
+/* @name getHomeArtists */
+SELECT "spotifyArtistId", "isFavorite"
+  FROM "savedArtists"
+ WHERE "userId" = :selfId!;
+
+/* @name createGuessSongGame */
+  WITH "newestGame"    AS (SELECT *
+                             FROM "guessSongGames" gsg
+                            WHERE "userId" = :selfId!
+                            ORDER BY gsg."createdAt" DESC
+                            LIMIT 1)
+     , "canCreateGame" AS (SELECT CASE
+                                      WHEN :allowMultipleGamesADay!                                     THEN TRUE
+                                      WHEN (SELECT "createdAt"::DATE FROM "newestGame") != CURRENT_DATE THEN TRUE
+                                      ELSE FALSE
+                                  END AS "canCreate")
+     , "insertGame"
+                       AS ( INSERT INTO "guessSongGames" ("userId", "createdAt", "spotifyTrackId", "snippet") SELECT :selfId!, NOW(), :spotifyTrackId!, :snippet
+                                                                                                               WHERE EXISTS (SELECT 1 FROM "canCreateGame" WHERE "canCreate" = TRUE) RETURNING id)
+SELECT (SELECT "canCreate" FROM "canCreateGame"), "insertGame".id
   FROM "canCreateGame"
            LEFT JOIN "insertGame" ON TRUE;
 
 /* @name getGuessSongFromUser */
-  WITH "game" AS (
-      SELECT *
-        FROM "guessSongGames" gsg
-       WHERE gsg."userId" = :selfId! AND gsg.id = :gameId!
-       ORDER BY gsg."createdAt"
-       LIMIT 6
-  )
-SELECT *
+  WITH "game" AS (SELECT *
+                    FROM "guessSongGames" gsg
+                   WHERE gsg."userId" = :selfId! AND gsg.id = :gameId!
+                   ORDER BY gsg."createdAt"
+                   LIMIT 6)
+SELECT game.*, gsa.*, ranking.score
   FROM "game"
-           LEFT JOIN public."guessSongAttempts" gsa ON "game".id = gsa."gameId";
+           LEFT JOIN public."guessSongAttempts" gsa ON "game".id = gsa."gameId"
+           LEFT JOIN ranking ON ranking."userId" = :selfId!;
 
 /* @name insertGuessSongAttempt */
+     WITH "scoreUpdate" AS ( UPDATE ranking SET score = score + :scoreDeviation! WHERE "userId" = :selfId!)
    INSERT
      INTO "guessSongAttempts" ("guessedAt", "guessedSpotifyTrackId", "gameId")
    VALUES (NOW(), :trackId!, :gameId!)
 RETURNING *;
+
+/* @name getGlobalLeaderboard */
+SELECT u.id, u.username, u.name, u."profilePictureId", pp.filename AS "profilePictureFilename", r.score, r."mode"
+  FROM "ranking" r
+           JOIN public.users u ON r."userId" = u.id
+           LEFT JOIN public."profilePictures" pp ON pp.id = u."profilePictureId"
+ WHERE r."mode" = :gameMode!
+ ORDER BY r.score DESC;
+
+/* @name deleteRankingData */
+   UPDATE ranking
+      SET score = :baseScore!
+    WHERE "userId" = :selfId!
+      AND mode = :gameMode!
+RETURNING *;
+
+/* @name updateScore */
+   UPDATE ranking
+      SET "score" = :score!
+    WHERE "userId" = :selfId!
+      AND "mode" = :gameMode!
+RETURNING "score";
+
+/* @name addUserToLeaderboard */
+   INSERT
+     INTO ranking("userId", "score", "mode")
+   VALUES (:selfId, :score, :mode)
+RETURNING *;
+
+/* @name getFriendsLeaderboard */
+SELECT u."id"
+     , u."username"
+     , u."name"
+     , u."profilePictureId"
+     , pp.filename AS "profilePictureFilename"
+     , r."score"
+     , r."mode"
+  FROM "ranking" r
+           JOIN public.users u ON r."userId" = u."id"
+           LEFT JOIN public."profilePictures" pp ON pp.id = u."profilePictureId"
+ WHERE r."mode" = :gameMode!
+   AND (u."id" = :selfId OR u."id" IN (SELECT "user2Id"
+                                         FROM "friendships"
+                                        WHERE "userId" = :selfId!
+                                          AND status = 'accepted'
+                                        UNION
+                                       SELECT "userId"
+                                         FROM "friendships"
+                                        WHERE "user2Id" = :selfId!
+                                          AND status = 'accepted'))
+ ORDER BY r."score" DESC;
+
+/* @name insertGuessLineGame */
+  WITH "newestGame"    AS (SELECT *
+                             FROM "guessLineGame" gsl
+                            WHERE "userId" = :selfId!
+                            ORDER BY gsl."createdAt" DESC
+                            LIMIT 1)
+     , "canCreateGame" AS (SELECT CASE
+                                      WHEN :allowMultipleGamesADay!                                     THEN TRUE
+                                      WHEN (SELECT "createdAt"::DATE FROM "newestGame") != CURRENT_DATE THEN TRUE
+                                      ELSE FALSE
+                                  END AS "canCreate")
+     , "insertGame"
+                       AS ( INSERT INTO "guessLineGame" ("userId", "createdAt", "spotifyTrackId", "snippet") SELECT :selfId!, NOW(), :spotifyTrackId!, :snippet!
+                                                                                                              WHERE EXISTS (SELECT 1 FROM "canCreateGame" WHERE "canCreate" = TRUE) RETURNING id)
+SELECT (SELECT "canCreate" FROM "canCreateGame"), "insertGame".id
+  FROM "canCreateGame"
+           LEFT JOIN "insertGame" ON TRUE;
+
+/* @name getGuessLineFromUser */
+  WITH "game" AS (SELECT *
+                    FROM "guessLineGame" glg
+                   WHERE glg."userId" = :selfId! AND glg.id = :gameId!
+                   ORDER BY glg."createdAt"
+                   LIMIT 6)
+SELECT *
+  FROM "game"
+           LEFT JOIN public."guessLineAttempts" gla ON "game".id = gla."gameId";
+
+/* @name insertGuessLineAttempt */
+   INSERT
+     INTO "guessLineAttempts" ("guessedAt", "guessedSnippet", "gameId")
+   VALUES (NOW(), :guessedSnippet!, :gameId!)
+RETURNING *;
+
+/* @name insertUserSpotify */
+   INSERT
+     INTO users (username, email, "passwordHash", "spotifyId", "profilePictureId", name)
+   VALUES (:username!, :email!, default, :spotifyId!, default, :name!)
+RETURNING id;

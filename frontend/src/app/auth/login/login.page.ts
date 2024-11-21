@@ -14,6 +14,7 @@ import { ClientValidationService } from "../../services/client-validation.servic
 import { HlmInputModule } from "@spartan-ng/ui-input-helm";
 import { toast } from "ngx-sonner";
 import axios from "axios";
+import { CrFancyButtonStylesDirective } from "../../directives/styling/cr-fancy-button-styles.directive";
 
 @Component({
     selector: "app-login",
@@ -26,6 +27,7 @@ import axios from "axios";
         ReactiveFormsModule,
         JsonPipe,
         HlmInputModule,
+        CrFancyButtonStylesDirective,
     ],
     templateUrl: "./login.page.html",
 })
@@ -50,7 +52,7 @@ export class LoginPage {
         try {
             const result = await postAuthLogin(this.person.getRawValue());
             this.localStorage.setItem("userInfo", result.data);
-            this.safeRouter.navigate(["/app"]);
+            this.safeRouter.navigate("/app");
         } catch (e) {
             if (axios.isAxiosError(e) && e.status === 404) {
                 toast(this.dict().badLogin);

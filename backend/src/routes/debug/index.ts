@@ -16,12 +16,11 @@ import {
 } from "../../queries/snapshots.queries.js";
 import { friendSchema, User, userSchema } from "../../types/user.js";
 import { sendOk } from "../../utils/reply.js";
-import { search } from "../../apiCodegen/spotify.js";
 import { isAxiosError } from "axios";
-import {
-    getAllTracksFromArtist,
-    getRandomTrackFromArtists,
-} from "../../spotify/helpers.js";
+import MusixmatchAPI from "../../musixmatch-api/musixmatch.js";
+import { search } from "../../apiCodegen/spotify.js";
+import { RequireSpotify } from "../../spotify/helpers.js";
+import { faker } from "@faker-js/faker";
 
 export default (async (fastify) => {
     if (typedEnv.NODE_ENV === "development") {
@@ -108,34 +107,15 @@ export default (async (fastify) => {
         },
         async handler(_request, reply) {
             try {
-                const artist = (
-                    await search({
-                        type: ["artist"],
-                        q: "el cuarteto de nos",
-                    })
-                ).artists!.items![0];
+                const tracks = await search({
+                    "q": "el cuarteto de nos",
+                    "type": ["track"],
+                })
 
-                const tracks = await getAllTracksFromArtist(artist.id!, [
-                    "album",
-                    "single",
-                ]);
-
-                return tracks?.albums.map((album) => {
-                    return {
-                        name: album.name,
-                        id: album.id,
-                        tracks: album.tracks.map(track => {
-                            return {
-                                trackName: track.name,
-                                trackId: track.id,
-                                trackAlbum: album.name,
-                            }
-                        }),
-                    };
-                });
+                return tracks.tracks?.items;
             } catch (e) {
                 if (isAxiosError(e)) {
-                    return reply.code(200).send(e.response?.data);
+                    return reply.code(e.status ?? 269).send(e.response?.data);
                 }
 
                 return e;

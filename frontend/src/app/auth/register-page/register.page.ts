@@ -35,6 +35,7 @@ import { HlmIconComponent } from "@spartan-ng/ui-icon-helm";
 import { provideIcons } from "@ng-icons/core";
 import { lucideAlertCircle } from "@ng-icons/lucide";
 import { toast } from "ngx-sonner";
+import { CrFancyButtonStylesDirective } from "../../directives/styling/cr-fancy-button-styles.directive";
 
 type RegisterFormFields = PostAuthRegisterBody & { repeatPassword: string };
 
@@ -57,6 +58,7 @@ type RegisterFormFields = PostAuthRegisterBody & { repeatPassword: string };
         HlmInputDirective,
         MinusCircleIconComponent,
         HlmIconComponent,
+    CrFancyButtonStylesDirective,
     ],
     providers: [provideIcons({ lucideAlertCircle })],
     templateUrl: "./register.page.html",
@@ -160,7 +162,7 @@ export class RegisterPage implements OnInit {
         try {
             const result = await postAuthRegister(this.person.getRawValue());
             this._localStorage.setItem("userInfo", result.data);
-            this.safeRouter.navigate(["/app"]);
+            this.safeRouter.navigate("/app");
         } catch (e) {
             console.error(e);
             toast("Error al crear cuenta.");

@@ -33,6 +33,7 @@ import { HlmSelectImports } from "@spartan-ng/ui-select-helm";
 import {
     AbstractControl,
     FormBuilder,
+    FormsModule,
     ReactiveFormsModule,
 } from "@angular/forms";
 import { ClientValidationService } from "../../services/client-validation.service";
@@ -57,6 +58,7 @@ import {
     HlmDialogDescriptionDirective,
     HlmDialogFooterComponent,
     HlmDialogHeaderComponent,
+    HlmDialogModule,
     HlmDialogTitleDirective,
 } from "@spartan-ng/ui-dialog-helm";
 import { SafeRoutingService } from "../../services/safe-routing.service";
@@ -76,6 +78,8 @@ import {
 } from "@spartan-ng/ui-popover-helm";
 import { throwDialogContentAlreadyAttachedError } from "@angular/cdk/dialog";
 import { UserConfigTranslator } from "./user-config.translations";
+import { LeaderboardsService } from "../../services/leaderboards.service";
+import { CommonModule } from "@angular/common";
 
 @Component({
     selector: "app-user-config",
@@ -87,7 +91,6 @@ import { UserConfigTranslator } from "./user-config.translations";
         HlmTabsListComponent,
         HlmTabsTriggerDirective,
         HlmTabsContentDirective,
-        HlmTabsPaginatedListComponent,
 
         HlmCardContentDirective,
         HlmCardDescriptionDirective,
@@ -99,7 +102,6 @@ import { UserConfigTranslator } from "./user-config.translations";
         HlmLabelDirective,
         HlmInputDirective,
         HlmButtonDirective,
-        HlmBadgeDirective,
 
         BrnSelectImports,
         HlmSelectImports,
@@ -113,6 +115,7 @@ import { UserConfigTranslator } from "./user-config.translations";
         HlmDialogFooterComponent,
         HlmDialogTitleDirective,
         HlmDialogDescriptionDirective,
+        HlmDialogModule,
 
         HlmLabelDirective,
         HlmInputDirective,
@@ -120,15 +123,15 @@ import { UserConfigTranslator } from "./user-config.translations";
 
         HlmSpinnerComponent,
         IconPickerComponent,
-        TickCircleIconComponent,
 
         //popover
         BrnPopoverComponent,
         BrnPopoverTriggerDirective,
         BrnPopoverContentDirective,
-        BrnPopoverCloseDirective,
         HlmPopoverContentDirective,
-        HlmPopoverCloseDirective,
+        CommonModule,
+        FormsModule
+
     ],
     templateUrl: "./user-config.page.html",
 })
@@ -145,6 +148,8 @@ export class UserConfigPage implements OnInit {
     @ViewChild("dialog") dialog!: ElementRef<HTMLDialogElement>;
     private schema = putUsersSelfSelfIdBody;
     private builder = new FormBuilder().nonNullable;
+    public leadeboardsService= inject(LeaderboardsService)
+    public gameMode: string = ''
 
     user = this.builder.group(
         {
@@ -256,7 +261,7 @@ export class UserConfigPage implements OnInit {
                 ...this.user.getRawValue(),
                 password: this.user.getRawValue().oldPassword,
             });
-            this.safeRouter.navigate(["/app"]);
+            this.safeRouter.navigate("/app");
         } catch (e) {
             console.error(e);
             toast("Failed to change user configs.");
@@ -309,10 +314,10 @@ export class UserConfigPage implements OnInit {
             toast("Failed to delete account.");
         }
     }
-
-    public deleteAllData(gameMode: string) {
-        this.leaderboardService.deleteData(gameMode);
-        this.closeDialog();
+    
+    public deleteAllData() {
+        this.leadeboardsService.deleteData(this.gameMode);
+        console.log(this.gameMode, "EN USER CONFIG TS")
     }
 
 }

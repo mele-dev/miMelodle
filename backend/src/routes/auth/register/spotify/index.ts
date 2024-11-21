@@ -3,22 +3,28 @@ import { SafeType } from "../../../../utils/typebox.js";
 import { MelodleTagName } from "../../../../plugins/swagger.js";
 import { decorators } from "../../../../services/decorators.js";
 import * as spotifyApi from "../../../../apiCodegen/spotify.js";
-import { runPreparedQuery } from "../../../../services/database.js";
-import { insertUserSpotify } from "../../../../queries/dml.queries.js";
 import {
-    JwtTokenContent,
+    executeTransaction,
+    runPreparedQuery,
+} from "../../../../services/database.js";
+import {
+    addArtistToHome,
+    insertUser,
+} from "../../../../queries/dml.queries.js";
+import { JwtTokenContent } from "../../../../types/user.js";
+import {
     spotifyCallback,
     spotifyCallbackGuard,
 } from "../../../../types/user.js";
 import { frontendPaths } from "../../../../services/urls.js";
+import { basePoints } from "../../../../services/score.js";
 
 export default (async (fastify) => {
     fastify.get("/callback", {
         onRequest: [decorators.noSecurity],
         schema: {
             response: {
-                300: SafeType.Any(),
-                // TODO: Implement correct error handling.
+                302: SafeType.Any(),
                 ...SafeType.CreateErrors([]),
             },
             summary: "Register a user through a spotify callback.",
@@ -34,11 +40,25 @@ export default (async (fastify) => {
                     request
                 );
 
-            const userInfo = await spotifyApi.getCurrentUsersProfile({
+            const userInfoPromise = spotifyApi.getCurrentUsersProfile({
                 headers: {
                     Authorization: "Bearer " + spotifyToken.token.access_token,
                 },
             });
+
+            const userFollowsPromise = spotifyApi.getFollowed(
+                { type: "artist", limit: 50 },
+                {
+                    headers: {
+                        Authorization:
+                            "Bearer " + spotifyToken.token.access_token,
+                    },
+                }
+            );
+
+            const userInfo = await userInfoPromise;
+
+            const userFollows = await userFollowsPromise;
 
             const parsedUserInfo = spotifyCallbackGuard.Decode({
                 email: userInfo.email,
@@ -46,10 +66,19 @@ export default (async (fastify) => {
                 spotifyId: userInfo.id,
             } satisfies Partial<spotifyCallback>);
 
-            // TODO: Auto-generate username so that it cannot collide.
-            const result = await runPreparedQuery(insertUserSpotify, {
-                ...parsedUserInfo,
-                name: parsedUserInfo.username,
+            let result = await executeTransaction(async () => {
+                const result = await runPreparedQuery(insertUser, {
+                    ...parsedUserInfo,
+                    name: parsedUserInfo.username,
+                    baseGuessSongScore: basePoints,
+                    baseGuessLineScore: basePoints,
+                    artists:
+                        userFollows?.artists?.items
+                            ?.map((a) => a.id)
+                            ?.filter((s) => s !== undefined) ?? [],
+                });
+
+                return result;
             });
 
             const token = fastify.jwt.sign({

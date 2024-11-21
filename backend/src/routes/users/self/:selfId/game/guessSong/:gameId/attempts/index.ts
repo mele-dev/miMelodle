@@ -4,22 +4,25 @@ import { MelodleTagName } from "../../../../../../../../plugins/swagger.js";
 import { decorators } from "../../../../../../../../services/decorators.js";
 import { ParamsSchema } from "../../../../../../../../types/params.js";
 import {
-    commonGuessSongPropertiesSchema,
+    commonGamePropertiesSchema,
     guessSongGameInformationSchema,
-    guessSongHintsListSchema,
-} from "../../../../../../../../types/guessSong.js";
+} from "../../../../../../../../types/game.js";
 import { runPreparedQuery } from "../../../../../../../../services/database.js";
 import { sendError, sendOk } from "../../../../../../../../utils/reply.js";
 import { insertGuessSongAttempt } from "../../../../../../../../queries/dml.queries.js";
 import { getGuessSongInformation } from "../../../../../../../../services/game.js";
 import { UnreachableCaseError } from "ts-essentials";
+import {
+    calculateScoreDecrement,
+    calculateScoreIncrement,
+} from "../../../../../../../../services/score.js";
 
 export default (async (fastify) => {
     fastify.post("", {
         onRequest: [decorators.authenticateSelf()],
         schema: {
             params: SafeType.Pick(ParamsSchema, ["selfId", "gameId"]),
-            body: SafeType.Pick(commonGuessSongPropertiesSchema, [
+            body: SafeType.Pick(commonGamePropertiesSchema, [
                 "guessedTrackSpotifyId",
             ]),
             response: {
@@ -38,7 +41,11 @@ export default (async (fastify) => {
             tags: ["Melodle"] satisfies MelodleTagName[],
         },
         async handler(request, reply) {
-            const result = await getGuessSongInformation(request.params);
+            const result = await getGuessSongInformation({
+                ...request.params,
+                newGuess: request.body.guessedTrackSpotifyId,
+            });
+
             switch (result.status) {
                 case "RepeatedTrack":
                     return sendError(reply, "conflict", result.status);
@@ -50,19 +57,39 @@ export default (async (fastify) => {
                     return sendError(reply, "notFound", result.status);
                 case "AlreadyWon":
                     return sendError(reply, "gone", result.status);
+                case "NotYourGame":
+                    return sendError(reply, "unauthorized", result.status);
                 case "Success":
                     break;
                 default:
                     throw new UnreachableCaseError(result);
             }
 
+            const hasWon = result.hints.attempts.some((a) => a.isCorrectTrack);
+            const hasLost = !hasWon && result.hints.attempts.length === 6;
+
+            let scoreDeviation = 0;
+
+            if (hasWon) {
+                scoreDeviation = calculateScoreIncrement(
+                    result.hints.currentScore,
+                    result.hints.attempts.length
+                );
+            }
+
+            if (hasLost) {
+                scoreDeviation = calculateScoreDecrement(
+                    result.hints.currentScore
+                );
+            }
+
             const queryResult = await runPreparedQuery(insertGuessSongAttempt, {
-                gameId: request.params.gameId,
+                ...request.params,
                 trackId: request.body.guessedTrackSpotifyId,
+                scoreDeviation,
             });
 
             if (queryResult.length !== 1) {
-                // I'm not sure which code to use here.
                 return sendError(
                     reply,
                     "internalServerError",

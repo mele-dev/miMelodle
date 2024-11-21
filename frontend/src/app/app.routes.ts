@@ -11,6 +11,10 @@ import { AppLayoutPage } from "./app-layout/app-layout.page";
 import { authGuard } from "./guards/auth.guard";
 import { HomePage } from "./home/home.page";
 import { UserConfigPage } from "./pages/user-config/user-config.page";
+import { LeaderboardComponent } from "./components/leaderboard/leaderboard.component";
+import { GuessSongPage } from "./pages/game/guess-song/guess-song.page";
+import { GuessLinePage } from "./pages/game/guess-line/guess-line.page";
+import { CreateGamePage } from "./pages/game/create-game/create-game.page";
 
 export const routes = [
     {
@@ -53,22 +57,32 @@ export const routes = [
             {
                 path: "home",
                 component: HomePage,
+                title: "Popdle",
             },
             {
                 path: "profile",
                 component: UserConfigPage,
+                title: "Your profile",
             },
             {
                 path: "leaderboards",
-                component: TODOComponent,
+                component: LeaderboardComponent,
+                title: "Leaderboards",
             },
             {
-                path: "melodle/guess_line/:gameId",
-                component: TODOComponent,
+                path: "game",
+                component: CreateGamePage,
+                title: "New game",
             },
             {
-                path: "melodle/guess_song/:gameId",
-                component: TODOComponent,
+                path: "game/guess_line/:gameId",
+                component: GuessLinePage,
+                title: "Guess a line",
+            },
+            {
+                path: "game/guess_song/:gameId",
+                component: GuessSongPage,
+                title: "Guess a song",
             },
         ],
     },
@@ -86,32 +100,6 @@ export const routes = [
     {
         path: "**",
         component: NotFoundPage,
+        title: "Not found",
     },
 ] as const satisfies Routes;
-
-export type AllMelodlePaths = ExtractRoutes<typeof routes>;
-
-// WARN: The below is made by ChatGPT. It seems to work, though.
-
-// Extract ALL paths (including those without components)
-type ExtractAllPaths<TRoute extends Route, TBasePath extends string = ""> =
-    // If the route has children, extract from children recursively
-    TRoute extends {
-        path: infer P;
-        children: infer C extends Routes;
-    }
-        ?
-              | `${TBasePath}/${P & string}`
-              | ExtractRoutes<C, `${TBasePath}/${P & string}`>
-        : // Otherwise, return the current path
-          TRoute extends { path: infer P }
-          ? `${TBasePath}/${P & string}`
-          : never;
-
-// Helper to iterate over all routes and apply the extraction logic
-type ExtractRoutes<
-    TRoutes extends Routes,
-    TBasePath extends string = "",
-> = TRoutes[number] extends infer R extends Route
-    ? ExtractAllPaths<R, TBasePath>
-    : never;

@@ -29,6 +29,7 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                         "name",
                         "id",
                     ]).properties,
+                    spotifyId: SafeType.Optional(userSchema.properties.spotifyId),
                     profilePictureFile:
                         profilePictureSchema.properties.filename,
                     profilePictureId: profilePictureSchema.properties.id,
@@ -46,7 +47,7 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 getSelfuser,
                 request.params
             );
-            return sendOk(reply, 200, userProfile[0]);
+            return sendOk(reply, 200, {...userProfile[0], spotifyId: userProfile[0].spotifyId ?? undefined});
         },
     });
 
