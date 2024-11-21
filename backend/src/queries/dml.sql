@@ -236,15 +236,11 @@ SELECT (SELECT "canCreate" FROM "canCreateGame"), "insertGame".id
            LEFT JOIN "insertGame" ON TRUE;
 
 /* @name getGuessSongFromUser */
-  WITH "game" AS (SELECT *
-                    FROM "guessSongGames" gsg
-                   WHERE gsg."userId" = :selfId! AND gsg.id = :gameId!
-                   ORDER BY gsg."createdAt"
-                   LIMIT 6)
+  WITH "game" AS (SELECT * FROM "guessSongGames" gsg WHERE gsg."userId" = :selfId! AND gsg.id = :gameId!)
 SELECT game.*, gsa.*, ranking.score
   FROM "game"
            LEFT JOIN public."guessSongAttempts" gsa ON "game".id = gsa."gameId"
-           LEFT JOIN ranking ON ranking."userId" = :selfId!;
+           INNER JOIN ranking ON ranking."userId" = :selfId! AND ranking.mode = 'guessSong';
 
 /* @name insertGuessSongAttempt */
      WITH "scoreUpdate" AS ( UPDATE ranking SET score = score + :scoreDeviation! WHERE "userId" = :selfId!)
