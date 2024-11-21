@@ -1,10 +1,12 @@
 import {
     Component,
     effect,
+    ElementRef,
     inject,
     input,
     OnInit,
     signal,
+    ViewChild,
 } from "@angular/core";
 import { DomSanitizer } from "@angular/platform-browser";
 import { HlmBadgeDirective } from "@spartan-ng/ui-badge-helm";
@@ -73,6 +75,7 @@ import {
     HlmPopoverContentDirective,
 } from "@spartan-ng/ui-popover-helm";
 import { throwDialogContentAlreadyAttachedError } from "@angular/cdk/dialog";
+import { UserConfigTranslator } from "./user-config.translations";
 
 @Component({
     selector: "app-user-config",
@@ -130,6 +133,7 @@ import { throwDialogContentAlreadyAttachedError } from "@angular/cdk/dialog";
     templateUrl: "./user-config.page.html",
 })
 export class UserConfigPage implements OnInit {
+    dict = inject(UserConfigTranslator).dict
     private _validator = inject(ClientValidationService);
     private _localStorage = inject(LocalStorageService);
     chosenIcon = signal<BackendIcon | undefined>(undefined);
@@ -138,7 +142,7 @@ export class UserConfigPage implements OnInit {
     public userInfo = this.selfService.getUserInfo();
     public safeRouter = inject(SafeRoutingService);
     allIcons?: BackendIcon[];
-
+    @ViewChild("dialog") dialog!: ElementRef<HTMLDialogElement>;
     private schema = putUsersSelfSelfIdBody;
     private builder = new FormBuilder().nonNullable;
 
@@ -304,5 +308,18 @@ export class UserConfigPage implements OnInit {
             console.error(e);
             toast("Failed to delete account.");
         }
+    }
+
+    public deleteAllData(gameMode: string) {
+        this.leaderboardService.deleteData(gameMode);
+        this.closeDialog();
+    }
+
+    public openDialog() {
+        this.dialog.nativeElement.showModal();
+    }
+
+    public closeDialog() {
+        this.dialog.nativeElement.close();
     }
 }
