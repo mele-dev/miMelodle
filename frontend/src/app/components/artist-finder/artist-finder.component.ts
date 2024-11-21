@@ -34,8 +34,6 @@ export class ArtistFinderComponent {
     private _selfService = inject(SelfService);
     public homeArtistsService = inject(HomeArtistsService);
 
-    @Output() artistAdded = new EventEmitter<string>();
-
     async search() {
         console.info(this.usersFilter());
         try {
@@ -72,7 +70,5 @@ export class ArtistFinderComponent {
             toast(this.dict().errorToast);
             return;
         }
-
-            this.artistAdded.emit("not empty")
     }
 }

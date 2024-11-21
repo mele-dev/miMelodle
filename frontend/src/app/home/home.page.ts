@@ -47,6 +47,7 @@ export class HomePage {
     public name: string | undefined;
 
     isEmpty: boolean | undefined;
+    
     ngOnInit() {
         this.getUsername();
         this.isItEmpty();

@@ -11,7 +11,7 @@ const homePageTranslations = {
     },
     welcome: {
         en: (username: string) => `Welcome back ${username}!` as const,
-        es: (username:  string) => `Bienvenido de vuelta ${username}!` as const
+        es: (username:  string) => `¡Bienvenido de vuelta ${username}!` as const
     }
 } as const satisfies Translations;
 

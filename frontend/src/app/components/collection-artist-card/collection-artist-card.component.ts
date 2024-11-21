@@ -24,7 +24,7 @@ import { RouterLink } from "@angular/router";
 @Component({
     selector: "app-collection-artist-card",
     standalone: true,
-    imports: [CommonModule, StarComponent, MusicComponent, XComponent, GrayStarComponent, RouterLink],
+    imports: [CommonModule, MusicComponent, XComponent, RouterLink],
     providers: [provideIcons({ lucideMusic, lucideStar, lucideStarOff })],
     templateUrl: "./collection-artist-card.component.html",
 })
@@ -65,15 +65,4 @@ export class CollectionArtistCardComponent implements OnInit {
         dialog?.nativeElement.close();
     }
     
-    currentSection() {
-        const url = this.safeRouter.url;
-        return {
-            game: url.startsWith("/app/game" satisfies AllMelodlePaths),
-            home: url.startsWith("/app/home" satisfies AllMelodlePaths),
-            leaderboards: url.startsWith(
-                "/app/leaderboards" satisfies AllMelodlePaths
-            ),
-            profile: url.startsWith("/app/profile" satisfies AllMelodlePaths),
-        } as const;
-    }
 }
