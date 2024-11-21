@@ -243,6 +243,10 @@ export class UserConfigPage implements OnInit {
 
     async onSubmit() {
         try {
+            this.user.patchValue({
+                profilePictureId: this.chosenIcon()?.id ?? -1,
+            });
+
             const userInfo = await this.selfService.waitForUserInfoSnapshot();
             const result = await putUsersSelfSelfId(userInfo.id, {
                 ...this.user.getRawValue(),
