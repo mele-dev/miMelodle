@@ -315,11 +315,4 @@ export class UserConfigPage implements OnInit {
         this.closeDialog();
     }
 
-    public openDialog() {
-        this.dialog.nativeElement.showModal();
-    }
-
-    public closeDialog() {
-        this.dialog.nativeElement.close();
-    }
 }

@@ -69,6 +69,14 @@ export const userConfigDict = {
     loading: {
         en: "Loading...",
         es: "Cargando..."
+    },
+    edit: {
+        en:"Edit profile",
+        es: "Editar perfil"
+    },
+    gameMode: {
+        en: "Game mode",
+        es: "Modo de juego"
     }
 } as const satisfies Translations;
 

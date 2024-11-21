@@ -6,9 +6,15 @@
     orientation="vertical"
 >
     <hlm-tabs-list orientation="vertical" aria-label="tabs example">
-        <button class="w-full" hlmTabsTrigger="profile">{{this.dict().userConfig}}</button>
-        <button class="w-full" hlmTabsTrigger="password">{{this.dict().password}}</button>
-        <button class="w-full" hlmTabsTrigger="danger">{{this.dict().dangerZone}}</button>
+        <button class="w-full" hlmTabsTrigger="profile">
+            {{this.dict().userConfig}}
+        </button>
+        <button class="w-full" hlmTabsTrigger="password">
+            {{this.dict().password}}
+        </button>
+        <button class="w-full" hlmTabsTrigger="danger">
+            {{this.dict().dangerZone}}
+        </button>
     </hlm-tabs-list>
     <div hlmTabsContent="profile" class="w-full">
         <section brnCard>
@@ -30,7 +36,9 @@
                         *brnPopoverContent="let ctx"
                     >
                         <div class="space-y-2">
-                            <h4 class="font-medium leading-none">{{this.dict().userIcon}}</h4>
+                            <h4 class="font-medium leading-none">
+                                {{this.dict().userIcon}}
+                            </h4>
                         </div>
                         <app-icon-picker
                             [icons]="this.allIcons ?? []"
@@ -94,17 +102,18 @@
                         *brnDialogContent="let ctx"
                     >
                         <hlm-dialog-header>
-                            <h3 hlmDialogTitle>Edit Profile</h3>
+                            <h3 hlmDialogTitle>{{this.dict().edit}}</h3>
                             <p hlmDialogDescription>
                                 {{this.dict().enterPassword}}
                             </p>
                         </hlm-dialog-header>
                         <div class="grid gap-4 py-4">
                             <div class="grid grid-cols-4 items-center gap-4">
-                                <label>
+                                <label
                                     hlmLabel
                                     for="username"
                                     class="text-right"
+                                >
                                     >{{this.dict().password}}</label
                                 >
                                 <input
@@ -133,9 +142,7 @@
         <section hlmCard>
             <div hlmCardHeader>
                 <h3 hlmCardTitle>{{this.dict().password}}</h3>
-                <p hlmCardDescription>
-                    {{this.dict().passwordSection}}
-                </p>
+                <p hlmCardDescription>{{this.dict().passwordSection}}</p>
             </div>
             <p hlmCardContent>
                 <label class="my-4 block" hlmLabel>
@@ -170,9 +177,7 @@
         <section hlmCard>
             <div hlmCardHeader>
                 <h3 hlmCardTitle>{{this.dict().deleteAccount}}</h3>
-                <p hlmCardDescription>
-                    {{this.dict().questionAccount}}
-                </p>
+                <p hlmCardDescription>{{this.dict().questionAccount}}</p>
             </div>
             <div hlmCardFooter>
                 <button
@@ -182,23 +187,49 @@
                 >
                     {{this.dict().deleteAccount}}
                 </button>
+                
             </div>
         </section>
         <section hlmCard>
             <div hlmCardHeader>
                 <h3 hlmCardTitle>{{this.dict().deleteRanking}}</h3>
-                <p hlmCardDescription>
-                    {{this.dict().questionRanking}}
-                </p>
+                <p hlmCardDescription>{{this.dict().questionRanking}}</p>
             </div>
             <div hlmCardFooter>
                 <button
                     variant="destructive"
-                    (click)="this.deleteAllData()"
                     hlmBtn
+                    brnDialogTrigger>
+
                 >
                     {{this.dict().deleteRanking}}
                 </button>
+                <hlm-dialog>
+                    <hlm-dialog-content
+                        class="sm:max-w-[425px]"
+                        *brnDialogContent="let ctx"
+                    >
+                        <div class="grid gap-4 py-4">
+                            <div class="grid grid-cols-4 items-center gap-4">
+                                <label hlmLabel for="gameMode" class="text-right"
+                                    
+                                    >{{this.dict().gameMode}}</label
+                                >
+                                <input
+                                    hlmInput
+                                    id="gameMode"
+                                    value=""
+                                    class="col-span-3"
+                                />
+                            </div>
+                        </div>
+                        <hlm-dialog-footer>
+                            <button hlmBtn (click)="this.deleteAllData(gameMode.value)" type="submit">
+                                {{this.dict().save}}
+                            </button>
+                        </hlm-dialog-footer>
+                    </hlm-dialog-content>
+                </hlm-dialog>
             </div>
         </section>
     </div>
