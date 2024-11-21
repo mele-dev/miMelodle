@@ -7,13 +7,12 @@
     hlmInput
     type="text"
     name="query"
-    [placeholder]="this.dict().placeholder"
+    [placeholder]="this.dict().indications"
     value=""
     class="w-full"
     [(ngModel)]="this.usersFilter"
     (keydown.enter)="search()"
 />
-<p class="text-gray-400">{{this.dict().indications}}</p>
 
 <hlm-table class="h-96 w-96 overflow-y-scroll scroll-auto">
     @for (artist of matchedArtists(); track artist.id) {

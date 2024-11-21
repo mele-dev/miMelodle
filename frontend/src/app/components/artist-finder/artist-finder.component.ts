@@ -16,13 +16,14 @@ import { LocalStorageService } from "../../services/local-storage.service";
 import { HomeArtistsService } from "../../services/saved-artists.service";
 import { ArtistFinderTranslator } from "./artist-finder.translations";
 import { SelfService } from "../../services/self.service";
+import { HlmInputModule } from "@spartan-ng/ui-input-helm";
 
 type SearchedArtist = GetSpotifySearch200Artists["items"][number];
 
 @Component({
     selector: "app-artist-finder",
     standalone: true,
-    imports: [HlmTableComponent, HlmTrowComponent, HlmTdComponent, FormsModule],
+    imports: [HlmTableComponent, HlmTrowComponent, HlmTdComponent, FormsModule, HlmInputModule  ],
     templateUrl: "./artist-finder.component.html",
 })
 export class ArtistFinderComponent {
