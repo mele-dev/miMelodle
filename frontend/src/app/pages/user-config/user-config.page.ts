@@ -300,18 +300,22 @@ export class UserConfigPage implements OnInit {
         try {
             const userInfo = await this.selfService.waitForUserInfoSnapshot();
 
-            const login = await postAuthLogin({
+            /*const login = await postAuthLogin({
                 emailOrUsername: userInfo.email,
                 password: this.changePasasword.getRawValue().oldPassword,
-            });
-            const result = await putUsersSelfSelfId(userInfo.id, {
-                ...this.changePasasword.getRawValue(),
-                email: userInfo.email,
-                name: userInfo.name,
-                profilePictureId: userInfo.profilePictureId,
-                username: userInfo.username,
-            });
-            this.selfService.logOut();
+            });*/
+
+            //if (login.status === 200) {
+                const result = await putUsersSelfSelfId(userInfo.id, {
+                    ...this.changePasasword.getRawValue(),
+                    email: userInfo.email,
+                    name: userInfo.name,
+                    profilePictureId: userInfo.profilePictureId,
+                    username: userInfo.username,
+                });
+                this.selfService.logOut();
+            //}
+
         } catch (e) {
             console.error(e);
             toast("Failed to change password.");
@@ -328,8 +332,8 @@ export class UserConfigPage implements OnInit {
 
             if (login.status === 200) {
                 await deleteUsersSelfSelfId(userInfo.id);
-                this.selfService.logOut();
                 toast("Account deleted successfully.");
+                this.selfService.logOut();
             }
         } catch (e) {
             console.error(e);
@@ -339,6 +343,5 @@ export class UserConfigPage implements OnInit {
 
     public deleteAllData() {
         this.leadeboardsService.deleteData(this.gameMode);
-        console.log(this.gameMode, "EN USER CONFIG TS");
     }
 }

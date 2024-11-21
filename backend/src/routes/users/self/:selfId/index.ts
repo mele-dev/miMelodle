@@ -29,7 +29,9 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                         "name",
                         "id",
                     ]).properties,
-                    spotifyId: SafeType.Optional(userSchema.properties.spotifyId),
+                    spotifyId: SafeType.Optional(
+                        userSchema.properties.spotifyId
+                    ),
                     profilePictureFile:
                         profilePictureSchema.properties.filename,
                     profilePictureId: profilePictureSchema.properties.id,
@@ -47,7 +49,10 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 getSelfuser,
                 request.params
             );
-            return sendOk(reply, 200, {...userProfile[0], spotifyId: userProfile[0].spotifyId ?? undefined});
+            return sendOk(reply, 200, {
+                ...userProfile[0],
+                spotifyId: userProfile[0].spotifyId ?? undefined,
+            });
         },
     });
 
@@ -110,6 +115,7 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
         onRequest: [decorators.authenticateSelf()],
         schema: {
             params: selfIdSchema,
+            body: SafeType.Pick(userSchema, ["password"]),
             response: {
                 200: SafeType.Pick(userSchema, ["username"]),
                 ...SafeType.CreateErrors(["unauthorized", "notFound"]),
@@ -122,10 +128,11 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 "implemented once other resources are implemented.",
         },
         handler: async function (request, reply) {
-            const queryResult = await runPreparedQuery(
-                deleteUser,
-                request.params
-            );
+            // TODO
+            const queryResult = await runPreparedQuery(deleteUser, {
+                ...request.params,
+                ...request.body,
+            });
 
             switch (queryResult.length) {
                 case 0:

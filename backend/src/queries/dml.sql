@@ -42,9 +42,9 @@ SELECT id
 RETURNING username;
 
 /* @name deleteUser */
-   DELETE
-     FROM users
-    WHERE id = :selfId!
+DELETE
+FROM users
+WHERE id = :selfId! and check_password(users."passwordHash", :password!)
 RETURNING *;
 
 /* @name selectAllIcons */
