@@ -15,7 +15,7 @@ export const userConfigDict = {
     },
     questionAccount: {
         en: "Are you sure you want to delete your account? You cannot undo this action.",
-        es: "¿Estás seguro que deseas eliminar tu cuenta? No puedes deshacer esta acción",
+        es: "¿Estás seguro que deseas eliminar tu cuenta? No puedes deshacer esta acción.",
     },
     questionRanking: {
         en: "By writting a game mode, the ranking data for that game mode will be cleared. Are you sure you want to continue?",
@@ -91,7 +91,7 @@ export const userConfigDict = {
     },
     accountExplanation:
     {
-        en:"To continue, ener your password",
+        en:"To continue, enter your password",
         es: "Para continuar ingrese su contraseña"
     }
 } as const satisfies Translations;

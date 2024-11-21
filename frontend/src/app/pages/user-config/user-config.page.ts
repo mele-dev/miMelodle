@@ -37,11 +37,16 @@ import {
     ReactiveFormsModule,
 } from "@angular/forms";
 import { ClientValidationService } from "../../services/client-validation.service";
-import { putUsersSelfSelfIdBody } from "../../../apiCodegen/backend-zod";
+import {
+    postAuthLoginBody,
+    postAuthLoginResponse,
+    putUsersSelfSelfIdBody,
+} from "../../../apiCodegen/backend-zod";
 import {
     deleteUsersSelfSelfId,
     getPublicIcons,
     getPublicIconsFilename,
+    postAuthLogin,
     putUsersSelfSelfId,
     PutUsersSelfSelfIdBody,
 } from "../../../apiCodegen/backend";
@@ -130,13 +135,12 @@ import { CommonModule } from "@angular/common";
         BrnPopoverContentDirective,
         HlmPopoverContentDirective,
         CommonModule,
-        FormsModule
-
+        FormsModule,
     ],
     templateUrl: "./user-config.page.html",
 })
 export class UserConfigPage implements OnInit {
-    dict = inject(UserConfigTranslator).dict
+    dict = inject(UserConfigTranslator).dict;
     private _validator = inject(ClientValidationService);
     private _localStorage = inject(LocalStorageService);
     chosenIcon = signal<BackendIcon | undefined>(undefined);
@@ -148,8 +152,8 @@ export class UserConfigPage implements OnInit {
     @ViewChild("dialog") dialog!: ElementRef<HTMLDialogElement>;
     private schema = putUsersSelfSelfIdBody;
     private builder = new FormBuilder().nonNullable;
-    public leadeboardsService= inject(LeaderboardsService)
-    public gameMode: string = ''
+    public leadeboardsService = inject(LeaderboardsService);
+    public gameMode: string = "";
 
     user = this.builder.group(
         {
@@ -252,11 +256,12 @@ export class UserConfigPage implements OnInit {
 
     async onSubmit() {
         try {
+            const userInfo = await this.selfService.waitForUserInfoSnapshot();
+
             this.user.patchValue({
                 profilePictureId: this.chosenIcon()?.id ?? -1,
             });
 
-            const userInfo = await this.selfService.waitForUserInfoSnapshot();
             const result = await putUsersSelfSelfId(userInfo.id, {
                 ...this.user.getRawValue(),
                 password: this.user.getRawValue().oldPassword,
@@ -284,11 +289,21 @@ export class UserConfigPage implements OnInit {
         this.chosenIcon.set(
             this.allIcons.find((v) => v.id === userInfo.profilePictureId)
         );
+
+        this.user.controls.email.setValue(userInfo.email);
+        this.user.controls.username.setValue(userInfo.username);
+        this.user.controls.name.setValue(userInfo.name);
+
     }
 
     public async changePassword() {
         try {
             const userInfo = await this.selfService.waitForUserInfoSnapshot();
+
+            const login = await postAuthLogin({
+                emailOrUsername: userInfo.email,
+                password: this.changePasasword.getRawValue().oldPassword,
+            });
             const result = await putUsersSelfSelfId(userInfo.id, {
                 ...this.changePasasword.getRawValue(),
                 email: userInfo.email,
@@ -306,18 +321,24 @@ export class UserConfigPage implements OnInit {
     public async deleteAccount() {
         try {
             const userInfo = await this.selfService.waitForUserInfoSnapshot();
-            const result = await deleteUsersSelfSelfId(userInfo.id);
-            this.selfService.logOut();
-            toast("Account deleted successfully.");
+            const login = await postAuthLogin({
+                emailOrUsername: userInfo.email,
+                password: this.user.getRawValue().oldPassword,
+            });
+
+            if (login.status === 200) {
+                await deleteUsersSelfSelfId(userInfo.id);
+                this.selfService.logOut();
+                toast("Account deleted successfully.");
+            }
         } catch (e) {
             console.error(e);
             toast("Failed to delete account.");
         }
     }
-    
+
     public deleteAllData() {
         this.leadeboardsService.deleteData(this.gameMode);
-        console.log(this.gameMode, "EN USER CONFIG TS")
+        console.log(this.gameMode, "EN USER CONFIG TS");
     }
-
 }

@@ -67,8 +67,6 @@
                     {{this.dict().name}}
                     <input
                         class="mt-1.5 w-full"
-                        value=""
-                        [placeholder]="userInfo()?.name"
                         hlmInput
                         [formControl]="user.controls.name"
                     />
@@ -77,7 +75,6 @@
                     {{this.dict().username}}
                     <input
                         class="mt-1.5 w-full"
-                        [placeholder]="userInfo()?.username"
                         hlmInput
                         [formControl]="user.controls.username"
                     />
@@ -86,7 +83,6 @@
                     {{this.dict().email}}
                     <input
                         class="mt-1.5 w-full"
-                        [placeholder]="userInfo()?.email"
                         hlmInput
                         [formControl]="user.controls.email"
                     />
@@ -178,7 +174,7 @@
             
             <div hlmCardHeader>
                 <h3 hlmCardTitle>{{this.dict().deleteAccount}}</h3>
-                <p hlmCardDescription>{{this.dict().accountExplanation}}</p>
+                <p hlmCardDescription>{{this.dict().questionAccount}}</p>
             </div>
             <div hlmCardFooter>
                 <hlm-dialog>
@@ -190,7 +186,7 @@
                         *brnDialogContent="let ctx"
                     >
                         <hlm-dialog-header>
-                            <h3 hlmDialogTitle>{{this.dict().questionAccount}}</h3>
+                            <h3 hlmDialogTitle>{{this.dict().accountExplanation}}</h3>
                         </hlm-dialog-header>
                         <div class="grid gap-4 py-4">
                             <div class="grid grid-cols-4 items-center gap-4">
@@ -213,7 +209,7 @@
                             </div>
                         </div>
                         <hlm-dialog-footer>
-                            <button variant="destructive" class="cursor-not-allowed" hlmBtn (click)="this.deleteAccount()" type="submit">
+                            <button variant="destructive" hlmBtn (click)="this.deleteAccount()" type="submit">
                                 {{this.dict().delete}}
                             </button>
                         </hlm-dialog-footer>
@@ -221,7 +217,7 @@
                 </hlm-dialog>
             </div>
         </section>
-        <section hlmCard>
+        <section hlmCard class="mt-2">
             <div hlmCardHeader>
                 <h3 hlmCardTitle>{{this.dict().deleteRanking}}</h3>
                 <p hlmCardDescription>{{this.dict().rankingExplanation}}</p>
