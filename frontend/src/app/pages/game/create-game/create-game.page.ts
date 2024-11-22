@@ -1,12 +1,5 @@
 import { CommonModule } from "@angular/common";
-import {
-    Component,
-    computed,
-    inject,
-    OnInit,
-    signal,
-    ViewChild,
-} from "@angular/core";
+import { Component, computed, inject, signal, ViewChild } from "@angular/core";
 import { provideIcons } from "@ng-icons/core";
 import { lucideArrowUpDown, lucidePlus } from "@ng-icons/lucide";
 import { HlmButtonModule } from "@spartan-ng/ui-button-helm";
@@ -24,6 +17,8 @@ import {
     TrackListItem,
     TrackListItemComponent,
 } from "../../../components/track-list-item/track-list-item.component";
+import { HlmDialogComponent } from "@spartan-ng/ui-dialog-helm";
+import { TutorialsTranslator } from "../tutorials-dialog.translations";
 import { GuessSongService } from "../../../services/games/guess-song.service";
 import { GuessLineService } from "../../../services/games/guess-line.service";
 import { SavedArtistsService } from "../../../services/saved-artists.service";
@@ -32,7 +27,6 @@ import {
     GetSpotifySearch200TracksItemsItem,
 } from "../../../../apiCodegen/backend";
 import {
-    HlmDialogComponent,
     HlmDialogModule,
 } from "@spartan-ng/ui-dialog-helm";
 import { BrnDialogModule } from "@spartan-ng/ui-dialog-brain";
@@ -55,14 +49,13 @@ import { BrnDialogModule } from "@spartan-ng/ui-dialog-brain";
     providers: [provideIcons({ lucideArrowUpDown, lucidePlus })],
     templateUrl: "./create-game.page.html",
 })
-export class CreateGamePage implements OnInit {
+export class CreateGamePage{
     private _savedArtists = inject(SavedArtistsService);
     guessSong = inject(GuessSongService);
     guessLine = inject(GuessLineService);
     dict = inject(CreateGameTranslations).dict;
-
+    dictT = inject(TutorialsTranslator).dict;
     @ViewChild("pickTrackDialog") pickTrackDialog!: HlmDialogComponent;
-
     readonly titles = computed(() => {
         return [this.dict().line, this.dict().song] as const;
     });
