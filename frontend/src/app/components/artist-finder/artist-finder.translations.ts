@@ -25,6 +25,10 @@ export const artistFinderDict = {
         en: "followers",
         es: "seguidores",
     },
+    indications: {
+        en: "To search press 'enter'",
+        es: "Para buscar precione 'enter'"
+    }
 } as const satisfies Translations;
 
 @Injectable({

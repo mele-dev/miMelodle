@@ -11,13 +11,6 @@ import {
     ArtistListItemComponent,
 } from "../../../components/artist-list-item/artist-list-item.component";
 import { CrFancyButtonStylesDirective } from "../../../directives/styling/cr-fancy-button-styles.directive";
-import {
-    postUsersSelfSelfIdGameGuessLine,
-    postUsersSelfSelfIdGameGuessSong,
-} from "../../../../apiCodegen/backend";
-import { SelfService } from "../../../services/self.service";
-import { SafeRoutingService } from "../../../services/safe-routing.service";
-import { isAxiosError } from "axios";
 import { toast } from "ngx-sonner";
 import { CreateGameTranslations } from "./create-game.translations";
 import { hardCodedArtists } from "./hard-coded-artists";
@@ -26,6 +19,8 @@ import {
     TrackListItemComponent,
 } from "../../../components/track-list-item/track-list-item.component";
 import { hardCodedTracks } from "./hard-coded-tracks";
+import { GuessSongService } from "../../../services/games/guess-song.service";
+import { GuessLineService } from "../../../services/games/guess-line.service";
 
 @Component({
     selector: "app-create-game",
@@ -44,13 +39,13 @@ import { hardCodedTracks } from "./hard-coded-tracks";
     templateUrl: "./create-game.page.html",
 })
 export class CreateGamePage {
+    guessSong = inject(GuessSongService);
+    guessLine = inject(GuessLineService);
     dict = inject(CreateGameTranslations).dict;
     readonly titles = computed(() => {
         return [this.dict().line, this.dict().song] as const;
     });
 
-    private readonly _self = inject(SelfService);
-    private readonly _router = inject(SafeRoutingService);
     private selectedIndex = signal(0);
 
     selected = computed(() => {
@@ -78,69 +73,17 @@ export class CreateGamePage {
         this.tracks.set(this.tracks().filter((t) => t.id !== track.id));
     }
 
-    async createGameFromTracks(tracks: TrackListItem[]) {
-        const user = await this._self.waitForUserInfoSnapshot();
-
-        try {
-            toast(this.dict().creatingGame);
-            const result = await postUsersSelfSelfIdGameGuessLine(user.id, {
-                fromTracks: tracks.map((t) => t.id),
-            });
-            toast(this.dict().gameCreated);
-            return this._router.navigate("/app/game/guess_line/:gameId", {
-                ids: result.data,
-            });
-        } catch (e) {
-            if (isAxiosError(e)) {
-                console.log(e.response?.data);
-            } else {
-                console.log(e);
-            }
-
-            toast(this.dict().errorWhileCreatingGame, {
-                action: {
-                    label: this.dict().retry,
-                    onClick: () => this.createGameFromTracks(tracks),
-                },
-            });
-        }
-    }
-
-    async createGameFromArtists(artists: ArtistListItem[]) {
-        const user = await this._self.waitForUserInfoSnapshot();
-
-        try {
-            toast(this.dict().creatingGame);
-            const result = await postUsersSelfSelfIdGameGuessSong(user.id, {
-                fromArtists: artists.map((artist) => artist.id),
-            });
-            toast(this.dict().gameCreated);
-            return this._router.navigate("/app/game/guess_song/:gameId", {
-                ids: result.data,
-            });
-        } catch (e) {
-            if (isAxiosError(e)) {
-                console.log(e.response?.data);
-            } else {
-                console.log(e);
-            }
-
-            toast(this.dict().errorWhileCreatingGame, {
-                action: {
-                    label: this.dict().retry,
-                    onClick: () => this.createGameFromArtists(artists),
-                },
-            });
-        }
-    }
-
     async submit() {
         if (this.selected().isLine) {
-            return await this.createGameFromTracks(this.tracks());
+            return await this.guessLine.createGameFromTracks(
+                this.tracks().map((t) => t.id)
+            );
         }
 
         if (this.selected().isSong) {
-            return await this.createGameFromArtists(this.artists());
+            return await this.guessSong.createGameFromArtists(
+                this.artists().map((t) => t.id)
+            );
         }
 
         toast(this.dict().TODOGamemode);

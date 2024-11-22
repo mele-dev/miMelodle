@@ -47,6 +47,13 @@
     <div
         class="flex h-full w-1/2 flex-grow items-center justify-end gap-2 self-center"
     >
+        <hlm-dialog>
+            <button brnPopoverTrigger hlmBtn variant="ghost" class="h-full">
+                <hlm-icon [size]="'lg'" name="lucideSearch"></hlm-icon></button>
+            <hlm-dialog-content *brnDialogContent="let ctx">
+                <app-user-finder></app-user-finder>
+            </hlm-dialog-content>
+        </hlm-dialog>
         <brn-popover sideOffset="5" closeDelay="100">
             <button brnPopoverTrigger hlmBtn variant="ghost" class="h-full">
                 <hlm-icon [size]="'lg'" name="lucideBell"></hlm-icon>
