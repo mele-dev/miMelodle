@@ -13,17 +13,17 @@
                 hlmBtn
                 (click)="this.declineFriendRequest(user)"
             >
-                Decline
+                {{this.dict().decline}}
             </button>
             <button
                 type="button"
                 hlmBtn
                 (click)="this.acceptFriendRequest(user)"
             >
-                Accept
+                {{this.dict().accept}}
             </button>
         </div>
     } @empty {
-        You have no friend requests.
+        {{this.dict().empty}}
     }
 </div>
