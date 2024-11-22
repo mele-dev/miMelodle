@@ -1,10 +1,11 @@
-import { inject, Injectable } from "@angular/core";
+import { inject, Injectable, ViewChild } from "@angular/core";
 import { SelfService } from "../self.service";
 import { toast } from "ngx-sonner";
 import { postUsersSelfSelfIdGameGuessLine, postUsersSelfSelfIdGameGuessSong } from "../../../apiCodegen/backend";
 import { GuessSongServiceTranslator } from "./guess-song.translations";
 import { SafeRoutingService } from "../safe-routing.service";
 import { isAxiosError } from "axios";
+import { HlmDialogComponent } from "@spartan-ng/ui-dialog-helm";
 
 @Injectable({
     providedIn: "root",
@@ -13,6 +14,8 @@ export class GuessSongService {
     private _self = inject(SelfService);
     private _dict = inject(GuessSongServiceTranslator).dict;
     private _router = inject(SafeRoutingService);
+
+    @ViewChild('pickTrackDialog') pickTrackDialog!: HlmDialogComponent;
 
     async createGameFromTracks(trackIds: string[]) {
         const user = await this._self.waitForUserInfoSnapshot();

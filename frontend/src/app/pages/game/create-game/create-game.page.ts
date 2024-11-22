@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, computed, inject, signal } from "@angular/core";
+import { Component, computed, inject, OnInit, signal } from "@angular/core";
 import { provideIcons } from "@ng-icons/core";
 import { lucideArrowUpDown, lucidePlus } from "@ng-icons/lucide";
 import { HlmButtonModule } from "@spartan-ng/ui-button-helm";
@@ -21,6 +21,10 @@ import {
 import { hardCodedTracks } from "./hard-coded-tracks";
 import { GuessSongService } from "../../../services/games/guess-song.service";
 import { GuessLineService } from "../../../services/games/guess-line.service";
+import { SavedArtistsService } from "../../../services/saved-artists.service";
+import {
+    GetSpotifySearch200ArtistsItemsItem,
+} from "../../../../apiCodegen/backend";
 
 @Component({
     selector: "app-create-game",
@@ -38,7 +42,8 @@ import { GuessLineService } from "../../../services/games/guess-line.service";
     providers: [provideIcons({ lucideArrowUpDown, lucidePlus })],
     templateUrl: "./create-game.page.html",
 })
-export class CreateGamePage {
+export class CreateGamePage implements OnInit {
+    private _savedArtists = inject(SavedArtistsService);
     guessSong = inject(GuessSongService);
     guessLine = inject(GuessLineService);
     dict = inject(CreateGameTranslations).dict;
@@ -56,7 +61,7 @@ export class CreateGamePage {
         } as const;
     });
 
-    artists = signal(hardCodedArtists);
+    artists = signal<GetSpotifySearch200ArtistsItemsItem[]>([]);
     tracks = signal(hardCodedTracks);
 
     next() {
@@ -71,6 +76,11 @@ export class CreateGamePage {
 
     removeTrack(track: TrackListItem) {
         this.tracks.set(this.tracks().filter((t) => t.id !== track.id));
+    }
+
+    async ngOnInit() {
+        await this._savedArtists.loadData();
+        this.artists.set(this._savedArtists.artists());
     }
 
     async submit() {

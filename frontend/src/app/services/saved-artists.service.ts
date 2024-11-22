@@ -15,7 +15,7 @@ export type Artist = GetUsersSelfSelfIdArtists200Item;
 @Injectable({
     providedIn: "root",
 })
-export class HomeArtistsService {
+export class SavedArtistsService {
     private _artists = signal<Artist[]>([]);
     dict = inject(CollectionArtistCardTranslator).dict;
     public artists = this._artists.asReadonly();
