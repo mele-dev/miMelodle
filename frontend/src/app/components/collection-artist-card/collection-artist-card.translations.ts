@@ -21,7 +21,13 @@ export const collectionArtistCardDict = {
     backendError: {
         en: "Something went wrong",
         es: "Algo salió mal"
-    }
+    },
+    followerCount: {
+        en: (count: number) =>
+            `${new Intl.NumberFormat("en-US", { notation: "compact" }).format(count)} followers`,
+        es: (count: number) =>
+            `${new Intl.NumberFormat("es-EN", { notation: "compact" }).format(count)} seguidores`,
+    },
 } as const satisfies Translations;
 
 @Injectable({

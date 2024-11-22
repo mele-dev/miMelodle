@@ -13,7 +13,7 @@ import { HlmTrowComponent } from "../../../../libs/ui/ui-table-helm/src/lib/hlm-
 import { HlmTdComponent } from "../../../../libs/ui/ui-table-helm/src/lib/hlm-td.component";
 import { FormsModule } from "@angular/forms";
 import { LocalStorageService } from "../../services/local-storage.service";
-import { HomeArtistsService } from "../../services/saved-artists.service";
+import { SavedArtistsService } from "../../services/saved-artists.service";
 import { ArtistFinderTranslator } from "./artist-finder.translations";
 import { SelfService } from "../../services/self.service";
 import { HlmInputModule } from "@spartan-ng/ui-input-helm";
@@ -30,9 +30,8 @@ export class ArtistFinderComponent {
     dict = inject(ArtistFinderTranslator).dict;
     usersFilter = signal<string>("");
     matchedArtists = signal<SearchedArtist[]>([]);
-    private _localStorage = inject(LocalStorageService);
     private _selfService = inject(SelfService);
-    public homeArtistsService = inject(HomeArtistsService);
+    public homeArtistsService = inject(SavedArtistsService);
 
     async search() {
         console.info(this.usersFilter());

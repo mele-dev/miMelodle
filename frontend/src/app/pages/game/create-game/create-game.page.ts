@@ -1,5 +1,5 @@
-import { CommonModule } from "@angular/common";
-import { Component, computed, ElementRef, EventEmitter, inject, OnInit, Output, output, signal, ViewChild } from "@angular/core";
+import { CommonModule, JsonPipe } from "@angular/common";
+import { Component, computed, inject, signal } from "@angular/core";
 import { provideIcons } from "@ng-icons/core";
 import { lucideArrowUpDown, lucidePlus } from "@ng-icons/lucide";
 import { HlmButtonModule } from "@spartan-ng/ui-button-helm";
@@ -13,38 +13,67 @@ import {
 import { CrFancyButtonStylesDirective } from "../../../directives/styling/cr-fancy-button-styles.directive";
 import { toast } from "ngx-sonner";
 import { CreateGameTranslations } from "./create-game.translations";
-import { hardCodedArtists } from "./hard-coded-artists";
-import {
-    TrackListItem,
-    TrackListItemComponent,
-} from "../../../components/track-list-item/track-list-item.component";
-import { hardCodedTracks } from "./hard-coded-tracks";
-import { HlmDialogComponent, HlmDialogContentComponent, HlmDialogHeaderComponent } from "@spartan-ng/ui-dialog-helm";
+import { TrackListItemComponent } from "../../../components/track-list-item/track-list-item.component";
 import { TutorialsTranslator } from "../tutorials-dialog.translations";
 import { GuessSongService } from "../../../services/games/guess-song.service";
 import { GuessLineService } from "../../../services/games/guess-line.service";
+import { SavedArtistsService } from "../../../services/saved-artists.service";
+import { HlmDialogModule } from "@spartan-ng/ui-dialog-helm";
+import { BrnDialogModule } from "@spartan-ng/ui-dialog-brain";
+import { ArtistFinderComponent } from "../../../components/artist-finder/artist-finder.component";
+import {
+    SavedTracksService,
+    Track,
+} from "../../../services/saved-tracks.service";
+import { HlmInputModule } from "@spartan-ng/ui-input-helm";
+import { getSpotifySearch } from "../../../../apiCodegen/backend";
+import { getSpotifySearchQueryPageSizeMax } from "../../../../apiCodegen/backend-zod";
+import { FormsModule } from "@angular/forms";
 
 @Component({
     selector: "app-create-game",
     standalone: true,
     imports: [
-    HlmSeparatorModule,
-    CommonModule,
-    HlmButtonModule,
-    HlmIconModule,
-    HlmScrollAreaModule,
-    ArtistListItemComponent,
-    CrFancyButtonStylesDirective,
-    TrackListItemComponent,
-],
+        JsonPipe,
+        HlmSeparatorModule,
+        CommonModule,
+        HlmButtonModule,
+        HlmIconModule,
+        HlmScrollAreaModule,
+        ArtistListItemComponent,
+        CrFancyButtonStylesDirective,
+        TrackListItemComponent,
+        HlmDialogModule,
+        BrnDialogModule,
+        ArtistFinderComponent,
+        HlmInputModule,
+        FormsModule,
+    ],
     providers: [provideIcons({ lucideArrowUpDown, lucidePlus })],
     templateUrl: "./create-game.page.html",
 })
-export class CreateGamePage{
+export class CreateGamePage {
+    private _savedArtists = inject(SavedArtistsService);
+    tracksService = inject(SavedTracksService);
     guessSong = inject(GuessSongService);
     guessLine = inject(GuessLineService);
     dict = inject(CreateGameTranslations).dict;
     dictT = inject(TutorialsTranslator).dict;
+
+    trackOptions = signal<Track[] | undefined>([]);
+
+    filteredTrackOptions = computed(() => {
+        const options = this.trackOptions();
+        const savedTracks = this.tracksService.tracks();
+
+        // TODO: Make the chosen track be taken out of the modal.
+        return options?.filter((o) => {
+            return !savedTracks.some((s) => {
+                return s.id === o.id;
+            });
+        });
+    });
+
     readonly titles = computed(() => {
         return [this.dict().line, this.dict().song] as const;
     });
@@ -59,8 +88,7 @@ export class CreateGamePage{
         } as const;
     });
 
-    artists = signal(hardCodedArtists);
-    tracks = signal(hardCodedTracks);
+    artists = this._savedArtists.artists;
 
     next() {
         this.selectedIndex.set(
@@ -69,17 +97,40 @@ export class CreateGamePage{
     }
 
     removeArtist(artist: ArtistListItem) {
-        this.artists.set(this.artists().filter((a) => a.id !== artist.id));
+        this._savedArtists.deleteArtist(artist.id);
     }
 
-    removeTrack(track: TrackListItem) {
-        this.tracks.set(this.tracks().filter((t) => t.id !== track.id));
+    tracksQuery = signal("");
+
+    async searchTracks() {
+        this.trackOptions.set(undefined);
+
+        const tracks = await getSpotifySearch({
+            page: 0,
+            pageSize: getSpotifySearchQueryPageSizeMax,
+            query: this.tracksQuery(),
+            spotifyQueryType: "track" as any,
+        });
+
+        this.trackOptions.set(tracks.data.tracks!.items);
+    }
+
+    keyDown(event: KeyboardEvent) {
+        if (event.key === "Enter") {
+            this.searchTracks();
+            return;
+        }
+    }
+
+    async ngOnInit() {
+        await this._savedArtists.loadData();
+        this._savedArtists.loadData();
     }
 
     async submit() {
         if (this.selected().isLine) {
             return await this.guessLine.createGameFromTracks(
-                this.tracks().map((t) => t.id)
+                this.tracksService.tracks().map((t) => t.id)
             );
         }
 
@@ -91,5 +142,4 @@ export class CreateGamePage{
 
         toast(this.dict().TODOGamemode);
     }
-
 }

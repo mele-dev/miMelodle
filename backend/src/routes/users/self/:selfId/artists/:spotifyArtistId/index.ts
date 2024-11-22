@@ -11,11 +11,8 @@ import {
     deleteArtistFromHome,
     changeFavorite,
     countFavorites,
-    ICountFavoritesParams,
 } from "../../../../../../queries/dml.queries.js";
 import { getAnArtist } from "../../../../../../apiCodegen/spotify.js";
-import { run } from "node:test";
-import { request } from "node:http";
 
 export default (async (fastify) => {
     const isFavoriteSchema = SafeType.Object({
