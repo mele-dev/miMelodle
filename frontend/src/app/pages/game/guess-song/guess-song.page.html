@@ -224,7 +224,7 @@
             track="vertical"
             class="h-96 w-[36rem] overflow-hidden"
         >
-            @for (track of this.trackOptions()?.items ; track track.id) {
+            @for (track of this.trackOptions()?.items; track track.id) {
             <button
                 (click)="this.submitAttempt(track)"
                 type="button"

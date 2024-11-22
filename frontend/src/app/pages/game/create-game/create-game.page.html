@@ -50,9 +50,20 @@
         >
             <div class="flex flex-row items-baseline justify-between">
                 <h2 class="text-lg font-bold">{{ this.dict().fromArtists }}</h2>
-                <button type="button" hlmBtn variant="ghost" size="icon">
-                    <hlm-icon name="lucidePlus"></hlm-icon>
-                </button>
+                <hlm-dialog>
+                    <button
+                        brnDialogTrigger
+                        type="button"
+                        hlmBtn
+                        variant="ghost"
+                        size="icon"
+                    >
+                        <hlm-icon name="lucidePlus"></hlm-icon>
+                    </button>
+                    <hlm-dialog-content *brnDialogContent="let ctx2">
+                        <app-artist-finder></app-artist-finder>
+                    </hlm-dialog-content>
+                </hlm-dialog>
             </div>
             <hlm-scroll-area
                 class="gradient-mask-t-0 h-[26rem] w-full"

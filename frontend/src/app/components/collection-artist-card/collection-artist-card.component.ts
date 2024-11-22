@@ -7,7 +7,7 @@ import {
     QueryList,
     ViewChildren,
 } from "@angular/core";
-import { HomeArtistsService } from "../../services/saved-artists.service";
+import { SavedArtistsService } from "../../services/saved-artists.service";
 import {
     lucideMusic,
     lucidePlay,
@@ -34,7 +34,7 @@ import { GuessSongService } from "../../services/games/guess-song.service";
     templateUrl: "./collection-artist-card.component.html",
 })
 export class CollectionArtistCardComponent implements OnInit {
-    public homeArtistsService = inject(HomeArtistsService);
+    public homeArtistsService = inject(SavedArtistsService);
     public guessSong = inject(GuessSongService);
     dict = inject(CollectionArtistCardTranslator).dict;
     @ViewChildren("dialog") dialogs!: QueryList<ElementRef>;

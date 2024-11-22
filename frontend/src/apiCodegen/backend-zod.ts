@@ -975,16 +975,36 @@ export const getUsersSelfSelfIdArtistsParams = zod.object({
     selfId: zod.number(),
 });
 
+export const getUsersSelfSelfIdArtistsResponsePopularityMin = 0;
+
+export const getUsersSelfSelfIdArtistsResponsePopularityMax = 100;
+
 export const getUsersSelfSelfIdArtistsResponseItem = zod.object({
     isFavorite: zod.boolean(),
-    data: zod.object({
-        name: zod.string(),
-        imageUrl: zod.string().optional(),
-        externalUrls: zod.string(),
-        genres: zod.array(zod.string()),
-        followers: zod.number(),
-        spotifyArtistId: zod.string(),
+    external_urls: zod.object({
+        spotify: zod.string(),
     }),
+    href: zod.string(),
+    id: zod.string(),
+    name: zod.string(),
+    type: zod.enum(["artist"]),
+    uri: zod.string(),
+    followers: zod.object({
+        href: zod.string().or(zod.null()),
+        total: zod.number(),
+    }),
+    genres: zod.array(zod.string()),
+    images: zod.array(
+        zod.object({
+            url: zod.string(),
+            width: zod.number().or(zod.null()),
+            height: zod.number().or(zod.null()),
+        })
+    ),
+    popularity: zod
+        .number()
+        .min(getUsersSelfSelfIdArtistsResponsePopularityMin)
+        .max(getUsersSelfSelfIdArtistsResponsePopularityMax),
 });
 export const getUsersSelfSelfIdArtistsResponse = zod.array(
     getUsersSelfSelfIdArtistsResponseItem
