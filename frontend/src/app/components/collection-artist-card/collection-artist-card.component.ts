@@ -33,7 +33,7 @@ export class CollectionArtistCardComponent implements OnInit {
     dict = inject(CollectionArtistCardTranslator).dict;
     @ViewChildren('dialog') dialogs!: QueryList<ElementRef>;
     safeRouter = inject(SafeRoutingService);
-
+    blurOn : boolean = false;
     public async ngOnInit() {
         await this.homeArtistsService.loadData();
     }
@@ -56,6 +56,7 @@ export class CollectionArtistCardComponent implements OnInit {
             (dialog) => dialog.nativeElement.getAttribute('data-artist-id') === artistId
         );
         dialog?.nativeElement.showModal();
+        this.blurOn = true
     }
 
     public closeDialog(artistId : string) {
@@ -63,6 +64,7 @@ export class CollectionArtistCardComponent implements OnInit {
             (dialog) => dialog.nativeElement.getAttribute('data-artist-id') === artistId
         );
         dialog?.nativeElement.close();
+        this.blurOn = false
     }
     
 }

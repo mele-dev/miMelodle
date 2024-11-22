@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, computed, inject, signal } from "@angular/core";
+import { Component, computed, ElementRef, EventEmitter, inject, OnInit, Output, output, signal, ViewChild } from "@angular/core";
 import { provideIcons } from "@ng-icons/core";
 import { lucideArrowUpDown, lucidePlus } from "@ng-icons/lucide";
 import { HlmButtonModule } from "@spartan-ng/ui-button-helm";
@@ -26,25 +26,28 @@ import {
     TrackListItemComponent,
 } from "../../../components/track-list-item/track-list-item.component";
 import { hardCodedTracks } from "./hard-coded-tracks";
+import { HlmDialogComponent, HlmDialogContentComponent, HlmDialogHeaderComponent } from "@spartan-ng/ui-dialog-helm";
+import { TutorialsTranslator } from "../tutorials-dialog.translations";
 
 @Component({
     selector: "app-create-game",
     standalone: true,
     imports: [
-        HlmSeparatorModule,
-        CommonModule,
-        HlmButtonModule,
-        HlmIconModule,
-        HlmScrollAreaModule,
-        ArtistListItemComponent,
-        CrFancyButtonStylesDirective,
-        TrackListItemComponent,
-    ],
+    HlmSeparatorModule,
+    CommonModule,
+    HlmButtonModule,
+    HlmIconModule,
+    HlmScrollAreaModule,
+    ArtistListItemComponent,
+    CrFancyButtonStylesDirective,
+    TrackListItemComponent,
+],
     providers: [provideIcons({ lucideArrowUpDown, lucidePlus })],
     templateUrl: "./create-game.page.html",
 })
-export class CreateGamePage {
+export class CreateGamePage{
     dict = inject(CreateGameTranslations).dict;
+    dictT = inject(TutorialsTranslator).dict;
     readonly titles = computed(() => {
         return [this.dict().line, this.dict().song] as const;
     });
@@ -145,4 +148,5 @@ export class CreateGamePage {
 
         toast(this.dict().TODOGamemode);
     }
+
 }

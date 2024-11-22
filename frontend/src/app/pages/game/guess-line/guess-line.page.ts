@@ -1,6 +1,7 @@
 import {
     Component,
     computed,
+    ElementRef,
     inject,
     input,
     OnInit,
@@ -26,6 +27,7 @@ import { GuessLineWordleTextComponent } from "../../../components/guess-line-wor
 import { HlmButtonModule } from "@spartan-ng/ui-button-helm";
 import { GuessLineTranslator } from "./guess-line.translations";
 import { SafePipe } from "../../../pipes/safe.pipe";
+import { TutorialsTranslator } from "../tutorials-dialog.translations";
 
 @Component({
     selector: "app-guess-line",
@@ -50,6 +52,14 @@ export class GuessLinePage implements OnInit {
     sanitizer = inject(DomSanitizer);
     router = inject(SafeRoutingService);
     dict = inject(GuessLineTranslator).dict;
+    dictT = inject(TutorialsTranslator).dict;
+    @ViewChild("tutorial") dialog!: ElementRef<HTMLDialogElement>;
+
+    blurOn: boolean = true;
+    public closeDialog() {
+        this.dialog.nativeElement.close();
+        this.blurOn = false;
+    }
     ids = computed(() => {
         const schema = z.object({ gameId: z.coerce.number().positive() });
         const parsed = schema.safeParse({
@@ -183,5 +193,6 @@ export class GuessLinePage implements OnInit {
 
     async ngOnInit() {
         await this.load();
+        this.dialog.nativeElement.showModal();
     }
 }
