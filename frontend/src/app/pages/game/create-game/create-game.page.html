@@ -91,9 +91,74 @@
         >
             <div class="flex flex-row items-baseline justify-between">
                 <h2 class="text-lg font-bold">{{ this.dict().fromTracks }}</h2>
-                <button type="button" hlmBtn variant="ghost" size="icon">
-                    <hlm-icon name="lucidePlus"></hlm-icon>
-                </button>
+                <hlm-dialog #pickTrackDialog>
+                    <button
+                        brnDialogTrigger
+                        type="button"
+                        hlmBtn
+                        variant="ghost"
+                        size="icon"
+                    >
+                        <hlm-icon name="lucidePlus"></hlm-icon>
+                    </button>
+                    <hlm-dialog-content
+                        *brnDialogContent="let ctx"
+                        class="w-fit max-w-screen-sm"
+                    >
+                        <h1 class="text-md font-extrabold">Choose a track</h1>
+                        <input
+                            type="text"
+                            name="trackQuery"
+                            hlmInput
+                            [(ngModel)]="this.tracksQuery"
+                            class="w-full"
+                            (keydown)="this.keyDown($event)"
+                        />
+                        @if (this.filteredTrackOptions() === undefined) {
+                        <h1 class="h-96 w-[36rem]">Loading!</h1>
+                        } @else {
+                        <hlm-scroll-area
+                            track="vertical"
+                            class="h-96 w-[36rem] overflow-hidden"
+                            pf
+                        >
+                            @for (track of this.filteredTrackOptions(); track track.id)
+                            {
+                            <button
+                                (click)="this.tracksService.push(track)"
+                                type="button"
+                                class="m-2 flex w-[35rem] items-center gap-2 overflow-hidden text-ellipsis rounded p-2 hover:bg-muted"
+                            >
+                                <img
+                                    [src]="track.album.images[0].url"
+                                    class="h-20 w-20 rounded"
+                                    alt=""
+                                />
+                                <div
+                                    class="flex w-full flex-col items-start overflow-hidden text-ellipsis text-nowrap"
+                                >
+                                    <span class="block text-ellipsis">
+                                        {{ track.name }}
+                                    </span>
+                                    <span
+                                        class="block w-full text-ellipsis text-left text-sm"
+                                    >
+                                        By {{
+                                        this.dict().stringifyArtists(track.artists)
+                                        }}
+                                    </span>
+                                    <span
+                                        class="block w-full text-ellipsis text-left text-sm"
+                                    >
+                                        From {{ track.album.name }}
+                                    </span>
+                                </div>
+                            </button>
+                            }
+                        </hlm-scroll-area>
+                        }
+                    </hlm-dialog-content>
+                </hlm-dialog>
             </div>
             <hlm-scroll-area
                 [autoWidthDisabled]="true"
@@ -103,10 +168,11 @@
             >
                 <!-- TODO: Make scrollarea with predictable width. -->
                 <ul class="flex w-[27rem] flex-col gap-2 rounded">
-                    @for (track of this.tracks(); track track.id) {
+                    @for (track of this.tracksService.tracks(); track track.id)
+                    {
                     <app-track-list-item
                         [track]="track"
-                        (destroy)="this.removeTrack($event)"
+                        (destroy)="this.tracksService.remove($event.id)"
                         (play)="this.guessLine.createGameFromTracks([track.id])"
                     ></app-track-list-item>
                     }
