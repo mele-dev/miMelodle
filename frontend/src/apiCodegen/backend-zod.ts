@@ -357,23 +357,6 @@ export const getLeaderboardsGameModeResponse = zod.object({
 });
 
 /**
- * This endpoint retrieves the lyrics for a given track using its Musixmatch ID
- * @summary Get lyrics for a specific track
- */
-export const getLyricsTrackMusixMatchIdParams = zod.object({
-    trackMusixMatchId: zod.number(),
-});
-
-export const getLyricsTrackMusixMatchIdResponse = zod.object({
-    lyricsId: zod.string(),
-    trackId: zod.string(),
-    lyricsBody: zod.string(),
-    explicit: zod.boolean(),
-    language: zod.string(),
-    copyright: zod.string().optional(),
-});
-
-/**
  * Get the svg for a certain user icon. The selection of user icons is fixed.
  * @summary Get a user icon.
  */
@@ -393,6 +376,23 @@ export const getPublicIconsResponseItem = zod.object({
     filename: zod.string(),
 });
 export const getPublicIconsResponse = zod.array(getPublicIconsResponseItem);
+
+/**
+ * This endpoint retrieves the lyrics for a given track using its Musixmatch ID
+ * @summary Get lyrics for a specific track
+ */
+export const getLyricsTrackMusixMatchIdParams = zod.object({
+    trackMusixMatchId: zod.number(),
+});
+
+export const getLyricsTrackMusixMatchIdResponse = zod.object({
+    lyricsId: zod.string(),
+    trackId: zod.string(),
+    lyricsBody: zod.string(),
+    explicit: zod.boolean(),
+    language: zod.string(),
+    copyright: zod.string().optional(),
+});
 
 /**
  * Authentication is not needed to see public user information.
@@ -504,6 +504,53 @@ export const getUsersCheckResponse = zod.object({
 });
 
 /**
+ * All fake users have Fake123! as their password.
+ * @summary Returns random, believable credentials for a user.
+ */
+export const getDebugFakeUserResponseNameMax = 25;
+export const getDebugFakeUserResponseEmailMax = 254;
+
+export const getDebugFakeUserResponseEmailRegExp = new RegExp(
+    "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$"
+);
+export const getDebugFakeUserResponseUsernameMin = 3;
+
+export const getDebugFakeUserResponseUsernameMax = 50;
+
+export const getDebugFakeUserResponseUsernameRegExp = new RegExp(
+    "^[a-zA-Z0-9\\.-_]+$"
+);
+export const getDebugFakeUserResponsePasswordMin = 3;
+
+export const getDebugFakeUserResponsePasswordMax = 20;
+
+export const getDebugFakeUserResponse = zod.object({
+    name: zod.string().min(1).max(getDebugFakeUserResponseNameMax),
+    email: zod
+        .string()
+        .max(getDebugFakeUserResponseEmailMax)
+        .regex(getDebugFakeUserResponseEmailRegExp),
+    username: zod
+        .string()
+        .min(getDebugFakeUserResponseUsernameMin)
+        .max(getDebugFakeUserResponseUsernameMax)
+        .regex(getDebugFakeUserResponseUsernameRegExp),
+    password: zod
+        .string()
+        .min(getDebugFakeUserResponsePasswordMin)
+        .max(getDebugFakeUserResponsePasswordMax),
+    profilePictureId: zod.number(),
+});
+
+/**
+ * We do not check if the user already exists, so this route may error. On error, we roll back any changes.
+ * @summary Create a certain number of fake users.
+ */
+export const postDebugFakeUsersBody = zod.object({
+    amount: zod.number(),
+});
+
+/**
  * @summary Fetch a user's jwt token.
  */
 export const postAuthLoginBodyPasswordMin = 3;
@@ -566,53 +613,6 @@ export const postAuthRegisterBody = zod.object({
 export const postAuthRegisterResponse = zod.object({
     jwtToken: zod.string(),
     id: zod.number(),
-});
-
-/**
- * All fake users have Fake123! as their password.
- * @summary Returns random, believable credentials for a user.
- */
-export const getDebugFakeUserResponseNameMax = 25;
-export const getDebugFakeUserResponseEmailMax = 254;
-
-export const getDebugFakeUserResponseEmailRegExp = new RegExp(
-    "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$"
-);
-export const getDebugFakeUserResponseUsernameMin = 3;
-
-export const getDebugFakeUserResponseUsernameMax = 50;
-
-export const getDebugFakeUserResponseUsernameRegExp = new RegExp(
-    "^[a-zA-Z0-9\\.-_]+$"
-);
-export const getDebugFakeUserResponsePasswordMin = 3;
-
-export const getDebugFakeUserResponsePasswordMax = 20;
-
-export const getDebugFakeUserResponse = zod.object({
-    name: zod.string().min(1).max(getDebugFakeUserResponseNameMax),
-    email: zod
-        .string()
-        .max(getDebugFakeUserResponseEmailMax)
-        .regex(getDebugFakeUserResponseEmailRegExp),
-    username: zod
-        .string()
-        .min(getDebugFakeUserResponseUsernameMin)
-        .max(getDebugFakeUserResponseUsernameMax)
-        .regex(getDebugFakeUserResponseUsernameRegExp),
-    password: zod
-        .string()
-        .min(getDebugFakeUserResponsePasswordMin)
-        .max(getDebugFakeUserResponsePasswordMax),
-    profilePictureId: zod.number(),
-});
-
-/**
- * We do not check if the user already exists, so this route may error. On error, we roll back any changes.
- * @summary Create a certain number of fake users.
- */
-export const postDebugFakeUsersBody = zod.object({
-    amount: zod.number(),
 });
 
 /**
@@ -960,6 +960,17 @@ export const deleteUsersSelfSelfIdParams = zod.object({
     selfId: zod.number(),
 });
 
+export const deleteUsersSelfSelfIdBodyPasswordMin = 3;
+
+export const deleteUsersSelfSelfIdBodyPasswordMax = 20;
+
+export const deleteUsersSelfSelfIdBody = zod.object({
+    password: zod
+        .string()
+        .min(deleteUsersSelfSelfIdBodyPasswordMin)
+        .max(deleteUsersSelfSelfIdBodyPasswordMax),
+});
+
 export const deleteUsersSelfSelfIdResponseUsernameMin = 3;
 
 export const deleteUsersSelfSelfIdResponseUsernameMax = 50;
@@ -996,37 +1007,6 @@ export const getUsersSelfSelfIdArtistsResponseItem = zod.object({
 });
 export const getUsersSelfSelfIdArtistsResponse = zod.array(
     getUsersSelfSelfIdArtistsResponseItem
-);
-
-/**
- * @summary Get every user currently blocked by self.
- */
-export const getUsersSelfSelfIdBlockingParams = zod.object({
-    selfId: zod.number(),
-});
-
-export const getUsersSelfSelfIdBlockingResponseNameMax = 25;
-export const getUsersSelfSelfIdBlockingResponseUsernameMin = 3;
-
-export const getUsersSelfSelfIdBlockingResponseUsernameMax = 50;
-
-export const getUsersSelfSelfIdBlockingResponseUsernameRegExp = new RegExp(
-    "^[a-zA-Z0-9\\.-_]+$"
-);
-
-export const getUsersSelfSelfIdBlockingResponseItem = zod.object({
-    id: zod.number(),
-    name: zod.string().min(1).max(getUsersSelfSelfIdBlockingResponseNameMax),
-    username: zod
-        .string()
-        .min(getUsersSelfSelfIdBlockingResponseUsernameMin)
-        .max(getUsersSelfSelfIdBlockingResponseUsernameMax)
-        .regex(getUsersSelfSelfIdBlockingResponseUsernameRegExp),
-    profilePictureId: zod.number(),
-    profilePictureFilename: zod.string(),
-});
-export const getUsersSelfSelfIdBlockingResponse = zod.array(
-    getUsersSelfSelfIdBlockingResponseItem
 );
 
 /**
@@ -1149,6 +1129,37 @@ export const getUsersSelfSelfIdConfigsSuggestResponseItem = zod.object({
 });
 export const getUsersSelfSelfIdConfigsSuggestResponse = zod.array(
     getUsersSelfSelfIdConfigsSuggestResponseItem
+);
+
+/**
+ * @summary Get every user currently blocked by self.
+ */
+export const getUsersSelfSelfIdBlockingParams = zod.object({
+    selfId: zod.number(),
+});
+
+export const getUsersSelfSelfIdBlockingResponseNameMax = 25;
+export const getUsersSelfSelfIdBlockingResponseUsernameMin = 3;
+
+export const getUsersSelfSelfIdBlockingResponseUsernameMax = 50;
+
+export const getUsersSelfSelfIdBlockingResponseUsernameRegExp = new RegExp(
+    "^[a-zA-Z0-9\\.-_]+$"
+);
+
+export const getUsersSelfSelfIdBlockingResponseItem = zod.object({
+    id: zod.number(),
+    name: zod.string().min(1).max(getUsersSelfSelfIdBlockingResponseNameMax),
+    username: zod
+        .string()
+        .min(getUsersSelfSelfIdBlockingResponseUsernameMin)
+        .max(getUsersSelfSelfIdBlockingResponseUsernameMax)
+        .regex(getUsersSelfSelfIdBlockingResponseUsernameRegExp),
+    profilePictureId: zod.number(),
+    profilePictureFilename: zod.string(),
+});
+export const getUsersSelfSelfIdBlockingResponse = zod.array(
+    getUsersSelfSelfIdBlockingResponseItem
 );
 
 /**
@@ -1283,27 +1294,6 @@ export const deleteUsersSelfSelfIdArtistsSpotifyArtistIdParams = zod.object({
 
 export const deleteUsersSelfSelfIdArtistsSpotifyArtistIdResponse = zod.object({
     deleted: zod.boolean(),
-});
-
-/**
- * @summary Block a user.
- */
-export const postUsersSelfSelfIdBlockingTargetUserIdParams = zod.object({
-    selfId: zod.number(),
-    targetUserId: zod.number(),
-});
-
-/**
- * @summary Unblock a user.
- */
-export const deleteUsersSelfSelfIdBlockingTargetUserIdParams = zod.object({
-    selfId: zod.number(),
-    targetUserId: zod.number(),
-});
-
-export const deleteUsersSelfSelfIdBlockingTargetUserIdResponse = zod.object({
-    blocked: zod.boolean(),
-    username: zod.string(),
 });
 
 /**
@@ -1448,6 +1438,27 @@ export const deleteUsersSelfSelfIdFriendsLeaderboardsQueryParams = zod.object({
 
 export const deleteUsersSelfSelfIdFriendsLeaderboardsResponse = zod.object({
     userId: zod.number(),
+});
+
+/**
+ * @summary Block a user.
+ */
+export const postUsersSelfSelfIdBlockingTargetUserIdParams = zod.object({
+    selfId: zod.number(),
+    targetUserId: zod.number(),
+});
+
+/**
+ * @summary Unblock a user.
+ */
+export const deleteUsersSelfSelfIdBlockingTargetUserIdParams = zod.object({
+    selfId: zod.number(),
+    targetUserId: zod.number(),
+});
+
+export const deleteUsersSelfSelfIdBlockingTargetUserIdResponse = zod.object({
+    blocked: zod.boolean(),
+    username: zod.string(),
 });
 
 /**

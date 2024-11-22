@@ -94,7 +94,7 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                     "password",
                     "profilePictureId",
                 ]),
-                ...SafeType.CreateErrors(["unauthorized"]),
+                ...SafeType.CreateErrors(["unauthorized", "badRequest"]),
             },
             tags: ["User CRUD", "User"] satisfies MelodleTagName[],
             summary: "Update your user information.",
@@ -104,8 +104,6 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 ...request.body,
                 ...request.params,
             });
-            if (request.body.password !== request.body.oldPassword) {
-            }
 
             return sendOk(reply, 200, request.body);
         },
@@ -128,7 +126,6 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 "implemented once other resources are implemented.",
         },
         handler: async function (request, reply) {
-            // TODO
             const queryResult = await runPreparedQuery(deleteUser, {
                 ...request.params,
                 ...request.body,

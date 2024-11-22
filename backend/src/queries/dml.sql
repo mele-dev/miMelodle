@@ -31,14 +31,15 @@ SELECT id
  WHERE (email = :emailOrUsername! OR username = :emailOrUsername!)
    AND check_password("passwordHash", :password!);
 
+
 /* @name updateUser */
-   UPDATE users
-      SET username           = :username!
-        , email              = :email!
-        , "passwordHash"     = encrypt_password(:password!)
-        , "profilePictureId" = :profilePictureId!
-        , name               = :name!
-    WHERE id = :selfId!
+UPDATE users
+SET username           = :username!
+  , email              = :email!
+  , "passwordHash"     = encrypt_password(:password!)
+  , "profilePictureId" = :profilePictureId!
+  , name               = :name!
+WHERE id = :selfId!
 RETURNING username;
 
 /* @name deleteUser */

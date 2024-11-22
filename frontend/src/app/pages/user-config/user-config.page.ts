@@ -169,6 +169,11 @@ export class UserConfigPage implements OnInit {
                 [],
                 this._validator.Schema(this.schema.shape.profilePictureId)
             ),
+            password: this.builder.control(
+                "",
+                [],
+                this._validator.Schema(this.schema.shape.password)
+            ),
             oldPassword: this.builder.control(
                 "",
                 [],
@@ -262,14 +267,23 @@ export class UserConfigPage implements OnInit {
                 profilePictureId: this.chosenIcon()?.id ?? -1,
             });
 
+            console.log(this.user.getRawValue().oldPassword)
             const result = await putUsersSelfSelfId(userInfo.id, {
-                ...this.user.getRawValue(),
+                oldPassword: this.user.getRawValue().oldPassword,
                 password: this.user.getRawValue().oldPassword,
+                email: userInfo.email,
+                name: userInfo.name,
+                profilePictureId: userInfo.profilePictureId,
+                username: userInfo.username,
             });
+
+            console.warn(result.statusText)
+
+
             this.safeRouter.navigate("/app");
         } catch (e) {
             console.error(e);
-            toast("Failed to change user configs.");
+            toast(this.dict().failedPut);
         }
     }
 
@@ -293,29 +307,24 @@ export class UserConfigPage implements OnInit {
         this.user.controls.email.setValue(userInfo.email);
         this.user.controls.username.setValue(userInfo.username);
         this.user.controls.name.setValue(userInfo.name);
-
     }
 
     public async changePassword() {
         try {
             const userInfo = await this.selfService.waitForUserInfoSnapshot();
+            console.warn(
+                userInfo.id,
+                this.changePasasword.getRawValue().password
+            );
 
-            /*const login = await postAuthLogin({
-                emailOrUsername: userInfo.email,
-                password: this.changePasasword.getRawValue().oldPassword,
-            });*/
-
-            //if (login.status === 200) {
-                const result = await putUsersSelfSelfId(userInfo.id, {
-                    ...this.changePasasword.getRawValue(),
-                    email: userInfo.email,
-                    name: userInfo.name,
-                    profilePictureId: userInfo.profilePictureId,
-                    username: userInfo.username,
-                });
-                this.selfService.logOut();
-            //}
-
+            const result = await putUsersSelfSelfId(userInfo.id, {
+                ...this.changePasasword.getRawValue(),
+                email: userInfo.email,
+                name: userInfo.name,
+                profilePictureId: userInfo.profilePictureId,
+                username: userInfo.username,
+            });
+            this.selfService.logOut();
         } catch (e) {
             console.error(e);
             toast("Failed to change password.");
@@ -325,19 +334,14 @@ export class UserConfigPage implements OnInit {
     public async deleteAccount() {
         try {
             const userInfo = await this.selfService.waitForUserInfoSnapshot();
-            const login = await postAuthLogin({
-                emailOrUsername: userInfo.email,
+            await deleteUsersSelfSelfId(userInfo.id, {
                 password: this.user.getRawValue().oldPassword,
             });
-
-            if (login.status === 200) {
-                await deleteUsersSelfSelfId(userInfo.id);
-                toast("Account deleted successfully.");
-                this.selfService.logOut();
-            }
+            toast(this.dict().successDelete);
+            this.selfService.logOut();
         } catch (e) {
             console.error(e);
-            toast("Failed to delete account.");
+            toast(this.dict().failedDelete);
         }
     }
 

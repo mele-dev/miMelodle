@@ -89,10 +89,21 @@ export const userConfigDict = {
         en: "Clear all your ranking data for a specific game mode.",
         es: "Borra todos tus datos de clasificación de un modo de juego determinado.",
     },
-    accountExplanation:
-    {
-        en:"To continue, enter your password",
-        es: "Para continuar ingrese su contraseña"
+    accountExplanation: {
+        en: "To continue, enter your password",
+        es: "Para continuar ingrese su contraseña",
+    },
+    failedDelete: {
+        en: "Probably wrong password.",
+        es: "Contraseña incorrecta.",
+    },
+    successDelete: {
+        en: "Your account has been deleted.",
+        es: "Tu cuenta ha sido borrada.",
+    },
+    failedPut: {
+        en: "Something went wrong, we couldn't update your info.",
+        es: "Algo salió mal, no pudimos actualizar tu información"
     }
 } as const satisfies Translations;
 
