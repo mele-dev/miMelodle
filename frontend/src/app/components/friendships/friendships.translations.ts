@@ -15,7 +15,7 @@ export const friendShipsDict = {
     },
     accept: {
         en: "Accept",
-        es: "ACeptar"
+        es: "Aceptar"
     },
     empty: {
         en: "You don't have any friend requests.",
