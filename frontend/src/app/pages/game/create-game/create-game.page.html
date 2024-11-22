@@ -77,6 +77,26 @@
                         (destroy)="this.removeArtist($event)"
                         (play)="this.guessSong.createGameFromArtists([artist.id])"
                     ></app-artist-list-item>
+                    } @empty {
+                    <span
+                        class="absolute right-3 top-2 flex animate-bounce items-baseline gap-2"
+                    >
+                        {{ this.dict().chooseArtists }}
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            class="size-6"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="m11.99 7.5 3.75-3.75m0 0 3.75 3.75m-3.75-3.75v16.499H4.49"
+                            />
+                        </svg>
+                    </span>
                     }
                 </div>
             </hlm-scroll-area>
@@ -122,8 +142,8 @@
                             class="h-96 w-[36rem] overflow-hidden"
                             pf
                         >
-                            @for (track of this.filteredTrackOptions(); track track.id)
-                            {
+                            @for (track of this.filteredTrackOptions(); track
+                            track.id) {
                             <button
                                 (click)="this.tracksService.push(track)"
                                 type="button"
@@ -167,7 +187,7 @@
                 visibility="hover"
             >
                 <!-- TODO: Make scrollarea with predictable width. -->
-                <ul class="flex w-[27rem] flex-col gap-2 rounded">
+                <ul class="flex flex-col gap-2 rounded">
                     @for (track of this.tracksService.tracks(); track track.id)
                     {
                     <app-track-list-item
@@ -175,6 +195,26 @@
                         (destroy)="this.tracksService.remove($event.id)"
                         (play)="this.guessLine.createGameFromTracks([track.id])"
                     ></app-track-list-item>
+                    } @empty {
+                    <span
+                        class="absolute right-3 top-2 flex animate-bounce items-baseline gap-2"
+                    >
+                        {{ this.dict().chooseTracks }}
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            class="size-6"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="m11.99 7.5 3.75-3.75m0 0 3.75 3.75m-3.75-3.75v16.499H4.49"
+                            />
+                        </svg>
+                    </span>
                     }
                 </ul>
             </hlm-scroll-area>
@@ -183,7 +223,7 @@
     <button
         type="button"
         appCrFancyButtonStyles
-        [disabled]="this.artists().length === 0"
+        [disabled]="(this.selected().isSong && this.artists().length === 0) || (this.selected().isLine && this.tracksService.tracks().length === 0)"
         (click)="this.submit()"
     >
         {{ this.dict().play }}

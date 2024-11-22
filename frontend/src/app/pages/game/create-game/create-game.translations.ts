@@ -56,6 +56,14 @@ const translations = {
         es: (artists: SimplifiedArtistObject[]) =>
             artists.map((a) => a.name).join(", "),
     },
+    chooseTracks: {
+        en: "Choose tracks",
+        es: "Elige canciones",
+    },
+    chooseArtists: {
+        en: "Choose artists",
+        es: "Elige artistas",
+    },
 } as const satisfies Translations;
 
 @Injectable({
