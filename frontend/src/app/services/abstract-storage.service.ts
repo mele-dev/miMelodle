@@ -37,7 +37,10 @@ export abstract class AbstractStorageService<TMap extends StorageMap> {
         key: TKey,
         value: z.infer<TMap[TKey]>
     ) {
-        this.storage.setItem(key, JSON.stringify(value));
+        this.storage.setItem(
+            key,
+            JSON.stringify(this.storageMap[key].parse(value))
+        );
     }
 
     removeItem(key: keyof TMap & string) {

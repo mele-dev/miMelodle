@@ -116,6 +116,7 @@ export class AppNavbarComponent {
 
     logOut() {
         this._localStorage.removeItem("userInfo");
+        this._localStorage.removeItem("trackCache");
         this.safeRouter.navigate("/auth");
     }
 }
