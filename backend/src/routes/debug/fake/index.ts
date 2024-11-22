@@ -77,7 +77,7 @@ export default (async (fastify) => {
                 }
             });
 
-            return sendOk(reply, 201, users);
+            return sendOk(reply, 201, users.filter((_, i) => i < 10));
         },
     });
 }) satisfies FastifyPluginAsyncTypebox;

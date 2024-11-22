@@ -17,8 +17,7 @@ import {
 import { friendSchema, User, userSchema } from "../../types/user.js";
 import { sendOk } from "../../utils/reply.js";
 import { isAxiosError } from "axios";
-import { search } from "../../apiCodegen/spotify.js";
-import { getGuessSongFromUser  } from "../../queries/dml.queries.js";
+import { getGuessSongFromUser } from "../../queries/dml.queries.js";
 
 export default (async (fastify) => {
     if (typedEnv.NODE_ENV === "development") {

@@ -64,7 +64,7 @@
                     <app-artist-list-item
                         [artist]="artist"
                         (destroy)="this.removeArtist($event)"
-                        (play)="this.createGameFromArtists([artist])"
+                        (play)="this.guessSong.createGameFromArtists([artist.id])"
                     ></app-artist-list-item>
                     }
                 </div>
@@ -96,7 +96,7 @@
                     <app-track-list-item
                         [track]="track"
                         (destroy)="this.removeTrack($event)"
-                        (play)="this.createGameFromTracks([track])"
+                        (play)="this.guessLine.createGameFromTracks([track.id])"
                     ></app-track-list-item>
                     }
                 </ul>
