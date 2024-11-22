@@ -15,8 +15,6 @@ export class GuessSongService {
     private _dict = inject(GuessSongServiceTranslator).dict;
     private _router = inject(SafeRoutingService);
 
-    @ViewChild('pickTrackDialog') pickTrackDialog!: HlmDialogComponent;
-
     async createGameFromTracks(trackIds: string[]) {
         const user = await this._self.waitForUserInfoSnapshot();
 

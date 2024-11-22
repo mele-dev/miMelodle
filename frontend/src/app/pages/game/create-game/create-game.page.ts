@@ -1,5 +1,12 @@
 import { CommonModule } from "@angular/common";
-import { Component, computed, inject, OnInit, signal } from "@angular/core";
+import {
+    Component,
+    computed,
+    inject,
+    OnInit,
+    signal,
+    ViewChild,
+} from "@angular/core";
 import { provideIcons } from "@ng-icons/core";
 import { lucideArrowUpDown, lucidePlus } from "@ng-icons/lucide";
 import { HlmButtonModule } from "@spartan-ng/ui-button-helm";
@@ -13,18 +20,22 @@ import {
 import { CrFancyButtonStylesDirective } from "../../../directives/styling/cr-fancy-button-styles.directive";
 import { toast } from "ngx-sonner";
 import { CreateGameTranslations } from "./create-game.translations";
-import { hardCodedArtists } from "./hard-coded-artists";
 import {
     TrackListItem,
     TrackListItemComponent,
 } from "../../../components/track-list-item/track-list-item.component";
-import { hardCodedTracks } from "./hard-coded-tracks";
 import { GuessSongService } from "../../../services/games/guess-song.service";
 import { GuessLineService } from "../../../services/games/guess-line.service";
 import { SavedArtistsService } from "../../../services/saved-artists.service";
 import {
     GetSpotifySearch200ArtistsItemsItem,
+    GetSpotifySearch200TracksItemsItem,
 } from "../../../../apiCodegen/backend";
+import {
+    HlmDialogComponent,
+    HlmDialogModule,
+} from "@spartan-ng/ui-dialog-helm";
+import { BrnDialogModule } from "@spartan-ng/ui-dialog-brain";
 
 @Component({
     selector: "app-create-game",
@@ -38,6 +49,8 @@ import {
         ArtistListItemComponent,
         CrFancyButtonStylesDirective,
         TrackListItemComponent,
+        HlmDialogModule,
+        BrnDialogModule,
     ],
     providers: [provideIcons({ lucideArrowUpDown, lucidePlus })],
     templateUrl: "./create-game.page.html",
@@ -47,6 +60,9 @@ export class CreateGamePage implements OnInit {
     guessSong = inject(GuessSongService);
     guessLine = inject(GuessLineService);
     dict = inject(CreateGameTranslations).dict;
+
+    @ViewChild("pickTrackDialog") pickTrackDialog!: HlmDialogComponent;
+
     readonly titles = computed(() => {
         return [this.dict().line, this.dict().song] as const;
     });
@@ -62,7 +78,7 @@ export class CreateGamePage implements OnInit {
     });
 
     artists = signal<GetSpotifySearch200ArtistsItemsItem[]>([]);
-    tracks = signal(hardCodedTracks);
+    tracks = signal<GetSpotifySearch200TracksItemsItem[]>([]);
 
     next() {
         this.selectedIndex.set(
