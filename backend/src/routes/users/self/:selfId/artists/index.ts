@@ -21,7 +21,7 @@ export default (async (fastify, _opts) => {
                 200: SafeType.Array(
                     SafeType.Object({
                         isFavorite: SafeType.Boolean(),
-                        artist: spotifyArtistSchema,
+                        ...spotifyArtistSchema.properties,
                     })
                 ),
                 ...SafeType.CreateErrors(["unauthorized", "notFound"]),
@@ -51,7 +51,7 @@ export default (async (fastify, _opts) => {
             const output = queryResult.map((artist, index) => {
                 return {
                     isFavorite: artist.isFavorite,
-                    artist: artistData.artists[index],
+                    ...artistData.artists[index],
                 };
             });
 
