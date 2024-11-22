@@ -32,20 +32,28 @@ SELECT id
    AND check_password("passwordHash", :password!);
 
 
-/* @name updateUser */
-UPDATE users
-SET username           = :username!
-  , email              = :email!
-  , "passwordHash"     = encrypt_password(:password!)
-  , "profilePictureId" = :profilePictureId!
-  , name               = :name!
-WHERE id = :selfId!
+/* @name updateSensitiveUserData */
+   UPDATE users
+      SET username           = :username!
+        , email              = :email!
+        , "passwordHash"     = encrypt_password(:password!)
+        , "profilePictureId" = :profilePictureId!
+        , name               = :name!
+    WHERE (id = :selfId! AND check_password("passwordHash", :oldPassword!))
 RETURNING username;
 
+/* @name updateNonSensitiveUserData */
+UPDATE users
+   SET username = :username!
+     , email    = :email!
+     , name     = :name!
+ WHERE id = :selfId!;
+
 /* @name deleteUser */
-DELETE
-FROM users
-WHERE id = :selfId! and check_password(users."passwordHash", :password!)
+   DELETE
+     FROM users
+    WHERE id = :selfId!
+      AND check_password(users."passwordHash", :password!)
 RETURNING *;
 
 /* @name selectAllIcons */
