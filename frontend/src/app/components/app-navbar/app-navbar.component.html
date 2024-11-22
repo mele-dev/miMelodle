@@ -99,13 +99,13 @@
                             this.safeRouter.createLink('/app/profile')
                         "
                     >
-                        My profile
+                        {{this.dict().myProfile}}
                     </a>
-                    <button hlmMenuItem (click)="this.logOut()">Log out</button>
+                    <button hlmMenuItem (click)="this.logOut()">{{this.dict().logOut}}</button>
                 </hlm-menu-group>
                 <hlm-menu-separator></hlm-menu-separator>
                 <button hlmMenuItem [brnMenuTriggerFor]="languagePicker">
-                    Language
+                    {{this.dict().language}}
                 </button>
             </hlm-menu>
         </ng-template>
