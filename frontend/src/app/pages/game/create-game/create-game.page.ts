@@ -88,7 +88,7 @@ export class CreateGamePage {
             });
             toast(this.dict().gameCreated);
             return this._router.navigate("/app/game/guess_line/:gameId", {
-                ids: result.data,
+                ids: result,
             });
         } catch (e) {
             if (isAxiosError(e)) {
@@ -116,7 +116,7 @@ export class CreateGamePage {
             });
             toast(this.dict().gameCreated);
             return this._router.navigate("/app/game/guess_song/:gameId", {
-                ids: result.data,
+                ids: result,
             });
         } catch (e) {
             if (isAxiosError(e)) {

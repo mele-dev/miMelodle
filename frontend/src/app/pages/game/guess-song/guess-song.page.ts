@@ -78,7 +78,7 @@ export class GuessSongPage implements OnInit {
     });
 
     gameInfo = signal<
-        GetUsersSelfSelfIdGameGuessSongGameIdResult["data"] | undefined
+        GetUsersSelfSelfIdGameGuessSongGameIdResult | undefined
     >(undefined);
 
     value = signal<string>("");
@@ -185,7 +185,7 @@ export class GuessSongPage implements OnInit {
             spotifyQueryType: "track" as any,
         });
 
-        this.trackOptions.set(result.data.tracks);
+        this.trackOptions.set(result.tracks);
     }
 
     async submitAttempt(track: GetSpotifySearch200TracksItemsItem) {
@@ -200,7 +200,7 @@ export class GuessSongPage implements OnInit {
             }
         );
 
-        this.gameInfo.set(result.data);
+        this.gameInfo.set(result);
     }
 
     async load() {
@@ -211,7 +211,7 @@ export class GuessSongPage implements OnInit {
                 this.ids().gameId
             );
 
-            this.gameInfo.set(result.data);
+            this.gameInfo.set(result);
         } catch (e) {
             toast("There was an error while fetching game information.");
             console.error(e);

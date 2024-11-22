@@ -51,7 +51,7 @@ export class LoginPage {
     async onSubmit() {
         try {
             const result = await postAuthLogin(this.person.getRawValue());
-            this.localStorage.setItem("userInfo", result.data);
+            this.localStorage.setItem("userInfo", result);
             this.safeRouter.navigate("/app");
         } catch (e) {
             if (axios.isAxiosError(e) && e.status === 404) {

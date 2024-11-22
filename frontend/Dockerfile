@@ -42,20 +42,20 @@ RUN apt-get autoremove -y \
 RUN chown -R 1000:1000 ${ANDROID_HOME}
 USER node:node
 EXPOSE 4200
-WORKDIR /front
+WORKDIR /frontend
 
 #build stage
 FROM development as build
-COPY --chown=1000:1000 ./package*.json /front
+COPY --chown=1000:1000 ./package*.json /frontend
 RUN npm install
-COPY --chown=1000:1000 . /front
+COPY --chown=1000:1000 . /frontend
 RUN npm run gradle
 # run gradle ya ejecuta run build
 
 # production stage
 FROM nginx:alpine as production
-COPY --from=build /front/dist/front/browser /usr/share/nginx/html
-COPY --from=build /front/android/app/build/outputs/apk/debug/app-debug.apk /usr/share/nginx/html/app/app-debug.apk
+COPY --from=build /frontend/dist/frontend/browser /usr/share/nginx/html
+COPY --from=build /frontend/android/app/build/outputs/apk/debug/app-debug.apk /usr/share/nginx/html/app/app-debug.apk
 WORKDIR /usr/share/nginx/html
 COPY nginx.default.conf.template /etc/nginx/templates/default.conf.template
 

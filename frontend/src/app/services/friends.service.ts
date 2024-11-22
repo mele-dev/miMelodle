@@ -37,7 +37,7 @@ export class FriendsService {
 
         const result = await getUsersSelfSelfIdFriends(userId);
 
-        this._friends.set(result.data as Friend[]);
+        this._friends.set(result as Friend[]);
     }
 
     public async acceptFriendRequest(targetId: number) {
@@ -56,7 +56,7 @@ export class FriendsService {
 
             await this.reloadUsers();
 
-            toast(this.dict().acceptFriendRequestSuccess(result.data.username));
+            toast(this.dict().acceptFriendRequestSuccess(result.username));
 
             return true;
         } catch {
@@ -81,7 +81,7 @@ export class FriendsService {
 
             await this.reloadUsers();
 
-            toast(this.dict().sendFriendRequestSucces(result.data.username));
+            toast(this.dict().sendFriendRequestSucces(result.username));
 
             return true;
         } catch {
@@ -106,7 +106,7 @@ export class FriendsService {
 
             await this.reloadUsers();
 
-            toast(this.dict().deleteFriendSuccess(result.data.username));
+            toast(this.dict().deleteFriendSuccess(result.username));
 
             return true;
         } catch {

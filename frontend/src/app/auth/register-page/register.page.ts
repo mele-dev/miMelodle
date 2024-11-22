@@ -142,13 +142,13 @@ export class RegisterPage implements OnInit {
     }
 
     async ngOnInit(): Promise<void> {
-        const iconsInfo = (await getPublicIcons()).data;
+        const iconsInfo = await getPublicIcons();
 
         this.allIcons = await Promise.all(
             iconsInfo.map(async (icon) => ({
                 svg: await (
                     await getPublicIconsFilename(icon.filename)
-                ).data.text(),
+                ).text(),
                 ...icon,
             }))
         );
@@ -161,7 +161,7 @@ export class RegisterPage implements OnInit {
     async onSubmit() {
         try {
             const result = await postAuthRegister(this.person.getRawValue());
-            this._localStorage.setItem("userInfo", result.data);
+            this._localStorage.setItem("userInfo", result);
             this.safeRouter.navigate("/app");
         } catch (e) {
             console.error(e);

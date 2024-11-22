@@ -61,7 +61,7 @@ export class SelfService {
 
             const result = await getUsersSelfSelfId(id);
 
-            this._userInfo.set(result.data);
+            this._userInfo.set(result);
             return;
         } catch (e) {
             console.error(e);

@@ -5,7 +5,7 @@
     </domain-config>
     <debug-overrides>
         <trust-anchors>
-            <certificates src="@raw/ucu" /> <!-- Certificado del sitio -->
+            <certificates src="@raw/ucu_certificate" /> <!-- Certificado del sitio -->
             <certificates src="system"/>
         </trust-anchors> </debug-overrides>
 </network-security-config>

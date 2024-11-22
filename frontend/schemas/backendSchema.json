@@ -1514,11 +1514,11 @@
                                     ]
                                 },
                                 "example": {
-                                    "name": "Dr. Joey Barton MD",
-                                    "username": "Joey_Barton16",
+                                    "name": "Ms. Rita Ryan V",
+                                    "username": "Rita.Ryan",
                                     "password": "Fake123!",
-                                    "email": "Joey_Barton23@gmail.com",
-                                    "profilePictureId": 11
+                                    "email": "Rita.Ryan32@yahoo.com",
+                                    "profilePictureId": 8
                                 }
                             }
                         }
@@ -1601,17 +1601,17 @@
                                 },
                                 "example": [
                                     {
-                                        "name": "Dr. Bonnie Wyman V",
-                                        "username": "Bonnie_Wyman3",
+                                        "name": "Miss Gertrude Dare DDS",
+                                        "username": "Gertrude_Dare31",
                                         "password": "Fake123!",
-                                        "email": "Bonnie.Wyman30@gmail.com",
+                                        "email": "Gertrude.Dare@gmail.com",
                                         "profilePictureId": 5
                                     },
                                     {
-                                        "name": "Mr. Gilbert Kling DVM",
-                                        "username": "Gilbert.Kling69",
+                                        "name": "Dr. Homer Senger V",
+                                        "username": "Homer_Senger27",
                                         "password": "Fake123!",
-                                        "email": "Gilbert_Kling@hotmail.com",
+                                        "email": "Homer_Senger41@hotmail.com",
                                         "profilePictureId": 12
                                     }
                                 ]

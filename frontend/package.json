@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "grade": "npm run build && npx cap sync && cd ./android/ && gradlew assembleDebug"
+    "gradle": "npm run build && npx cap sync && cd ./android/ && ./gradlew assembleDebug"
   },
   "private": true,
   "dependencies": {

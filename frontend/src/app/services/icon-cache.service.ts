@@ -18,7 +18,7 @@ export class IconCacheService {
 
             const result = await getPublicIconsFilename(filename);
 
-            this._icons[filename] = await result.data.text();
+            this._icons[filename] = await result.text();
             return this._icons[filename];
         } catch (e) {
             console.error("Error while getting icon:", e);

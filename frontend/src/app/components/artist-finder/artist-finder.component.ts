@@ -42,7 +42,7 @@ export class ArtistFinderComponent {
                 query: this.usersFilter(),
                 spotifyQueryType: "artist" as any, // TODO CRIS
             });
-            this.matchedArtists.set(query.data.artists?.items ?? []);
+            this.matchedArtists.set(query.artists?.items ?? []);
         } catch (e) {
             console.error("Couldn't find any artists.");
             toast("Couldn't find any artists.");
