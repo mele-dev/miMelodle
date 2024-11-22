@@ -1,12 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { HeroPageTranslator } from './hero.page.translations';
+import { SafeRoutingService } from '../../services/safe-routing.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-hero',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './hero.page.html',
-  styleUrl: './hero.page.css'
 })
 export class HeroPage {
+  dict = inject(HeroPageTranslator).dict
+  safeRouter = inject(SafeRoutingService);
 
-}
+} 

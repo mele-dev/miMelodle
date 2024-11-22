@@ -5,7 +5,8 @@
         <img
             src="/icon.svg"
             alt=""
-            class="-my-2 -mt-8 inline h-[calc(100%+1rem)] w-auto self-center"
+            class="-my-2 -mt-8 inline h-[calc(100%+1rem)] w-auto self-center hover:cursor-pointer"
+            [routerLink]="this.safeRouter.createLink('/hero')"
         />
         <div class="hidden md:block">
             <a
@@ -49,7 +50,8 @@
     >
         <hlm-dialog>
             <button brnPopoverTrigger hlmBtn variant="ghost" class="h-full">
-                <hlm-icon [size]="'lg'" name="lucideSearch"></hlm-icon></button>
+                <hlm-icon [size]="'lg'" name="lucideSearch"></hlm-icon>
+            </button>
             <hlm-dialog-content *brnDialogContent="let ctx">
                 <app-user-finder></app-user-finder>
             </hlm-dialog-content>
