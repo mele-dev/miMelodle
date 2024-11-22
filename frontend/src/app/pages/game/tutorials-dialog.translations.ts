@@ -49,9 +49,13 @@ const tutorialsTranslations = {
         en: "When you enter a line, you will receive visual feedback on how many letters match the correct song.",
         es: "Cuando ingresas una línea, recibirás reatroalimentación de cuales letras están en la línea dada.",
     },
-    albums: {
-        en: "If you guess a song that belongs to the same album as the target song, the game will warn you to keep trying with songs from that album.",
-        es: "Si adivinas una canción que pertenece al mismo álbum que la canción objetivo, el juego te avisará para que sigas intentando con canciones de ese albúm.",
+    correctAlbum: {
+        en: "If you guess a song that belongs to the same album as the target song, the album cover will have a",
+        es: "Si adivinas una canción que pertenece al mismo álbum que la canción objetivo, la imagen del albúm tendrá",
+    },
+    incorrectAlbum : {
+        en: "otherwise, it will have",
+        es: "de lo contrario, verás"
     },
     snippet: {
         en: "When you reach 5 attempts, we'll give you a line from the song.",
