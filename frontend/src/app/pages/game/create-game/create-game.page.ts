@@ -30,6 +30,7 @@ import {
     HlmDialogModule,
 } from "@spartan-ng/ui-dialog-helm";
 import { BrnDialogModule } from "@spartan-ng/ui-dialog-brain";
+import { ArtistFinderComponent } from "../../../components/artist-finder/artist-finder.component";
 
 @Component({
     selector: "app-create-game",
@@ -45,6 +46,7 @@ import { BrnDialogModule } from "@spartan-ng/ui-dialog-brain";
         TrackListItemComponent,
         HlmDialogModule,
         BrnDialogModule,
+        ArtistFinderComponent,
     ],
     providers: [provideIcons({ lucideArrowUpDown, lucidePlus })],
     templateUrl: "./create-game.page.html",
@@ -70,7 +72,7 @@ export class CreateGamePage{
         } as const;
     });
 
-    artists = signal<GetSpotifySearch200ArtistsItemsItem[]>([]);
+    artists = this._savedArtists.artists;
     tracks = signal<GetSpotifySearch200TracksItemsItem[]>([]);
 
     next() {
@@ -80,7 +82,7 @@ export class CreateGamePage{
     }
 
     removeArtist(artist: ArtistListItem) {
-        this.artists.set(this.artists().filter((a) => a.id !== artist.id));
+        this._savedArtists.deleteArtist(artist.id);
     }
 
     removeTrack(track: TrackListItem) {
@@ -89,7 +91,7 @@ export class CreateGamePage{
 
     async ngOnInit() {
         await this._savedArtists.loadData();
-        this.artists.set(this._savedArtists.artists());
+        this._savedArtists.loadData();
     }
 
     async submit() {
