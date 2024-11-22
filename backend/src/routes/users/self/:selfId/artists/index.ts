@@ -1,26 +1,14 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { MelodleTagName } from "../../../../../plugins/swagger.js";
 import { SafeType } from "../../../../../utils/typebox.js";
-import {
-    friendSchema,
-    selfIdSchema,
-    userSchema,
-} from "../../../../../types/user.js";
+import { selfIdSchema } from "../../../../../types/user.js";
 import { decorators } from "../../../../../services/decorators.js";
 import { sendError, sendOk } from "../../../../../utils/reply.js";
 import { runPreparedQuery } from "../../../../../services/database.js";
-import {
-    getBlockedUsers,
-    getHomeArtists,
-    getSelfFriends,
-} from "../../../../../queries/dml.queries.js";
-import { artistSchema } from "../../../../../types/artist.js";
-import {
-    getAnArtist,
-    getMultipleArtists,
-} from "../../../../../apiCodegen/spotify.js";
-import artist from "../../../../artists/index.js";
-import { isAxiosError } from "axios";
+import { getHomeArtists } from "../../../../../queries/dml.queries.js";
+import { getMultipleArtists } from "../../../../../apiCodegen/spotify.js";
+import { spotifyArtistSchema } from "../../../../../types/spotify.js";
+import { RequireSpotify } from "../../../../../spotify/helpers.js";
 
 export default (async (fastify, _opts) => {
     fastify.get("", {
@@ -33,16 +21,7 @@ export default (async (fastify, _opts) => {
                 200: SafeType.Array(
                     SafeType.Object({
                         isFavorite: SafeType.Boolean(),
-                        data: SafeType.Object({
-                            ...SafeType.Pick(artistSchema, [
-                                "name",
-                                "imageUrl",
-                                "externalUrls",
-                                "genres",
-                                "followers",
-                                "spotifyArtistId"
-                            ]).properties,
-                        }),
+                        artist: spotifyArtistSchema,
                     })
                 ),
                 ...SafeType.CreateErrors(["unauthorized", "notFound"]),
@@ -54,34 +33,29 @@ export default (async (fastify, _opts) => {
                 request.params
             );
 
-            try {
-                const ids = queryResult
-                    .map((artist) => artist.spotifyArtistId)
-                    .join(",");
-                const artistData = await getMultipleArtists({ ids });
-
-                const output = queryResult.map((artist, index) => {
-                    return {
-                        isFavorite: artist.isFavorite,
-                        data: {
-                            name: artistData.artists[index]?.name as string,
-                            imageUrl: artistData.artists[index]?.images?.[0]
-                                ?.url as string | undefined,
-                            externalUrls: artistData.artists[index]
-                                ?.external_urls?.spotify as string,
-                            genres: artistData.artists[index]
-                                ?.genres as string[],
-                            followers: artistData.artists[index]?.followers
-                                ?.total as number,
-                            spotifyArtistId: artistData.artists[index]?.id as string
-                        },
-                    };
-                });
-
-                return sendOk(reply, 200, output);
-            } catch {
-                return sendError(reply,"notFound","There's no artists to get.");
+            if (queryResult.length === 0) {
+                return sendError(
+                    reply,
+                    "notFound",
+                    "There's no artists to get."
+                );
             }
+
+            const ids = queryResult
+                .map((artist) => artist.spotifyArtistId)
+                .join(",");
+            const artistData = (await getMultipleArtists({
+                ids,
+            })) as RequireSpotify<typeof getMultipleArtists>;
+
+            const output = queryResult.map((artist, index) => {
+                return {
+                    isFavorite: artist.isFavorite,
+                    artist: artistData.artists[index],
+                };
+            });
+
+            return sendOk(reply, 200, output);
         },
     });
 }) satisfies FastifyPluginAsyncTypebox;
