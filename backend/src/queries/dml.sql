@@ -5,16 +5,16 @@ SELECT *
 /* @name insertUser */
   WITH "insertedUser"         AS ( INSERT INTO users (username,
                                                       email,
-                                                      "passwordHash",
                                                       "spotifyId",
+                                                      "name",
                                                       "profilePictureId",
-                                                      name
-      ) VALUES ( :username!, :email!, :password, :spotifyId
-               , CASE
-                     WHEN :profilePictureId::BIGINT IS NULL THEN get_default_profile_picture()
-                     ELSE :profilePictureId::BIGINT
-                 END
-               , :name!) RETURNING id)
+                                                      "passwordHash"
+      ) VALUES ( :username!, :email!, :spotifyId, :name!
+               , COALESCE(:profilePictureId::BIGINT, get_default_profile_picture()), CASE
+                                                                                         WHEN :password::TEXT IS NOT NULL
+                                                                                             THEN encrypt_password(:password)
+                                                                                         ELSE NULL
+                                                                                     END) RETURNING id)
      , "guessLineLeaderboard"
                               AS ( INSERT INTO ranking ("userId", score, mode) SELECT id, :baseGuessLineScore!, 'guessLine' FROM "insertedUser" RETURNING *)
      , "guessSongLeaderboard"
@@ -28,8 +28,8 @@ SELECT id
 /* @name loginUser */
 SELECT id
   FROM users
- WHERE email = :emailOrUsername!
-    OR username = :emailOrUsername! AND check_password("passwordHash", :password!);
+ WHERE (email = :emailOrUsername! OR username = :emailOrUsername!)
+   AND check_password("passwordHash", :password!);
 
 /* @name updateUser */
    UPDATE users
@@ -236,15 +236,11 @@ SELECT (SELECT "canCreate" FROM "canCreateGame"), "insertGame".id
            LEFT JOIN "insertGame" ON TRUE;
 
 /* @name getGuessSongFromUser */
-  WITH "game" AS (SELECT *
-                    FROM "guessSongGames" gsg
-                   WHERE gsg."userId" = :selfId! AND gsg.id = :gameId!
-                   ORDER BY gsg."createdAt"
-                   LIMIT 6)
+  WITH "game" AS (SELECT * FROM "guessSongGames" gsg WHERE gsg."userId" = :selfId! AND gsg.id = :gameId!)
 SELECT game.*, gsa.*, ranking.score
   FROM "game"
            LEFT JOIN public."guessSongAttempts" gsa ON "game".id = gsa."gameId"
-           LEFT JOIN ranking ON ranking."userId" = :selfId!;
+           INNER JOIN ranking ON ranking."userId" = :selfId! AND ranking.mode = 'guessSong';
 
 /* @name insertGuessSongAttempt */
      WITH "scoreUpdate" AS ( UPDATE ranking SET score = score + :scoreDeviation! WHERE "userId" = :selfId!)

@@ -1,16 +1,22 @@
 import { Component, inject } from "@angular/core";
 import { RouterLink } from "@angular/router";
-import { AllMelodlePaths, SafeRoutingService } from "../../services/safe-routing.service";
+import {
+    AllMelodlePaths,
+    SafeRoutingService,
+} from "../../services/safe-routing.service";
 import { LanguagePickerComponent } from "../language-picker/language-picker.component";
 import { AppNavbarTranslator } from "./app-navbar.translations";
 import { HlmIconModule } from "@spartan-ng/ui-icon-helm";
 import { provideIcons } from "@ng-icons/core";
-import { lucideBell } from "@ng-icons/lucide";
+import { lucideBell, lucideSearch } from "@ng-icons/lucide";
 import { LocalStorageService } from "../../services/local-storage.service";
 import { BrnPopoverModule } from "@spartan-ng/ui-popover-brain";
 import { HlmPopoverModule } from "@spartan-ng/ui-popover-helm";
 import { DomSanitizer } from "@angular/platform-browser";
-import { HlmButtonModule } from "@spartan-ng/ui-button-helm";
+import {
+    HlmButtonDirective,
+    HlmButtonModule,
+} from "@spartan-ng/ui-button-helm";
 import { FriendshipsComponent } from "../friendships/friendships.component";
 import { BlockingComponent } from "../blocking/blocking.component";
 import { SelfService } from "../../services/self.service";
@@ -25,6 +31,18 @@ import {
 } from "../../services/language-manager.service";
 import { supportedLanguages } from "../../globalConstants";
 import { UnreachableCaseError } from "ts-essentials";
+import { HlmDialogComponent } from "../../../../libs/ui/ui-dialog-helm/src/lib/hlm-dialog.component";
+import { HlmDialogContentComponent } from "../../../../libs/ui/ui-dialog-helm/src/lib/hlm-dialog-content.component";
+import { UserFinderComponent } from "../user-finder/user-finder.component";
+import {
+    HlmDialogDescriptionDirective,
+    HlmDialogFooterComponent,
+    HlmDialogHeaderComponent,
+    HlmDialogTitleDirective,
+} from "@spartan-ng/ui-dialog-helm";
+import { HlmLabelDirective } from "@spartan-ng/ui-label-helm";
+import { HlmInputDirective } from "@spartan-ng/ui-input-helm";
+import { BrnDialogContentDirective, BrnDialogTriggerDirective } from "@spartan-ng/ui-dialog-brain";
 
 @Component({
     selector: "app-app-navbar",
@@ -39,15 +57,22 @@ import { UnreachableCaseError } from "ts-essentials";
         FriendshipsComponent,
         BlockingComponent,
         LoadProfilePictureDirective,
-        JsonPipe,
         HlmTabsModule,
         CommonModule,
         HlmMenuModule,
         BrnMenuModule,
+        HlmDialogComponent,
+        HlmDialogContentComponent,
+        UserFinderComponent,
+        HlmButtonDirective,
+        BrnDialogContentDirective,
+        HlmDialogComponent,
+        HlmDialogContentComponent,
     ],
     providers: [
         provideIcons({
             lucideBell,
+            lucideSearch,
         }),
     ],
     templateUrl: "./app-navbar.component.html",
@@ -91,6 +116,7 @@ export class AppNavbarComponent {
 
     logOut() {
         this._localStorage.removeItem("userInfo");
+        this._localStorage.removeItem("trackCache");
         this.safeRouter.navigate("/auth");
     }
 }

@@ -98,12 +98,7 @@ export class LeaderboardComponent implements OnInit {
     }
 
     public filterFriends(){
-        if(!this.isChecked){
-            this.isChecked = true;
-            return
-        }
-        this.isChecked = false;
-        return
+        this.isChecked = !this.isChecked
     }
 
 }

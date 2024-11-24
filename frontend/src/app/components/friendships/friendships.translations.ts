@@ -9,6 +9,18 @@ export const friendShipsDict = {
         en: "Friend Requests",
         es: "Solicitudes de amistad",
     },
+    decline: {
+        en: "Decline",
+        es: "Rechazar",
+    },
+    accept: {
+        en: "Accept",
+        es: "Aceptar"
+    },
+    empty: {
+        en: "You don't have any friend requests.",
+        es: "No tienes ninguna solicitud de amistad."
+    }
 } as const satisfies Translations;
 
 @Injectable({

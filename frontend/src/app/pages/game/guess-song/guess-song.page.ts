@@ -40,21 +40,24 @@ import { HlmScrollAreaModule } from "@spartan-ng/ui-scrollarea-helm";
 import { SafeRoutingService } from "../../../services/safe-routing.service";
 import { HlmButtonModule } from "@spartan-ng/ui-button-helm";
 import { DomSanitizer } from "@angular/platform-browser";
+import { SafePipe } from "../../../pipes/safe.pipe";
+import { TutorialsTranslator } from "../tutorials-dialog.translations";
 
 @Component({
     selector: "app-guess-song",
     standalone: true,
     imports: [
-        JsonPipe,
-        CommonModule,
-        HlmIconModule,
-        WordleTextComponent,
-        FormsModule,
-        BrnDialogModule,
-        HlmDialogModule,
-        HlmScrollAreaModule,
-        HlmButtonModule,
-    ],
+    JsonPipe,
+    CommonModule,
+    HlmIconModule,
+    WordleTextComponent,
+    FormsModule,
+    BrnDialogModule,
+    HlmDialogModule,
+    HlmScrollAreaModule,
+    HlmButtonModule,
+    SafePipe,
+],
     providers: [provideIcons({ lucideCheck, lucideX })],
     templateUrl: "./guess-song.page.html",
 })
@@ -64,6 +67,14 @@ export class GuessSongPage implements OnInit {
     sanitizer = inject(DomSanitizer);
     router = inject(SafeRoutingService);
     dict = inject(GuessSongTranslator).dict;
+    dictT = inject(TutorialsTranslator).dict;
+    @ViewChild("tutorial") dialog!: ElementRef<HTMLDialogElement>;
+
+    blurOn: boolean = true;
+    public closeDialog() {
+        this.dialog.nativeElement.close();
+        this.blurOn = false;
+    }
     ids = computed(() => {
         const schema = z.object({ gameId: z.coerce.number().positive() });
         const parsed = schema.safeParse({
@@ -220,5 +231,6 @@ export class GuessSongPage implements OnInit {
 
     async ngOnInit() {
         await this.load();
+        this.dialog.nativeElement.showModal()
     }
 }

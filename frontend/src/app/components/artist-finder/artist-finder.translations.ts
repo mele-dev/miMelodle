@@ -25,6 +25,16 @@ export const artistFinderDict = {
         en: "followers",
         es: "seguidores",
     },
+    indications: {
+        en: "To search press 'enter'",
+        es: "Para buscar precione 'enter'"
+    },
+    followerCount: {
+        en: (count: number) =>
+            `${new Intl.NumberFormat("en-US", { notation: "compact" }).format(count)} followers`,
+        es: (count: number) =>
+            `${new Intl.NumberFormat("es-EN", { notation: "compact" }).format(count)} seguidores`,
+    },
 } as const satisfies Translations;
 
 @Injectable({

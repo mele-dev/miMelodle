@@ -48,12 +48,9 @@ const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
 
         handler: async function (request, reply) {
             const result = await runPreparedQuery(loginUser, request.body);
-            type res = Responses<typeof reply>;
-            type codes = keyof res;
-            type goodCodes = Exclude<codes, CommonErrorCode>;
 
             if (result.length !== 1) {
-                return sendError(reply, "notFound", "Wrong email or password");
+                return sendError(reply, "notFound", `Wrong email or password ${result.length}`);
             }
 
             const token = fastify.jwt.sign({
