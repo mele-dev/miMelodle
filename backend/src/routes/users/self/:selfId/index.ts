@@ -116,6 +116,8 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                     ...request.body.sensitive,
                     ...request.params,
                 });
+
+                return sendOk(reply, 200, request.body);
             }
 
             await runPreparedQuery(updateNonSensitiveUserData, {

@@ -77,6 +77,10 @@ export class SelfService {
         }
     }
 
+    shouldNeedPassword = computed(() => {
+        return this._readonlyUserInfo()?.spotifyId !== undefined;
+    });
+
     public async patchUserInfo(newInfo: Partial<SelfInfo>): Promise<void> {
         throw "TODO!" || newInfo;
     }

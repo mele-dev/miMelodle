@@ -9,27 +9,13 @@ import {
     ViewChild,
 } from "@angular/core";
 import { DomSanitizer } from "@angular/platform-browser";
-import { HlmBadgeDirective } from "@spartan-ng/ui-badge-helm";
 import { HlmButtonDirective } from "@spartan-ng/ui-button-helm";
-import {
-    HlmCardContentDirective,
-    HlmCardDescriptionDirective,
-    HlmCardDirective,
-    HlmCardFooterDirective,
-    HlmCardHeaderDirective,
-    HlmCardTitleDirective,
-} from "@spartan-ng/ui-card-helm";
+import { HlmCardModule } from "@spartan-ng/ui-card-helm";
 import { HlmInputDirective } from "@spartan-ng/ui-input-helm";
 import { HlmLabelDirective } from "@spartan-ng/ui-label-helm";
-import {
-    HlmTabsComponent,
-    HlmTabsContentDirective,
-    HlmTabsListComponent,
-    HlmTabsTriggerDirective,
-    HlmTabsPaginatedListComponent,
-} from "@spartan-ng/ui-tabs-helm";
-import { BrnSelectImports } from "@spartan-ng/ui-select-brain";
-import { HlmSelectImports } from "@spartan-ng/ui-select-helm";
+import { HlmTabsModule } from "@spartan-ng/ui-tabs-helm";
+import { BrnSelectModule } from "@spartan-ng/ui-select-brain";
+import { HlmSelectModule } from "@spartan-ng/ui-select-helm";
 import {
     AbstractControl,
     FormBuilder,
@@ -37,51 +23,25 @@ import {
     ReactiveFormsModule,
 } from "@angular/forms";
 import { ClientValidationService } from "../../services/client-validation.service";
-import {
-    postAuthLoginBody,
-    postAuthLoginResponse,
-    putUsersSelfSelfIdBody,
-} from "../../../apiCodegen/backend-zod";
+import { putUsersSelfSelfIdBody } from "../../../apiCodegen/backend-zod";
 import {
     deleteUsersSelfSelfId,
     getPublicIcons,
     getPublicIconsFilename,
-    postAuthLogin,
     putUsersSelfSelfId,
     PutUsersSelfSelfIdBody,
 } from "../../../apiCodegen/backend";
 import { BackendIcon } from "../../types/backend-icon";
 import { SelfService } from "../../services/self.service";
 import { LocalStorageService } from "../../services/local-storage.service";
-import {
-    BrnDialogContentDirective,
-    BrnDialogTriggerDirective,
-} from "@spartan-ng/ui-dialog-brain";
-import {
-    HlmDialogComponent,
-    HlmDialogContentComponent,
-    HlmDialogDescriptionDirective,
-    HlmDialogFooterComponent,
-    HlmDialogHeaderComponent,
-    HlmDialogModule,
-    HlmDialogTitleDirective,
-} from "@spartan-ng/ui-dialog-helm";
+import { BrnDialogModule } from "@spartan-ng/ui-dialog-brain";
+import { HlmDialogModule } from "@spartan-ng/ui-dialog-helm";
 import { SafeRoutingService } from "../../services/safe-routing.service";
 import { toast } from "ngx-sonner";
-import { HlmSpinnerComponent } from "@spartan-ng/ui-spinner-helm";
+import { HlmSpinnerModule } from "@spartan-ng/ui-spinner-helm";
 import { IconPickerComponent } from "../../auth/register-page/icon-picker/icon-picker.component";
-import { TickCircleIconComponent } from "../../icons/tick-circle-icon/tick-circle-icon.component";
-import {
-    BrnPopoverCloseDirective,
-    BrnPopoverComponent,
-    BrnPopoverContentDirective,
-    BrnPopoverTriggerDirective,
-} from "@spartan-ng/ui-popover-brain";
-import {
-    HlmPopoverCloseDirective,
-    HlmPopoverContentDirective,
-} from "@spartan-ng/ui-popover-helm";
-import { throwDialogContentAlreadyAttachedError } from "@angular/cdk/dialog";
+import { BrnPopoverModule } from "@spartan-ng/ui-popover-brain";
+import { HlmPopoverModule } from "@spartan-ng/ui-popover-helm";
 import { UserConfigTranslator } from "./user-config.translations";
 import { LeaderboardsService } from "../../services/leaderboards.service";
 import { CommonModule } from "@angular/common";
@@ -92,48 +52,31 @@ import { CommonModule } from "@angular/common";
     imports: [
         ReactiveFormsModule,
 
-        HlmTabsComponent,
-        HlmTabsListComponent,
-        HlmTabsTriggerDirective,
-        HlmTabsContentDirective,
+        HlmTabsModule,
 
-        HlmCardContentDirective,
-        HlmCardDescriptionDirective,
-        HlmCardDirective,
-        HlmCardFooterDirective,
-        HlmCardHeaderDirective,
-        HlmCardTitleDirective,
+        HlmCardModule,
 
         HlmLabelDirective,
         HlmInputDirective,
         HlmButtonDirective,
 
-        BrnSelectImports,
-        HlmSelectImports,
+        BrnSelectModule,
+        HlmSelectModule,
 
-        BrnDialogTriggerDirective,
-        BrnDialogContentDirective,
-
-        HlmDialogComponent,
-        HlmDialogContentComponent,
-        HlmDialogHeaderComponent,
-        HlmDialogFooterComponent,
-        HlmDialogTitleDirective,
-        HlmDialogDescriptionDirective,
+        BrnDialogModule,
         HlmDialogModule,
 
         HlmLabelDirective,
         HlmInputDirective,
         HlmButtonDirective,
 
-        HlmSpinnerComponent,
+        HlmSpinnerModule,
         IconPickerComponent,
 
         //popover
-        BrnPopoverComponent,
-        BrnPopoverTriggerDirective,
-        BrnPopoverContentDirective,
-        HlmPopoverContentDirective,
+        BrnPopoverModule,
+        HlmPopoverModule,
+
         CommonModule,
         FormsModule,
     ],
@@ -180,12 +123,16 @@ export class UserConfigPage implements OnInit {
             password: this.builder.control(
                 "",
                 [],
-                this._validator.Schema(this.schema.shape.sensitive.unwrap().shape.password)
+                this._validator.Schema(
+                    this.schema.shape.sensitive.unwrap().shape.password
+                )
             ),
             oldPassword: this.builder.control(
                 "",
                 [],
-                this._validator.Schema(this.schema.shape.sensitive.unwrap().shape.oldPassword)
+                this._validator.Schema(
+                    this.schema.shape.sensitive.unwrap().shape.oldPassword
+                )
             ),
         } satisfies {
             [k in keyof PutUsersSelfSelfIdBody["sensitive"]]: unknown;
@@ -264,8 +211,7 @@ export class UserConfigPage implements OnInit {
                 username: userInfo.username,
             });
 
-            console.warn(result.statusText)
-
+            console.warn(result.statusText);
 
             this.safeRouter.navigate("/app");
         } catch (e) {
@@ -299,17 +245,10 @@ export class UserConfigPage implements OnInit {
     public async changePassword() {
         try {
             const userInfo = await this.selfService.waitForUserInfoSnapshot();
-            console.warn(
-                userInfo.id,
-                this.changePasasword.getRawValue().password
-            );
 
-            const result = await putUsersSelfSelfId(userInfo.id, {
-                ...this.changePasasword.getRawValue(),
-                email: userInfo.email,
-                name: userInfo.name,
-                profilePictureId: userInfo.profilePictureId,
-                username: userInfo.username,
+            await putUsersSelfSelfId(userInfo.id, {
+                ...userInfo,
+                sensitive: this.changePasasword.getRawValue(),
             });
             this.selfService.logOut();
         } catch (e) {

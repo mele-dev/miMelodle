@@ -8,9 +8,11 @@
         <button class="w-full" hlmTabsTrigger="profile">
             {{this.dict().userConfig}}
         </button>
+        @if (this.selfService.shouldNeedPassword()) {
         <button class="w-full" hlmTabsTrigger="password">
             {{this.dict().password}}
         </button>
+        }
         <button class="w-full" hlmTabsTrigger="danger">
             {{this.dict().dangerZone}}
         </button>
