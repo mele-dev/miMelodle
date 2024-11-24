@@ -1,5 +1,4 @@
 @if (userInfo() !== undefined && userIconSVG !== "") {
-
 <hlm-tabs
     tab="profile"
     class="mx-auto mt-32 flex w-[100rem] max-w-3xl flex-row space-x-2"
@@ -89,9 +88,9 @@
                 </label>
             </p>
             <div hlmCardFooter class="flex justify-center">
-                    <button id="edit-profile" (click)="onSubmit()" hlmBtn>
-                        {{this.dict().save}}
-                    </button>
+                <button id="edit-profile" (click)="onSubmit()" hlmBtn>
+                    {{this.dict().save}}
+                </button>
             </div>
         </section>
     </div>
@@ -132,14 +131,18 @@
     </div>
     <div hlmTabsContent="danger">
         <section hlmCard>
-            
             <div hlmCardHeader>
                 <h3 hlmCardTitle>{{this.dict().deleteAccount}}</h3>
                 <p hlmCardDescription>{{this.dict().questionAccount}}</p>
             </div>
             <div hlmCardFooter>
                 <hlm-dialog>
-                    <button variant="destructive" id="edit-profile" brnDialogTrigger hlmBtn>
+                    <button
+                        variant="destructive"
+                        id="edit-profile"
+                        brnDialogTrigger
+                        hlmBtn
+                    >
                         {{this.dict().deleteAccount}}
                     </button>
                     <hlm-dialog-content
@@ -147,7 +150,9 @@
                         *brnDialogContent="let ctx"
                     >
                         <hlm-dialog-header>
-                            <h3 hlmDialogTitle>{{this.dict().accountExplanation}}</h3>
+                            <h3 hlmDialogTitle>
+                                {{this.dict().accountExplanation}}
+                            </h3>
                         </hlm-dialog-header>
                         <div class="grid gap-4 py-4">
                             <div class="grid grid-cols-4 items-center gap-4">
@@ -165,12 +170,17 @@
                                     type="password"
                                     placeholder="*************"
                                     class="col-span-3"
-                                    [formControl]="user.controls.oldPassword"
+                                    [formControl]="changePasasword.controls.oldPassword"
                                 />
                             </div>
                         </div>
                         <hlm-dialog-footer>
-                            <button variant="destructive" hlmBtn (click)="this.deleteAccount()" type="submit">
+                            <button
+                                variant="destructive"
+                                hlmBtn
+                                (click)="this.deleteAccount()"
+                                type="submit"
+                            >
                                 {{this.dict().delete}}
                             </button>
                         </hlm-dialog-footer>
@@ -185,7 +195,12 @@
             </div>
             <div hlmCardFooter>
                 <hlm-dialog>
-                    <button variant="destructive" id="edit-profile" brnDialogTrigger hlmBtn>
+                    <button
+                        variant="destructive"
+                        id="edit-profile"
+                        brnDialogTrigger
+                        hlmBtn
+                    >
                         {{this.dict().deleteRanking}}
                     </button>
                     <hlm-dialog-content
@@ -193,7 +208,9 @@
                         *brnDialogContent="let ctx"
                     >
                         <hlm-dialog-header>
-                            <h3 hlmDialogTitle>{{this.dict().questionRanking}}</h3>
+                            <h3 hlmDialogTitle>
+                                {{this.dict().questionRanking}}
+                            </h3>
                         </hlm-dialog-header>
                         <div class="grid gap-4 py-4">
                             <div class="grid grid-cols-4 items-center gap-4">
@@ -215,7 +232,12 @@
                             </div>
                         </div>
                         <hlm-dialog-footer>
-                            <button variant="destructive" hlmBtn (click)="this.deleteAllData()" type="submit">
+                            <button
+                                variant="destructive"
+                                hlmBtn
+                                (click)="this.deleteAllData()"
+                                type="submit"
+                            >
                                 {{this.dict().delete}}
                             </button>
                         </hlm-dialog-footer>

@@ -169,16 +169,6 @@ export class UserConfigPage implements OnInit {
                 [],
                 this._validator.Schema(this.schema.shape.profilePictureId)
             ),
-            password: this.builder.control(
-                "",
-                [],
-                this._validator.Schema(this.schema.shape.password)
-            ),
-            oldPassword: this.builder.control(
-                "",
-                [],
-                this._validator.Schema(this.schema.shape.oldPassword)
-            ),
         } satisfies Partial<{ [k in keyof PutUsersSelfSelfIdBody]: unknown }>,
         {
             asyncValidators: this._validator.Schema(this.schema),
@@ -190,16 +180,16 @@ export class UserConfigPage implements OnInit {
             password: this.builder.control(
                 "",
                 [],
-                this._validator.Schema(this.schema.shape.password)
+                this._validator.Schema(this.schema.shape.sensitive.unwrap().shape.password)
             ),
             oldPassword: this.builder.control(
                 "",
                 [],
-                this._validator.Schema(this.schema.shape.oldPassword)
+                this._validator.Schema(this.schema.shape.sensitive.unwrap().shape.oldPassword)
             ),
-        } satisfies Partial<{
-            [k in keyof PutUsersSelfSelfIdBody]: unknown;
-        }>,
+        } satisfies {
+            [k in keyof PutUsersSelfSelfIdBody["sensitive"]]: unknown;
+        },
         {
             asyncValidators: this._validator.Schema(this.schema),
         }
@@ -267,10 +257,7 @@ export class UserConfigPage implements OnInit {
                 profilePictureId: this.chosenIcon()?.id ?? -1,
             });
 
-            console.log(this.user.getRawValue().oldPassword)
             const result = await putUsersSelfSelfId(userInfo.id, {
-                oldPassword: this.user.getRawValue().oldPassword,
-                password: this.user.getRawValue().oldPassword,
                 email: userInfo.email,
                 name: userInfo.name,
                 profilePictureId: userInfo.profilePictureId,
@@ -334,8 +321,12 @@ export class UserConfigPage implements OnInit {
     public async deleteAccount() {
         try {
             const userInfo = await this.selfService.waitForUserInfoSnapshot();
+            const password = this.changePasasword.value.oldPassword;
+            if (password === undefined) {
+                return;
+            }
             await deleteUsersSelfSelfId(userInfo.id, {
-                password: this.user.getRawValue().oldPassword,
+                password,
             });
             toast(this.dict().successDelete);
             this.selfService.logOut();
