@@ -1,4 +1,11 @@
-import { Component, effect, EventEmitter, inject, Output, signal } from "@angular/core";
+import {
+    Component,
+    effect,
+    EventEmitter,
+    inject,
+    Output,
+    signal,
+} from "@angular/core";
 import { TranslatorService } from "../../services/translator.service";
 import { getFollowed, GetFollowedType } from "../../../apiCodegen/spotify";
 import {
@@ -23,7 +30,13 @@ type SearchedArtist = GetSpotifySearch200Artists["items"][number];
 @Component({
     selector: "app-artist-finder",
     standalone: true,
-    imports: [HlmTableComponent, HlmTrowComponent, HlmTdComponent, FormsModule, HlmInputModule  ],
+    imports: [
+        HlmTableComponent,
+        HlmTrowComponent,
+        HlmTdComponent,
+        FormsModule,
+        HlmInputModule,
+    ],
     templateUrl: "./artist-finder.component.html",
 })
 export class ArtistFinderComponent {
@@ -44,8 +57,7 @@ export class ArtistFinderComponent {
             });
             this.matchedArtists.set(query.data.artists?.items ?? []);
         } catch (e) {
-            console.error("Couldn't find any artists.");
-            toast("Couldn't find any artists.");
+            toast(this.dict().artistsNotFound);
             return;
         }
     }

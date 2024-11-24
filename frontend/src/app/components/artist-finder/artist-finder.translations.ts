@@ -27,7 +27,11 @@ export const artistFinderDict = {
     },
     indications: {
         en: "To search press 'enter'",
-        es: "Para buscar precione 'enter'"
+        es: "Para buscar precione 'enter'",
+    },
+    artistsNotFound: {
+        en: "Couldn't find any artists.",
+        es: "No se ha podido encontrar ningun artista.",
     },
     followerCount: {
         en: (count: number) =>
