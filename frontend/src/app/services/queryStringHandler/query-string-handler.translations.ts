@@ -19,6 +19,10 @@ export const validationDict = {
         en: "Your spotify account does not have an email associated.",
         es: "Tu cuenta de spotify no tiene un email asociado.",
     },
+    backendUnknownError: {
+        en: "Unknown error from backend: ",
+        es: "Error desconocido del backend: ",
+    },
 } as const satisfies Translations & Record<QueryStringErrorEnum, Translation>;
 
 @Injectable({
