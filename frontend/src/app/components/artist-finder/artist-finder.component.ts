@@ -24,6 +24,7 @@ import { SavedArtistsService } from "../../services/saved-artists.service";
 import { ArtistFinderTranslator } from "./artist-finder.translations";
 import { SelfService } from "../../services/self.service";
 import { HlmInputModule } from "@spartan-ng/ui-input-helm";
+import { debounceTime } from "rxjs";
 
 type SearchedArtist = GetSpotifySearch200Artists["items"][number];
 
@@ -47,7 +48,6 @@ export class ArtistFinderComponent {
     public homeArtistsService = inject(SavedArtistsService);
 
     async search() {
-        console.info(this.usersFilter());
         try {
             const query = await getSpotifySearch({
                 page: 0,

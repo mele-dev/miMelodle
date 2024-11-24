@@ -5,8 +5,9 @@
         <img
             src="/icon.svg"
             alt=""
-            class="-my-2 -mt-8 inline h-[calc(100%+1rem)] w-auto self-center hover:cursor-pointer"
+            class="-my-2 -mt-8 inline h-[calc(100%+1rem)] w-auto self-center hover:cursor-pointer sm:self-start"
             [routerLink]="this.safeRouter.createLink('/hero')"
+            brnCloseSheetDirective 
         />
         <div class="hidden md:block">
             <a
@@ -32,7 +33,7 @@
             >
         </div>
     </div>
-    <div class="flex flex-shrink-0 items-baseline gap-4">
+    <div class="flex flex-shrink-0 items-baseline sm:items-center w-1/2 md:w-auto">
         <a
             class="cursor-pointer rounded-2xl bg-[url('/diagonal-lines.svg')] px-4 py-6 text-2xl font-extrabold transition-all hover:scale-110 sm:self-center"
             hlmBtn
@@ -45,6 +46,7 @@
             {{ this.dict().play }}
         </a>
     </div>
+
     <div
         class="hidden h-full w-1/2 flex-grow items-center justify-end gap-2 self-center md:flex"
     >
@@ -131,40 +133,92 @@
         </ng-template>
     </div>
 
-    <hlm-sheet class="md:hidden">
+    <hlm-sheet class="ml-auto self-end md:hidden">
         <button brnSheetTrigger side="right">
             <hlm-icon size="lg" name="lucideAlignJustify" />
         </button>
-        <hlm-sheet-content *brnSheetContent="let ctx" class="w-1/3">
+        <hlm-sheet-content *brnSheetContent="let ctx" class="w-1/4 bg-[url('/waves.svg')]">
             <div class="flex flex-col">
-                <hlm-icon
-                    size="lg"
-                    name="lucideWarehouse"
+                <button
+                    appLoadProfilePicture
+                    [profilePictureFilename]="
+                        this.selfInfo()?.profilePictureFile
+                    "
+                    class="mb-1 mt-3 aspect-square size-6 h-14 w-14 rounded-full bg-white p-1 self-center"
+                    [brnMenuTriggerFor]="menu"
+                ></button>
+
+                <ng-template #menu>
+                    <hlm-menu class="mt-4">
+                        <hlm-menu-group>
+                            <a
+                                hlmMenuItem
+                                [routerLink]="
+                                    this.safeRouter.createLink('/app/profile')
+                                "
+                            >
+                                {{ this.dict().myProfile }}
+                            </a>
+                            <button hlmMenuItem (click)="this.logOut()">
+                                {{ this.dict().logOut }}
+                            </button>
+                        </hlm-menu-group>
+                        <hlm-menu-separator></hlm-menu-separator>
+                        <button
+                            hlmMenuItem
+                            [brnMenuTriggerFor]="languagePicker"
+                        >
+                            {{ this.dict().language }}
+                        </button>
+                    </hlm-menu>
+                </ng-template>
+
+                <ng-template #languagePicker>
+                    <hlm-sub-menu>
+                        @for (language of supportedLanguages; track language) {
+                            <button
+                                hlmMenuItem
+                                (click)="this.currentLanguage.set(language)"
+                            >
+                                {{ this.langLongName(language) }}
+                            </button>
+                        }
+                    </hlm-sub-menu>
+                </ng-template>
+                <a
                     [routerLink]="this.safeRouter.createLink('/app/home')"
-                    class="m-2"
-                />
+                    class="underline-offset-8 mb-3 mt-3 self-center"
+                    [ngClass]="{
+                        underline: this.currentSection().home,
+                        'text-muted-foreground': !this.currentSection().home,
+                    }"
+                >
+                    {{ this.dict().home }}</a
+                >
                 <hlm-icon
                     size="lg"
                     name="lucideTrophy"
                     [routerLink]="
                         this.safeRouter.createLink('/app/leaderboards')
                     "
-                    class="m-2"
+                    class="m-2 self-center mt-3"
                 />
                 <hlm-dialog>
-                    <button brnPopoverTrigger>
+                    <button brnPopoverTrigger class="flex items-center justify-center w-full h-full mt-2">
                         <hlm-icon
                             [size]="'lg'"
                             name="lucideSearch"
-                            class="m-2"
+                            class="m-0"
                         ></hlm-icon>
                     </button>
                     <hlm-dialog-content *brnDialogContent="let ctx">
                         <app-user-finder></app-user-finder>
                     </hlm-dialog-content>
                 </hlm-dialog>
+                
+                
                 <hlm-dialog>
-                    <button brnPopoverTrigger class="m-2">
+                    <button brnPopoverTrigger class="flex items-center justify-center w-full h-full mt-3">
                         <hlm-icon [size]="'lg'" name="lucideBell"></hlm-icon>
                     </button>
                     <hlm-dialog-content *brnDialogContent="let ctx">

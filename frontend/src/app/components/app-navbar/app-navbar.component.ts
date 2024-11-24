@@ -8,7 +8,7 @@ import { LanguagePickerComponent } from "../language-picker/language-picker.comp
 import { AppNavbarTranslator } from "./app-navbar.translations";
 import { HlmIconModule } from "@spartan-ng/ui-icon-helm";
 import { provideIcons } from "@ng-icons/core";
-import { lucideAlignJustify, lucideBell, lucideSearch, lucideTrophy, lucideWarehouse } from "@ng-icons/lucide";
+import { lucideAlignJustify, lucideBell, lucideHome, lucideSearch, lucideTrophy, lucideWarehouse } from "@ng-icons/lucide";
 import { LocalStorageService } from "../../services/local-storage.service";
 import { BrnPopoverModule } from "@spartan-ng/ui-popover-brain";
 import { HlmPopoverModule } from "@spartan-ng/ui-popover-helm";
@@ -47,7 +47,7 @@ import { HlmSheetComponent } from "../../../../libs/ui/ui-sheet-helm/src/lib/hlm
 import { HlmSheetContentComponent } from "../../../../libs/ui/ui-sheet-helm/src/lib/hlm-sheet-content.component";
 import { HlmSheetHeaderComponent } from "../../../../libs/ui/ui-sheet-helm/src/lib/hlm-sheet-header.component";
 import { HlmSheetImports, HlmSheetModule } from "@spartan-ng/ui-sheet-helm";
-import { BrnSheetContentDirective, BrnSheetTriggerDirective } from "@spartan-ng/ui-sheet-brain";
+import { BrnSheetCloseDirective, BrnSheetContentDirective, BrnSheetTriggerDirective } from "@spartan-ng/ui-sheet-brain";
 
 @Component({
     selector: "app-app-navbar",
@@ -86,7 +86,8 @@ import { BrnSheetContentDirective, BrnSheetTriggerDirective } from "@spartan-ng/
             lucideSearch,
             lucideWarehouse,
             lucideTrophy,
-            lucideAlignJustify
+            lucideAlignJustify,
+            lucideHome
         }),
     ],
     templateUrl: "./app-navbar.component.html",
