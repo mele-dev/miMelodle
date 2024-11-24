@@ -1,7 +1,7 @@
 @for (char of this.text(); track $index) {
     <span
         [ngClass]="{
-            'inline-block h-[1.2em] min-w-[0.5ch] -translate-y-1/2 border border-transparent text-foreground opacity-0 transition-all duration-500 ease-in-out': true,
+            'inline-block font-mono h-[1.2em] -translate-y-1/2 border-b-2 mx-0.5 border-transparent  text-foreground opacity-0 transition-all duration-500 ease-in-out': true,
             '[&]:translate-y-0 [&]:opacity-100': this.show,
             'border-b-amber-500': this.hints()[$index].isInWrongPlace,
             'border-b-emerald-500': this.hints()[$index].isCorrect,

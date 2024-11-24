@@ -1,0 +1,54 @@
+<div
+    class="h-screen border-8 bg-black"
+    style="
+        border-image: linear-gradient(to right, #7e22ce, #d10082 30%, #f97316) 1;
+    "
+>
+    <div class="flex h-full items-center justify-center">
+        <div class="flex w-1/2 flex-col items-center text-center">
+            <h1
+                class="animate-bounce mx-auto bg-gradient-to-r from-purple-500 via-fuchsia-500 via-[30%] to-orange-500 to-[calc(100%+15rem)] bg-clip-text text-9xl font-extrabold text-transparent"
+            >
+                Popdle!
+            </h1>
+            <p class="text-lg">{{this.dict().description}}</p>
+            <div class="flex flex-shrink-0 items-baseline gap-4">
+                <a
+                    class="cursor-pointer rounded-2xl bg-[url('/diagonal-lines.svg')] px-4 py-6 text-2xl font-extrabold transition-all hover:scale-110"
+                    hlmBtn
+                    [routerLink]="this.safeRouter.createLink('/auth/login')"
+                    variant="outline"
+                >
+                    {{ this.dict().play }}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="h-screen">
+    <div class="flex h-full flex-wrap items-center justify-center px-4">
+        <div
+            class="m-4 flex h-1/2 w-full flex-col items-center justify-center bg-black border-purple-500 border-8 p-6 text-center shadow-lg sm:w-1/2 md:w-1/4"
+           
+        >
+            <h1
+                class="bg-gradient-to-r from-purple-500 via-fuchsia-500 via-[30%] to-orange-500 to-[calc(100%+15rem)] bg-clip-text text-xl font-bold text-transparent sm:text-2xl"
+            >
+                {{this.dict().projectTitle}}
+            </h1>
+            <p class="text-base sm:text-lg">{{this.dict().aboutProject}}</p>
+        </div>
+
+        <div
+            class="m-4 flex h-1/2 w-full flex-col items-center justify-center  border-fuchsia-500 border-8 bg-black p-6 text-center shadow-lg sm:w-1/2 md:w-1/4"
+        >
+            <h1
+                class="bg-gradient-to-r from-purple-500 via-fuchsia-500 via-[30%] to-orange-500 to-[calc(100%+15rem)] bg-clip-text text-xl font-bold text-transparent sm:text-2xl"
+            >
+                {{this.dict().usTitle}}
+            </h1>
+            <p class="text-base sm:text-lg">{{this.dict().aboutUs}}</p>
+        </div>
+    </div>
+</div>

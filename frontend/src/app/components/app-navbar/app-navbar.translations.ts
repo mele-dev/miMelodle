@@ -29,6 +29,18 @@ export const navbarDict = {
         en: "Blocked",
         es: "Bloqueados",
     },
+    myProfile: {
+        en:"My profile",
+        es: "Mi perfil"
+    },
+    language: {
+        en: "Language",
+        es: "Lenguaje"
+    },
+    logOut:{
+        en: "Log out",
+        es: "Cerrar sesión"
+    }
 } as const satisfies Translations;
 
 @Injectable({
