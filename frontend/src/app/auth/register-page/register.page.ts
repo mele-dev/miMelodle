@@ -58,7 +58,7 @@ type RegisterFormFields = PostAuthRegisterBody & { repeatPassword: string };
         HlmInputDirective,
         MinusCircleIconComponent,
         HlmIconComponent,
-    CrFancyButtonStylesDirective,
+        CrFancyButtonStylesDirective,
     ],
     providers: [provideIcons({ lucideAlertCircle })],
     templateUrl: "./register.page.html",
@@ -165,7 +165,7 @@ export class RegisterPage implements OnInit {
             this.safeRouter.navigate("/app");
         } catch (e) {
             console.error(e);
-            toast("Error al crear cuenta.");
+            toast(this.dict().createAccountFail);
         }
     }
 }

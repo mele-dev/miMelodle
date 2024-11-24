@@ -47,17 +47,17 @@ import { TutorialsTranslator } from "../tutorials-dialog.translations";
     selector: "app-guess-song",
     standalone: true,
     imports: [
-    JsonPipe,
-    CommonModule,
-    HlmIconModule,
-    WordleTextComponent,
-    FormsModule,
-    BrnDialogModule,
-    HlmDialogModule,
-    HlmScrollAreaModule,
-    HlmButtonModule,
-    SafePipe,
-],
+        JsonPipe,
+        CommonModule,
+        HlmIconModule,
+        WordleTextComponent,
+        FormsModule,
+        BrnDialogModule,
+        HlmDialogModule,
+        HlmScrollAreaModule,
+        HlmButtonModule,
+        SafePipe,
+    ],
     providers: [provideIcons({ lucideCheck, lucideX })],
     templateUrl: "./guess-song.page.html",
 })
@@ -224,13 +224,13 @@ export class GuessSongPage implements OnInit {
 
             this.gameInfo.set(result.data);
         } catch (e) {
-            toast("There was an error while fetching game information.");
+            toast(this.dict().gameInfoError);
             console.error(e);
         }
     }
 
     async ngOnInit() {
         await this.load();
-        this.dialog.nativeElement.showModal()
+        this.dialog.nativeElement.showModal();
     }
 }

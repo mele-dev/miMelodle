@@ -19,7 +19,7 @@ export class QueryStringHandlerService {
     private readonly _dict = inject(QueryStringHandlerTranslator).dict;
 
     private _handleUnknownError(error: string) {
-        toast("Unknown error from backend: " + error);
+        toast(this._dict().backendUnknownError + error);
     }
 
     listen() {

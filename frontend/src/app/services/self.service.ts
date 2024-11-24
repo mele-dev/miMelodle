@@ -73,7 +73,7 @@ export class SelfService {
                 return;
             }
 
-            toast("Unknown error while loading user info.");
+            toast(this._authDict().unknownError);
         }
     }
 
