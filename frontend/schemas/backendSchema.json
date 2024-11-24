@@ -1514,11 +1514,11 @@
                                     ]
                                 },
                                 "example": {
-                                    "name": "Ms. Sheila Fahey II",
-                                    "username": "Sheila.Fahey4",
+                                    "name": "Mr. Clark Smitham III",
+                                    "username": "Clark_Smitham",
                                     "password": "Fake123!",
-                                    "email": "Sheila.Fahey12@gmail.com",
-                                    "profilePictureId": 2
+                                    "email": "Clark_Smitham74@gmail.com",
+                                    "profilePictureId": 1
                                 }
                             }
                         }
@@ -1601,18 +1601,18 @@
                                 },
                                 "example": [
                                     {
-                                        "name": "Dr. Jeffery Kuphal Sr.",
-                                        "username": "Jeffery.Kuphal67",
+                                        "name": "Mr. Ryan Gerhold II",
+                                        "username": "Ryan_Gerhold",
                                         "password": "Fake123!",
-                                        "email": "Jeffery.Kuphal62@hotmail.com",
-                                        "profilePictureId": 7
+                                        "email": "Ryan.Gerhold@yahoo.com",
+                                        "profilePictureId": 11
                                     },
                                     {
-                                        "name": "Mr. Carl Franecki III",
-                                        "username": "Carl.Franecki83",
+                                        "name": "Miss Erica Hyatt PhD",
+                                        "username": "Erica_Hyatt",
                                         "password": "Fake123!",
-                                        "email": "Carl.Franecki@hotmail.com",
-                                        "profilePictureId": 12
+                                        "email": "Erica_Hyatt72@yahoo.com",
+                                        "profilePictureId": 11
                                     }
                                 ]
                             }
@@ -2665,47 +2665,100 @@
                                         "type": "object",
                                         "properties": {
                                             "isFavorite": { "type": "boolean" },
-                                            "data": {
+                                            "external_urls": {
+                                                "additionalProperties": true,
                                                 "type": "object",
                                                 "properties": {
-                                                    "name": {
-                                                        "description": "Name of the artist, does not have to be unique.",
-                                                        "type": "string"
-                                                    },
-                                                    "imageUrl": {
-                                                        "description": "Url to download the artist's portrait image, if available.",
-                                                        "type": "string"
-                                                    },
-                                                    "externalUrls": {
-                                                        "description": "Url that will allow users to be redirected to the artist's profile on Spotify.",
-                                                        "type": "string"
-                                                    },
-                                                    "genres": {
-                                                        "type": "array",
-                                                        "items": {
-                                                            "description": "Genres associated with the artist.",
-                                                            "type": "string"
-                                                        }
-                                                    },
-                                                    "followers": {
-                                                        "description": "The number of followers the artist has.",
-                                                        "type": "number"
-                                                    },
-                                                    "spotifyArtistId": {
-                                                        "description": "Identifier for an artist given by spotify",
+                                                    "spotify": {
                                                         "type": "string"
                                                     }
                                                 },
-                                                "required": [
-                                                    "name",
-                                                    "externalUrls",
-                                                    "genres",
-                                                    "followers",
-                                                    "spotifyArtistId"
-                                                ]
+                                                "required": ["spotify"]
+                                            },
+                                            "href": { "type": "string" },
+                                            "id": { "type": "string" },
+                                            "name": { "type": "string" },
+                                            "type": {
+                                                "type": "string",
+                                                "enum": ["artist"]
+                                            },
+                                            "uri": { "type": "string" },
+                                            "followers": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "href": {
+                                                        "anyOf": [
+                                                            {
+                                                                "type": "string"
+                                                            },
+                                                            { "type": "null" }
+                                                        ]
+                                                    },
+                                                    "total": {
+                                                        "type": "integer"
+                                                    }
+                                                },
+                                                "required": ["href", "total"]
+                                            },
+                                            "genres": {
+                                                "type": "array",
+                                                "items": { "type": "string" }
+                                            },
+                                            "images": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "url": {
+                                                            "type": "string"
+                                                        },
+                                                        "width": {
+                                                            "anyOf": [
+                                                                {
+                                                                    "type": "integer"
+                                                                },
+                                                                {
+                                                                    "type": "null"
+                                                                }
+                                                            ]
+                                                        },
+                                                        "height": {
+                                                            "anyOf": [
+                                                                {
+                                                                    "type": "integer"
+                                                                },
+                                                                {
+                                                                    "type": "null"
+                                                                }
+                                                            ]
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "url",
+                                                        "width",
+                                                        "height"
+                                                    ]
+                                                }
+                                            },
+                                            "popularity": {
+                                                "minimum": 0,
+                                                "maximum": 100,
+                                                "type": "number"
                                             }
                                         },
-                                        "required": ["isFavorite", "data"]
+                                        "required": [
+                                            "isFavorite",
+                                            "external_urls",
+                                            "href",
+                                            "id",
+                                            "name",
+                                            "type",
+                                            "uri",
+                                            "followers",
+                                            "genres",
+                                            "images",
+                                            "popularity"
+                                        ]
                                     }
                                 }
                             }
@@ -4698,133 +4751,6 @@
                 }
             }
         },
-        "/users/self/{selfId}/game/guessLine": {
-            "post": {
-                "summary": "Start a new melodle game.",
-                "tags": ["Melodle"],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "fromTracks": {
-                                        "description": "The tracks we can choose from, by their spotify ids.",
-                                        "type": "array",
-                                        "items": { "type": "string" }
-                                    }
-                                },
-                                "required": ["fromTracks"]
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "parameters": [
-                    {
-                        "schema": { "type": "integer" },
-                        "in": "path",
-                        "name": "selfId",
-                        "required": true,
-                        "description": "A numeric identifier for a user. Generated by the backend, unique and unchangeable."
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Default Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "gameId": {
-                                            "description": "A unique identifier for a melodle game.",
-                                            "type": "integer"
-                                        }
-                                    },
-                                    "required": ["gameId"]
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "unauthorized",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "description": "unauthorized",
-                                    "additionalProperties": true,
-                                    "type": "object",
-                                    "properties": {
-                                        "statusCode": {
-                                            "type": "number",
-                                            "enum": [401]
-                                        },
-                                        "error": { "type": "string" },
-                                        "message": { "type": "string" }
-                                    },
-                                    "required": [
-                                        "statusCode",
-                                        "error",
-                                        "message"
-                                    ]
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "notFound",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "description": "notFound",
-                                    "additionalProperties": true,
-                                    "type": "object",
-                                    "properties": {
-                                        "statusCode": {
-                                            "type": "number",
-                                            "enum": [404]
-                                        },
-                                        "error": { "type": "string" },
-                                        "message": { "type": "string" }
-                                    },
-                                    "required": [
-                                        "statusCode",
-                                        "error",
-                                        "message"
-                                    ]
-                                }
-                            }
-                        }
-                    },
-                    "425": {
-                        "description": "tooEarly",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "description": "tooEarly",
-                                    "additionalProperties": true,
-                                    "type": "object",
-                                    "properties": {
-                                        "statusCode": {
-                                            "type": "number",
-                                            "enum": [425]
-                                        },
-                                        "error": { "type": "string" },
-                                        "message": { "type": "string" }
-                                    },
-                                    "required": [
-                                        "statusCode",
-                                        "error",
-                                        "message"
-                                    ]
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/users/self/{selfId}/friends/leaderboards/": {
             "get": {
                 "summary": "Get friends leaderboard for a given game mode.",
@@ -5056,6 +4982,133 @@
                                         "statusCode": {
                                             "type": "number",
                                             "enum": [404]
+                                        },
+                                        "error": { "type": "string" },
+                                        "message": { "type": "string" }
+                                    },
+                                    "required": [
+                                        "statusCode",
+                                        "error",
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/self/{selfId}/game/guessLine": {
+            "post": {
+                "summary": "Start a new melodle game.",
+                "tags": ["Melodle"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "fromTracks": {
+                                        "description": "The tracks we can choose from, by their spotify ids.",
+                                        "type": "array",
+                                        "items": { "type": "string" }
+                                    }
+                                },
+                                "required": ["fromTracks"]
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "parameters": [
+                    {
+                        "schema": { "type": "integer" },
+                        "in": "path",
+                        "name": "selfId",
+                        "required": true,
+                        "description": "A numeric identifier for a user. Generated by the backend, unique and unchangeable."
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Default Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "gameId": {
+                                            "description": "A unique identifier for a melodle game.",
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "required": ["gameId"]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "unauthorized",
+                                    "additionalProperties": true,
+                                    "type": "object",
+                                    "properties": {
+                                        "statusCode": {
+                                            "type": "number",
+                                            "enum": [401]
+                                        },
+                                        "error": { "type": "string" },
+                                        "message": { "type": "string" }
+                                    },
+                                    "required": [
+                                        "statusCode",
+                                        "error",
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "notFound",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "notFound",
+                                    "additionalProperties": true,
+                                    "type": "object",
+                                    "properties": {
+                                        "statusCode": {
+                                            "type": "number",
+                                            "enum": [404]
+                                        },
+                                        "error": { "type": "string" },
+                                        "message": { "type": "string" }
+                                    },
+                                    "required": [
+                                        "statusCode",
+                                        "error",
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "425": {
+                        "description": "tooEarly",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "tooEarly",
+                                    "additionalProperties": true,
+                                    "type": "object",
+                                    "properties": {
+                                        "statusCode": {
+                                            "type": "number",
+                                            "enum": [425]
                                         },
                                         "error": { "type": "string" },
                                         "message": { "type": "string" }

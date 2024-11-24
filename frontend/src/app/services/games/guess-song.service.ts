@@ -1,4 +1,4 @@
-import { inject, Injectable } from "@angular/core";
+import { inject, Injectable, ViewChild } from "@angular/core";
 import { SelfService } from "../self.service";
 import { toast } from "ngx-sonner";
 import { postUsersSelfSelfIdGameGuessLine, postUsersSelfSelfIdGameGuessSong } from "../../../apiCodegen/backend";
@@ -13,37 +13,6 @@ export class GuessSongService {
     private _self = inject(SelfService);
     private _dict = inject(GuessSongServiceTranslator).dict;
     private _router = inject(SafeRoutingService);
-
-    async createGameFromTracks(trackIds: string[]) {
-        const user = await this._self.waitForUserInfoSnapshot();
-
-        try {
-            toast(this._dict().creatingGame);
-
-            const result = await postUsersSelfSelfIdGameGuessLine(user.id, {
-                fromTracks: trackIds,
-            });
-
-            toast(this._dict().gameCreated);
-
-            return this._router.navigate("/app/game/guess_line/:gameId", {
-                ids: result.data,
-            });
-        } catch (e) {
-            if (isAxiosError(e)) {
-                console.log(e.response?.data);
-            } else {
-                console.log(e);
-            }
-
-            toast(this._dict().errorWhileCreatingGame, {
-                action: {
-                    label: this._dict().retry,
-                    onClick: () => this.createGameFromTracks(trackIds),
-                },
-            });
-        }
-    }
 
     async createGameFromArtists(artistsIds: string[]) {
         const user = await this._self.waitForUserInfoSnapshot();

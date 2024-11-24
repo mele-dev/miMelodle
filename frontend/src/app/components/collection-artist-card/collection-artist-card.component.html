@@ -1,41 +1,34 @@
+@if(this.blurOn){
+    <div #blur class="fixed inset-0 bg-gray-800 bg-opacity-50 backdrop-blur-sm z-10"></div>
+}
 <div
     class="mx-4 grid grid-cols-1 place-items-center gap-4 md:grid-cols-2 xl:grid-cols-3"
 >
-    @for (
-        artist of this.homeArtistsService.artists();
-        track artist.data.spotifyArtistId
-    ) {
+    @for (artist of this.homeArtistsService.artists(); track artist.id) {
         <div
             class="group/artistsCard relative w-full overflow-hidden rounded-lg bg-gray-800 text-white shadow-lg transition-transform hover:scale-105"
         >
             <img
                 class="absolute inset-0 h-full w-full object-cover"
-                [src]="artist.data.imageUrl"
-                [alt]="artist.data.name"
+                [src]="artist.images[0].url"
+                [alt]="artist.name"
             />
             <div class="relative p-6 backdrop-brightness-50">
-                <h1 class="text-3xl font-bold">{{ artist.data.name }}</h1>
+                <h1 class="text-3xl font-bold">{{ artist.name }}</h1>
                 <p
                     class="text-l invisible mt-2 group-focus-within/artistsCard:visible group-hover/artistsCard:visible"
                 >
-                    {{
-                        this.homeArtistsService.formatNumber(
-                            artist.data.followers
-                        )
-                    }}
-                    {{ this.dict().followers }}
+                    {{ this.dict().followerCount(artist.followers.total) }}
                 </p>
                 <div
                     class="invisible mt-1 flex items-center space-x-1 group-hover/artistsCard:visible"
                 >
-                    <a [href]="artist.data.externalUrls">
+                    <a [href]="artist.external_urls.spotify">
                         <app-music></app-music>
                     </a>
 
                     @if (artist.isFavorite) {
-                        <button
-                            (click)="this.favorite(artist.data.spotifyArtistId)"
-                        >
+                        <button (click)="this.favorite(artist.id)">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 24 24"
@@ -53,7 +46,7 @@
                         <button
                             [disabled]="this.favoriteArtists().length > 3"
                             class="cursor-pointer disabled:cursor-not-allowed"
-                            (click)="this.favorite(artist.data.spotifyArtistId)"
+                            (click)="this.favorite(artist.id)"
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -69,35 +62,31 @@
                             </svg>
                         </button>
                     }
-                    <button
-                        (click)="this.openDialog(artist.data.spotifyArtistId)"
-                    >
+                    <button (click)="this.openDialog(artist.id)">
                         <app-x></app-x>
                     </button>
                 </div>
                 <dialog
                     #dialog
-                    [attr.data-artist-id]="artist.data.spotifyArtistId"
+                    [attr.data-artist-id]="artist.id"
                     class="relative mx-auto w-full max-w-lg space-y-6 rounded-xl bg-white p-8 text-center shadow-2xl ring-1 ring-gray-900/10"
                 >
                     <div class="space-y-4">
                         <p class="text-lg font-bold text-gray-600">
-                            {{ this.dict().deleteDialog(artist.data.name) }}
+                            {{ this.dict().deleteDialog(artist.name) }}
                         </p>
                     </div>
 
                     <div class="flex justify-between space-x-4">
                         <button
                             class="flex-1 rounded-lg bg-gray-300 px-6 py-3 font-semibold text-gray-800 transition hover:bg-gray-400 focus:outline-none focus:ring-4 focus:ring-gray-300 focus:ring-opacity-50"
-                            (click)="
-                                this.closeDialog(artist.data.spotifyArtistId)
-                            "
+                            (click)="this.closeDialog(artist.id)"
                         >
                             {{ this.dict().goBack }}
                         </button>
                         <button
                             class="flex-1 rounded-lg bg-fuchsia-500 px-6 py-3 font-semibold text-white transition hover:bg-fuchsia-700 focus:outline-none focus:ring-4 focus:ring-red-400 focus:ring-opacity-50"
-                            (click)="this.delete(artist.data.spotifyArtistId)"
+                            (click)="this.delete(artist.id)"
                         >
                             {{ this.dict().yes }}
                         </button>
@@ -105,16 +94,14 @@
 
                     <button
                         class="absolute right-4 top-4 text-gray-400 hover:text-gray-600 focus:outline-none"
-                        (click)="closeDialog(artist.data.spotifyArtistId)"
+                        (click)="closeDialog(artist.id)"
                     ></button>
                 </dialog>
                 <div class="mt-4 flex justify-end">
                     <button
                         class="aspect-square rounded-full bg-fuchsia-500 px-4 py-2 font-extrabold text-white transition-all duration-500 ease-in-out-expo hover:rotate-[360deg] hover:bg-fuchsia-700"
                         (click)="
-                            this.guessSong.createGameFromArtists([
-                                artist.data.spotifyArtistId,
-                            ])
+                            this.guessSong.createGameFromArtists([artist.id])
                         "
                     >
                         <hlm-icon

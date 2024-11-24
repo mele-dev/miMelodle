@@ -7,7 +7,7 @@ import {
     QueryList,
     ViewChildren,
 } from "@angular/core";
-import { HomeArtistsService } from "../../services/saved-artists.service";
+import { SavedArtistsService } from "../../services/saved-artists.service";
 import {
     lucideMusic,
     lucidePlay,
@@ -34,12 +34,12 @@ import { GuessSongService } from "../../services/games/guess-song.service";
     templateUrl: "./collection-artist-card.component.html",
 })
 export class CollectionArtistCardComponent implements OnInit {
-    public homeArtistsService = inject(HomeArtistsService);
+    public homeArtistsService = inject(SavedArtistsService);
     public guessSong = inject(GuessSongService);
     dict = inject(CollectionArtistCardTranslator).dict;
     @ViewChildren("dialog") dialogs!: QueryList<ElementRef>;
     safeRouter = inject(SafeRoutingService);
-
+    blurOn : boolean = false;
     public async ngOnInit() {
         await this.homeArtistsService.loadData();
     }
@@ -63,6 +63,7 @@ export class CollectionArtistCardComponent implements OnInit {
                 dialog.nativeElement.getAttribute("data-artist-id") === artistId
         );
         dialog?.nativeElement.showModal();
+        this.blurOn = true
     }
 
     public closeDialog(artistId: string) {
@@ -71,5 +72,6 @@ export class CollectionArtistCardComponent implements OnInit {
                 dialog.nativeElement.getAttribute("data-artist-id") === artistId
         );
         dialog?.nativeElement.close();
+        this.blurOn = false
     }
 }

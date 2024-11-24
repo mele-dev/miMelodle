@@ -13,10 +13,10 @@
                 hlmBtn
                 (click)="this.blockingService.unblockUser(user.id)"
             >
-                unblock
+                {{this.dict().unblock}}
             </button>
         </div>
     } @empty {
-        You have not blocked anyone.
+        {{this.dict().empty}}
     }
 </div>

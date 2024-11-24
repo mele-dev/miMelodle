@@ -3,6 +3,7 @@ import {
     Translations,
     TranslatorService,
 } from "../../../services/translator.service";
+import { SimplifiedArtistObject } from "../../../../apiCodegen/spotify";
 
 const translations = {
     letsGuess: {
@@ -48,6 +49,20 @@ const translations = {
     TODOGamemode: {
         en: "TODO! Try a different game mode",
         es: "¡Por hacer! Prueba otro modo de juego.",
+    },
+    stringifyArtists: {
+        en: (artists: SimplifiedArtistObject[]) =>
+            artists.map((a) => a.name).join(", "),
+        es: (artists: SimplifiedArtistObject[]) =>
+            artists.map((a) => a.name).join(", "),
+    },
+    chooseTracks: {
+        en: "Choose tracks",
+        es: "Elige canciones",
+    },
+    chooseArtists: {
+        en: "Choose artists",
+        es: "Elige artistas",
     },
 } as const satisfies Translations;
 
