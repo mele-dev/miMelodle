@@ -53,11 +53,11 @@ export class ClientValidationService {
         try {
             const result = await getUsersCheck({ email: control.value });
 
-            if (!result.data.emailExists) {
+            if (!result.emailExists) {
                 return null;
             }
 
-            return { emailExists: result.data.emailExists };
+            return { emailExists: result.emailExists };
         } catch {
             return { serverError: true };
         }
@@ -67,11 +67,11 @@ export class ClientValidationService {
         try {
             const result = await getUsersCheck({ username: control.value });
 
-            if (!result.data.usernameExists) {
+            if (!result.usernameExists) {
                 return null;
             }
 
-            return { usernameExists: result.data.usernameExists };
+            return { usernameExists: result.usernameExists };
         } catch {
             return { serverError: true };
         }

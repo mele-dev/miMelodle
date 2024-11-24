@@ -1,5 +1,6 @@
 import fastifyOauth2 from "@fastify/oauth2";
 import fastifyPlugin from "fastify-plugin";
+import { typedEnv } from "../types/env.js";
 
 type SpotifyScopes =
     // Images
@@ -54,7 +55,7 @@ export default fastifyPlugin(async (fastify) => {
             auth: fastifyOauth2.fastifyOauth2.SPOTIFY_CONFIGURATION,
         },
         startRedirectPath: "/auth/register/spotify",
-        callbackUri: "https://localhost/backend/auth/register/spotify/callback",
+        callbackUri: `https://${typedEnv.FRONT_URL}/backend/auth/register/spotify/callback`,
     });
 
     fastify.register(fastifyOauth2, {
@@ -72,6 +73,6 @@ export default fastifyPlugin(async (fastify) => {
             auth: fastifyOauth2.fastifyOauth2.SPOTIFY_CONFIGURATION,
         },
         startRedirectPath: "/auth/login/spotify",
-        callbackUri: "https://localhost/backend/auth/login/spotify/callback",
+        callbackUri: `https://${typedEnv.FRONT_URL}/backend/auth/login/spotify/callback`,
     });
 });

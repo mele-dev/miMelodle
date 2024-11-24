@@ -64,8 +64,8 @@ export class LeaderboardsService {
         const songMode = await getLeaderboardsGameMode("guessSong");
         this._globalLeaderboard.update((currentValue) => [
             ...currentValue,
-            ...lineMode.data.leaderboard,
-            ...songMode.data.leaderboard,
+            ...lineMode.leaderboard,
+            ...songMode.leaderboard,
         ]);
         console.log(await this._globalLeaderboard());
     }
@@ -81,22 +81,24 @@ export class LeaderboardsService {
         });
         this._friendsLeaderboard.update((currentValue) => [
             ...currentValue,
-            ...lineMode.data.leaderboard,
-            ...songMode.data.leaderboard,
+            ...lineMode.leaderboard,
+            ...songMode.leaderboard,
         ]);
     }
 
     public async deleteData(mode: string) {
         const userId = (await this._selfService.waitForUserInfoSnapshot()).id;
 
-        const result = deleteUsersSelfSelfIdFriendsLeaderboards(userId, {
+        deleteUsersSelfSelfIdFriendsLeaderboards(userId, {
             gameMode: mode,
         });
-        console.log((await result).status);
-        if ((await result).status === 404) {
-            toast(this.dict().toastError);
-        } else if ((await result).status === 200) {
-            toast(this.dict().toastSuccess(mode));
-        }
+
+        // Lo comento porque, al incluir un mutator, ya no tenemos result.status.
+        // Esto lo hacemos mediante un try catch.
+        //if ((await result).status === 404) {
+        //    toast(this.dict().toastError);
+        //} else if ((await result).status === 200) {
+        toast(this.dict().toastSuccess(mode));
+        //}
     }
 }

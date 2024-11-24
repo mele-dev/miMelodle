@@ -3,6 +3,7 @@ import swagger from "@fastify/swagger";
 import swaggerUi from "@fastify/swagger-ui";
 import fp from "fastify-plugin";
 import { SwaggerTheme, SwaggerThemeNameEnum } from "swagger-themes";
+import { typedEnv } from "../types/env.js";
 
 const asciiArt = String.raw`(
  AAAAAaaaaaaaa!
@@ -117,7 +118,7 @@ export default fp<FastifySwaggerOptions>(async (fastify, _opts) => {
             tags,
             servers: [
                 {
-                    url: "https://localhost/backend",
+                    url: `https://${typedEnv.FRONT_URL}/backend`,
                     description: "Development server",
                 },
             ],

@@ -1514,11 +1514,11 @@
                                     ]
                                 },
                                 "example": {
-                                    "name": "Mr. Ricky Graham I",
-                                    "username": "Ricky_Graham",
+                                    "name": "Ms. Darlene Hoeger DVM",
+                                    "username": "Darlene.Hoeger50",
                                     "password": "Fake123!",
-                                    "email": "Ricky.Graham84@yahoo.com",
-                                    "profilePictureId": 12
+                                    "email": "Darlene.Hoeger@yahoo.com",
+                                    "profilePictureId": 6
                                 }
                             }
                         }
@@ -1601,18 +1601,18 @@
                                 },
                                 "example": [
                                     {
-                                        "name": "Dr. Colin Stiedemann III",
-                                        "username": "Colin_Stiedemann64",
+                                        "name": "Dr. Luther Weissnat IV",
+                                        "username": "Luther.Weissnat11",
                                         "password": "Fake123!",
-                                        "email": "Colin.Stiedemann@gmail.com",
-                                        "profilePictureId": 9
+                                        "email": "Luther.Weissnat74@hotmail.com",
+                                        "profilePictureId": 6
                                     },
                                     {
-                                        "name": "Dr. Jonathon Kuhn V",
-                                        "username": "Jonathon_Kuhn38",
+                                        "name": "Mrs. Vera Hammes DDS",
+                                        "username": "Vera.Hammes58",
                                         "password": "Fake123!",
-                                        "email": "Jonathon_Kuhn@yahoo.com",
-                                        "profilePictureId": 7
+                                        "email": "Vera_Hammes@gmail.com",
+                                        "profilePictureId": 11
                                     }
                                 ]
                             }
@@ -8353,7 +8353,7 @@
     },
     "servers": [
         {
-            "url": "https://localhost/backend",
+            "url": "https://192.168.0.102/backend",
             "description": "Development server"
         }
     ],

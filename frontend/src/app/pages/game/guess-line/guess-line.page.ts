@@ -148,7 +148,7 @@ export class GuessLinePage implements OnInit {
             }
         );
 
-        this.gameInfo.set(result.data);
+        this.gameInfo.set(result);
     }
 
     get currentAttempt() {
@@ -175,9 +175,9 @@ export class GuessLinePage implements OnInit {
                 this.ids().gameId
             );
 
-            this.placeholder.set(".".repeat(result.data.snippetLength));
+            this.placeholder.set(".".repeat(result.snippetLength));
 
-            this.gameInfo.set(result.data);
+            this.gameInfo.set(result);
         } catch (e) {
             toast(this.dict().errorFetchingInformation, {
                 action: {

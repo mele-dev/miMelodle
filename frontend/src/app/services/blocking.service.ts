@@ -28,7 +28,7 @@ export class BlockingService {
 
         const result = await getUsersSelfSelfIdBlocking(userId);
 
-        this._blockedUsers.set(result.data);
+        this._blockedUsers.set(result);
     }
 
     public async unblockUser(targetId: number) {
@@ -47,7 +47,7 @@ export class BlockingService {
 
             await this.reloadList();
 
-            toast(this.dict().unblockSuccess(result.data.username));
+            toast(this.dict().unblockSuccess(result.username));
             return true;
         } catch {
             toast(this.dict().unblockError);
@@ -71,7 +71,7 @@ export class BlockingService {
 
             this.reloadList();
 
-            toast(this.dict().blockSuccess(result.data.username));
+            toast(this.dict().blockSuccess(result.username));
 
             return true;
         } catch {
