@@ -1,6 +1,9 @@
 import { Injectable } from "@angular/core";
 import { validationDict } from "../../services/client-validation.translation";
-import { Translations, TranslatorService } from "../../services/translator.service";
+import {
+    Translations,
+    TranslatorService,
+} from "../../services/translator.service";
 
 export const registerDict = {
     title: {
@@ -47,6 +50,10 @@ export const registerDict = {
         en: "Create account",
         es: "Crear cuenta",
     },
+    createAccountFail: {
+        en: "Failed to create account",
+        es: "Error al crear cuenta",
+    },
     orRegister: {
         en: "Or register via",
         es: "O regístrate vía",
@@ -67,7 +74,7 @@ export const registerDict = {
 } as const satisfies Translations;
 
 @Injectable({
-  providedIn: "root"
+    providedIn: "root",
 })
 export class RegisterTranslator extends TranslatorService<typeof registerDict> {
     public override getAllTranslations() {
