@@ -300,6 +300,44 @@ export const getDebugSnapshotResponse = zod.object({
 export const putDebugSnapshotResponse = zod.enum(["TODO!"]);
 
 /**
+ * This endpoint retrieves the lyrics for a given track using its Musixmatch ID
+ * @summary Get lyrics for a specific track
+ */
+export const getLyricsTrackMusixMatchIdParams = zod.object({
+    trackMusixMatchId: zod.number(),
+});
+
+export const getLyricsTrackMusixMatchIdResponse = zod.object({
+    lyricsId: zod.string(),
+    trackId: zod.string(),
+    lyricsBody: zod.string(),
+    explicit: zod.boolean(),
+    language: zod.string(),
+    copyright: zod.string().optional(),
+});
+
+/**
+ * Get the svg for a certain user icon. The selection of user icons is fixed.
+ * @summary Get a user icon.
+ */
+export const getPublicIconsFilenamePathFilenameRegExp = new RegExp(
+    "^(abstract-1\\.svg|abstract-10\\.svg|abstract-11\\.svg|abstract-2\\.svg|abstract-3\\.svg|abstract-4\\.svg|abstract-5\\.svg|abstract-6\\.svg|abstract-7\\.svg|abstract-8\\.svg|abstract-9\\.svg|default\\.svg)$"
+);
+
+export const getPublicIconsFilenameParams = zod.object({
+    filename: zod.string().regex(getPublicIconsFilenamePathFilenameRegExp),
+});
+
+/**
+ * @summary Get information about all user icons.
+ */
+export const getPublicIconsResponseItem = zod.object({
+    id: zod.number(),
+    filename: zod.string(),
+});
+export const getPublicIconsResponse = zod.array(getPublicIconsResponseItem);
+
+/**
  * @summary Fetches global leaderboard information.
  */
 export const getLeaderboardsGameModePathGameModeRegExp = new RegExp(
@@ -355,44 +393,6 @@ export const getLeaderboardsGameModeResponse = zod.object({
             )
     ),
 });
-
-/**
- * This endpoint retrieves the lyrics for a given track using its Musixmatch ID
- * @summary Get lyrics for a specific track
- */
-export const getLyricsTrackMusixMatchIdParams = zod.object({
-    trackMusixMatchId: zod.number(),
-});
-
-export const getLyricsTrackMusixMatchIdResponse = zod.object({
-    lyricsId: zod.string(),
-    trackId: zod.string(),
-    lyricsBody: zod.string(),
-    explicit: zod.boolean(),
-    language: zod.string(),
-    copyright: zod.string().optional(),
-});
-
-/**
- * Get the svg for a certain user icon. The selection of user icons is fixed.
- * @summary Get a user icon.
- */
-export const getPublicIconsFilenamePathFilenameRegExp = new RegExp(
-    "^(abstract-1\\.svg|abstract-10\\.svg|abstract-11\\.svg|abstract-2\\.svg|abstract-3\\.svg|abstract-4\\.svg|abstract-5\\.svg|abstract-6\\.svg|abstract-7\\.svg|abstract-8\\.svg|abstract-9\\.svg|default\\.svg)$"
-);
-
-export const getPublicIconsFilenameParams = zod.object({
-    filename: zod.string().regex(getPublicIconsFilenamePathFilenameRegExp),
-});
-
-/**
- * @summary Get information about all user icons.
- */
-export const getPublicIconsResponseItem = zod.object({
-    id: zod.number(),
-    filename: zod.string(),
-});
-export const getPublicIconsResponse = zod.array(getPublicIconsResponseItem);
 
 /**
  * Authentication is not needed to see public user information.

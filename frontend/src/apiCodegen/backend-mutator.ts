@@ -1,8 +1,9 @@
 import Axios, { AxiosRequestConfig } from "axios";
 import QueryString from "qs";
+import { enviroment } from "../enviroments";
 
 export const AXIOS_INSTANCE = Axios.create({
-    baseURL: `https://192.168.0.102/backend`,
+    baseURL: `https://${enviroment.front_url}/backend`,
 });
 
 export const customInstance = async <T>(
