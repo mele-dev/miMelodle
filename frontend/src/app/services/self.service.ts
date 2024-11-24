@@ -52,6 +52,7 @@ export class SelfService {
     public async reloadUserInfo() {
         try {
             const id = this._localStorage.getItem("userInfo")?.id;
+            console.log({ id })
 
             if (id === undefined) {
                 toast(this._authDict().lacksAuthError);
@@ -68,6 +69,7 @@ export class SelfService {
             if (isAxiosError(e) && e.status === 401) {
                 toast(this._authDict().lacksAuthError);
                 this._safeRouter.navigate("/auth");
+                toast("Not authorized to fetch your information.");
                 return;
             }
 

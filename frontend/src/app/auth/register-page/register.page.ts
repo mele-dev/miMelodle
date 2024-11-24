@@ -36,6 +36,7 @@ import { provideIcons } from "@ng-icons/core";
 import { lucideAlertCircle } from "@ng-icons/lucide";
 import { toast } from "ngx-sonner";
 import { CrFancyButtonStylesDirective } from "../../directives/styling/cr-fancy-button-styles.directive";
+import { enviroment } from "../../../enviroments";
 
 type RegisterFormFields = PostAuthRegisterBody & { repeatPassword: string };
 
@@ -72,6 +73,7 @@ export class RegisterPage implements OnInit {
     allIcons?: BackendIcon[];
     chosenIcon = signal<BackendIcon | undefined>(undefined);
     sanitizer = inject(DomSanitizer);
+    front_url = enviroment.front_url
 
     private schema = postAuthRegisterBody;
 

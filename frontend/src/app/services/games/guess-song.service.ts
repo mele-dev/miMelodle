@@ -24,7 +24,7 @@ export class GuessSongService {
             });
             toast(this._dict().gameCreated);
             return this._router.navigate("/app/game/guess_song/:gameId", {
-                ids: result.data,
+                ids: result,
             });
         } catch (e) {
             if (isAxiosError(e)) {

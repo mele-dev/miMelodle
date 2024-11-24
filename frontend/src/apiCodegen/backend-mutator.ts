@@ -1,8 +1,10 @@
 import Axios, { AxiosRequestConfig } from "axios";
 import QueryString from "qs";
+import { enviroment } from "../enviroments";
+import { LocalStorageService } from "../app/services/local-storage.service";
 
 export const AXIOS_INSTANCE = Axios.create({
-    baseURL: `https://192.168.0.102/backend`,
+    baseURL: `https://${enviroment.front_url}/backend`,
 });
 
 export const customInstance = async <T>(
@@ -10,6 +12,8 @@ export const customInstance = async <T>(
     options?: AxiosRequestConfig
 ): Promise<T> => {
     const source = Axios.CancelToken.source();
+    const token = new LocalStorageService().getItem("userInfo")?.jwtToken;
+    console.log(token);
     const promise = AXIOS_INSTANCE({
         paramsSerializer: (params) => {
             const output = QueryString.stringify(params, {
@@ -19,6 +23,10 @@ export const customInstance = async <T>(
         },
         ...config,
         ...options,
+        headers: {
+            Authorization: `Bearer ${token}`,
+            ...config.headers,
+        },
         cancelToken: source.token,
     }).then(({ data }) => data);
 
