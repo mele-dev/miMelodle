@@ -1,10 +1,12 @@
 @if (userInfo() !== undefined && userIconSVG !== "") {
 <hlm-tabs
     tab="profile"
-    class="mx-auto mt-32 flex w-[100rem] max-w-3xl flex-row space-x-2"
-    orientation="vertical"
+    class="mx-auto mt-32 flex max-w-3xl flex-col space-x-2 px-10 md:flex-row lg:w-[100rem]"
 >
-    <hlm-tabs-list orientation="vertical" aria-label="tabs example">
+    <hlm-tabs-list
+        class="md:mt-2 md:h-fit md:flex-col md:space-y-1"
+        aria-label="tabs example"
+    >
         <button class="w-full" hlmTabsTrigger="profile">
             {{this.dict().userConfig}}
         </button>
