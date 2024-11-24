@@ -15,7 +15,6 @@ import { HlmInputModule } from "@spartan-ng/ui-input-helm";
 import { toast } from "ngx-sonner";
 import axios from "axios";
 import { CrFancyButtonStylesDirective } from "../../directives/styling/cr-fancy-button-styles.directive";
-import { enviroment } from "../../../enviroments";
 
 @Component({
     selector: "app-login",
@@ -26,6 +25,7 @@ import { enviroment } from "../../../enviroments";
         GoogleRectangleComponent,
         RouterModule,
         ReactiveFormsModule,
+        JsonPipe,
         HlmInputModule,
         CrFancyButtonStylesDirective,
     ],
@@ -37,7 +37,6 @@ export class LoginPage {
     safeRouter = inject(SafeRoutingService);
     private validator = inject(ClientValidationService);
     dict = this.translator.dict;
-    url = enviroment.front_url
 
     person = new FormBuilder().nonNullable.group(
         {
