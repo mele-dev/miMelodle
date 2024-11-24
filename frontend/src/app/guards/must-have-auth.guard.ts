@@ -21,7 +21,7 @@ export const mustHaveAuthGuard: CanActivateFn = async (_route, _state) => {
         toast(dict().lacksAuthError);
         safeRouterService.navigate("/auth");
         return false;
-    }
+    } 
 
     return true;
 };
