@@ -13,7 +13,7 @@
     value=""
     class="w-full"
     [(ngModel)]="this.usersFilter"
-    (keydown.enter)="search()"
+    (ngModelChange)="search()"
 />
 
 <hlm-table class="h-96 w-96 overflow-y-scroll scroll-auto">

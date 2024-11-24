@@ -34,7 +34,7 @@
     </div>
     <div class="flex flex-shrink-0 items-baseline gap-4">
         <a
-            class="cursor-pointer rounded-2xl bg-[url('/diagonal-lines.svg')] px-4 py-6 text-2xl font-extrabold transition-all hover:scale-110"
+            class="cursor-pointer rounded-2xl bg-[url('/diagonal-lines.svg')] px-4 py-6 text-2xl font-extrabold transition-all hover:scale-110 sm:self-center"
             hlmBtn
             [routerLink]="this.safeRouter.createLink('/app/game')"
             variant="outline"
@@ -46,7 +46,7 @@
         </a>
     </div>
     <div
-        class="flex h-full w-1/2 flex-grow items-center justify-end gap-2 self-center"
+        class="hidden h-full w-1/2 flex-grow items-center justify-end gap-2 self-center md:flex"
     >
         <hlm-dialog>
             <button brnPopoverTrigger hlmBtn variant="ghost" class="h-full">
@@ -56,6 +56,7 @@
                 <app-user-finder></app-user-finder>
             </hlm-dialog-content>
         </hlm-dialog>
+
         <brn-popover sideOffset="5" closeDelay="100">
             <button brnPopoverTrigger hlmBtn variant="ghost" class="h-full">
                 <hlm-icon [size]="'lg'" name="lucideBell"></hlm-icon>
@@ -86,12 +87,14 @@
                 </hlm-tabs>
             </section>
         </brn-popover>
+
         <button
             appLoadProfilePicture
             [profilePictureFilename]="this.selfInfo()?.profilePictureFile"
             class="aspect-square h-full w-auto rounded-full bg-white p-1"
             [brnMenuTriggerFor]="menu"
         ></button>
+
         <ng-template #menu>
             <hlm-menu class="mt-4">
                 <hlm-menu-group>
@@ -101,16 +104,19 @@
                             this.safeRouter.createLink('/app/profile')
                         "
                     >
-                        {{this.dict().myProfile}}
+                        {{ this.dict().myProfile }}
                     </a>
-                    <button hlmMenuItem (click)="this.logOut()">{{this.dict().logOut}}</button>
+                    <button hlmMenuItem (click)="this.logOut()">
+                        {{ this.dict().logOut }}
+                    </button>
                 </hlm-menu-group>
                 <hlm-menu-separator></hlm-menu-separator>
                 <button hlmMenuItem [brnMenuTriggerFor]="languagePicker">
-                    {{this.dict().language}}
+                    {{ this.dict().language }}
                 </button>
             </hlm-menu>
         </ng-template>
+
         <ng-template #languagePicker>
             <hlm-sub-menu>
                 @for (language of supportedLanguages; track language) {
@@ -124,4 +130,66 @@
             </hlm-sub-menu>
         </ng-template>
     </div>
+
+    <hlm-sheet class="md:hidden">
+        <button brnSheetTrigger side="right">
+            <hlm-icon size="lg" name="lucideAlignJustify" />
+        </button>
+        <hlm-sheet-content *brnSheetContent="let ctx" class="w-1/3">
+            <div class="flex flex-col">
+                <hlm-icon
+                    size="lg"
+                    name="lucideWarehouse"
+                    [routerLink]="this.safeRouter.createLink('/app/home')"
+                    class="m-2"
+                />
+                <hlm-icon
+                    size="lg"
+                    name="lucideTrophy"
+                    [routerLink]="
+                        this.safeRouter.createLink('/app/leaderboards')
+                    "
+                    class="m-2"
+                />
+                <hlm-dialog>
+                    <button brnPopoverTrigger>
+                        <hlm-icon
+                            [size]="'lg'"
+                            name="lucideSearch"
+                            class="m-2"
+                        ></hlm-icon>
+                    </button>
+                    <hlm-dialog-content *brnDialogContent="let ctx">
+                        <app-user-finder></app-user-finder>
+                    </hlm-dialog-content>
+                </hlm-dialog>
+                <hlm-dialog>
+                    <button brnPopoverTrigger class="m-2">
+                        <hlm-icon [size]="'lg'" name="lucideBell"></hlm-icon>
+                    </button>
+                    <hlm-dialog-content *brnDialogContent="let ctx">
+                        <hlm-tabs tab="account">
+                            <hlm-tabs-list
+                                class="grid w-full grid-cols-2"
+                                aria-label="tabs example"
+                            >
+                                <button hlmTabsTrigger="account">
+                                    {{ this.dict().friendRequests }}
+                                </button>
+                                <button hlmTabsTrigger="password">
+                                    {{ this.dict().blocked }}
+                                </button>
+                            </hlm-tabs-list>
+                            <div hlmTabsContent="account">
+                                <app-friendships></app-friendships>
+                            </div>
+                            <div hlmTabsContent="password">
+                                <app-blocking></app-blocking>
+                            </div>
+                        </hlm-tabs>
+                    </hlm-dialog-content>
+                </hlm-dialog>
+            </div>
+        </hlm-sheet-content>
+    </hlm-sheet>
 </nav>
