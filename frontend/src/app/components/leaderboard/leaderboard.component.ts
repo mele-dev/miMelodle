@@ -47,22 +47,13 @@ import { BrnToggleDirective } from '@spartan-ng/ui-toggle-brain';
     selector: "app-leaderboard",
     standalone: true,
     imports: [
-    HlmTableComponent,
-    HlmTrowComponent,
-    HlmTdComponent,
     TrophyComponent,
-    HlmThComponent,
     CommonModule,
-    HlmIconComponent,
-    XComponent,
-    RouterLink,
     HlmTabsComponent,
     HlmTabsContentDirective,
     HlmTabsListComponent,
     HlmTabsTriggerDirective,
     LeaderboardTableComponent,
-    HlmSwitchComponent,
-    HlmLabelDirective,
     HlmToggleDirective, BrnToggleDirective,
 ],
     providers: [provideIcons({ lucideChevronRight, lucideChevronLeft })],
@@ -86,15 +77,6 @@ export class LeaderboardComponent implements OnInit {
 
     public deleteAllData(gameMode: string) {
         this.leaderboardService.deleteData(gameMode);
-        this.closeDialog();
-    }
-
-    public openDialog() {
-        this.dialog.nativeElement.showModal();
-    }
-
-    public closeDialog() {
-        this.dialog.nativeElement.close();
     }
 
     public filterFriends(){

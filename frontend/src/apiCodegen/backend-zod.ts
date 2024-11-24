@@ -865,6 +865,7 @@ export const getUsersSelfSelfIdResponse = zod.object({
     id: zod.number(),
     spotifyId: zod.string().optional(),
     profilePictureFile: zod.string(),
+    profilePictureId: zod.number(),
 });
 
 /**
@@ -887,9 +888,12 @@ export const putUsersSelfSelfIdBodyEmailRegExp = new RegExp(
     "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$"
 );
 export const putUsersSelfSelfIdBodyNameMax = 25;
-export const putUsersSelfSelfIdBodyPasswordMin = 3;
+export const putUsersSelfSelfIdBodySensitiveOldPasswordMin = 3;
 
-export const putUsersSelfSelfIdBodyPasswordMax = 20;
+export const putUsersSelfSelfIdBodySensitiveOldPasswordMax = 20;
+export const putUsersSelfSelfIdBodySensitivePasswordMin = 3;
+
+export const putUsersSelfSelfIdBodySensitivePasswordMax = 20;
 
 export const putUsersSelfSelfIdBody = zod.object({
     username: zod
@@ -902,11 +906,19 @@ export const putUsersSelfSelfIdBody = zod.object({
         .max(putUsersSelfSelfIdBodyEmailMax)
         .regex(putUsersSelfSelfIdBodyEmailRegExp),
     name: zod.string().min(1).max(putUsersSelfSelfIdBodyNameMax),
-    password: zod
-        .string()
-        .min(putUsersSelfSelfIdBodyPasswordMin)
-        .max(putUsersSelfSelfIdBodyPasswordMax),
     profilePictureId: zod.number(),
+    sensitive: zod
+        .object({
+            oldPassword: zod
+                .string()
+                .min(putUsersSelfSelfIdBodySensitiveOldPasswordMin)
+                .max(putUsersSelfSelfIdBodySensitiveOldPasswordMax),
+            password: zod
+                .string()
+                .min(putUsersSelfSelfIdBodySensitivePasswordMin)
+                .max(putUsersSelfSelfIdBodySensitivePasswordMax),
+        })
+        .optional(),
 });
 
 export const putUsersSelfSelfIdResponseUsernameMin = 3;
@@ -922,9 +934,12 @@ export const putUsersSelfSelfIdResponseEmailRegExp = new RegExp(
     "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$"
 );
 export const putUsersSelfSelfIdResponseNameMax = 25;
-export const putUsersSelfSelfIdResponsePasswordMin = 3;
+export const putUsersSelfSelfIdResponseSensitiveOldPasswordMin = 3;
 
-export const putUsersSelfSelfIdResponsePasswordMax = 20;
+export const putUsersSelfSelfIdResponseSensitiveOldPasswordMax = 20;
+export const putUsersSelfSelfIdResponseSensitivePasswordMin = 3;
+
+export const putUsersSelfSelfIdResponseSensitivePasswordMax = 20;
 
 export const putUsersSelfSelfIdResponse = zod.object({
     username: zod
@@ -937,11 +952,19 @@ export const putUsersSelfSelfIdResponse = zod.object({
         .max(putUsersSelfSelfIdResponseEmailMax)
         .regex(putUsersSelfSelfIdResponseEmailRegExp),
     name: zod.string().min(1).max(putUsersSelfSelfIdResponseNameMax),
-    password: zod
-        .string()
-        .min(putUsersSelfSelfIdResponsePasswordMin)
-        .max(putUsersSelfSelfIdResponsePasswordMax),
     profilePictureId: zod.number(),
+    sensitive: zod
+        .object({
+            oldPassword: zod
+                .string()
+                .min(putUsersSelfSelfIdResponseSensitiveOldPasswordMin)
+                .max(putUsersSelfSelfIdResponseSensitiveOldPasswordMax),
+            password: zod
+                .string()
+                .min(putUsersSelfSelfIdResponseSensitivePasswordMin)
+                .max(putUsersSelfSelfIdResponseSensitivePasswordMax),
+        })
+        .optional(),
 });
 
 /**
@@ -950,6 +973,17 @@ export const putUsersSelfSelfIdResponse = zod.object({
  */
 export const deleteUsersSelfSelfIdParams = zod.object({
     selfId: zod.number(),
+});
+
+export const deleteUsersSelfSelfIdBodyPasswordMin = 3;
+
+export const deleteUsersSelfSelfIdBodyPasswordMax = 20;
+
+export const deleteUsersSelfSelfIdBody = zod.object({
+    password: zod
+        .string()
+        .min(deleteUsersSelfSelfIdBodyPasswordMin)
+        .max(deleteUsersSelfSelfIdBodyPasswordMax),
 });
 
 export const deleteUsersSelfSelfIdResponseUsernameMin = 3;

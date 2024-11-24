@@ -92,6 +92,17 @@ export class LeaderboardsService {
         const result = deleteUsersSelfSelfIdFriendsLeaderboards(userId, {
             gameMode: mode,
         });
+
+        this._globalLeaderboard.update((currentValue) => {
+            const updatedLeaderboard = currentValue.filter(user => !(user.mode === mode && user.id === userId));
+            return updatedLeaderboard;
+        })
+
+        this._friendsLeaderboard.update((currentValue) => {
+            const updatedLeaderboard = currentValue.filter(user => !(user.mode === mode && user.id === userId));
+            return updatedLeaderboard;
+        })
+
         console.log((await result).status);
         if ((await result).status === 404) {
             toast(this.dict().toastError);
