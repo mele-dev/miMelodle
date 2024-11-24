@@ -742,6 +742,24 @@
                 "tags": ["Leaderboards"],
                 "parameters": [
                     {
+                        "schema": { "type": "integer" },
+                        "in": "query",
+                        "name": "page",
+                        "required": true,
+                        "description": "The page to index into, starting at 0."
+                    },
+                    {
+                        "schema": {
+                            "minimum": 1,
+                            "maximum": 50,
+                            "type": "integer"
+                        },
+                        "in": "query",
+                        "name": "pageSize",
+                        "required": true,
+                        "description": "The size of page with which to split results."
+                    },
+                    {
                         "schema": {
                             "type": "string",
                             "pattern": "^(guessLine|guessSong)$"
@@ -1514,11 +1532,11 @@
                                     ]
                                 },
                                 "example": {
-                                    "name": "Mr. Ricky Graham I",
-                                    "username": "Ricky_Graham",
+                                    "name": "Miss Clara Botsford III",
+                                    "username": "Clara_Botsford1",
                                     "password": "Fake123!",
-                                    "email": "Ricky.Graham84@yahoo.com",
-                                    "profilePictureId": 12
+                                    "email": "Clara.Botsford@yahoo.com",
+                                    "profilePictureId": 10
                                 }
                             }
                         }
@@ -1601,18 +1619,18 @@
                                 },
                                 "example": [
                                     {
-                                        "name": "Dr. Colin Stiedemann III",
-                                        "username": "Colin_Stiedemann64",
+                                        "name": "Dr. Kurt Barton Sr.",
+                                        "username": "Kurt_Barton",
                                         "password": "Fake123!",
-                                        "email": "Colin.Stiedemann@gmail.com",
-                                        "profilePictureId": 9
+                                        "email": "Kurt_Barton@gmail.com",
+                                        "profilePictureId": 11
                                     },
                                     {
-                                        "name": "Dr. Jonathon Kuhn V",
-                                        "username": "Jonathon_Kuhn38",
+                                        "name": "Mr. Benny Ryan MD",
+                                        "username": "Benny.Ryan",
                                         "password": "Fake123!",
-                                        "email": "Jonathon_Kuhn@yahoo.com",
-                                        "profilePictureId": 7
+                                        "email": "Benny_Ryan6@yahoo.com",
+                                        "profilePictureId": 6
                                     }
                                 ]
                             }
@@ -4678,6 +4696,24 @@
                 "summary": "Get friends leaderboard for a given game mode.",
                 "tags": ["Leaderboards"],
                 "parameters": [
+                    {
+                        "schema": { "type": "integer" },
+                        "in": "query",
+                        "name": "page",
+                        "required": true,
+                        "description": "The page to index into, starting at 0."
+                    },
+                    {
+                        "schema": {
+                            "minimum": 1,
+                            "maximum": 50,
+                            "type": "integer"
+                        },
+                        "in": "query",
+                        "name": "pageSize",
+                        "required": true,
+                        "description": "The size of page with which to split results."
+                    },
                     {
                         "schema": {
                             "type": "string",

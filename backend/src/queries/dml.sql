@@ -316,7 +316,8 @@ SELECT u."id"
            INNER JOIN public."profilePictures" pp ON pp.id = u."profilePictureId"
  WHERE r."mode" = :gameMode!
    AND (:filterByFriends! = FALSE OR (u."id" = :selfId OR u."id" IN (SELECT "friendId" FROM friends)))
- ORDER BY r."score" DESC;
+ ORDER BY r."score" DESC
+ LIMIT :pageSize! OFFSET :pageSize!::BIGINT * :page!::BIGINT;
 
 /* @name insertGuessLineGame */
   WITH "newestGame"    AS (SELECT *

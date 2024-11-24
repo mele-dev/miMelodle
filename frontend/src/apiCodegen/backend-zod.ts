@@ -310,6 +310,13 @@ export const getLeaderboardsGameModeParams = zod.object({
     gameMode: zod.string().regex(getLeaderboardsGameModePathGameModeRegExp),
 });
 
+export const getLeaderboardsGameModeQueryPageSizeMax = 50;
+
+export const getLeaderboardsGameModeQueryParams = zod.object({
+    page: zod.number(),
+    pageSize: zod.number().min(1).max(getLeaderboardsGameModeQueryPageSizeMax),
+});
+
 export const getLeaderboardsGameModeResponseLeaderboardItemUsernameMin = 3;
 
 export const getLeaderboardsGameModeResponseLeaderboardItemUsernameMax = 50;
@@ -1385,10 +1392,16 @@ export const getUsersSelfSelfIdFriendsLeaderboardsParams = zod.object({
     selfId: zod.number(),
 });
 
+export const getUsersSelfSelfIdFriendsLeaderboardsQueryPageSizeMax = 50;
 export const getUsersSelfSelfIdFriendsLeaderboardsQueryGameModeRegExp =
     new RegExp("^(guessLine|guessSong)$");
 
 export const getUsersSelfSelfIdFriendsLeaderboardsQueryParams = zod.object({
+    page: zod.number(),
+    pageSize: zod
+        .number()
+        .min(1)
+        .max(getUsersSelfSelfIdFriendsLeaderboardsQueryPageSizeMax),
     gameMode: zod
         .string()
         .regex(getUsersSelfSelfIdFriendsLeaderboardsQueryGameModeRegExp),

@@ -7,10 +7,6 @@ import { runPreparedQuery } from "../../../../../../services/database.js";
 import { leaderboardSchema } from "../../../../../../types/leaderboard.js";
 import {
     deleteRankingData,
-    addUserToLeaderboard,
-    getGlobalLeaderboard,
-    getFriendsLeaderboard,
-    updateScore,
     getLeaderboard,
 } from "../../../../../../queries/dml.queries.js";
 import { ParamsSchema } from "../../../../../../types/params.js";
@@ -22,8 +18,8 @@ export default (async (fastify, _opts) => {
     fastify.get("/", {
         onRequest: [decorators.authenticateSelf()],
         schema: {
+            querystring: SafeType.Pick(queryStringSchema, ["page", "pageSize", "gameMode"]),
             params: SafeType.Pick(ParamsSchema, ["selfId"]),
-            querystring: SafeType.Pick(queryStringSchema, ["gameMode"]),
             response: {
                 200: leaderboardSchema,
                 ...SafeType.CreateErrors(["unauthorized"]),
@@ -34,8 +30,8 @@ export default (async (fastify, _opts) => {
         async handler(request, reply) {
             const result = await runPreparedQuery(getLeaderboard, {
                 ...request.params,
-                filterByFriends: true,
                 ...request.query,
+                filterByFriends: true,
             });
             return sendOk(reply, 200, { leaderboard: result });
         },
