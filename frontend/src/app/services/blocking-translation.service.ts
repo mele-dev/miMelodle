@@ -22,6 +22,14 @@ export const blockingDict = {
         en: "Blocked users",
         es: "Usuarios bloqueados",
     },
+    empty: {
+        en: "You have not blocked anyone.",
+        es: "No has bloqueado a nadie.",
+    },
+    unblock: {
+        en: "Unblock",
+        es: "Desbloquear",
+    },
 } as const satisfies Translations;
 
 @Injectable({

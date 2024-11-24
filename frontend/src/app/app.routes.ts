@@ -14,6 +14,7 @@ import { LeaderboardComponent } from "./components/leaderboard/leaderboard.compo
 import { GuessSongPage } from "./pages/game/guess-song/guess-song.page";
 import { GuessLinePage } from "./pages/game/guess-line/guess-line.page";
 import { CreateGamePage } from "./pages/game/create-game/create-game.page";
+import { HeroPage } from "./pages/hero/hero.page";
 
 export const routes = [
     {
@@ -84,6 +85,10 @@ export const routes = [
                 title: "Guess a song",
             },
         ],
+    },
+    {
+        path: "hero",
+        component: HeroPage
     },
     {
         path: "",

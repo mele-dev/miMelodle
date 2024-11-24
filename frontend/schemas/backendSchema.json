@@ -1514,11 +1514,11 @@
                                     ]
                                 },
                                 "example": {
-                                    "name": "Dr. Joey Barton MD",
-                                    "username": "Joey_Barton16",
+                                    "name": "Mr. Ricky Graham I",
+                                    "username": "Ricky_Graham",
                                     "password": "Fake123!",
-                                    "email": "Joey_Barton23@gmail.com",
-                                    "profilePictureId": 11
+                                    "email": "Ricky.Graham84@yahoo.com",
+                                    "profilePictureId": 12
                                 }
                             }
                         }
@@ -1601,18 +1601,18 @@
                                 },
                                 "example": [
                                     {
-                                        "name": "Dr. Bonnie Wyman V",
-                                        "username": "Bonnie_Wyman3",
+                                        "name": "Dr. Colin Stiedemann III",
+                                        "username": "Colin_Stiedemann64",
                                         "password": "Fake123!",
-                                        "email": "Bonnie.Wyman30@gmail.com",
-                                        "profilePictureId": 5
+                                        "email": "Colin.Stiedemann@gmail.com",
+                                        "profilePictureId": 9
                                     },
                                     {
-                                        "name": "Mr. Gilbert Kling DVM",
-                                        "username": "Gilbert.Kling69",
+                                        "name": "Dr. Jonathon Kuhn V",
+                                        "username": "Jonathon_Kuhn38",
                                         "password": "Fake123!",
-                                        "email": "Gilbert_Kling@hotmail.com",
-                                        "profilePictureId": 12
+                                        "email": "Jonathon_Kuhn@yahoo.com",
+                                        "profilePictureId": 7
                                     }
                                 ]
                             }
@@ -2587,47 +2587,100 @@
                                         "type": "object",
                                         "properties": {
                                             "isFavorite": { "type": "boolean" },
-                                            "data": {
+                                            "external_urls": {
+                                                "additionalProperties": true,
                                                 "type": "object",
                                                 "properties": {
-                                                    "name": {
-                                                        "description": "Name of the artist, does not have to be unique.",
-                                                        "type": "string"
-                                                    },
-                                                    "imageUrl": {
-                                                        "description": "Url to download the artist's portrait image, if available.",
-                                                        "type": "string"
-                                                    },
-                                                    "externalUrls": {
-                                                        "description": "Url that will allow users to be redirected to the artist's profile on Spotify.",
-                                                        "type": "string"
-                                                    },
-                                                    "genres": {
-                                                        "type": "array",
-                                                        "items": {
-                                                            "description": "Genres associated with the artist.",
-                                                            "type": "string"
-                                                        }
-                                                    },
-                                                    "followers": {
-                                                        "description": "The number of followers the artist has.",
-                                                        "type": "number"
-                                                    },
-                                                    "spotifyArtistId": {
-                                                        "description": "Identifier for an artist given by spotify",
+                                                    "spotify": {
                                                         "type": "string"
                                                     }
                                                 },
-                                                "required": [
-                                                    "name",
-                                                    "externalUrls",
-                                                    "genres",
-                                                    "followers",
-                                                    "spotifyArtistId"
-                                                ]
+                                                "required": ["spotify"]
+                                            },
+                                            "href": { "type": "string" },
+                                            "id": { "type": "string" },
+                                            "name": { "type": "string" },
+                                            "type": {
+                                                "type": "string",
+                                                "enum": ["artist"]
+                                            },
+                                            "uri": { "type": "string" },
+                                            "followers": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "href": {
+                                                        "anyOf": [
+                                                            {
+                                                                "type": "string"
+                                                            },
+                                                            { "type": "null" }
+                                                        ]
+                                                    },
+                                                    "total": {
+                                                        "type": "integer"
+                                                    }
+                                                },
+                                                "required": ["href", "total"]
+                                            },
+                                            "genres": {
+                                                "type": "array",
+                                                "items": { "type": "string" }
+                                            },
+                                            "images": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "url": {
+                                                            "type": "string"
+                                                        },
+                                                        "width": {
+                                                            "anyOf": [
+                                                                {
+                                                                    "type": "integer"
+                                                                },
+                                                                {
+                                                                    "type": "null"
+                                                                }
+                                                            ]
+                                                        },
+                                                        "height": {
+                                                            "anyOf": [
+                                                                {
+                                                                    "type": "integer"
+                                                                },
+                                                                {
+                                                                    "type": "null"
+                                                                }
+                                                            ]
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "url",
+                                                        "width",
+                                                        "height"
+                                                    ]
+                                                }
+                                            },
+                                            "popularity": {
+                                                "minimum": 0,
+                                                "maximum": 100,
+                                                "type": "number"
                                             }
                                         },
-                                        "required": ["isFavorite", "data"]
+                                        "required": [
+                                            "isFavorite",
+                                            "external_urls",
+                                            "href",
+                                            "id",
+                                            "name",
+                                            "type",
+                                            "uri",
+                                            "followers",
+                                            "genres",
+                                            "images",
+                                            "popularity"
+                                        ]
                                     }
                                 }
                             }

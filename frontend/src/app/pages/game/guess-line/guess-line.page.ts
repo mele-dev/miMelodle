@@ -1,10 +1,12 @@
 import {
     Component,
     computed,
+    ElementRef,
     inject,
     input,
     OnInit,
     signal,
+    ViewChild,
 } from "@angular/core";
 import { SelfService } from "../../../services/self.service";
 import {
@@ -14,7 +16,6 @@ import {
 } from "../../../../apiCodegen/backend";
 import { DomSanitizer } from "@angular/platform-browser";
 import { SafeRoutingService } from "../../../services/safe-routing.service";
-import { GuessSongTranslator } from "../guess-song/guess-song.translations";
 import { z } from "zod";
 import { toast } from "ngx-sonner";
 import { CommonModule, JsonPipe } from "@angular/common";
@@ -25,6 +26,8 @@ import { HlmInputModule } from "@spartan-ng/ui-input-helm";
 import { GuessLineWordleTextComponent } from "../../../components/guess-line-wordle-text/guess-line-wordle-text.component";
 import { HlmButtonModule } from "@spartan-ng/ui-button-helm";
 import { GuessLineTranslator } from "./guess-line.translations";
+import { SafePipe } from "../../../pipes/safe.pipe";
+import { TutorialsTranslator } from "../tutorials-dialog.translations";
 
 @Component({
     selector: "app-guess-line",
@@ -39,6 +42,7 @@ import { GuessLineTranslator } from "./guess-line.translations";
         CommonModule,
         HlmButtonModule,
         GuessLineWordleTextComponent,
+        SafePipe,
     ],
     templateUrl: "./guess-line.page.html",
 })
@@ -48,6 +52,14 @@ export class GuessLinePage implements OnInit {
     sanitizer = inject(DomSanitizer);
     router = inject(SafeRoutingService);
     dict = inject(GuessLineTranslator).dict;
+    dictT = inject(TutorialsTranslator).dict;
+    @ViewChild("tutorial") dialog!: ElementRef<HTMLDialogElement>;
+
+    blurOn: boolean = true;
+    public closeDialog() {
+        this.dialog.nativeElement.close();
+        this.blurOn = false;
+    }
     ids = computed(() => {
         const schema = z.object({ gameId: z.coerce.number().positive() });
         const parsed = schema.safeParse({
@@ -98,8 +110,27 @@ export class GuessLinePage implements OnInit {
             return undefined;
         }
 
-        return `https://open.spotify.com/embed/track/${info.track.id}?utm_source=generator`;
+        return `https://open.spotify.com/embed/track/${info.track.id}`;
     });
+
+    constructor() {
+        computed(() => {
+            const info = this.gameInfo();
+
+            if (info === undefined) {
+                return undefined;
+            }
+
+            console.log(this.embed);
+            this.embed.src = `https://open.spotify.com/embed/track/${info.track.id}`;
+        });
+    }
+
+    @ViewChild("spotifyEmbed") embed!: HTMLIFrameElement;
+
+    transform(url: string) {
+        return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    }
 
     async submitAttempt() {
         const self = await this._self.waitForUserInfoSnapshot();
@@ -162,5 +193,6 @@ export class GuessLinePage implements OnInit {
 
     async ngOnInit() {
         await this.load();
+        this.dialog.nativeElement.showModal();
     }
 }

@@ -1,13 +1,15 @@
 <h1 class="mb-5">
-    <span class="font-semibold text-neutral-300"> {{this.dict().title}} </span>
-    <span class="text-neutral-400"> {{this.dict().subtitle}} </span>
+    <span class="font-semibold text-neutral-300">
+        {{ this.dict().title }}
+    </span>
+    <span class="text-neutral-400"> {{ this.dict().subtitle }} </span>
 </h1>
 
 <input
     hlmInput
     type="text"
     name="query"
-    [placeholder]=""
+    [placeholder]="this.dict().indications"
     value=""
     class="w-full"
     [(ngModel)]="this.usersFilter"
@@ -18,7 +20,10 @@
     @for (artist of matchedArtists(); track artist.id) {
         <hlm-trow class="flex py-2">
             <hlm-td>
-                <img src="{{artist.images[0].url}}" class="w-12 h-12 rounded-3xl">
+                <img
+                    src="{{ artist.images[0].url }}"
+                    class="h-12 w-12 rounded-3xl"
+                />
             </hlm-td>
             <hlm-td class="flex flex-grow gap-2 bg-center backdrop-blur-md">
                 <div class="flex flex-col">
@@ -26,7 +31,8 @@
                         <span class="text-lx font-bold">{{ artist.name }}</span>
                     </div>
                     <span class="text-xs">
-                        {{ this.homeArtistsService.formatNumber(artist.followers.total) }} {{this.dict().followers}}
+                        {{ this.dict().followerCount(artist.followers.total) }}
+                        {{ this.dict().followers }}
                     </span>
                 </div>
             </hlm-td>
