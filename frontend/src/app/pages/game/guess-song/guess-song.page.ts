@@ -212,6 +212,12 @@ export class GuessSongPage implements OnInit {
         );
 
         this.gameInfo.set(result.data);
+
+        window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: "smooth", 
+        });
+
     }
 
     async load() {
