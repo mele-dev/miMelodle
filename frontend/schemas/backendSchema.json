@@ -1525,11 +1525,11 @@
                                     ]
                                 },
                                 "example": {
-                                    "name": "Mr. Ervin Davis V",
-                                    "username": "Ervin_Davis19",
+                                    "name": "Dr. Max Kulas MD",
+                                    "username": "Max.Kulas21",
                                     "password": "Fake123!",
-                                    "email": "Ervin.Davis40@hotmail.com",
-                                    "profilePictureId": 2
+                                    "email": "Max.Kulas3@yahoo.com",
+                                    "profilePictureId": 11
                                 }
                             }
                         }
@@ -1612,18 +1612,18 @@
                                 },
                                 "example": [
                                     {
-                                        "name": "Mr. Glen Pfeffer DVM",
-                                        "username": "Glen_Pfeffer87",
+                                        "name": "Dr. Boyd Schneider DDS",
+                                        "username": "Boyd_Schneider",
                                         "password": "Fake123!",
-                                        "email": "Glen.Pfeffer@hotmail.com",
-                                        "profilePictureId": 2
+                                        "email": "Boyd.Schneider75@gmail.com",
+                                        "profilePictureId": 12
                                     },
                                     {
-                                        "name": "Mr. Josh Bradtke PhD",
-                                        "username": "Josh_Bradtke",
+                                        "name": "Mr. Francis Schmitt PhD",
+                                        "username": "Francis.Schmitt89",
                                         "password": "Fake123!",
-                                        "email": "Josh_Bradtke@yahoo.com",
-                                        "profilePictureId": 6
+                                        "email": "Francis_Schmitt@gmail.com",
+                                        "profilePictureId": 2
                                     }
                                 ]
                             }
@@ -2301,6 +2301,10 @@
                                         "profilePictureFile": {
                                             "description": "File name required to fetch the image from the route to get specific user icons.",
                                             "type": "string"
+                                        },
+                                        "profilePictureId": {
+                                            "description": "Identifier for the icon.",
+                                            "type": "integer"
                                         }
                                     },
                                     "required": [
@@ -2308,7 +2312,8 @@
                                         "email",
                                         "name",
                                         "id",
-                                        "profilePictureFile"
+                                        "profilePictureFile",
+                                        "profilePictureId"
                                     ]
                                 }
                             }
@@ -2348,7 +2353,6 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "title": "userSchema",
                                 "type": "object",
                                 "properties": {
                                     "username": {
@@ -2370,22 +2374,34 @@
                                         "description": "The user's display name. It does not need to be unique.",
                                         "type": "string"
                                     },
-                                    "password": {
-                                        "minLength": 3,
-                                        "maxLength": 20,
-                                        "description": "A password.",
-                                        "type": "string"
-                                    },
                                     "profilePictureId": {
                                         "description": "The id to the profile picture of the user. These pictures cannot be uploaded, we store the options manually.",
                                         "type": "integer"
+                                    },
+                                    "sensitive": {
+                                        "title": "userSchema",
+                                        "type": "object",
+                                        "properties": {
+                                            "oldPassword": {
+                                                "minLength": 3,
+                                                "maxLength": 20,
+                                                "description": "Older password.",
+                                                "type": "string"
+                                            },
+                                            "password": {
+                                                "minLength": 3,
+                                                "maxLength": 20,
+                                                "description": "A password.",
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": ["oldPassword", "password"]
                                     }
                                 },
                                 "required": [
                                     "username",
                                     "email",
                                     "name",
-                                    "password",
                                     "profilePictureId"
                                 ]
                             },
@@ -2393,8 +2409,11 @@
                                 "username": "juanchoTanca",
                                 "email": "juanchoTanca@gmail.com",
                                 "name": "juancho",
-                                "password": "Juancho123!",
-                                "profilePictureId": 1
+                                "profilePictureId": 1,
+                                "sensitive": {
+                                    "password": "Pepe123!",
+                                    "oldPassword": "Juancho123!!"
+                                }
                             }
                         }
                     },
@@ -2415,7 +2434,6 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "title": "userSchema",
                                     "type": "object",
                                     "properties": {
                                         "username": {
@@ -2437,23 +2455,63 @@
                                             "description": "The user's display name. It does not need to be unique.",
                                             "type": "string"
                                         },
-                                        "password": {
-                                            "minLength": 3,
-                                            "maxLength": 20,
-                                            "description": "A password.",
-                                            "type": "string"
-                                        },
                                         "profilePictureId": {
                                             "description": "The id to the profile picture of the user. These pictures cannot be uploaded, we store the options manually.",
                                             "type": "integer"
+                                        },
+                                        "sensitive": {
+                                            "title": "userSchema",
+                                            "type": "object",
+                                            "properties": {
+                                                "oldPassword": {
+                                                    "minLength": 3,
+                                                    "maxLength": 20,
+                                                    "description": "Older password.",
+                                                    "type": "string"
+                                                },
+                                                "password": {
+                                                    "minLength": 3,
+                                                    "maxLength": 20,
+                                                    "description": "A password.",
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "oldPassword",
+                                                "password"
+                                            ]
                                         }
                                     },
                                     "required": [
                                         "username",
                                         "email",
                                         "name",
-                                        "password",
                                         "profilePictureId"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "badRequest",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "badRequest",
+                                    "additionalProperties": true,
+                                    "type": "object",
+                                    "properties": {
+                                        "statusCode": {
+                                            "type": "number",
+                                            "enum": [400]
+                                        },
+                                        "error": { "type": "string" },
+                                        "message": { "type": "string" }
+                                    },
+                                    "required": [
+                                        "statusCode",
+                                        "error",
+                                        "message"
                                     ]
                                 }
                             }
@@ -2490,6 +2548,26 @@
                 "summary": "Delete your own user and all their associated information.",
                 "tags": ["User CRUD"],
                 "description": "The cascading deletion will be more thoroughly implemented once other resources are implemented.",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "title": "userSchema",
+                                "type": "object",
+                                "properties": {
+                                    "password": {
+                                        "minLength": 3,
+                                        "maxLength": 20,
+                                        "description": "A password.",
+                                        "type": "string"
+                                    }
+                                },
+                                "required": ["password"]
+                            }
+                        }
+                    },
+                    "required": true
+                },
                 "parameters": [
                     {
                         "schema": { "type": "integer" },

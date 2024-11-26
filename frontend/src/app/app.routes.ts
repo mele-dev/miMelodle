@@ -10,6 +10,7 @@ import { authCallbackGuard } from "./guards/auth-callback.guard";
 import { AppLayoutPage } from "./app-layout/app-layout.page";
 import { authGuard } from "./guards/auth.guard";
 import { HomePage } from "./home/home.page";
+import { UserConfigPage } from "./pages/user-config/user-config.page";
 import { LeaderboardComponent } from "./components/leaderboard/leaderboard.component";
 import { GuessSongPage } from "./pages/game/guess-song/guess-song.page";
 import { GuessLinePage } from "./pages/game/guess-line/guess-line.page";
@@ -61,7 +62,7 @@ export const routes = [
             },
             {
                 path: "profile",
-                component: TODOComponent,
+                component: UserConfigPage,
                 title: "Your profile",
             },
             {

@@ -8,6 +8,11 @@ import { LanguagePickerComponent } from "../language-picker/language-picker.comp
 import { AppNavbarTranslator } from "./app-navbar.translations";
 import { HlmIconModule } from "@spartan-ng/ui-icon-helm";
 import { provideIcons } from "@ng-icons/core";
+import {
+    lucideLogOut,
+    lucideBellPlus,
+    lucideCircleSlash,
+} from "@ng-icons/lucide";
 import { lucideBell, lucideSearch } from "@ng-icons/lucide";
 import { LocalStorageService } from "../../services/local-storage.service";
 import { BrnPopoverModule } from "@spartan-ng/ui-popover-brain";
@@ -93,8 +98,6 @@ export class AppNavbarComponent {
                 return "English";
             case "es":
                 return "Español";
-            default:
-                throw new UnreachableCaseError(lang);
         }
     }
 

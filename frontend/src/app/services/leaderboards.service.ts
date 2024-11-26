@@ -39,7 +39,7 @@ export class LeaderboardsService {
         const result = deleteUsersSelfSelfIdFriendsLeaderboards(userId, {
             gameMode: mode,
         });
-        console.log((await result).status);
+
         if ((await result).status === 404) {
             toast(this.dict().toastError);
         } else if ((await result).status === 200) {

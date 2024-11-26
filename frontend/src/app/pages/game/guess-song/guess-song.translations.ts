@@ -42,6 +42,10 @@ const translations = {
         en: "Play again",
         es: "Jugar de nuevo",
     },
+    gameInfoError: {
+        en: "There was an error while fetching game information.",
+        es: "Se ha producido un error al obtener la información del juego.",
+    },
 } as const satisfies Translations;
 
 @Injectable({
