@@ -4,14 +4,24 @@ import { postAuthLoginResponse } from "../../apiCodegen/backend-zod";
 import { ActivatedRoute, Params } from "@angular/router";
 import { filter, from, map, switchMap } from "rxjs";
 import { SafeRoutingService } from "./safe-routing.service";
+import { melodleGameModes } from "../globalConstants";
+
+const booleanStringSchema = z
+    .enum(["true", "false"])
+    .transform((s) => s === "true")
+    .pipe(z.boolean())
+    .optional();
 
 // All of the values mapped here must be coerced from strings, because the
 // querystring returns strings.
-const queryParamsMaps = {
+export const queryParamsMaps = {
     jwtToken: postAuthLoginResponse.shape.jwtToken,
     selfId: z.coerce.number(),
     errorEnum: z.string(),
     errorMessage: z.string(),
+    page: z.coerce.number().positive().optional(),
+    gameMode: z.enum(melodleGameModes).optional(),
+    filterFriends: booleanStringSchema,
 } as const satisfies Record<string, z.Schema>;
 
 type QueryParamsMaps = typeof queryParamsMaps;
@@ -37,7 +47,7 @@ export class QueryParamsService {
     remove(params: string[]) {
         const mappedParams = Object.fromEntries(params.map((p) => [p, null]));
 
-          this.router.navigate("", {
+        this.router.navigate("", {
             relativeTo: this.route,
             queryParams: mappedParams,
             queryParamsHandling: "merge",
@@ -57,6 +67,12 @@ export class QueryParamsService {
             filter((v) => v.success),
             map((v) => v.data)
         );
+    }
+
+    getCoercedSnapshot<
+        TKeys extends (keyof QueryParamsMaps & string)[],
+    >(keys: TKeys) {
+        return this.coerce(this.route.snapshot.queryParams, keys);
     }
 
     async coerce<TKeys extends (keyof QueryParamsMaps & string)[]>(

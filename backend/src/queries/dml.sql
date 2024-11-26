@@ -309,6 +309,27 @@ SELECT u."id"
                                           AND status = 'accepted'))
  ORDER BY r."score" DESC;
 
+/* @name getLeaderboard */
+  WITH friends AS (SELECT CASE WHEN "userId" = :selfId THEN "user2Id" ELSE "userId" END AS "friendId"
+                     FROM "friendships"
+                    WHERE (("userId" = :selfId OR "user2Id" = :selfId) AND status = 'accepted'))
+SELECT u."id"
+     , u."username"
+     , u."name"
+     , u."profilePictureId"
+     , pp.filename                                         AS "profilePictureFilename"
+     , r."score"
+     , r."mode"
+     , RANK() OVER (ORDER BY r."score" DESC)               AS "rank!"
+     , CEIL((COUNT(*) OVER ())::NUMERIC / :pageSize!)::INT AS "totalPages!"
+  FROM "ranking" r
+           JOIN public.users u ON r."userId" = u."id"
+           INNER JOIN public."profilePictures" pp ON pp.id = u."profilePictureId"
+ WHERE r."mode" = :gameMode!
+   AND (:filterByFriends! = FALSE OR (u."id" = :selfId OR u."id" IN (SELECT "friendId" FROM friends)))
+ ORDER BY r."score" DESC
+ LIMIT :pageSize! OFFSET :pageSize!::BIGINT * :page!::BIGINT;
+
 /* @name insertGuessLineGame */
   WITH "newestGame"    AS (SELECT *
                              FROM "guessLineGame" gsl
