@@ -14,9 +14,25 @@ const translations = {
         es: ["Buscar usuarios", "por nombre de usuario."],
     },
     usernamePlaceholder: {
-    en: "The.username-from_someone.else",
-    es: "El.nombre-de-usuario_de_otra.persona",
-  }
+        en: "The.username-from_someone.else",
+        es: "El.nombre-de-usuario_de_otra.persona",
+    },
+    addFriend: {
+        en: "Add friend",
+        es: "Agregar amigo",
+    },
+    block: {
+        en: "Block",
+        es: "Bloquear",
+    },
+    removeFriend: {
+        en: "Remove friend",
+        es: "Eliminar amigo",
+    },
+    actions: {
+        en: "Actions",
+        es: "Acciones",
+    },
 } as const satisfies Translations;
 
 @Injectable({
