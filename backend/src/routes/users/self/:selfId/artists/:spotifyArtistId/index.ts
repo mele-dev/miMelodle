@@ -13,6 +13,7 @@ import {
     countFavorites,
 } from "../../../../../../queries/dml.queries.js";
 import { getAnArtist } from "../../../../../../apiCodegen/spotify.js";
+import { getSeveralMaybeHardCodedArtists } from "../../../../../../hardcoded/hardCodedUtils.js";
 
 export default (async (fastify) => {
     const isFavoriteSchema = SafeType.Object({
@@ -92,25 +93,18 @@ export default (async (fastify) => {
         },
         async handler(request, reply) {
             try {
-                const artist = await getAnArtist(
-                    request.params.spotifyArtistId
-                );
+                const artist = await getSeveralMaybeHardCodedArtists([
+                    request.params.spotifyArtistId,
+                ]);
 
-                const queryResult = await runPreparedQuery(
-                    addArtistToHome,
-                    {
-                        selfId: request.params.selfId,
-                        "artists": [request.params.spotifyArtistId]
-                    }
-                );
+                const queryResult = await runPreparedQuery(addArtistToHome, {
+                    selfId: request.params.selfId,
+                    artists: [request.params.spotifyArtistId],
+                });
 
-                return sendOk(reply, 200, { name: artist.name!});
+                return sendOk(reply, 200, { name: artist[0].name! });
             } catch {
-                return sendError(
-                    reply,
-                    "badRequest",
-                    "Already added artist."
-                );
+                return sendError(reply, "badRequest", "Already added artist.");
             }
         },
     });

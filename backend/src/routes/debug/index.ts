@@ -17,14 +17,6 @@ import {
 import { friendSchema, User, userSchema } from "../../types/user.js";
 import { sendOk } from "../../utils/reply.js";
 import { isAxiosError } from "axios";
-import {
-    getAnAlbumsTracks,
-    getAnArtist,
-    getAnArtistsAlbums,
-    getSeveralTracks,
-    search,
-} from "../../apiCodegen/spotify.js";
-import { hardCodedAlbums } from "../../hardcoded/hardCodedAlbums.js";
 import { hardCodedSongs } from "../../hardcoded/hardCodedSongs.js";
 
 export default (async (fastify) => {

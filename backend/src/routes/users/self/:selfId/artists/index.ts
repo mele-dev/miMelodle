@@ -6,9 +6,8 @@ import { decorators } from "../../../../../services/decorators.js";
 import { sendError, sendOk } from "../../../../../utils/reply.js";
 import { runPreparedQuery } from "../../../../../services/database.js";
 import { getHomeArtists } from "../../../../../queries/dml.queries.js";
-import { getMultipleArtists } from "../../../../../apiCodegen/spotify.js";
 import { spotifyArtistSchema } from "../../../../../types/spotify.js";
-import { RequireSpotify } from "../../../../../spotify/helpers.js";
+import { getSeveralMaybeHardCodedArtists } from "../../../../../hardcoded/hardCodedUtils.js";
 
 export default (async (fastify, _opts) => {
     fastify.get("", {
@@ -41,17 +40,13 @@ export default (async (fastify, _opts) => {
                 );
             }
 
-            const ids = queryResult
-                .map((artist) => artist.spotifyArtistId)
-                .join(",");
-            const artistData = (await getMultipleArtists({
-                ids,
-            })) as RequireSpotify<typeof getMultipleArtists>;
+            const ids = queryResult.map((artist) => artist.spotifyArtistId);
+            const artistData = await getSeveralMaybeHardCodedArtists(ids);
 
             const output = queryResult.map((artist, index) => {
                 return {
                     isFavorite: artist.isFavorite,
-                    ...artistData.artists[index],
+                    ...artistData[index],
                 };
             });
 
