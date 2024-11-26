@@ -1,86 +1,186 @@
 import {
     Component,
-    ElementRef,
+    computed,
+    effect,
     inject,
-    input,
-    Input,
     OnInit,
     signal,
-    ViewChild,
-    ViewChildren,
 } from "@angular/core";
-import { HlmTableComponent } from "../../../../libs/ui/ui-table-helm/src/lib/hlm-table.component";
-import { LeaderboardsService } from "../../services/leaderboards.service";
-import { HlmTrowComponent } from "../../../../libs/ui/ui-table-helm/src/lib/hlm-trow.component";
-import { HlmTdComponent } from "../../../../libs/ui/ui-table-helm/src/lib/hlm-td.component";
-import { SelfService } from "../../services/self.service";
-import { DomSanitizer } from "@angular/platform-browser";
-import { IconCacheService } from "../../services/icon-cache.service";
+import {
+    LeaderboardFilter,
+    LeaderboardsService,
+} from "../../services/leaderboards.service";
 import { TrophyComponent } from "../../icons/trophy/trophy.component";
-import { HlmThComponent } from "../../../../libs/ui/ui-table-helm/src/lib/hlm-th.component";
-import { CommonModule } from "@angular/common";
+import { CommonModule, JsonPipe } from "@angular/common";
 import { HlmIconComponent } from "../../../../libs/ui/ui-icon-helm/src/lib/hlm-icon.component";
-import { TranslatorService } from "../../services/translator.service";
 import { LeaderboardTranslator } from "./leaderboard.translations";
-import { XComponent } from "../../icons/x/x.component";
-import { SafeRoutingService } from "../../services/safe-routing.service";
 import { provideIcons } from "@ng-icons/core";
 import { lucideChevronLeft, lucideChevronRight } from "@ng-icons/lucide";
-import { LocalStorageService } from "../../services/local-storage.service";
-import { RouterLink } from "@angular/router";
-import { HlmTabsComponent } from "../../../../libs/ui/ui-tabs-helm/src/lib/hlm-tabs.component";
-import { HlmTabsListComponent } from "../../../../libs/ui/ui-tabs-helm/src/lib/hlm-tabs-list.component";
-import { GetLeaderboardsGameMode200LeaderboardItem } from "../../../apiCodegen/backend";
+import { ActivatedRoute, ActivationEnd, RouterLink } from "@angular/router";
 import {
-    HlmTabsContentDirective,
-    HlmTabsModule,
-    HlmTabsTriggerDirective,
-} from "@spartan-ng/ui-tabs-helm";
+    GetLeaderboardsGameMode200,
+    GetLeaderboardsGameMode200LeaderboardItem,
+} from "../../../apiCodegen/backend";
+import { HlmTabsModule } from "@spartan-ng/ui-tabs-helm";
 import { LeaderboardTableComponent } from "../leaderboard-table/leaderboard-table.component";
 import { HlmSwitchComponent } from "../../../../libs/ui/ui-switch-helm/src/lib/hlm-switch.component";
 import { HlmLabelDirective } from "@spartan-ng/ui-label-helm";
-import { HlmToggleDirective } from "@spartan-ng/ui-toggle-helm";
-import { BrnToggleDirective } from '@spartan-ng/ui-toggle-brain';
-
+import {
+    HlmToggleDirective,
+    HlmToggleModule,
+} from "@spartan-ng/ui-toggle-helm";
+import { BrnToggleDirective } from "@spartan-ng/ui-toggle-brain";
+import { HlmTableModule } from "@spartan-ng/ui-table-helm";
+import { toast } from "ngx-sonner";
+import { HlmPaginationModule } from "@spartan-ng/ui-pagination-helm";
+import { FormsModule } from "@angular/forms";
+import { HlmSelectModule } from "@spartan-ng/ui-select-helm";
+import { BrnSelectModule } from "@spartan-ng/ui-select-brain";
+import {
+    MelodleQueryParams,
+    QueryParamsService,
+} from "../../services/query-params.service";
+import { SafeRoutingService } from "../../services/safe-routing.service";
+import { MelodleGameMode } from "../../globalConstants";
 
 @Component({
     selector: "app-leaderboard",
     standalone: true,
     imports: [
-    TrophyComponent,
-    CommonModule,
-    HlmTabsComponent,
-    HlmTabsContentDirective,
-    HlmTabsListComponent,
-    HlmTabsTriggerDirective,
-    LeaderboardTableComponent,
-    HlmToggleDirective, BrnToggleDirective,
-],
+        HlmTableModule,
+        TrophyComponent,
+        CommonModule,
+        HlmIconComponent,
+        RouterLink,
+        HlmTabsModule,
+        LeaderboardTableComponent,
+        HlmSwitchComponent,
+        HlmLabelDirective,
+        HlmToggleDirective,
+        BrnToggleDirective,
+        JsonPipe,
+        HlmPaginationModule,
+        HlmToggleModule,
+        HlmSelectModule,
+        BrnSelectModule,
+        FormsModule,
+    ],
     providers: [provideIcons({ lucideChevronRight, lucideChevronLeft })],
-
     templateUrl: "./leaderboard.component.html",
 })
 export class LeaderboardComponent implements OnInit {
-    public leaderboard = input<GetLeaderboardsGameMode200LeaderboardItem[]>();
+    private _queryParams = inject(QueryParamsService);
+    private _router = inject(SafeRoutingService);
+
+    filters = signal<LeaderboardFilter & { filterFriends: boolean }>({
+        gameMode: "guessLine",
+        page: 1,
+        pageSize: 50,
+        filterFriends: false,
+    });
+
+    public leaderboard = signal<GetLeaderboardsGameMode200 | undefined>(
+        undefined
+    );
 
     dict = inject(LeaderboardTranslator).dict;
-    @ViewChild("dialog") dialog!: ElementRef<HTMLDialogElement>;
 
-    public leaderboardService = inject(LeaderboardsService);
+    private _leaderboardService = inject(LeaderboardsService);
 
-    isChecked : boolean = false;
+    async ngOnInit() {
+        const coerced = await this._queryParams.getCoercedSnapshot([
+            "page",
+            "filterFriends",
+            "gameMode",
+        ]);
 
-    ngOnInit() {
-        this.leaderboardService.reloadGlobals();
-        this.leaderboardService.reloadFriends();
+        if (coerced.success) {
+            console.log(coerced);
+            this.filters.set({
+                ...this.filters(),
+                ...coerced.data,
+            });
+            this.loadLeaderboardInformation(coerced.data);
+        }
     }
 
-    public deleteAllData(gameMode: string) {
-        this.leaderboardService.deleteData(gameMode);
+    navigationPages = computed(() => {
+        const leaderboard = this.leaderboard();
+        const page = this.filters().page;
+
+        if (leaderboard === undefined) {
+            return undefined;
+        }
+
+        const range = Array(5)
+            .fill(1)
+            .map((_, index) => {
+                return index + page - 2;
+            })
+            .filter(p => p > 0 && p <= leaderboard.totalPages)
+        ;
+
+        return range;
+    });
+
+    changePage(page: number) {
+        this.filters.set({
+            ...this.filters(),
+            page: page,
+        })
+        this._router.navigate("/app/leaderboards", {
+            queryParams: this.filters() satisfies Partial<MelodleQueryParams>,
+        });
+        this.loadLeaderboardInformation(this.filters());
     }
 
-    public filterFriends(){
-        this.isChecked = !this.isChecked
+    changeGameMode(gameMode: MelodleGameMode) {
+        this.filters.set({
+            ...this.filters(),
+            gameMode,
+            page: 1
+        });
+        this._router.navigate("/app/leaderboards", {
+            queryParams: this.filters() satisfies Partial<MelodleQueryParams>,
+        });
+        this.loadLeaderboardInformation(this.filters());
     }
 
+    toggleFriendsFilter() {
+        this.filters.set({
+            ...this.filters(),
+            filterFriends: !this.filters().filterFriends,
+            page: 1
+        });
+        this._router.navigate("/app/leaderboards", {
+            queryParams: this.filters() satisfies Partial<MelodleQueryParams>,
+        });
+        this.loadLeaderboardInformation(this.filters());
+    }
+
+    async loadLeaderboardInformation(opts: {
+        page?: number;
+        gameMode?: MelodleGameMode;
+        filterFriends?: boolean;
+    }) {
+        try {
+            const transformedOpts = {
+                page: (opts?.page ?? 1) - 1,
+                pageSize: 50,
+                gameMode: opts?.gameMode ?? "guessLine",
+            } as const;
+
+            const leaderboard = opts?.filterFriends
+                ? await this._leaderboardService.getFriendsLeaderboard(
+                      transformedOpts
+                  )
+                : await this._leaderboardService.getLeaderboard(
+                      transformedOpts
+                  );
+            this.leaderboard.set(leaderboard!);
+            return;
+        } catch (e) {
+            toast(this.dict().fetchError);
+        }
+    }
 }
