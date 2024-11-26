@@ -6,23 +6,23 @@ import { createRangeSchema } from "./rangeSchema.js";
 export const leaderboardSchema = SafeType.Object(
     {
         leaderboard: SafeType.Array(
-            SafeType.Intersect([
-                SafeType.Pick(userSchema, [
+            SafeType.Object({
+                ...SafeType.Pick(userSchema, [
                     "id",
                     "username",
                     "name",
                     "profilePictureId",
-                    "profilePictureFilename"
-                ]),
-                SafeType.Object({
-                    score: SafeType.Number({
-                        description:
-                            "Score calculated by user performance within their games.",
-                    }),
-                    mode: SafeType.StringEnum(["guessLine", "guessSong"]),
+                    "profilePictureFilename",
+                ]).properties,
+                score: SafeType.Number({
+                    description:
+                        "Score calculated by user performance within their games.",
                 }),
-            ])
+                rank: SafeType.Number(),
+            })
         ),
+        mode: SafeType.StringEnum(["guessLine", "guessSong"]),
+        totalPages: SafeType.Number(),
     },
     {
         $id: "LeaderboardSchema",

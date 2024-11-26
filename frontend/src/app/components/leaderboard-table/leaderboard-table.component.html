@@ -1,37 +1,30 @@
-<hlm-table hlmCardContent class="h-96 w-96 justify-self-center">
-    @for (
-        user of this.leaderboard();
-        track user.id
-    ) {
-        <hlm-trow
-            [ngClass]="{
-                'bg-violet-500 bg-opacity-55':
-                    user.id ===
-                    this.localService.getItem('userInfo')!.id,
-            }"
-            class="flex py-2"
-        >
-            <hlm-td> </hlm-td>
-            <hlm-td
-                class="flex flex-grow gap-2 bg-center backdrop-blur-md"
-            >
-                <div class="flex flex-col">
+<hlm-table hlmCardContent class="w-fit justify-self-center">
+    <hlm-trow>
+        <hlm-th class="w-20 flex justify-center"><span>{{ this.dict().rank }}</span></hlm-th>
+        <hlm-th class="w-64 sm:w-96">{{ this.dict().user }}</hlm-th>
+        <hlm-th class="w-28">{{ this.dict().score }}</hlm-th>
+    </hlm-trow>
+    @for (user of this.leaderboard(); track user.id) {
+        <hlm-trow>
+            <hlm-td class="w-20 flex justify-center font-bold">
+                <span>{{ user.rank }}</span>
+            </hlm-td>
+            <hlm-td class="flex w-64 gap-2 sm:w-96">
+                <div
+                    appLoadProfilePicture
+                    [profilePictureFilename]="user.profilePictureFilename"
+                    class="size-10 rounded-full bg-white p-1"
+                ></div>
+                <div>
                     <div>
-                        <span class="text-lx font-bold">{{
-                            user.name
-                        }}</span>
+                        <span>{{ user.name }}</span>
                     </div>
                     <div>
-                        <span>&#64;</span
-                        ><span class="text-lx">{{
-                            user.username
-                        }}</span>
+                        <span>&#64;</span><span>{{ user.username }}</span>
                     </div>
                 </div>
             </hlm-td>
-            <hlm-td class="text-lx font-bold">
-                {{ user.score }} P
-            </hlm-td>
+            <hlm-td class="w-24"> {{ user.score }} </hlm-td>
         </hlm-trow>
     }
 </hlm-table>
