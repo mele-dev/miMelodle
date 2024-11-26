@@ -1,7 +1,4 @@
 import {
-    getMultipleArtists,
-    getSeveralTracks,
-    getTrack,
     TrackObject,
 } from "../apiCodegen/spotify.js";
 import {
@@ -15,9 +12,15 @@ import {
 } from "../types/game.js";
 import { runPreparedQuery } from "./database.js";
 import MusixmatchAPI from "../musixmatch-api/musixmatch.js";
-import { RequireSpotify } from "../spotify/helpers.js";
 import { DeepRequired } from "ts-essentials";
 import { faker } from "@faker-js/faker";
+import {
+    getRandomHardCodedLine,
+    getRandomHardCodedSnippet,
+    getSeveralMaybeHardCodedArtists,
+    getSeveralMaybeHardCodedTracks,
+} from "../hardcoded/hardCodedUtils.js";
+import { hardCodedSettings } from "../utils/settings.js";
 
 export function checkSongGuess(opts: {
     targetTrack: DeepRequired<TrackObject>;
@@ -89,22 +92,20 @@ export async function getGuessSongInformation(opts: {
         (val) => val !== undefined
     );
 
-    const idsToFetch = [hiddenTrackId, ...idsExceptHidden].join(",");
+    const idsToFetch = [hiddenTrackId, ...idsExceptHidden];
 
-    const tracksInfo = (await getSeveralTracks({
-        ids: idsToFetch,
-    })) as RequireSpotify<typeof getSeveralTracks>;
+    const tracksInfo = await getSeveralMaybeHardCodedTracks(idsToFetch);
 
-    const hiddenTrack = tracksInfo.tracks.find((t) => t.id === hiddenTrackId)!;
+    const hiddenTrack = tracksInfo.find((t) => t.id === hiddenTrackId)!;
 
-    const artists = (await getMultipleArtists({
-        ids: hiddenTrack.artists.map((a) => a.id).join(","),
-    })) as RequireSpotify<typeof getMultipleArtists>;
+    const artists = await getSeveralMaybeHardCodedArtists(
+        hiddenTrack.artists!.map((a) => a.id!)!
+    );
 
     const attemptHints: GuessSongHints[] = [];
 
     for (const id of idsExceptHidden) {
-        const trackToCompare = tracksInfo.tracks.find((t) => t.id === id);
+        const trackToCompare = tracksInfo.find((t) => t.id === id);
 
         if (hiddenTrack === undefined || trackToCompare === undefined) {
             return { status: "TrackNotFound" };
@@ -147,7 +148,7 @@ export async function getGuessSongInformation(opts: {
         hints: {
             attempts: attemptHints,
             album: albumHints,
-            artists: artists.artists,
+            artists: artists,
             snippet: gameInfo[0].snippet ?? undefined,
             correctTrack: gameHasEnded ? hiddenTrack : undefined,
             currentScore: gameInfo[0].score,
@@ -156,6 +157,10 @@ export async function getGuessSongInformation(opts: {
 }
 
 export async function getTrackSnippet(trackIsrc: string) {
+    if (hardCodedSettings.shouldWorkOffline) {
+        return getRandomHardCodedSnippet();
+    }
+
     const api = new MusixmatchAPI();
 
     const result = await api.getTrackSnippet({
@@ -170,6 +175,9 @@ export async function getTrackSnippet(trackIsrc: string) {
 }
 
 export async function getTrackLine(trackIsrc: string) {
+    if (hardCodedSettings.shouldWorkOffline) {
+        return getRandomHardCodedLine();
+    }
     const api = new MusixmatchAPI();
 
     const lyricsResponse = await api.getTrackLyrics({
@@ -245,7 +253,9 @@ export async function getGuessLineInformation(opts: {
                         return hiddenSnippet[i];
                     }
 
-                    if (hiddenSnippet.toLowerCase().includes(char.toLowerCase())) {
+                    if (
+                        hiddenSnippet.toLowerCase().includes(char.toLowerCase())
+                    ) {
                         return "~";
                     }
 
@@ -256,13 +266,15 @@ export async function getGuessLineInformation(opts: {
         };
     });
 
-    const hasWon = attempts.some(a => a.toLowerCase() === hiddenSnippet.toLowerCase());
+    const hasWon = attempts.some(
+        (a) => a.toLowerCase() === hiddenSnippet.toLowerCase()
+    );
     const hasLost = !hasWon && attempts.length >= 6;
     const hasEnded = hasWon || hasLost;
 
-    const track = (await getTrack(
-        gameInfo[0].spotifyTrackId
-    )) as RequireSpotify<typeof getTrack>;
+    const track = (
+        await getSeveralMaybeHardCodedTracks([gameInfo[0].spotifyTrackId])
+    )[0];
 
     return {
         status: "Success",

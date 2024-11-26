@@ -13,6 +13,11 @@ import { sendError, sendOk } from "../../../../../../utils/reply.js";
 import { runPreparedQuery } from "../../../../../../services/database.js";
 import { insertGuessLineGame } from "../../../../../../queries/dml.queries.js";
 import { getTrackLine } from "../../../../../../services/game.js";
+import { hardCodedSettings } from "../../../../../../utils/settings.js";
+import {
+    getSeveralMaybeHardCodedTracks,
+    getShuffledHardCodedSongs,
+} from "../../../../../../hardcoded/hardCodedUtils.js";
 
 export default (async (fastify) => {
     fastify.post("", {
@@ -33,11 +38,11 @@ export default (async (fastify) => {
             tags: ["Melodle"] satisfies MelodleTagName[],
         },
         async handler(request, reply) {
-            const tracks = await getSeveralTracks({
-                ids: request.body.fromTracks.join(","),
-            });
+            const tracks = await getSeveralMaybeHardCodedTracks(
+                request.body.fromTracks
+            );
 
-            const trackQueue = faker.helpers.shuffle(tracks.tracks);
+            const trackQueue = faker.helpers.shuffle(tracks);
 
             for (const track of trackQueue) {
                 const isrc = track?.external_ids?.isrc;

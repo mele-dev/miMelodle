@@ -17,7 +17,7 @@ import {
 import { friendSchema, User, userSchema } from "../../types/user.js";
 import { sendOk } from "../../utils/reply.js";
 import { isAxiosError } from "axios";
-import { getGuessSongFromUser } from "../../queries/dml.queries.js";
+import { hardCodedSongs } from "../../hardcoded/hardCodedSongs.js";
 
 export default (async (fastify) => {
     if (typedEnv.NODE_ENV === "development") {
@@ -104,12 +104,7 @@ export default (async (fastify) => {
         },
         async handler(_request, reply) {
             try {
-                const result = await runPreparedQuery(getGuessSongFromUser, {
-                    "gameId": 4,
-                    "selfId": 1,
-                })
-
-                return result;
+                return hardCodedSongs[0]
             } catch (e) {
                 if (isAxiosError(e)) {
                     return reply.code(e.status ?? 269).send(e.response?.data);
