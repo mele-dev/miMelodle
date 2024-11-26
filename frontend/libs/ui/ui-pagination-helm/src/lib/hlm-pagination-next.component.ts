@@ -17,13 +17,14 @@ import { HlmPaginationLinkDirective } from './hlm-pagination-link.directive';
 			size="default"
 			[attr.aria-label]="'Go to next page'"
 		>
-			<span>Next</span>
+			<span>{{ text() }}</span>
 			<hlm-icon size="sm" name="lucideChevronRight" />
 		</a>
 	`,
 })
 export class HlmPaginationNextComponent {
 	public readonly class = input('');
+	public readonly text = input('');
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	public readonly link = input<string | any[] | null | undefined>();
 

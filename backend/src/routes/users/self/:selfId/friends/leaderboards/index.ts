@@ -18,7 +18,11 @@ export default (async (fastify, _opts) => {
     fastify.get("/", {
         onRequest: [decorators.authenticateSelf()],
         schema: {
-            querystring: SafeType.Pick(queryStringSchema, ["page", "pageSize", "gameMode"]),
+            querystring: SafeType.Pick(queryStringSchema, [
+                "page",
+                "pageSize",
+                "gameMode",
+            ]),
             params: SafeType.Pick(ParamsSchema, ["selfId"]),
             response: {
                 200: leaderboardSchema,
@@ -33,7 +37,11 @@ export default (async (fastify, _opts) => {
                 ...request.query,
                 filterByFriends: true,
             });
-            return sendOk(reply, 200, { leaderboard: result });
+            return sendOk(reply, 200, {
+                leaderboard: result,
+                mode: request.query.gameMode,
+                totalPages: result?.[0].totalPages,
+            });
         },
     });
 
@@ -57,7 +65,7 @@ export default (async (fastify, _opts) => {
             const queryResult = await runPreparedQuery(deleteRankingData, {
                 ...request.params,
                 ...request.query,
-                "baseScore": basePoints
+                baseScore: basePoints,
             });
             switch (queryResult.length) {
                 case 0:

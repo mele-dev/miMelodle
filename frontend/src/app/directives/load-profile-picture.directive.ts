@@ -23,7 +23,6 @@ export class LoadProfilePictureDirective {
     constructor() {
         effect(async () => {
             const filename = this.profilePictureFilename();
-            console.log(filename);
 
             if (!filename) {
                 return;

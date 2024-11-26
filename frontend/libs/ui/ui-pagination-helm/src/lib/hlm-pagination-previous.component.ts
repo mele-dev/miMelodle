@@ -18,12 +18,13 @@ import { HlmPaginationLinkDirective } from './hlm-pagination-link.directive';
 			[attr.aria-label]="'Go to previous page'"
 		>
 			<hlm-icon size="sm" name="lucideChevronLeft" />
-			<span>Previous</span>
+			<span>{{ text() }}</span>
 		</a>
 	`,
 })
 export class HlmPaginationPreviousComponent {
 	public readonly class = input('');
+	public readonly text = input('');
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	public readonly link = input<string | any[] | null | undefined>();
 

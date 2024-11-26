@@ -13,6 +13,14 @@ const leaderboardTranslations = {
         en: "Friends leaderboard",
         es: "Tabla de clasifiación de amigos",
     },
+    title: {
+        en: "Leaderboards",
+        es: "Clasificaciones",
+    },
+    onlyFriends: {
+        en: "Only friends",
+        es: "Sólo amigos",
+    },
     deleteDialog: {
         en: "By choosing a game mode, the ranking data for that game mode will be cleared. Are you sure you want to continue?",
         es: "Al elegir un modo de juego, los datos de clasificación del mismo se borrarán. ¿Estás seguro de continuar?",
@@ -45,7 +53,19 @@ const leaderboardTranslations = {
     },
     filter: {
         en: "Just friends",
-        es: "Solo amigos"
+        es: "Solo amigos",
+    },
+    next: {
+        en: "Next",
+        es: "Siguiente",
+    },
+    previous: {
+        en: "Previous",
+        es: "Anterior",
+    },
+    fetchError: {
+        en: "Error while trying to fetch leaderboard information.",
+        es: "Error al intentar conseguir información de clasificaciones.",
     }
 } as const satisfies Translations;
 
