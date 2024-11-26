@@ -1,0 +1,259 @@
+@if (userInfo() !== undefined && userIconSVG !== "") {
+<hlm-tabs
+    tab="profile"
+    class="mx-auto mt-32 flex max-w-3xl flex-col space-x-2 px-10 md:flex-row lg:w-[100rem]"
+>
+    <hlm-tabs-list
+        class="md:mt-2 md:h-fit md:flex-col md:space-y-1"
+        aria-label="tabs example"
+    >
+        <button class="w-full" hlmTabsTrigger="profile">
+            {{this.dict().userConfig}}
+        </button>
+        @if (this.selfService.shouldNeedPassword()) {
+        <button class="w-full" hlmTabsTrigger="password">
+            {{this.dict().password}}
+        </button>
+        }
+        <button class="w-full" hlmTabsTrigger="danger">
+            {{this.dict().dangerZone}}
+        </button>
+    </hlm-tabs-list>
+    <div hlmTabsContent="profile" class="w-full">
+        <section brnCard>
+            <div class="group flex cursor-pointer justify-center" tabindex="0">
+                <brn-popover sideOffset="5" closeDelay="100">
+                    <button
+                        [innerHTML]="this.sanitizer.bypassSecurityTrustHtml(chosenIcon()?.svg ?? '')"
+                        class="aspect-square h-40 w-40 rounded-full bg-white p-5"
+                        id="edit-profile"
+                        variant="outline"
+                        brnPopoverTrigger
+                        hlmBtn
+                        tabindex="0"
+                        type="button"
+                    ></button>
+                    <div
+                        hlmPopoverContent
+                        class="grid w-80 gap-4"
+                        *brnPopoverContent="let ctx"
+                    >
+                        <div class="space-y-2">
+                            <h4 class="font-medium leading-none">
+                                {{this.dict().userIcon}}
+                            </h4>
+                        </div>
+                        <app-icon-picker
+                            [icons]="this.allIcons ?? []"
+                            [columns]="4"
+                            (selectedIconChange)="this.chosenIcon.set($event)"
+                        ></app-icon-picker>
+                    </div>
+                </brn-popover>
+            </div>
+
+            <div class="flex items-center justify-center space-y-1.5 p-6">
+                <h3>
+                    <span class="text-lg font-bold leading-none tracking-tight"
+                        >{{userInfo()?.name}}</span
+                    >
+                    <span> | </span>
+                    <span>&#64;</span>
+                    <span
+                        class="text-lg font-semibold leading-none tracking-tight"
+                        >{{userInfo()?.username}}</span
+                    >
+                </h3>
+            </div>
+            <p hlmCardContent>
+                <label class="my-4 block" hlmLabel>
+                    {{this.dict().name}}
+                    <input
+                        class="mt-1.5 w-full"
+                        hlmInput
+                        [formControl]="user.controls.name"
+                    />
+                </label>
+                <label class="my-4 block" hlmLabel>
+                    {{this.dict().username}}
+                    <input
+                        class="mt-1.5 w-full"
+                        hlmInput
+                        [formControl]="user.controls.username"
+                    />
+                </label>
+                <label class="my-4 block" hlmLabel>
+                    {{this.dict().email}}
+                    <input
+                        class="mt-1.5 w-full"
+                        hlmInput
+                        [formControl]="user.controls.email"
+                    />
+                </label>
+            </p>
+            <div hlmCardFooter class="flex justify-center">
+                <button id="edit-profile" (click)="onSubmit()" hlmBtn>
+                    {{this.dict().save}}
+                </button>
+            </div>
+        </section>
+    </div>
+    <div hlmTabsContent="password">
+        <section hlmCard>
+            <div hlmCardHeader>
+                <h3 hlmCardTitle>{{this.dict().password}}</h3>
+                <p hlmCardDescription>{{this.dict().passwordSection}}</p>
+            </div>
+            <p hlmCardContent>
+                <label class="my-4 block" hlmLabel>
+                    {{this.dict().old}}
+                    <input
+                        class="mt-1.5 w-full"
+                        id="oldPassword"
+                        type="password"
+                        hlmInput
+                        [formControl]="changePasasword.controls.oldPassword"
+                    />
+                </label>
+                <label class="my-4 block" hlmLabel>
+                    {{this.dict().new}}
+                    <input
+                        class="mt-1.5 w-full"
+                        id="newPassword"
+                        type="password"
+                        hlmInput
+                        [formControl]="changePasasword.controls.password"
+                    />
+                </label>
+            </p>
+            <div hlmCardFooter>
+                <button (click)="this.changePassword()" hlmBtn>
+                    {{this.dict().save}}
+                </button>
+            </div>
+        </section>
+    </div>
+    <div hlmTabsContent="danger">
+        <section hlmCard>
+            <div hlmCardHeader>
+                <h3 hlmCardTitle>{{this.dict().deleteAccount}}</h3>
+                <p hlmCardDescription>{{this.dict().questionAccount}}</p>
+            </div>
+            <div hlmCardFooter>
+                <hlm-dialog>
+                    <button
+                        variant="destructive"
+                        id="edit-profile"
+                        brnDialogTrigger
+                        hlmBtn
+                    >
+                        {{this.dict().deleteAccount}}
+                    </button>
+                    <hlm-dialog-content
+                        class="sm:max-w-[425px]"
+                        *brnDialogContent="let ctx"
+                    >
+                        <hlm-dialog-header>
+                            <h3 hlmDialogTitle>
+                                {{this.dict().accountExplanation}}
+                            </h3>
+                        </hlm-dialog-header>
+                        <div class="grid gap-4 py-4">
+                            <div class="grid grid-cols-4 items-center gap-4">
+                                <label
+                                    hlmLabel
+                                    for="username"
+                                    class="text-right"
+                                >
+                                    {{this.dict().password}}</label
+                                >
+                                <input
+                                    hlmInput
+                                    id="userPassword"
+                                    value=""
+                                    type="password"
+                                    placeholder="*************"
+                                    class="col-span-3"
+                                    [formControl]="changePasasword.controls.oldPassword"
+                                />
+                            </div>
+                        </div>
+                        <hlm-dialog-footer>
+                            <button
+                                variant="destructive"
+                                hlmBtn
+                                (click)="this.deleteAccount()"
+                                type="submit"
+                            >
+                                {{this.dict().delete}}
+                            </button>
+                        </hlm-dialog-footer>
+                    </hlm-dialog-content>
+                </hlm-dialog>
+            </div>
+        </section>
+        <section hlmCard class="mt-2">
+            <div hlmCardHeader>
+                <h3 hlmCardTitle>{{this.dict().deleteRanking}}</h3>
+                <p hlmCardDescription>{{this.dict().rankingExplanation}}</p>
+            </div>
+            <div hlmCardFooter>
+                <hlm-dialog>
+                    <button
+                        variant="destructive"
+                        id="edit-profile"
+                        brnDialogTrigger
+                        hlmBtn
+                    >
+                        {{this.dict().deleteRanking}}
+                    </button>
+                    <hlm-dialog-content
+                        class="sm:max-w-[425px]"
+                        *brnDialogContent="let ctx"
+                    >
+                        <hlm-dialog-header>
+                            <h3 hlmDialogTitle>
+                                {{this.dict().questionRanking}}
+                            </h3>
+                        </hlm-dialog-header>
+                        <div class="grid gap-4 py-4">
+                            <div class="grid grid-cols-4 items-center gap-4">
+                                <label
+                                    hlmLabel
+                                    for="username"
+                                    class="text-right"
+                                >
+                                    {{this.dict().gameMode}}</label
+                                >
+                                <input
+                                    hlmInput
+                                    id="userPassword"
+                                    value=""
+                                    class="col-span-3"
+                                    placeholder="guessLine | guessSong"
+                                    [(ngModel)]="gameMode"
+                                />
+                            </div>
+                        </div>
+                        <hlm-dialog-footer>
+                            <button
+                                variant="destructive"
+                                hlmBtn
+                                (click)="this.deleteAllData()"
+                                type="submit"
+                            >
+                                {{this.dict().delete}}
+                            </button>
+                        </hlm-dialog-footer>
+                    </hlm-dialog-content>
+                </hlm-dialog>
+            </div>
+        </section>
+    </div>
+</hlm-tabs>
+} @else {
+<div class="mt-32 flex h-full w-full items-center justify-center gap-5">
+    <hlm-spinner />
+    <label for="">{{this.dict().loading}}</label>
+</div>
+}

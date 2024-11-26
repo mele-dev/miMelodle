@@ -31,20 +31,29 @@ SELECT id
  WHERE (email = :emailOrUsername! OR username = :emailOrUsername!)
    AND check_password("passwordHash", :password!);
 
-/* @name updateUser */
+
+/* @name updateSensitiveUserData */
    UPDATE users
       SET username           = :username!
         , email              = :email!
         , "passwordHash"     = encrypt_password(:password!)
         , "profilePictureId" = :profilePictureId!
         , name               = :name!
-    WHERE id = :selfId!
+    WHERE (id = :selfId! AND check_password("passwordHash", :oldPassword!))
 RETURNING username;
+
+/* @name updateNonSensitiveUserData */
+UPDATE users
+   SET username = :username!
+     , email    = :email!
+     , name     = :name!
+ WHERE id = :selfId!;
 
 /* @name deleteUser */
    DELETE
      FROM users
     WHERE id = :selfId!
+      AND check_password(users."passwordHash", :password!)
 RETURNING *;
 
 /* @name selectAllIcons */
@@ -57,7 +66,7 @@ SELECT *
 RETURNING 1 AS output;
 
 /* @name getSelfuser */
-SELECT pp.filename AS "profilePictureFile", u.name, u.email, u.username, u.id, u."spotifyId"
+SELECT pp.filename AS "profilePictureFile", u.name, u.email, u.username, u.id, u."profilePictureId", u."spotifyId"
   FROM users u
            INNER JOIN public."profilePictures" pp ON pp.id = u."profilePictureId"
  WHERE u.id = :selfId!;
@@ -300,6 +309,27 @@ SELECT u."id"
                                           AND status = 'accepted'))
  ORDER BY r."score" DESC;
 
+/* @name getLeaderboard */
+  WITH friends AS (SELECT CASE WHEN "userId" = :selfId THEN "user2Id" ELSE "userId" END AS "friendId"
+                     FROM "friendships"
+                    WHERE (("userId" = :selfId OR "user2Id" = :selfId) AND status = 'accepted'))
+SELECT u."id"
+     , u."username"
+     , u."name"
+     , u."profilePictureId"
+     , pp.filename                                         AS "profilePictureFilename"
+     , r."score"
+     , r."mode"
+     , RANK() OVER (ORDER BY r."score" DESC)               AS "rank!"
+     , CEIL((COUNT(*) OVER ())::NUMERIC / :pageSize!)::INT AS "totalPages!"
+  FROM "ranking" r
+           JOIN public.users u ON r."userId" = u."id"
+           INNER JOIN public."profilePictures" pp ON pp.id = u."profilePictureId"
+ WHERE r."mode" = :gameMode!
+   AND (:filterByFriends! = FALSE OR (u."id" = :selfId OR u."id" IN (SELECT "friendId" FROM friends)))
+ ORDER BY r."score" DESC
+ LIMIT :pageSize! OFFSET :pageSize!::BIGINT * :page!::BIGINT;
+
 /* @name insertGuessLineGame */
   WITH "newestGame"    AS (SELECT *
                              FROM "guessLineGame" gsl
@@ -333,3 +363,9 @@ SELECT *
      INTO "guessLineAttempts" ("guessedAt", "guessedSnippet", "gameId")
    VALUES (NOW(), :guessedSnippet!, :gameId!)
 RETURNING *;
+
+/* @name insertUserSpotify */
+   INSERT
+     INTO users (username, email, "passwordHash", "spotifyId", "profilePictureId", name)
+   VALUES (:username!, :email!, default, :spotifyId!, default, :name!)
+RETURNING id;

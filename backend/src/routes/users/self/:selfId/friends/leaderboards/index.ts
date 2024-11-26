@@ -7,10 +7,7 @@ import { runPreparedQuery } from "../../../../../../services/database.js";
 import { leaderboardSchema } from "../../../../../../types/leaderboard.js";
 import {
     deleteRankingData,
-    addUserToLeaderboard,
-    getGlobalLeaderboard,
-    getFriendsLeaderboard,
-    updateScore,
+    getLeaderboard,
 } from "../../../../../../queries/dml.queries.js";
 import { ParamsSchema } from "../../../../../../types/params.js";
 import { MelodleGameSchema } from "../../../../../../types/melodle.js";
@@ -21,8 +18,12 @@ export default (async (fastify, _opts) => {
     fastify.get("/", {
         onRequest: [decorators.authenticateSelf()],
         schema: {
+            querystring: SafeType.Pick(queryStringSchema, [
+                "page",
+                "pageSize",
+                "gameMode",
+            ]),
             params: SafeType.Pick(ParamsSchema, ["selfId"]),
-            querystring: SafeType.Pick(queryStringSchema, ["gameMode"]),
             response: {
                 200: leaderboardSchema,
                 ...SafeType.CreateErrors(["unauthorized"]),
@@ -31,11 +32,16 @@ export default (async (fastify, _opts) => {
             tags: ["Leaderboards"] satisfies MelodleTagName[],
         },
         async handler(request, reply) {
-            const result = await runPreparedQuery(getFriendsLeaderboard, {
+            const result = await runPreparedQuery(getLeaderboard, {
                 ...request.params,
                 ...request.query,
+                filterByFriends: true,
             });
-            return sendOk(reply, 200, { leaderboard: result });
+            return sendOk(reply, 200, {
+                leaderboard: result,
+                mode: request.query.gameMode,
+                totalPages: result?.[0].totalPages,
+            });
         },
     });
 
@@ -59,7 +65,7 @@ export default (async (fastify, _opts) => {
             const queryResult = await runPreparedQuery(deleteRankingData, {
                 ...request.params,
                 ...request.query,
-                "baseScore": basePoints
+                baseScore: basePoints,
             });
             switch (queryResult.length) {
                 case 0:

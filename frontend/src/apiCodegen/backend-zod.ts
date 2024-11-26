@@ -310,6 +310,13 @@ export const getLeaderboardsGameModeParams = zod.object({
     gameMode: zod.string().regex(getLeaderboardsGameModePathGameModeRegExp),
 });
 
+export const getLeaderboardsGameModeQueryPageSizeMax = 50;
+
+export const getLeaderboardsGameModeQueryParams = zod.object({
+    page: zod.number(),
+    pageSize: zod.number().min(1).max(getLeaderboardsGameModeQueryPageSizeMax),
+});
+
 export const getLeaderboardsGameModeResponseLeaderboardItemUsernameMin = 3;
 
 export const getLeaderboardsGameModeResponseLeaderboardItemUsernameMax = 50;
@@ -317,60 +324,33 @@ export const getLeaderboardsGameModeResponseLeaderboardItemUsernameMax = 50;
 export const getLeaderboardsGameModeResponseLeaderboardItemUsernameRegExp =
     new RegExp("^[a-zA-Z0-9\\.-_]+$");
 export const getLeaderboardsGameModeResponseLeaderboardItemNameMax = 25;
-export const getLeaderboardsGameModeResponseLeaderboardItemModeRegExp =
-    new RegExp("^(guessLine|guessSong)$");
+export const getLeaderboardsGameModeResponseModeRegExp = new RegExp(
+    "^(guessLine|guessSong)$"
+);
 
 export const getLeaderboardsGameModeResponse = zod.object({
     leaderboard: zod.array(
-        zod
-            .object({
-                id: zod.number(),
-                username: zod
-                    .string()
-                    .min(
-                        getLeaderboardsGameModeResponseLeaderboardItemUsernameMin
-                    )
-                    .max(
-                        getLeaderboardsGameModeResponseLeaderboardItemUsernameMax
-                    )
-                    .regex(
-                        getLeaderboardsGameModeResponseLeaderboardItemUsernameRegExp
-                    ),
-                name: zod
-                    .string()
-                    .min(1)
-                    .max(getLeaderboardsGameModeResponseLeaderboardItemNameMax),
-                profilePictureId: zod.number(),
-                profilePictureFilename: zod.string(),
-            })
-            .and(
-                zod.object({
-                    score: zod.number(),
-                    mode: zod
-                        .string()
-                        .regex(
-                            getLeaderboardsGameModeResponseLeaderboardItemModeRegExp
-                        ),
-                })
-            )
+        zod.object({
+            id: zod.number(),
+            username: zod
+                .string()
+                .min(getLeaderboardsGameModeResponseLeaderboardItemUsernameMin)
+                .max(getLeaderboardsGameModeResponseLeaderboardItemUsernameMax)
+                .regex(
+                    getLeaderboardsGameModeResponseLeaderboardItemUsernameRegExp
+                ),
+            name: zod
+                .string()
+                .min(1)
+                .max(getLeaderboardsGameModeResponseLeaderboardItemNameMax),
+            profilePictureId: zod.number(),
+            profilePictureFilename: zod.string(),
+            score: zod.number(),
+            rank: zod.number(),
+        })
     ),
-});
-
-/**
- * This endpoint retrieves the lyrics for a given track using its Musixmatch ID
- * @summary Get lyrics for a specific track
- */
-export const getLyricsTrackMusixMatchIdParams = zod.object({
-    trackMusixMatchId: zod.number(),
-});
-
-export const getLyricsTrackMusixMatchIdResponse = zod.object({
-    lyricsId: zod.string(),
-    trackId: zod.string(),
-    lyricsBody: zod.string(),
-    explicit: zod.boolean(),
-    language: zod.string(),
-    copyright: zod.string().optional(),
+    mode: zod.string().regex(getLeaderboardsGameModeResponseModeRegExp),
+    totalPages: zod.number(),
 });
 
 /**
@@ -393,6 +373,23 @@ export const getPublicIconsResponseItem = zod.object({
     filename: zod.string(),
 });
 export const getPublicIconsResponse = zod.array(getPublicIconsResponseItem);
+
+/**
+ * This endpoint retrieves the lyrics for a given track using its Musixmatch ID
+ * @summary Get lyrics for a specific track
+ */
+export const getLyricsTrackMusixMatchIdParams = zod.object({
+    trackMusixMatchId: zod.number(),
+});
+
+export const getLyricsTrackMusixMatchIdResponse = zod.object({
+    lyricsId: zod.string(),
+    trackId: zod.string(),
+    lyricsBody: zod.string(),
+    explicit: zod.boolean(),
+    language: zod.string(),
+    copyright: zod.string().optional(),
+});
 
 /**
  * Authentication is not needed to see public user information.
@@ -865,6 +862,7 @@ export const getUsersSelfSelfIdResponse = zod.object({
     id: zod.number(),
     spotifyId: zod.string().optional(),
     profilePictureFile: zod.string(),
+    profilePictureId: zod.number(),
 });
 
 /**
@@ -887,9 +885,12 @@ export const putUsersSelfSelfIdBodyEmailRegExp = new RegExp(
     "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$"
 );
 export const putUsersSelfSelfIdBodyNameMax = 25;
-export const putUsersSelfSelfIdBodyPasswordMin = 3;
+export const putUsersSelfSelfIdBodySensitiveOldPasswordMin = 3;
 
-export const putUsersSelfSelfIdBodyPasswordMax = 20;
+export const putUsersSelfSelfIdBodySensitiveOldPasswordMax = 20;
+export const putUsersSelfSelfIdBodySensitivePasswordMin = 3;
+
+export const putUsersSelfSelfIdBodySensitivePasswordMax = 20;
 
 export const putUsersSelfSelfIdBody = zod.object({
     username: zod
@@ -902,11 +903,19 @@ export const putUsersSelfSelfIdBody = zod.object({
         .max(putUsersSelfSelfIdBodyEmailMax)
         .regex(putUsersSelfSelfIdBodyEmailRegExp),
     name: zod.string().min(1).max(putUsersSelfSelfIdBodyNameMax),
-    password: zod
-        .string()
-        .min(putUsersSelfSelfIdBodyPasswordMin)
-        .max(putUsersSelfSelfIdBodyPasswordMax),
     profilePictureId: zod.number(),
+    sensitive: zod
+        .object({
+            oldPassword: zod
+                .string()
+                .min(putUsersSelfSelfIdBodySensitiveOldPasswordMin)
+                .max(putUsersSelfSelfIdBodySensitiveOldPasswordMax),
+            password: zod
+                .string()
+                .min(putUsersSelfSelfIdBodySensitivePasswordMin)
+                .max(putUsersSelfSelfIdBodySensitivePasswordMax),
+        })
+        .optional(),
 });
 
 export const putUsersSelfSelfIdResponseUsernameMin = 3;
@@ -922,9 +931,12 @@ export const putUsersSelfSelfIdResponseEmailRegExp = new RegExp(
     "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$"
 );
 export const putUsersSelfSelfIdResponseNameMax = 25;
-export const putUsersSelfSelfIdResponsePasswordMin = 3;
+export const putUsersSelfSelfIdResponseSensitiveOldPasswordMin = 3;
 
-export const putUsersSelfSelfIdResponsePasswordMax = 20;
+export const putUsersSelfSelfIdResponseSensitiveOldPasswordMax = 20;
+export const putUsersSelfSelfIdResponseSensitivePasswordMin = 3;
+
+export const putUsersSelfSelfIdResponseSensitivePasswordMax = 20;
 
 export const putUsersSelfSelfIdResponse = zod.object({
     username: zod
@@ -937,11 +949,19 @@ export const putUsersSelfSelfIdResponse = zod.object({
         .max(putUsersSelfSelfIdResponseEmailMax)
         .regex(putUsersSelfSelfIdResponseEmailRegExp),
     name: zod.string().min(1).max(putUsersSelfSelfIdResponseNameMax),
-    password: zod
-        .string()
-        .min(putUsersSelfSelfIdResponsePasswordMin)
-        .max(putUsersSelfSelfIdResponsePasswordMax),
     profilePictureId: zod.number(),
+    sensitive: zod
+        .object({
+            oldPassword: zod
+                .string()
+                .min(putUsersSelfSelfIdResponseSensitiveOldPasswordMin)
+                .max(putUsersSelfSelfIdResponseSensitiveOldPasswordMax),
+            password: zod
+                .string()
+                .min(putUsersSelfSelfIdResponseSensitivePasswordMin)
+                .max(putUsersSelfSelfIdResponseSensitivePasswordMax),
+        })
+        .optional(),
 });
 
 /**
@@ -950,6 +970,17 @@ export const putUsersSelfSelfIdResponse = zod.object({
  */
 export const deleteUsersSelfSelfIdParams = zod.object({
     selfId: zod.number(),
+});
+
+export const deleteUsersSelfSelfIdBodyPasswordMin = 3;
+
+export const deleteUsersSelfSelfIdBodyPasswordMax = 20;
+
+export const deleteUsersSelfSelfIdBody = zod.object({
+    password: zod
+        .string()
+        .min(deleteUsersSelfSelfIdBodyPasswordMin)
+        .max(deleteUsersSelfSelfIdBodyPasswordMax),
 });
 
 export const deleteUsersSelfSelfIdResponseUsernameMin = 3;
@@ -1385,10 +1416,16 @@ export const getUsersSelfSelfIdFriendsLeaderboardsParams = zod.object({
     selfId: zod.number(),
 });
 
+export const getUsersSelfSelfIdFriendsLeaderboardsQueryPageSizeMax = 50;
 export const getUsersSelfSelfIdFriendsLeaderboardsQueryGameModeRegExp =
     new RegExp("^(guessLine|guessSong)$");
 
 export const getUsersSelfSelfIdFriendsLeaderboardsQueryParams = zod.object({
+    page: zod.number(),
+    pageSize: zod
+        .number()
+        .min(1)
+        .max(getUsersSelfSelfIdFriendsLeaderboardsQueryPageSizeMax),
     gameMode: zod
         .string()
         .regex(getUsersSelfSelfIdFriendsLeaderboardsQueryGameModeRegExp),
@@ -1401,45 +1438,40 @@ export const getUsersSelfSelfIdFriendsLeaderboardsResponseLeaderboardItemUsernam
 export const getUsersSelfSelfIdFriendsLeaderboardsResponseLeaderboardItemUsernameRegExp =
     new RegExp("^[a-zA-Z0-9\\.-_]+$");
 export const getUsersSelfSelfIdFriendsLeaderboardsResponseLeaderboardItemNameMax = 25;
-export const getUsersSelfSelfIdFriendsLeaderboardsResponseLeaderboardItemModeRegExp =
+export const getUsersSelfSelfIdFriendsLeaderboardsResponseModeRegExp =
     new RegExp("^(guessLine|guessSong)$");
 
 export const getUsersSelfSelfIdFriendsLeaderboardsResponse = zod.object({
     leaderboard: zod.array(
-        zod
-            .object({
-                id: zod.number(),
-                username: zod
-                    .string()
-                    .min(
-                        getUsersSelfSelfIdFriendsLeaderboardsResponseLeaderboardItemUsernameMin
-                    )
-                    .max(
-                        getUsersSelfSelfIdFriendsLeaderboardsResponseLeaderboardItemUsernameMax
-                    )
-                    .regex(
-                        getUsersSelfSelfIdFriendsLeaderboardsResponseLeaderboardItemUsernameRegExp
-                    ),
-                name: zod
-                    .string()
-                    .min(1)
-                    .max(
-                        getUsersSelfSelfIdFriendsLeaderboardsResponseLeaderboardItemNameMax
-                    ),
-                profilePictureId: zod.number(),
-                profilePictureFilename: zod.string(),
-            })
-            .and(
-                zod.object({
-                    score: zod.number(),
-                    mode: zod
-                        .string()
-                        .regex(
-                            getUsersSelfSelfIdFriendsLeaderboardsResponseLeaderboardItemModeRegExp
-                        ),
-                })
-            )
+        zod.object({
+            id: zod.number(),
+            username: zod
+                .string()
+                .min(
+                    getUsersSelfSelfIdFriendsLeaderboardsResponseLeaderboardItemUsernameMin
+                )
+                .max(
+                    getUsersSelfSelfIdFriendsLeaderboardsResponseLeaderboardItemUsernameMax
+                )
+                .regex(
+                    getUsersSelfSelfIdFriendsLeaderboardsResponseLeaderboardItemUsernameRegExp
+                ),
+            name: zod
+                .string()
+                .min(1)
+                .max(
+                    getUsersSelfSelfIdFriendsLeaderboardsResponseLeaderboardItemNameMax
+                ),
+            profilePictureId: zod.number(),
+            profilePictureFilename: zod.string(),
+            score: zod.number(),
+            rank: zod.number(),
+        })
     ),
+    mode: zod
+        .string()
+        .regex(getUsersSelfSelfIdFriendsLeaderboardsResponseModeRegExp),
+    totalPages: zod.number(),
 });
 
 /**

@@ -108,8 +108,6 @@ export class AppNavbarComponent {
                 return "English";
             case "es":
                 return "Español";
-            default:
-                throw new UnreachableCaseError(lang);
         }
     }
 

@@ -6,7 +6,8 @@ import { runPreparedQuery } from "../../../../services/database.js";
 import {
     deleteUser,
     getSelfuser,
-    updateUser,
+    updateNonSensitiveUserData,
+    updateSensitiveUserData,
 } from "../../../../queries/dml.queries.js";
 import { sendError, sendOk } from "../../../../utils/reply.js";
 import { decorators } from "../../../../services/decorators.js";
@@ -29,9 +30,12 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                         "name",
                         "id",
                     ]).properties,
-                    spotifyId: SafeType.Optional(userSchema.properties.spotifyId),
+                    spotifyId: SafeType.Optional(
+                        userSchema.properties.spotifyId
+                    ),
                     profilePictureFile:
                         profilePictureSchema.properties.filename,
+                    profilePictureId: profilePictureSchema.properties.id,
                 }),
                 ...SafeType.CreateErrors(["unauthorized"]),
             },
@@ -46,7 +50,10 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 getSelfuser,
                 request.params
             );
-            return sendOk(reply, 200, {...userProfile[0], spotifyId: userProfile[0].spotifyId ?? undefined});
+            return sendOk(reply, 200, {
+                ...userProfile[0],
+                spotifyId: userProfile[0].spotifyId ?? undefined,
+            });
         },
     });
 
@@ -61,38 +68,59 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 },
             ]),
             body: SafeType.WithExamples(
-                SafeType.Pick(userSchema, [
-                    "username",
-                    "email",
-                    "name",
-                    "password",
-                    "profilePictureId",
-                ]),
+                SafeType.Object({
+                    ...SafeType.Pick(userSchema, [
+                        "username",
+                        "email",
+                        "name",
+                        "profilePictureId",
+                    ]).properties,
+                    sensitive: SafeType.Optional(
+                        SafeType.Pick(userSchema, ["oldPassword", "password"])
+                    ),
+                }),
                 [
                     {
                         username: "juanchoTanca",
                         email: "juanchoTanca@gmail.com",
                         name: "juancho",
-                        password: "Juancho123!",
                         profilePictureId: 1,
+                        sensitive: {
+                            password: "Pepe123!",
+                            oldPassword: "Juancho123!!",
+                        },
                     },
                 ]
             ),
             response: {
-                200: SafeType.Pick(userSchema, [
-                    "username",
-                    "email",
-                    "name",
-                    "password",
-                    "profilePictureId",
-                ]),
-                ...SafeType.CreateErrors(["unauthorized"]),
+                200: SafeType.Object({
+                    ...SafeType.Pick(userSchema, [
+                        "username",
+                        "email",
+                        "name",
+                        "profilePictureId",
+                    ]).properties,
+                    sensitive: SafeType.Optional(
+                        SafeType.Pick(userSchema, ["oldPassword", "password"])
+                    ),
+                }),
+                ...SafeType.CreateErrors(["unauthorized", "badRequest"]),
             },
             tags: ["User CRUD", "User"] satisfies MelodleTagName[],
             summary: "Update your user information.",
         },
         handler: async function (request, reply) {
-            await runPreparedQuery(updateUser, {
+            if (request.body.sensitive) {
+                await runPreparedQuery(updateSensitiveUserData, {
+                    ...request.body,
+                    ...request.body.sensitive,
+                    ...request.params,
+                });
+
+                return sendOk(reply, 200, request.body);
+            }
+
+            await runPreparedQuery(updateNonSensitiveUserData, {
                 ...request.body,
                 ...request.params,
             });
@@ -105,6 +133,7 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
         onRequest: [decorators.authenticateSelf()],
         schema: {
             params: selfIdSchema,
+            body: SafeType.Pick(userSchema, ["password"]),
             response: {
                 200: SafeType.Pick(userSchema, ["username"]),
                 ...SafeType.CreateErrors(["unauthorized", "notFound"]),
@@ -117,10 +146,10 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 "implemented once other resources are implemented.",
         },
         handler: async function (request, reply) {
-            const queryResult = await runPreparedQuery(
-                deleteUser,
-                request.params
-            );
+            const queryResult = await runPreparedQuery(deleteUser, {
+                ...request.params,
+                ...request.body,
+            });
 
             switch (queryResult.length) {
                 case 0:

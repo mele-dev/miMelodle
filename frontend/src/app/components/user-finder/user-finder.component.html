@@ -37,34 +37,40 @@
             </hlm-td>
             <hlm-td class="justify-end">
                 <!-- FIXME: The popup errors sometimes. It seems to work anyways though.-->
-                <button hlmBtn type="button" [brnMenuTriggerFor]="userMenu">
-                    TODO ICON
+                <button hlmBtn variant="ghost" [brnMenuTriggerFor]="userMenu">
+                    <hlm-icon name="lucideCircleEllipsis"></hlm-icon>
                 </button>
                 <ng-template #userMenu>
                     <hlm-menu>
-                        <hlm-menu-label> Actions </hlm-menu-label>
+                        <hlm-menu-label>{{
+                            this.dict().actions
+                        }}</hlm-menu-label>
                         <hlm-menu-separator />
-                        <button
-                            type="button"
-                            (click)="this.sendFriendRequest(user)"
-                            hlmMenuItem
-                        >
-                            Add friend
-                        </button>
+                        @if (!this.areTheyFriends(user.id)) {
+                            <button
+                                type="button"
+                                (click)="this.sendFriendRequest(user)"
+                                hlmMenuItem
+                            >
+                                {{ this.dict().addFriend }}
+                            </button>
+                        }
                         <button
                             type="button"
                             hlmMenuItem
                             (click)="this.block(user)"
                         >
-                            Block
+                            {{ this.dict().block }}
                         </button>
-                        <button
-                            type="button"
-                            hlmMenuItem
-                            (click)="this.deleteFriendship(user)"
-                        >
-                            Remove friend
-                        </button>
+                        @if (this.areTheyFriends(user.id)) {
+                            <button
+                                type="button"
+                                hlmMenuItem
+                                (click)="this.deleteFriendship(user)"
+                            >
+                                {{ this.dict().removeFriend }}
+                            </button>
+                        }
                     </hlm-menu>
                 </ng-template>
             </hlm-td>

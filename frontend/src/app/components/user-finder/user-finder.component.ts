@@ -8,7 +8,7 @@ import { toast } from "ngx-sonner";
 import { UserFinderTranslator } from "./user-finder.translations";
 import { FormsModule } from "@angular/forms";
 import { HlmInputDirective } from "@spartan-ng/ui-input-helm";
-import { JsonPipe } from "@angular/common";
+import { CommonModule, JsonPipe } from "@angular/common";
 import { BrnTableModule } from "@spartan-ng/ui-table-brain";
 import { HlmTableModule } from "@spartan-ng/ui-table-helm";
 import { IconCacheService } from "../../services/icon-cache.service";
@@ -31,7 +31,7 @@ import { BlockingService } from "../../services/blocking.service";
 import { HlmScrollAreaModule } from "@spartan-ng/ui-scrollarea-helm";
 import { HlmIconModule } from "@spartan-ng/ui-icon-helm";
 import { provideIcons } from "@ng-icons/core";
-import { lucideMoreHorizontal } from "@ng-icons/lucide";
+import { lucideCircleEllipsis, lucideMoreHorizontal } from "@ng-icons/lucide";
 import { LocalStorageService } from "../../services/local-storage.service";
 import { SelfService } from "../../services/self.service";
 import { HlmPaginationModule } from "@spartan-ng/ui-pagination-helm";
@@ -44,24 +44,19 @@ type SearchedUser = GetUsersSearch200["matches"][number];
     imports: [
         FormsModule,
         HlmInputDirective,
-        JsonPipe,
         BrnTableModule,
         HlmTableModule,
         HlmButtonDirective,
         HlmMenuComponent,
-        HlmMenuGroupComponent,
         HlmMenuItemDirective,
-        HlmMenuItemIconDirective,
-        HlmMenuItemSubIndicatorComponent,
         HlmMenuLabelComponent,
         HlmMenuSeparatorComponent,
-        HlmMenuShortcutComponent,
-        HlmSubMenuComponent,
         BrnMenuTriggerDirective,
         HlmScrollAreaModule,
         HlmIconModule,
+        CommonModule
     ],
-    providers: [provideIcons({ lucideMoreHorizontal })],
+    providers: [provideIcons({ lucideMoreHorizontal, lucideCircleEllipsis })],
     templateUrl: "./user-finder.component.html",
 })
 export class UserFinderComponent {
@@ -129,5 +124,9 @@ export class UserFinderComponent {
 
     async block(user: SearchedUser){
         return await this._blocking.blockUser(user.id);
+    }
+
+    public areTheyFriends(targetId: number){
+        return !!this._friends.friends().find((friend) => friend.id === targetId)
     }
 }

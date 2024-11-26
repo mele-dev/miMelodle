@@ -46,6 +46,10 @@ const translations = {
         en: "There was an error while fetching game information.",
         es: "Se ha producido un error al obtener la información del juego.",
     },
+    albumHint: {
+        en: "The song belongs to the album in the background image!",
+        es: "La canción pertenece al album de la imagen de fondo!"
+    }
 } as const satisfies Translations;
 
 @Injectable({
