@@ -212,12 +212,19 @@ export class GuessSongPage implements OnInit {
         );
 
         this.gameInfo.set(result.data);
+        console.log("pepa")
 
+        this.scrollToBottom()
+
+        this.value.set("")
+
+    }
+
+    scrollToBottom(): void {
         window.scrollTo({
-            top: document.body.scrollHeight,
-            behavior: "smooth", 
+            top: document.documentElement.scrollHeight,
+            behavior: "smooth",
         });
-
     }
 
     async load() {
