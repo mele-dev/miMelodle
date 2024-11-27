@@ -6,8 +6,8 @@ import {
 
 const tutorialsTranslations = {
     title: {
-        en: "A quick tutorial of Melodle",
-        es: "Un tutorial rápido de Melodle",
+        en: "A quick tutorial of Popdle",
+        es: "Un tutorial rápido de Popdle",
     },
     objetiveTitle: {
         en: "Objetive",

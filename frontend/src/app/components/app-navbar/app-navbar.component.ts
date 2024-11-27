@@ -1,7 +1,7 @@
 import { Component, inject } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import {
-    AllMelodlePaths,
+    AllPopdlePaths,
     SafeRoutingService,
 } from "../../services/safe-routing.service";
 import { LanguagePickerComponent } from "../language-picker/language-picker.component";
@@ -104,12 +104,12 @@ export class AppNavbarComponent {
     currentSection() {
         const url = this.safeRouter.url;
         return {
-            game: url.startsWith("/app/game" satisfies AllMelodlePaths),
-            home: url.startsWith("/app/home" satisfies AllMelodlePaths),
+            game: url.startsWith("/app/game" satisfies AllPopdlePaths),
+            home: url.startsWith("/app/home" satisfies AllPopdlePaths),
             leaderboards: url.startsWith(
-                "/app/leaderboards" satisfies AllMelodlePaths
+                "/app/leaderboards" satisfies AllPopdlePaths
             ),
-            profile: url.startsWith("/app/profile" satisfies AllMelodlePaths),
+            profile: url.startsWith("/app/profile" satisfies AllPopdlePaths),
         } as const;
     }
 

@@ -37,11 +37,11 @@ import { FormsModule } from "@angular/forms";
 import { HlmSelectModule } from "@spartan-ng/ui-select-helm";
 import { BrnSelectModule } from "@spartan-ng/ui-select-brain";
 import {
-    MelodleQueryParams,
+    PopdleQueryParams,
     QueryParamsService,
 } from "../../services/query-params.service";
 import { SafeRoutingService } from "../../services/safe-routing.service";
-import { MelodleGameMode } from "../../globalConstants";
+import { PopdleGameMode } from "../../globalConstants";
 
 @Component({
     selector: "app-leaderboard",
@@ -129,19 +129,19 @@ export class LeaderboardComponent implements OnInit {
             page: page,
         })
         this._router.navigate("/app/leaderboards", {
-            queryParams: this.filters() satisfies Partial<MelodleQueryParams>,
+            queryParams: this.filters() satisfies Partial<PopdleQueryParams>,
         });
         this.loadLeaderboardInformation(this.filters());
     }
 
-    changeGameMode(gameMode: MelodleGameMode) {
+    changeGameMode(gameMode: PopdleGameMode) {
         this.filters.set({
             ...this.filters(),
             gameMode,
             page: 1
         });
         this._router.navigate("/app/leaderboards", {
-            queryParams: this.filters() satisfies Partial<MelodleQueryParams>,
+            queryParams: this.filters() satisfies Partial<PopdleQueryParams>,
         });
         this.loadLeaderboardInformation(this.filters());
     }
@@ -153,14 +153,14 @@ export class LeaderboardComponent implements OnInit {
             page: 1
         });
         this._router.navigate("/app/leaderboards", {
-            queryParams: this.filters() satisfies Partial<MelodleQueryParams>,
+            queryParams: this.filters() satisfies Partial<PopdleQueryParams>,
         });
         this.loadLeaderboardInformation(this.filters());
     }
 
     async loadLeaderboardInformation(opts: {
         page?: number;
-        gameMode?: MelodleGameMode;
+        gameMode?: PopdleGameMode;
         filterFriends?: boolean;
     }) {
         try {

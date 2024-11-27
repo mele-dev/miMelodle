@@ -4,7 +4,7 @@ import {
     usersRelationShipSchema,
     friendSchema,
 } from "../../../../../../types/user.js";
-import { MelodleTagName } from "../../../../../../plugins/swagger.js";
+import { PopdleTagName } from "../../../../../../plugins/swagger.js";
 import { decorators } from "../../../../../../services/decorators.js";
 import {
     deleteFriend,
@@ -30,7 +30,7 @@ export default (async (fastify, _opts) => {
                     "unauthorized",
                 ]),
             },
-            tags: ["Friends"] satisfies MelodleTagName[],
+            tags: ["Friends"] satisfies PopdleTagName[],
             summary: "Removes a friend.",
             description: "It transforms the friend into a normal stranger.",
         },
@@ -62,7 +62,7 @@ export default (async (fastify, _opts) => {
         onRequest: [decorators.authenticateSelf()],
         schema: {
             params: usersRelationShipSchema,
-            tags: ["Friends"] satisfies MelodleTagName[],
+            tags: ["Friends"] satisfies PopdleTagName[],
             response: {
                 201: SafeType.Pick(friendSchema, ["status", "username"]),
                 ...SafeType.CreateErrors([
@@ -119,7 +119,7 @@ export default (async (fastify, _opts) => {
         onRequest: [decorators.authenticateSelf()],
         schema: {
             params: usersRelationShipSchema,
-            tags: ["Friends"] satisfies MelodleTagName[],
+            tags: ["Friends"] satisfies PopdleTagName[],
             response: {
                 200: SafeType.Pick(friendSchema, ["status", "username"]),
                 ...SafeType.CreateErrors([

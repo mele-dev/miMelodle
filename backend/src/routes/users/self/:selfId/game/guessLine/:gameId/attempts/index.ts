@@ -1,9 +1,9 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { SafeType } from "../../../../../../../../utils/typebox.js";
-import { MelodleTagName } from "../../../../../../../../plugins/swagger.js";
+import { PopdleTagName } from "../../../../../../../../plugins/swagger.js";
 import { decorators } from "../../../../../../../../services/decorators.js";
 import { ParamsSchema } from "../../../../../../../../types/params.js";
-import { MelodleGuessLineAttemptSchema } from "../../../../../../../../types/melodle.js";
+import { PopdleGuessLineAttemptSchema } from "../../../../../../../../types/popdle.js";
 import { guessLineGameInformationSchema } from "../../../../../../../../types/game.js";
 import { getGuessLineInformation } from "../../../../../../../../services/game.js";
 import { sendError } from "../../../../../../../../utils/reply.js";
@@ -16,7 +16,7 @@ export default (async (fastify) => {
         onRequest: [decorators.authenticateSelf()],
         schema: {
             params: SafeType.Pick(ParamsSchema, ["selfId", "gameId"]),
-            body: SafeType.Pick(MelodleGuessLineAttemptSchema, ["guessedLine"]),
+            body: SafeType.Pick(PopdleGuessLineAttemptSchema, ["guessedLine"]),
             response: {
                 201: guessLineGameInformationSchema,
                 ...SafeType.CreateErrors([
@@ -28,9 +28,9 @@ export default (async (fastify) => {
                     "internalServerError",
                 ]),
             },
-            summary: "Submit a guess for a melodle game.",
+            summary: "Submit a guess for a popdle game.",
             description: undefined,
-            tags: ["Melodle"] satisfies MelodleTagName[],
+            tags: ["Popdle"] satisfies PopdleTagName[],
         },
         async handler(request, reply) {
             const result = await getGuessLineInformation({

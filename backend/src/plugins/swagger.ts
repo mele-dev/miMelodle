@@ -32,8 +32,8 @@ export const tags = [
             "Endpoints of the user's CRUD. (This is the one we implemented.)",
     },
     {
-        name: "Melodle",
-        description: "Endpoints specifically to play the melodle game.",
+        name: "Popdle",
+        description: "Endpoints specifically to play the popdle game.",
     },
     {
         name: "Debug",
@@ -91,16 +91,16 @@ export const tags = [
     externalDocs?: string;
 }[];
 
-export type MelodleTagName = (typeof tags)[number]["name"];
+export type PopdleTagName = (typeof tags)[number]["name"];
 
 export default fp<FastifySwaggerOptions>(async (fastify, _opts) => {
     await fastify.register(swagger, {
         openapi: {
             openapi: "3.0.0",
             info: {
-                title: "Melodle API",
+                title: "Popdle API",
                 description:
-                    "---\n## Documentation for Melodle's devs.\n" +
+                    "---\n## Documentation for Popdle's devs.\n" +
                     `\`\`\`${asciiArt}\`\`\``,
                 version: "0.1.0",
             },
@@ -151,7 +151,7 @@ export default fp<FastifySwaggerOptions>(async (fastify, _opts) => {
             },
         },
         theme: {
-            title: "Melodle API documentation",
+            title: "Popdle API documentation",
             css: [
                 {
                     filename: "theme.css",

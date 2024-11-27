@@ -2,7 +2,7 @@ import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { decorators } from "../../../services/decorators.js";
 import { SafeType } from "../../../utils/typebox.js";
 import { queryStringSchema } from "../../../types/querystring.js";
-import { MelodleTagName } from "../../../plugins/swagger.js";
+import { PopdleTagName } from "../../../plugins/swagger.js";
 import { search, SearchItemsResponse } from "../../../apiCodegen/spotify.js";
 import {
     createSpotifyPagination,
@@ -38,7 +38,7 @@ export default (async (fastify) => {
             },
             summary: "Query information from spotify.",
             description: undefined,
-            tags: ["TODO Schema", "Artists"] satisfies MelodleTagName[],
+            tags: ["TODO Schema", "Artists"] satisfies PopdleTagName[],
             security: [],
         },
         async handler(request, reply) {

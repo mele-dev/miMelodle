@@ -1,5 +1,5 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
-import { MelodleTagName } from "../../../../plugins/swagger.js";
+import { PopdleTagName } from "../../../../plugins/swagger.js";
 import { decorators } from "../../../../services/decorators.js";
 import * as spotifyApi from "../../../../apiCodegen/spotify.js";
 import { runPreparedQuery } from "../../../../services/database.js";
@@ -19,7 +19,7 @@ export default (async (fastify) => {
             },
             security: [],
             summary: "Login through spotify.",
-            tags: ["Auth", "TODO Schema"] satisfies MelodleTagName[],
+            tags: ["Auth", "TODO Schema"] satisfies PopdleTagName[],
         },
         async handler(request, reply) {
             const spotifyToken =

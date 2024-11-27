@@ -1,5 +1,5 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
-import { MelodleTagName } from "../../../../../plugins/swagger.js";
+import { PopdleTagName } from "../../../../../plugins/swagger.js";
 import { SafeType } from "../../../../../utils/typebox.js";
 import { selfIdSchema } from "../../../../../types/user.js";
 import { decorators } from "../../../../../services/decorators.js";
@@ -14,7 +14,7 @@ export default (async (fastify, _opts) => {
         onRequest: [decorators.authenticateSelf()],
         schema: {
             params: selfIdSchema,
-            tags: ["Artists"] satisfies MelodleTagName[],
+            tags: ["Artists"] satisfies PopdleTagName[],
             summary: "Get all the artists in a user's home.",
             response: {
                 200: SafeType.Array(

@@ -1,3 +1,3 @@
 export const supportedLanguages = ["en", "es"] as const;
-export const melodleGameModes = ["guessLine", "guessSong"] as const;
-export type MelodleGameMode = (typeof melodleGameModes)[number];
+export const popdleGameModes = ["guessLine", "guessSong"] as const;
+export type PopdleGameMode = (typeof popdleGameModes)[number];

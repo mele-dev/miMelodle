@@ -69,7 +69,7 @@ export class LoginPage {
         }
     }
 
-    readonly splitMelodle = "Melodle"
+    readonly splitPopdle = "Popdle"
         .split("")
         .map((value, index) => ({ value, index }));
 }
