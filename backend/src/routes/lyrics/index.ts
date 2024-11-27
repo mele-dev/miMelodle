@@ -1,7 +1,7 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { decorators } from "../../services/decorators.js";
 import { SafeType } from "../../utils/typebox.js";
-import { MelodleTagName } from "../../plugins/swagger.js";
+import { PopdleTagName } from "../../plugins/swagger.js";
 import { lyricSchema } from "../../types/lyric.js";
 import { ParamsSchema } from "../../types/params.js";
 import MusixmatchAPI from "../../musixmatch-api/musixmatch.js";
@@ -27,7 +27,7 @@ const lyric: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
             summary: "Get lyrics for a specific track",
             description:
                 "This endpoint retrieves the lyrics for a given track using its Musixmatch ID",
-            tags: ["Lyrics"] satisfies MelodleTagName[],
+            tags: ["Lyrics"] satisfies PopdleTagName[],
         },
         async handler(request, reply) {
             /* TODO: No logre que este me ande, tiene pinta de que nos faltan algunos 

@@ -1,10 +1,10 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { SafeType } from "../../../../../utils/typebox.js";
-import { MelodleTagName } from "../../../../../plugins/swagger.js";
+import { PopdleTagName } from "../../../../../plugins/swagger.js";
 import { decorators } from "../../../../../services/decorators.js";
 import { ParamsSchema } from "../../../../../types/params.js";
 import { userSchema } from "../../../../../types/user.js";
-import { melodleGameConfig } from "../../../../../types/melodle.js";
+import { popdleGameConfig } from "../../../../../types/popdle.js";
 
 export default (async (fastify) => {
     fastify.get("", {
@@ -12,13 +12,13 @@ export default (async (fastify) => {
         schema: {
             params: SafeType.Pick(ParamsSchema, ["selfId"]),
             response: {
-                200: SafeType.Array(melodleGameConfig, {
+                200: SafeType.Array(popdleGameConfig, {
                     description: "All configurations from this user.",
                 }),
                 ...SafeType.CreateErrors(["unauthorized"]),
             },
             summary: "Get saved user configurations.",
-            tags: ["Game configs"] satisfies MelodleTagName[],
+            tags: ["Game configs"] satisfies PopdleTagName[],
         },
         async handler(_request, reply) {
             return reply.notImplemented();
@@ -29,48 +29,48 @@ export default (async (fastify) => {
         onRequest: [decorators.authenticateSelf()],
         schema: {
             params: SafeType.Pick(ParamsSchema, ["selfId"]),
-            body: SafeType.Omit(melodleGameConfig, ["id"]),
+            body: SafeType.Omit(popdleGameConfig, ["id"]),
             response: {
-                200: melodleGameConfig,
+                200: popdleGameConfig,
                 ...SafeType.CreateErrors(["unauthorized"]),
             },
             summary: "Add a new configuration preset.",
             description: undefined,
-            tags: ["Game configs"] satisfies MelodleTagName[],
+            tags: ["Game configs"] satisfies PopdleTagName[],
         },
         async handler(_request, reply) {
             return reply.notImplemented();
         },
     });
 
-    fastify.delete("/:melodleConfigId", {
+    fastify.delete("/:popdleConfigId", {
         onRequest: [decorators.authenticateSelf()],
         schema: {
-            params: SafeType.Pick(ParamsSchema, ["selfId", "melodleConfigId"]),
+            params: SafeType.Pick(ParamsSchema, ["selfId", "popdleConfigId"]),
             response: {
-                200: melodleGameConfig,
+                200: popdleGameConfig,
                 ...SafeType.CreateErrors(["unauthorized", "notFound"]),
             },
             summary: "Delete a configuration preset.",
             description: undefined,
-            tags: ["Game configs"] satisfies MelodleTagName[],
+            tags: ["Game configs"] satisfies PopdleTagName[],
         },
         async handler(_request, reply) {
             return reply.notImplemented();
         },
     });
 
-    fastify.put("/:melodleConfigId", {
+    fastify.put("/:popdleConfigId", {
         onRequest: [decorators.authenticateSelf()],
         schema: {
-            params: SafeType.Pick(ParamsSchema, ["selfId", "melodleConfigId"]),
+            params: SafeType.Pick(ParamsSchema, ["selfId", "popdleConfigId"]),
             response: {
-                200: melodleGameConfig,
+                200: popdleGameConfig,
                 ...SafeType.CreateErrors(["unauthorized", "notFound"]),
             },
             summary: "Update a configuration preset.",
             description: undefined,
-            tags: ["Game configs"] satisfies MelodleTagName[],
+            tags: ["Game configs"] satisfies PopdleTagName[],
         },
         async handler(_request, reply) {
             return reply.notImplemented();
@@ -83,7 +83,7 @@ export default (async (fastify) => {
             params: SafeType.Pick(ParamsSchema, ["selfId"]),
             querystring: SafeType.Pick(userSchema, ["spotifyId"]),
             response: {
-                200: SafeType.Array(SafeType.Omit(melodleGameConfig, ["id"])),
+                200: SafeType.Array(SafeType.Omit(popdleGameConfig, ["id"])),
                 ...SafeType.CreateErrors(["unauthorized"]),
             },
             summary:
@@ -91,7 +91,7 @@ export default (async (fastify) => {
             description:
                 "TODO: Discuss whether we should ask for the id or "
                 + "make the frontend fetch the data and pass it to us." ,
-            tags: ["Game configs"] satisfies MelodleTagName[],
+            tags: ["Game configs"] satisfies PopdleTagName[],
         },
         async handler(_request, reply) {
             return reply.notImplemented();

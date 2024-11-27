@@ -1,4 +1,4 @@
-# Historias de Usuario - Melodle
+# Historias de Usuario - Popdle
 info
 
 ## Notas generales
@@ -16,10 +16,10 @@ info
 - Orden de prioridades:
     Detalle < Baja < Media < Alta < Vital
 
-## Historia de Usuario - Registro de nuevo usuario en Melodle
+## Historia de Usuario - Registro de nuevo usuario en Popdle
 
 ### Descripción
-Como nuevo usuario, quiero poder registrarme en Melodle para poder hacer uso
+Como nuevo usuario, quiero poder registrarme en Popdle para poder hacer uso
 de sus funcionalidades.
 
 ### Criterios de aceptación [ ]
@@ -71,10 +71,10 @@ Vital
 
 --------------------------------------------------------------------------------
 
-## Historia de Usuario - Inicio de Sesión en Melodle
+## Historia de Usuario - Inicio de Sesión en Popdle
 
 ### Descripción
-Como usuario registrado, quiero poder iniciar sesión en Melodle para acceder a
+Como usuario registrado, quiero poder iniciar sesión en Popdle para acceder a
 mis datos y utilizar las funcionalidades de la aplicación.
 
 ### Criterios de aceptación [ ]
@@ -119,10 +119,10 @@ Vital
 
 --------------------------------------------------------------------------------
 
-## Historia de Usuario - Juego Diario de Melodle
+## Historia de Usuario - Juego Diario de Popdle
 
 ### Descripción
-Como usuario de Melodle, quiero poder jugar una vez al día para intentar
+Como usuario de Popdle, quiero poder jugar una vez al día para intentar
 adivinar una línea de una canción, o canción, de manera similar a Wordle, para poner a prueba mi conocimiento musicales y disfrutar de un desafío diario.
 
 ### Criterios de aceptación [ ]
@@ -170,10 +170,10 @@ Alta
 
 --------------------------------------------------------------------------------
 
-## Historia de Usuario - Configuración del Juego en Melodle
+## Historia de Usuario - Configuración del Juego en Popdle
 
 ### Descripción
-Como usuario de Melodle, quiero poder personalizar la configuración del juego
+Como usuario de Popdle, quiero poder personalizar la configuración del juego
 diario para seleccionar diferentes modos y filtros, como elegir canciones de ciertos artistas o adivinar el nombre de las mismas en base a pistas, para tener
 una experiencia más adaptada a mis gustos musicales.
 
@@ -220,12 +220,12 @@ Media
 
 --------------------------------------------------------------------------------
 
-## Historia de Usuario - Página de Inicio de Melodle
+## Historia de Usuario - Página de Inicio de Popdle
 
 ### Descripción
-Como usuario de Melodle, quiero que mi página de inicio muestre una lista
+Como usuario de Popdle, quiero que mi página de inicio muestre una lista
 personalizada de mis artistas favoritos, con información relevante sobre sus
-proyectos y la opción de interactuar con ellos en el juego de Melodle, para
+proyectos y la opción de interactuar con ellos en el juego de Popdle, para
 mantenerme informado de sus novedades y participar más activamente en el juego.
 
 ### Criterios de aceptación [ ]
@@ -236,7 +236,7 @@ mantenerme informado de sus novedades y participar más activamente en el juego.
     - [ ] Nombre del artista.
     - [ ] Imagen del artista.
     - [~] Información relevante sobre sus próximos proyectos, como giras, álbumes y canciones.
-    - [ ] Un botón para jugar Melodle relacionado con ese artista (si está disponible).
+    - [ ] Un botón para jugar Popdle relacionado con ese artista (si está disponible).
 - [ ] La información debe actualizarse automáticamente para reflejar las novedades de cada artista.
 
 ### Prioridad
@@ -268,10 +268,10 @@ Media
 
 --------------------------------------------------------------------------------
 
-## Historia de Usuario - Agregar Amigos en Melodle
+## Historia de Usuario - Agregar Amigos en Popdle
 
 ### Descripción
-Como usuario de Melodle, quiero poder agregar amigos para competir en el juego de Melodle (Wordle musical) y comparar nuestras puntuaciones, para disfrutar de una experiencia más social y motivadora a través de la competencia amistosa.
+Como usuario de Popdle, quiero poder agregar amigos para competir en el juego de Popdle (Wordle musical) y comparar nuestras puntuaciones, para disfrutar de una experiencia más social y motivadora a través de la competencia amistosa.
 
 ### Criterios de aceptación [ ]
 - [ ] El usuario debe poder agregar amigos mediante búsqueda por nombre de usuario.
@@ -280,7 +280,7 @@ Como usuario de Melodle, quiero poder agregar amigos para competir en el juego d
 - [ ] Debe haber una sección dedicada donde se muestre una lista de amigos
       agregados, indicando si fueron agregados manualmente o sincronizados.
 - [ ] El juego debe incluir un leaderboard visible en la página de amigos, que
-      muestre las puntuaciones diarias de los amigos en el juego de Melodle.
+      muestre las puntuaciones diarias de los amigos en el juego de Popdle.
 - [ ] El usuario debe poder ver el perfil de sus amigos, que incluya información
       básica y su rendimiento en el juego.
 
@@ -318,10 +318,10 @@ Media
 
 --------------------------------------------------------------------------------
 
-# Historia de Usuario - Editar Perfil en Melodle
+# Historia de Usuario - Editar Perfil en Popdle
 
 ## Descripción
-Como usuario de Melodle, quiero poder editar mi perfil para personalizar mi
+Como usuario de Popdle, quiero poder editar mi perfil para personalizar mi
 experiencia en la plataforma, cambiar mi información personal, y gestionar mis
 seguidores y seguidos, para que mi perfil refleje mis preferencias y permita un
 mejor control sobre mi red social en el juego.
@@ -377,10 +377,10 @@ Alta
 
 --------------------------------------------------------------------------------
 
-# Historia de Usuario - Sistema de Puntuación en Melodle
+# Historia de Usuario - Sistema de Puntuación en Popdle
 
 ## Descripción
-Como usuario de Melodle, quiero poder visualizar mi puntuación y compararla con la de mis amigos en un leaderboard, para fomentar la competencia amistosa y motivarme a mejorar mi rendimiento en el juego.
+Como usuario de Popdle, quiero poder visualizar mi puntuación y compararla con la de mis amigos en un leaderboard, para fomentar la competencia amistosa y motivarme a mejorar mi rendimiento en el juego.
 
 ## Criterios de aceptación [ ]
 - [ ] El usuario debe poder ver un contador de días consecutivos ganando ("racha").
@@ -427,10 +427,10 @@ Media
 - Implementar notificaciones para avisar al usuario cuando haya subido
     posiciones en el leaderboard o cuando un amigo lo supere.
 
-# Historia de Usuario - Soporte de Idiomas (Inglés y Español) en Melodle
+# Historia de Usuario - Soporte de Idiomas (Inglés y Español) en Popdle
 
 ## Descripción
-Como usuario de Melodle, quiero poder seleccionar entre los idiomas inglés y
+Como usuario de Popdle, quiero poder seleccionar entre los idiomas inglés y
 español para utilizar la plataforma en mi idioma preferido, mejorando mi
 experiencia de uso y la comprensión de las funcionalidades la plataforma.
 
@@ -481,7 +481,7 @@ Media
 
 ## Notas adicionales
 - Considerar agregar otros idiomas en el futuro, dependiendo de la expansión
-  del público de Melodle.
+  del público de Popdle.
 - Evaluar la posibilidad de incluir un tutorial breve en el idioma seleccionado
   tras el cambio de idioma.
 - Verificar que las traducciones mantengan coherencia y claridad en ambos

@@ -9,6 +9,8 @@ import {
     TrackObject,
 } from "../apiCodegen/spotify.js";
 import { DeepRequired } from "ts-essentials";
+import { hardCodedSettings } from "../utils/settings.js";
+import { getShuffledHardCodedSongs } from "../hardcoded/hardCodedUtils.js";
 
 export type RequireSpotify<T extends (...args: never) => unknown> =
     DeepRequired<Awaited<ReturnType<T>>>;
@@ -61,7 +63,6 @@ export async function getRandomTrackFromArtists(opts: {
     mustHaveLyrics?: "TODO" | true;
 }): Promise<{
     track: TrackObject;
-    album: ArtistDiscographyAlbumObject;
 } | null> {
     // I don't want to modify a parameter, so I make a copy instead of shuffling
     // in place.
@@ -74,6 +75,16 @@ export async function getRandomTrackFromArtists(opts: {
 
         if (chosenArtistId === undefined) {
             break;
+        }
+
+        if (hardCodedSettings.shouldWorkOffline) {
+            const output = {
+                track: getShuffledHardCodedSongs(chosenArtistId)?.[0],
+            };
+            if (output.track === undefined) {
+                continue;
+            }
+            return output;
         }
 
         const artistAlbums = await getAnArtistsAlbums(chosenArtistId, {
@@ -110,8 +121,10 @@ export async function getRandomTrackFromArtists(opts: {
             }
 
             return {
-                track: await getTrack(faker.helpers.arrayElement(tracks.items).id!),
-                album: chosenAlbum,
+                track: await getTrack(
+                    faker.helpers.arrayElement(tracks.items).id!
+                ),
+                //album: chosenAlbum,
             };
         }
     }

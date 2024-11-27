@@ -4,7 +4,7 @@ import { postAuthLoginResponse } from "../../apiCodegen/backend-zod";
 import { ActivatedRoute, Params } from "@angular/router";
 import { filter, from, map, switchMap } from "rxjs";
 import { SafeRoutingService } from "./safe-routing.service";
-import { melodleGameModes } from "../globalConstants";
+import { popdleGameModes } from "../globalConstants";
 
 const booleanStringSchema = z
     .enum(["true", "false"])
@@ -20,12 +20,12 @@ export const queryParamsMaps = {
     errorEnum: z.string(),
     errorMessage: z.string(),
     page: z.coerce.number().positive().optional(),
-    gameMode: z.enum(melodleGameModes).optional(),
+    gameMode: z.enum(popdleGameModes).optional(),
     filterFriends: booleanStringSchema,
 } as const satisfies Record<string, z.Schema>;
 
 type QueryParamsMaps = typeof queryParamsMaps;
-export type MelodleQueryParams = {
+export type PopdleQueryParams = {
     [K in keyof QueryParamsMaps]: z.infer<QueryParamsMaps[K]>;
 };
 

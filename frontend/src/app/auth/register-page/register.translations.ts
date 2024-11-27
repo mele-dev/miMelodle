@@ -7,8 +7,8 @@ import {
 
 export const registerDict = {
     title: {
-        en: "Join melodle",
-        es: "Únete a melodle",
+        en: "Join popdle",
+        es: "Únete a popdle",
     },
     existingAccount: {
         en: "Already have an account? Log in.",

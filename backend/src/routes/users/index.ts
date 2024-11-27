@@ -5,7 +5,7 @@ import {
 } from "@fastify/type-provider-typebox";
 import { SafeType } from "../../utils/typebox.js";
 import { User, userSchema } from "../../types/user.js";
-import { MelodleTagName } from "../../plugins/swagger.js";
+import { PopdleTagName } from "../../plugins/swagger.js";
 import { decorators } from "../../services/decorators.js";
 import { friendSchema } from "../../types/user.js";
 import { typedEnv } from "../../types/env.js";
@@ -35,7 +35,7 @@ const users: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
             summary: "Get public information from some user.",
             description:
                 "Authentication is not needed to see public user information.",
-            tags: ["User"] satisfies MelodleTagName[],
+            tags: ["User"] satisfies PopdleTagName[],
         },
         async handler(_request, reply) {
             return reply.notImplemented();
@@ -51,7 +51,7 @@ const users: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 "pageSize",
                 "page",
             ]),
-            tags: ["User"] satisfies MelodleTagName[],
+            tags: ["User"] satisfies PopdleTagName[],
             response: {
                 200: SafeType.Object({
                     matches: SafeType.Array(
@@ -113,7 +113,7 @@ const users: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                     TSchema
                 >),
             },
-            tags: ["User"] satisfies MelodleTagName[],
+            tags: ["User"] satisfies PopdleTagName[],
             summary: "Check if some user data already exists",
         },
         async handler(request, reply) {

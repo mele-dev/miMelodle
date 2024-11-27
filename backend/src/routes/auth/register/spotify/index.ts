@@ -1,6 +1,6 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { SafeType } from "../../../../utils/typebox.js";
-import { MelodleTagName } from "../../../../plugins/swagger.js";
+import { PopdleTagName } from "../../../../plugins/swagger.js";
 import { decorators } from "../../../../services/decorators.js";
 import * as spotifyApi from "../../../../apiCodegen/spotify.js";
 import {
@@ -31,7 +31,7 @@ export default (async (fastify) => {
             description:
                 "The actual url you should use is this one removing /callback\n" +
                 "> !) Eventually this schema will change.",
-            tags: ["TODO Schema", "Auth"] satisfies MelodleTagName[],
+            tags: ["TODO Schema", "Auth"] satisfies PopdleTagName[],
             security: [],
         },
         async handler(request, reply) {

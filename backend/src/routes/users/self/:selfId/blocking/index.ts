@@ -1,5 +1,5 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
-import { MelodleTagName } from "../../../../../plugins/swagger.js";
+import { PopdleTagName } from "../../../../../plugins/swagger.js";
 import { SafeType } from "../../../../../utils/typebox.js";
 import {
     selfIdSchema,
@@ -18,7 +18,7 @@ export default (async (fastify, _opts) => {
         onRequest: [decorators.authenticateSelf()],
         schema: {
             params: selfIdSchema,
-            tags: ["Blocking"] satisfies MelodleTagName[],
+            tags: ["Blocking"] satisfies PopdleTagName[],
             summary: "Get every user currently blocked by self.",
             response: {
                 200: SafeType.Array(

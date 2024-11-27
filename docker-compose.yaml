@@ -1,4 +1,4 @@
-name: Melodle
+name: Popdle
 services:
   backend:
     image: backend
