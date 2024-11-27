@@ -24,26 +24,24 @@ export class LeaderboardsService {
     public dict = inject(LeaderboardTranslator).dict;
 
     public async getLeaderboard(opts: LeaderboardFilter) {
-        return (await getLeaderboardsGameMode(opts.gameMode, opts)).data;
+        return (await getLeaderboardsGameMode(opts.gameMode, opts));
     }
 
     public async getFriendsLeaderboard(opts: LeaderboardFilter) {
         const info = await this._self.waitForUserInfoSnapshot();
-        return (await getUsersSelfSelfIdFriendsLeaderboards(info.id, opts))
-            .data;
+        return await getUsersSelfSelfIdFriendsLeaderboards(info.id, opts);
     }
 
     public async deleteData(mode: string) {
         const userId = (await this._self.waitForUserInfoSnapshot()).id;
 
-        deleteUsersSelfSelfIdFriendsLeaderboards(userId, {
-            gameMode: mode,
-        });
-
-        if ((await result).status === 404) {
-            toast(this.dict().toastError);
-        } else if ((await result).status === 200) {
+        try {
+            deleteUsersSelfSelfIdFriendsLeaderboards(userId, {
+                gameMode: mode,
+            });
             toast(this.dict().toastSuccess(mode));
+        } catch {
+            toast(this.dict().toastError);
         }
     }
 }

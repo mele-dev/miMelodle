@@ -211,8 +211,6 @@ export class UserConfigPage implements OnInit {
                 username: userInfo.username,
             });
 
-            console.warn(result.statusText);
-
             this.safeRouter.navigate("/app");
         } catch (e) {
             console.error(e);
@@ -221,14 +219,14 @@ export class UserConfigPage implements OnInit {
     }
 
     async ngOnInit(): Promise<void> {
-        const iconsInfo = (await getPublicIcons()).data;
+        const iconsInfo = (await getPublicIcons());
         const userInfo = await this.selfService.waitForUserInfoSnapshot();
 
         this.allIcons = await Promise.all(
             iconsInfo.map(async (icon) => ({
                 svg: await (
                     await getPublicIconsFilename(icon.filename)
-                ).data.text(),
+                ).text(),
                 ...icon,
             }))
         );
