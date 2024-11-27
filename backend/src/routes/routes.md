@@ -14,11 +14,11 @@
 
 - leaderboards/:userid: get
 
-- melodle/guess_line/:id: get
+- popdle/guess_line/:id: get
 
-- melodle/guess_line/attempts: post
+- popdle/guess_line/attempts: post
 
-- melodle/guess_song/:id: get 
+- popdle/guess_song/:id: get 
 
-- melodle/guess_song/attempts: post
+- popdle/guess_song/attempts: post
 

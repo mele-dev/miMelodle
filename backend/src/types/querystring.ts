@@ -1,5 +1,5 @@
 import { SafeType } from "../utils/typebox.js";
-import { MelodleGameSchema } from "./melodle.js";
+import { PopdleGameSchema } from "./popdle.js";
 
 export const queryStringSchema = SafeType.Object({
     spotifySearchQuery: SafeType.String({
@@ -40,5 +40,5 @@ The upc, tag:new and tag:hipster filters can only be used while searching albums
             "audiobook",
         ])
     ),
-    gameMode: MelodleGameSchema.properties.gameMode,
+    gameMode: PopdleGameSchema.properties.gameMode,
 });

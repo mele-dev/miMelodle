@@ -1,6 +1,6 @@
 import { FastifyPluginAsync } from "fastify";
 import { SafeType } from "../utils/typebox.js";
-import { MelodleTagName } from "../plugins/swagger.js";
+import { PopdleTagName } from "../plugins/swagger.js";
 import { decorators } from "../services/decorators.js";
 
 const root: FastifyPluginAsync = async (fastify, _opts): Promise<void> => {
@@ -15,7 +15,7 @@ const root: FastifyPluginAsync = async (fastify, _opts): Promise<void> => {
             },
             description: "Route to check whether the service is working.",
             summary: "Ping!",
-            tags: ["Other"] satisfies MelodleTagName[],
+            tags: ["Other"] satisfies PopdleTagName[],
             security: [],
         },
         handler: async function (_request, _reply) {

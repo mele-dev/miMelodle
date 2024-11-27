@@ -9,7 +9,7 @@ import { SafeType } from "../../../utils/typebox.js";
 import { insertUser } from "../../../queries/dml.queries.js";
 import { sendError, sendOk } from "../../../utils/reply.js";
 import { decorators } from "../../../services/decorators.js";
-import { MelodleTagName } from "../../../plugins/swagger.js";
+import { PopdleTagName } from "../../../plugins/swagger.js";
 import { basePoints } from "../../../services/score.js";
 
 export default (async (fastify) => {
@@ -51,7 +51,7 @@ export default (async (fastify) => {
                 ...SafeType.CreateErrors(["badRequest"]),
             },
             security: [],
-            tags: ["Auth", "User CRUD", "User"] satisfies MelodleTagName[],
+            tags: ["Auth", "User CRUD", "User"] satisfies PopdleTagName[],
             summary: "Create a user.",
             description:
                 "Creates a new user with the given credentials if possible.",

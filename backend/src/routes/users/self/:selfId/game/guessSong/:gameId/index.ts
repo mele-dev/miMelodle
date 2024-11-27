@@ -2,7 +2,7 @@ import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { decorators } from "../../../../../../../services/decorators.js";
 import { ParamsSchema } from "../../../../../../../types/params.js";
 import { SafeType } from "../../../../../../../utils/typebox.js";
-import { MelodleTagName } from "../../../../../../../plugins/swagger.js";
+import { PopdleTagName } from "../../../../../../../plugins/swagger.js";
 import { sendError, sendOk } from "../../../../../../../utils/reply.js";
 import { guessSongGameInformationSchema } from "../../../../../../../types/game.js";
 import { getGuessSongInformation } from "../../../../../../../services/game.js";
@@ -17,9 +17,9 @@ export default (async (fastify) => {
                 200: guessSongGameInformationSchema,
                 ...SafeType.CreateErrors(["unauthorized", "notFound"]),
             },
-            summary: "Get information about a melodle game.",
+            summary: "Get information about a popdle game.",
             description: undefined,
-            tags: ["User", "Melodle"] satisfies MelodleTagName[],
+            tags: ["User", "Popdle"] satisfies PopdleTagName[],
         },
         async handler(request, reply) {
             const result = await getGuessSongInformation(request.params);

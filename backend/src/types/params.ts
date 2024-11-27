@@ -1,5 +1,5 @@
 import { SafeType } from "../utils/typebox.js";
-import { melodleGameConfig, MelodleGameSchema } from "./melodle.js";
+import { popdleGameConfig, PopdleGameSchema } from "./popdle.js";
 import { profilePictureSchema } from "./public.js";
 import { artistSchema } from "./spotify.js";
 import { trackSchema } from "./track.js";
@@ -10,11 +10,11 @@ export const ParamsSchema = SafeType.Object({
     selfId: userSchema.properties.id,
     filename: profilePictureSchema.properties.id,
     targetUserId: userSchema.properties.id,
-    gameMode: MelodleGameSchema.properties.gameMode,
-    optionalGameMode: SafeType.Optional(MelodleGameSchema.properties.gameMode),
+    gameMode: PopdleGameSchema.properties.gameMode,
+    optionalGameMode: SafeType.Optional(PopdleGameSchema.properties.gameMode),
     spotifyArtistId: artistSchema.properties.spotifyArtistId,
     artistMusixMatchId: artistSchema.properties.musixmatchArtistId,
-    melodleConfigId: melodleGameConfig.properties.id,
-    gameId: MelodleGameSchema.properties.gameId,
+    popdleConfigId: popdleGameConfig.properties.id,
+    gameId: PopdleGameSchema.properties.gameId,
     trackMusixMatchId: trackSchema.properties.trackId,
 });

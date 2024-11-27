@@ -6,7 +6,7 @@ import {
     userSchema,
     selfIdSchema,
 } from "../../../../../../types/user.js";
-import { MelodleTagName } from "../../../../../../plugins/swagger.js";
+import { PopdleTagName } from "../../../../../../plugins/swagger.js";
 import { decorators } from "../../../../../../services/decorators.js";
 import {
     blockAlreadyExists,
@@ -28,7 +28,7 @@ export default (async (fastify, _opts) => {
         onRequest: [decorators.authenticateSelf()],
         schema: {
             params: usersRelationShipSchema,
-            tags: ["Blocking"] satisfies MelodleTagName[],
+            tags: ["Blocking"] satisfies PopdleTagName[],
             response: {
                 201: SafeType.Object({
                     blocked: SafeType.Boolean(),
@@ -94,7 +94,7 @@ export default (async (fastify, _opts) => {
         onRequest: [decorators.authenticateSelf()],
         schema: {
             params: usersRelationShipSchema,
-            tags: ["Blocking"] satisfies MelodleTagName[],
+            tags: ["Blocking"] satisfies PopdleTagName[],
             response: {
                 200: SafeType.Object({
                     blocked: SafeType.Boolean(),

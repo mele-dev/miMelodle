@@ -6,14 +6,14 @@
     <h1 class="font-sans">
         <span class="mb-2 block">{{ dict().welcomeTo }}</span>
         <span class="block text-8xl">
-            @for (charAndIndex of splitMelodle; track charAndIndex.index) {
+            @for (charAndIndex of splitPopdle; track charAndIndex.index) {
             <span
                 class="inline-block motion-safe:animate-bounce"
                 style="animation-delay: {{ charAndIndex.index * 0.125 - 1 }}s;"
                 >{{ charAndIndex.value }}</span
             >
             }
-            <span>{{ dict().afterBouncyMelodle }}</span>
+            <span>{{ dict().afterBouncyPopdle }}</span>
         </span>
     </h1>
     <div class="flex items-baseline justify-between">

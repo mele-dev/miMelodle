@@ -1,5 +1,5 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
-import { MelodleTagName } from "../../../../../../plugins/swagger.js";
+import { PopdleTagName } from "../../../../../../plugins/swagger.js";
 import { SafeType } from "../../../../../../utils/typebox.js";
 import { decorators } from "../../../../../../services/decorators.js";
 import { sendOk, sendError } from "../../../../../../utils/reply.js";
@@ -10,7 +10,7 @@ import {
     getLeaderboard,
 } from "../../../../../../queries/dml.queries.js";
 import { ParamsSchema } from "../../../../../../types/params.js";
-import { MelodleGameSchema } from "../../../../../../types/melodle.js";
+import { PopdleGameSchema } from "../../../../../../types/popdle.js";
 import { queryStringSchema } from "../../../../../../types/querystring.js";
 import { basePoints } from "../../../../../../services/score.js";
 
@@ -29,7 +29,7 @@ export default (async (fastify, _opts) => {
                 ...SafeType.CreateErrors(["unauthorized"]),
             },
             summary: "Get friends leaderboard for a given game mode.",
-            tags: ["Leaderboards"] satisfies MelodleTagName[],
+            tags: ["Leaderboards"] satisfies PopdleTagName[],
         },
         async handler(request, reply) {
             const result = await runPreparedQuery(getLeaderboard, {
@@ -50,9 +50,9 @@ export default (async (fastify, _opts) => {
         schema: {
             params: SafeType.Pick(ParamsSchema, ["selfId"]),
             querystring: SafeType.Pick(queryStringSchema, ["gameMode"]),
-            tags: ["Leaderboards"] satisfies MelodleTagName[],
+            tags: ["Leaderboards"] satisfies PopdleTagName[],
             response: {
-                200: SafeType.Pick(MelodleGameSchema, ["userId"]),
+                200: SafeType.Pick(PopdleGameSchema, ["userId"]),
                 ...SafeType.CreateErrors([
                     "badRequest",
                     "notFound",

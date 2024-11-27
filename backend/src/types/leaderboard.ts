@@ -27,7 +27,7 @@ export const leaderboardSchema = SafeType.Object(
     {
         $id: "LeaderboardSchema",
         title: "leaderboardSchema",
-        description: "A leaderboard of melodle users.",
+        description: "A leaderboard of popdle users.",
     }
 );
 

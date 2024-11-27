@@ -3,7 +3,7 @@ import { NavigationExtras, Route, Router, Routes } from "@angular/router";
 import { routes } from "../app.routes";
 
 
-export type AllMelodlePaths = ExtractRoutes<typeof routes>;
+export type AllPopdlePaths = ExtractRoutes<typeof routes>;
 
 // Extract ALL paths (including those without components)
 type ExtractAllPaths<TRoute extends Route, TBasePath extends string = ""> =
@@ -41,7 +41,7 @@ type ExtractPathParams<TPath extends string> =
 export class SafeRoutingService {
     readonly router = inject(Router);
 
-    public navigate<TRoute extends AllMelodlePaths | "">(
+    public navigate<TRoute extends AllPopdlePaths | "">(
         path: TRoute,
         extras?: NavigationExtras & {
             ids?: { [K in ExtractPathParams<TRoute>]: string | number };
@@ -50,7 +50,7 @@ export class SafeRoutingService {
         this.router.navigate([this.createLink(path, extras?.ids)], extras);
     }
 
-    public createLink<TRoute extends AllMelodlePaths | "">(
+    public createLink<TRoute extends AllPopdlePaths | "">(
         path: TRoute,
         ids?: { [K in ExtractPathParams<TRoute>]: string | number }
     ) {

@@ -1,6 +1,6 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { SafeType } from "../../../../../../utils/typebox.js";
-import { MelodleTagName } from "../../../../../../plugins/swagger.js";
+import { PopdleTagName } from "../../../../../../plugins/swagger.js";
 import { ParamsSchema } from "../../../../../../types/params.js";
 import { decorators } from "../../../../../../services/decorators.js";
 import { artistSchema } from "../../../../../../types/artist.js";
@@ -36,7 +36,7 @@ export default (async (fastify) => {
             summary:
                 "Update whether a given artist is within you favorite ones.",
             description: undefined,
-            tags: ["Artists"] satisfies MelodleTagName[],
+            tags: ["Artists"] satisfies PopdleTagName[],
         },
         async preHandler(request, reply) {
             if (request.body.isFavorite === true) {
@@ -89,7 +89,7 @@ export default (async (fastify) => {
             summary:
                 "Add an artist to user's home page (for non-Spotify users mostly).",
             description: undefined,
-            tags: ["Artists"] satisfies MelodleTagName[],
+            tags: ["Artists"] satisfies PopdleTagName[],
         },
         async handler(request, reply) {
             try {
@@ -123,7 +123,7 @@ export default (async (fastify) => {
             },
             summary: "Delete an artist from user's home.",
             description: undefined,
-            tags: ["Artists"] satisfies MelodleTagName[],
+            tags: ["Artists"] satisfies PopdleTagName[],
         },
         async handler(request, reply) {
             const queryResult = await runPreparedQuery(

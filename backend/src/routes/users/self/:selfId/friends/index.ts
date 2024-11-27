@@ -1,5 +1,5 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
-import { MelodleTagName } from "../../../../../plugins/swagger.js";
+import { PopdleTagName } from "../../../../../plugins/swagger.js";
 import { SafeType } from "../../../../../utils/typebox.js";
 import {
     friendSchema,
@@ -16,7 +16,7 @@ const friendsRoutes: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
         onRequest: [decorators.authenticateSelf()],
         schema: {
             params: selfIdSchema,
-            tags: ["Friends"] satisfies MelodleTagName[],
+            tags: ["Friends"] satisfies PopdleTagName[],
             summary: "Get all friends from a user.",
             response: {
                 200: SafeType.Array(

@@ -1,4 +1,4 @@
-# Melodle
+# Popdle
 
 Equipo 4 - Juan Tanca, Cristian Rodriguez, Juana López
 
@@ -54,4 +54,4 @@ clasificación y compararse con sus amigos.
         cuando los vea. Utilize alguna herramienta de autogeneración para
         verlos, nosotros hacemos eso; solo los actualizamos para entregas de
         bases de datos.
-    -   Tenemos un [diagrama de rutas](./docs/rutas-melodle.png).
+    -   Tenemos un [diagrama de rutas](./docs/rutas-popdle.png).

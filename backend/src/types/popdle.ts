@@ -7,7 +7,7 @@ export const gameModes = ["guessLine", "guessSong"] as const;
 
 export type GameMode = (typeof gameModes)[number];
 
-export const melodleGameConfig = SafeType.Object({
+export const popdleGameConfig = SafeType.Object({
     id: SafeType.Integer({ description: "Unique identifier for a config." }),
     mode: SafeType.StringEnum([...gameModes]),
     onlyFavoriteArtists: SafeType.Boolean({
@@ -48,12 +48,12 @@ export const guessLineHintSchema = SafeType.Object({
     input: SafeType.String(),
 });
 
-export const MelodleGuessSongAttemptSchema = SafeType.Object({
+export const PopdleGuessSongAttemptSchema = SafeType.Object({
     guessedSongId: musixmatchIdSchema.properties.musixmatchId,
     guessedAt: SafeType.String({ format: "date-time" }),
 });
 
-export const MelodleGuessLineAttemptSchema = SafeType.Object({
+export const PopdleGuessLineAttemptSchema = SafeType.Object({
     guessedLine: SafeType.String({
         maxLength: 1000,
         description: "A line to match against the actual line of the song.",
@@ -61,14 +61,14 @@ export const MelodleGuessLineAttemptSchema = SafeType.Object({
     guessedAt: SafeType.String({ format: "date-time" }),
 });
 
-export const MelodleGameSchema = SafeType.Object({
+export const PopdleGameSchema = SafeType.Object({
     userId: userSchema.properties.id,
     gameId: SafeType.Integer({
-        description: "A unique identifier for a melodle game.",
+        description: "A unique identifier for a popdle game.",
     }),
     attempts: SafeType.Union([
-        SafeType.Array(MelodleGuessSongAttemptSchema),
-        SafeType.Array(MelodleGuessLineAttemptSchema),
+        SafeType.Array(PopdleGuessSongAttemptSchema),
+        SafeType.Array(PopdleGuessLineAttemptSchema),
     ]),
     ...SafeType.Partial(
         SafeType.Object({
@@ -77,11 +77,11 @@ export const MelodleGameSchema = SafeType.Object({
         })
     ).properties,
     gameMode: SafeType.StringEnum([...gameModes]),
-    config: melodleGameConfig,
+    config: popdleGameConfig,
 });
 
 export const gameModeArraySchema = SafeType.Object({
-    gameModes: SafeType.Array(MelodleGameSchema.properties.gameMode),
+    gameModes: SafeType.Array(PopdleGameSchema.properties.gameMode),
 });
 
-export type MelodleGame = Static<typeof MelodleGameSchema>;
+export type PopdleGame = Static<typeof PopdleGameSchema>;

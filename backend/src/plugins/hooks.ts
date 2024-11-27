@@ -1,7 +1,7 @@
 import fastifyPlugin from "fastify-plugin";
 import { decorators } from "../services/decorators.js";
 import { typedEnv } from "../types/env.js";
-import { MelodleTagName } from "./swagger.js";
+import { PopdleTagName } from "./swagger.js";
 import { Value } from "@sinclair/typebox/value";
 import { TSchema } from "@sinclair/typebox";
 import { isAxiosError } from "axios";
@@ -11,7 +11,7 @@ export default fastifyPlugin(async (fastify) => {
     if (typedEnv.NODE_ENV === "production") {
         fastify.addHook("onRoute", async (route) => {
             if (
-                route.schema?.tags?.includes("Debug" satisfies MelodleTagName)
+                route.schema?.tags?.includes("Debug" satisfies PopdleTagName)
             ) {
                 fastify.log.fatal(
                     `Route ${route.path}: ${route.method} is a debug route enabled in production.`

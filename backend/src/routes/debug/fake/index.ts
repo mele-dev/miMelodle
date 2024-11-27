@@ -1,6 +1,6 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { SafeType } from "../../../utils/typebox.js";
-import { MelodleTagName } from "../../../plugins/swagger.js";
+import { PopdleTagName } from "../../../plugins/swagger.js";
 import { sendOk } from "../../../utils/reply.js";
 import { decorators } from "../../../services/decorators.js";
 import { mockUser, mockUserSchema } from "../../../utils/mocks.js";
@@ -22,7 +22,7 @@ export default (async (fastify) => {
             },
             summary: "Returns random, believable credentials for a user.",
             description: "All fake users have Fake123! as their password.",
-            tags: ["Debug", "User"] satisfies MelodleTagName[],
+            tags: ["Debug", "User"] satisfies PopdleTagName[],
             security: [],
         },
         async handler(_request, reply) {
@@ -48,7 +48,7 @@ export default (async (fastify) => {
             description:
                 "We do not check if the user already exists, so this route " +
                 "may error. On error, we roll back any changes.",
-            tags: ["Debug", "User"] satisfies MelodleTagName[],
+            tags: ["Debug", "User"] satisfies PopdleTagName[],
             security: [],
         },
         async handler(request, reply) {

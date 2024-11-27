@@ -16,6 +16,6 @@ export const attemptSchema = SafeType.Object({
     }),
 });
 
-const MelodleAttemptsSchema = SafeType.Array(attemptSchema);
+const PopdleAttemptsSchema = SafeType.Array(attemptSchema);
 export type AttemptType = Static<typeof attemptSchema>;
-export type MelodleAttemptType = Static<typeof MelodleAttemptsSchema>;
+export type PopdleAttemptType = Static<typeof PopdleAttemptsSchema>;

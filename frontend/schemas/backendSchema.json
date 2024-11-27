@@ -1,8 +1,8 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Melodle API",
-        "description": "---\n## Documentation for Melodle's devs.\n```(\n AAAAAaaaaaaaa!\n              (   ()   )\n    ) ________    //  )\n ()  |\\       \\  //\n( \\\\__ \\ ______\\//\n   \\__) |       |\n     |  |       |\n      \\ |       |\n       \\|_______|\n       //    \\\\\n      ((     ||\n       \\\\    ||\n     ( ()    ||\n      (      () ) )\n```",
+        "title": "Popdle API",
+        "description": "---\n## Documentation for Popdle's devs.\n```(\n AAAAAaaaaaaaa!\n              (   ()   )\n    ) ________    //  )\n ()  |\\       \\  //\n( \\\\__ \\ ______\\//\n   \\__) |       |\n     |  |       |\n      \\ |       |\n       \\|_______|\n       //    \\\\\n      ((     ||\n       \\\\    ||\n     ( ()    ||\n      (      () ) )\n```",
         "version": "0.1.0"
     },
     "components": {
@@ -772,12 +772,12 @@
                 "security": [],
                 "responses": {
                     "200": {
-                        "description": "A leaderboard of melodle users.",
+                        "description": "A leaderboard of popdle users.",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "title": "leaderboardSchema",
-                                    "description": "A leaderboard of melodle users.",
+                                    "description": "A leaderboard of popdle users.",
                                     "type": "object",
                                     "properties": {
                                         "leaderboard": {
@@ -3130,7 +3130,7 @@
                 }
             }
         },
-        "/users/self/{selfId}/configs/{melodleConfigId}": {
+        "/users/self/{selfId}/configs/{popdleConfigId}": {
             "delete": {
                 "summary": "Delete a configuration preset.",
                 "tags": ["Game configs"],
@@ -3145,7 +3145,7 @@
                     {
                         "schema": { "type": "integer" },
                         "in": "path",
-                        "name": "melodleConfigId",
+                        "name": "popdleConfigId",
                         "required": true,
                         "description": "Unique identifier for a config."
                     }
@@ -3261,7 +3261,7 @@
                     {
                         "schema": { "type": "integer" },
                         "in": "path",
-                        "name": "melodleConfigId",
+                        "name": "popdleConfigId",
                         "required": true,
                         "description": "Unique identifier for a config."
                     }
@@ -3582,7 +3582,7 @@
                                                 "type": "integer"
                                             },
                                             "gameId": {
-                                                "description": "A unique identifier for a melodle game.",
+                                                "description": "A unique identifier for a popdle game.",
                                                 "type": "integer"
                                             },
                                             "attempts": {
@@ -4804,12 +4804,12 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "A leaderboard of melodle users.",
+                        "description": "A leaderboard of popdle users.",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "title": "leaderboardSchema",
-                                    "description": "A leaderboard of melodle users.",
+                                    "description": "A leaderboard of popdle users.",
                                     "type": "object",
                                     "properties": {
                                         "leaderboard": {
@@ -5022,8 +5022,8 @@
         },
         "/users/self/{selfId}/game/guessLine": {
             "post": {
-                "summary": "Start a new melodle game.",
-                "tags": ["Melodle"],
+                "summary": "Start a new popdle game.",
+                "tags": ["Popdle"],
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -5060,7 +5060,7 @@
                                     "type": "object",
                                     "properties": {
                                         "gameId": {
-                                            "description": "A unique identifier for a melodle game.",
+                                            "description": "A unique identifier for a popdle game.",
                                             "type": "integer"
                                         }
                                     },
@@ -5149,8 +5149,8 @@
         },
         "/users/self/{selfId}/game/guessSong": {
             "post": {
-                "summary": "Start a new melodle game.",
-                "tags": ["Melodle"],
+                "summary": "Start a new popdle game.",
+                "tags": ["Popdle"],
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -5190,7 +5190,7 @@
                                     "type": "object",
                                     "properties": {
                                         "gameId": {
-                                            "description": "A unique identifier for a melodle game.",
+                                            "description": "A unique identifier for a popdle game.",
                                             "type": "integer"
                                         }
                                     },
@@ -5280,7 +5280,7 @@
         "/users/self/{selfId}/game/guessLine/{gameId}": {
             "get": {
                 "summary": "Get information about a guess line game.",
-                "tags": ["User", "Melodle"],
+                "tags": ["User", "Popdle"],
                 "parameters": [
                     {
                         "schema": { "type": "integer" },
@@ -5294,7 +5294,7 @@
                         "in": "path",
                         "name": "gameId",
                         "required": true,
-                        "description": "A unique identifier for a melodle game."
+                        "description": "A unique identifier for a popdle game."
                     }
                 ],
                 "responses": {
@@ -5741,8 +5741,8 @@
         },
         "/users/self/{selfId}/game/guessSong/{gameId}": {
             "get": {
-                "summary": "Get information about a melodle game.",
-                "tags": ["User", "Melodle"],
+                "summary": "Get information about a popdle game.",
+                "tags": ["User", "Popdle"],
                 "parameters": [
                     {
                         "schema": { "type": "integer" },
@@ -5756,7 +5756,7 @@
                         "in": "path",
                         "name": "gameId",
                         "required": true,
-                        "description": "A unique identifier for a melodle game."
+                        "description": "A unique identifier for a popdle game."
                     }
                 ],
                 "responses": {
@@ -6761,8 +6761,8 @@
         },
         "/users/self/{selfId}/game/guessLine/{gameId}/attempts": {
             "post": {
-                "summary": "Submit a guess for a melodle game.",
-                "tags": ["Melodle"],
+                "summary": "Submit a guess for a popdle game.",
+                "tags": ["Popdle"],
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -6794,7 +6794,7 @@
                         "in": "path",
                         "name": "gameId",
                         "required": true,
-                        "description": "A unique identifier for a melodle game."
+                        "description": "A unique identifier for a popdle game."
                     }
                 ],
                 "responses": {
@@ -7316,8 +7316,8 @@
         },
         "/users/self/{selfId}/game/guessSong/{gameId}/attempts": {
             "post": {
-                "summary": "Submit a guess for a melodle game.",
-                "tags": ["Melodle"],
+                "summary": "Submit a guess for a popdle game.",
+                "tags": ["Popdle"],
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -7347,7 +7347,7 @@
                         "in": "path",
                         "name": "gameId",
                         "required": true,
-                        "description": "A unique identifier for a melodle game."
+                        "description": "A unique identifier for a popdle game."
                     }
                 ],
                 "responses": {
@@ -8468,8 +8468,8 @@
             "description": "Endpoints of the user's CRUD. (This is the one we implemented.)"
         },
         {
-            "name": "Melodle",
-            "description": "Endpoints specifically to play the melodle game."
+            "name": "Popdle",
+            "description": "Endpoints specifically to play the popdle game."
         },
         {
             "name": "Debug",
