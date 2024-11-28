@@ -26,6 +26,7 @@
             >
                 <span
                     class="max-w-[calc(100%-5rem)] flex-shrink truncate drop-shadow"
+                    [class.max-w-full]="this.readonly()"
                 >
                     {{ this.dict().by(this.track().artists) }}
                 </span>

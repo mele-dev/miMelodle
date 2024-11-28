@@ -113,21 +113,6 @@ export class GuessLinePage implements OnInit {
         return `https://open.spotify.com/embed/track/${info.track.id}`;
     });
 
-    constructor() {
-        computed(() => {
-            const info = this.gameInfo();
-
-            if (info === undefined) {
-                return undefined;
-            }
-
-            console.log(this.embed);
-            this.embed.src = `https://open.spotify.com/embed/track/${info.track.id}`;
-        });
-    }
-
-    @ViewChild("spotifyEmbed") embed!: HTMLIFrameElement;
-
     transform(url: string) {
         return this.sanitizer.bypassSecurityTrustResourceUrl(url);
     }

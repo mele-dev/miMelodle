@@ -42,7 +42,7 @@
 <div
     class="mx-auto my-5 mb-[25dvh] flex w-full flex-col items-center gap-8 px-4"
 >
-    <section class="w-fit min-w-[50%] text-lg">
+    <section class="w-fit min-w-[50%] max-w-[calc(100dvw-1rem)] text-lg">
         <span class="text-sm">
             {{ this.dict().guessLineOf(this.gameInfo()!.snippetLength) }}
         </span>
@@ -53,19 +53,19 @@
             ></app-track-list-item>
         </ul>
     </section>
-    <form class="justify flex w-full flex-col items-center gap-5">
+    <form class="justify flex w-full flex-col items-center gap-10">
         @for (attempt of this.attempts; track $index) { @if (this.hint($index))
         {
         <app-guess-line-wordle-text
             [text]="this.hint($index)!.guessedLine"
             [hintString]="this.hint($index)!.snippetHint"
-            class="text-4xl"
+            class="text-2xl sm:text-4xl"
         >
         </app-guess-line-wordle-text>
         } @else {
         <div
             [ngClass]="{
-                'w-96': true,
+                'w-96 max-w-full': true,
             }"
         >
             <input
@@ -118,7 +118,7 @@
             allowfullscreen=""
             allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
         ></iframe>
-        <div class="mt-2 flex w-fit justify-between gap-20">
+        <div class="mt-2 flex w-fit justify-between gap-4 sm:gap-20">
             <a
                 [href]="this.router.createLink('/app/leaderboards')"
                 hlmBtn
