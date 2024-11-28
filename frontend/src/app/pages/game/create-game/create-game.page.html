@@ -1,231 +1,230 @@
-<div
-    class="mx-auto mt-10 flex w-full max-w-lg flex-col items-start gap-5 rounded-xl bg-gradient-to-b from-neutral-800 to-zinc-900 to-80% p-10"
->
-    <div class="flex w-full items-baseline justify-between">
-        <h1
-            class="flex w-full flex-row items-baseline justify-between overflow-hidden text-3xl leading-[3rem]"
-        >
-            <span>
-                {{ this.dict().letsGuess }}
+<div class="mx-auto flex w-full justify-center">
+    <div
+        class="-mx-6 -mt-4 flex w-[calc(100%+1.5rem)] max-w-lg flex-col items-start gap-5 rounded bg-gradient-to-b from-neutral-800 to-zinc-900 p-10 px-4 transition-all sm:mt-0 sm:w-full sm:translate-x-0 sm:rounded-xl sm:px-10"
+    >
+        <div class="flex w-full items-baseline justify-between">
+            <h1 class="flex w-full flex-wrap text-3xl leading-[3rem]">
+                <span> {{ this.dict().letsGuess }} </span>
+                &NonBreakingSpace;
                 <span
-                    class="inline-block transition-transform duration-500"
-                    [ngClass]="{
+                    class="inline-block overflow-hidden transition-transform duration-500"
+                >
+                    <span
+                        [attr.aria-hidden]="!this.selected().isLine"
+                        [ngClass]="{
+                        'inline-block w-0 transition-transform duration-500': true,
                         '': this.selected().isSong,
                         'translate-y-[150%]': this.selected().isSong,
                     }"
-                >
-                    <span
-                        class="inline-block w-0"
-                        [attr.aria-hidden]="!this.selected().isLine"
                     >
                         {{ this.dict().line }}
                     </span>
                     <span
-                        class="inline-block -translate-y-[150%]"
+                        [ngClass]="{
+                            'transition-all inline-block duration-500': true,
+                            '': this.selected().isLine,
+                            '-translate-y-[150%]': this.selected().isLine,
+                        }"
                         [attr.aria-hidden]="!this.selected().isSong"
                     >
                         {{ this.dict().song }}
                     </span>
                 </span>
-            </span>
-        </h1>
-        <button
-            hlmBtn
-            type="button"
-            size="icon"
-            variant="ghost"
-            class="ms-auto"
-            (click)="this.next()"
-        >
-            <hlm-icon name="lucideArrowUpDown"></hlm-icon>
-        </button>
-    </div>
-    <div class="nowrap relative w-full overflow-x-hidden">
-        <div
-            class="w-full transition-all duration-300 ease-in-out"
-            [ngClass]="{
+            </h1>
+            <button
+                hlmBtn
+                type="button"
+                size="icon"
+                variant="ghost"
+                class="ms-auto"
+                (click)="this.next()"
+            >
+                <hlm-icon name="lucideArrowUpDown"></hlm-icon>
+            </button>
+        </div>
+        <div class="nowrap relative w-full overflow-x-hidden">
+            <div
+                class="w-full transition-all duration-300 ease-in-out"
+                [ngClass]="{
                 'opacity-0 pointer-events-none invisible': !this.selected().isSong,
             }"
-            [ariaDisabled]="!this.selected().isSong"
-        >
-            <div class="flex flex-row items-baseline justify-between">
-                <h2 class="text-lg font-bold">{{ this.dict().fromArtists }}</h2>
-                <hlm-dialog>
-                    <button
-                        brnDialogTrigger
-                        type="button"
-                        hlmBtn
-                        variant="ghost"
-                        size="icon"
-                    >
-                        <hlm-icon name="lucidePlus"></hlm-icon>
-                    </button>
-                    <hlm-dialog-content *brnDialogContent="let ctx2">
-                        <app-artist-finder></app-artist-finder>
-                    </hlm-dialog-content>
-                </hlm-dialog>
-            </div>
-            <hlm-scroll-area
-                class="gradient-mask-t-0 h-[26rem] w-full"
-                track="vertical"
-                visibility="hover"
+                [ariaDisabled]="!this.selected().isSong"
             >
-                <div class="flex flex-col gap-2 rounded">
-                    @for (artist of this.artists(); track artist.id) {
-                    <app-artist-list-item
-                        [artist]="artist"
-                        (destroy)="this.removeArtist($event)"
-                        (play)="this.guessSong.createGameFromArtists([artist.id])"
-                    ></app-artist-list-item>
-                    } @empty {
-                    <span
-                        class="absolute right-3 top-2 flex animate-bounce items-baseline gap-2"
-                    >
-                        {{ this.dict().chooseArtists }}
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
-                            class="size-6"
+                <div class="flex flex-row items-baseline justify-between">
+                    <h2 class="text-lg font-bold">
+                        {{ this.dict().fromArtists }}
+                    </h2>
+                    <hlm-dialog>
+                        <button
+                            brnDialogTrigger
+                            type="button"
+                            hlmBtn
+                            variant="ghost"
+                            size="icon"
                         >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="m11.99 7.5 3.75-3.75m0 0 3.75 3.75m-3.75-3.75v16.499H4.49"
-                            />
-                        </svg>
-                    </span>
-                    }
+                            <hlm-icon name="lucidePlus"></hlm-icon>
+                        </button>
+                        <hlm-dialog-content *brnDialogContent="let ctx2">
+                            <app-artist-finder></app-artist-finder>
+                        </hlm-dialog-content>
+                    </hlm-dialog>
                 </div>
-            </hlm-scroll-area>
-        </div>
-        <div
-            class="absolute left-full top-0 w-full transition-all duration-300"
-            [ngClass]="{
+                <div class="relative h-[26rem] w-full overflow-y-auto">
+                    <div class="flex w-full flex-col gap-2 rounded">
+                        @for (artist of this.artists(); track artist.id) {
+                        <app-artist-list-item
+                            [artist]="artist"
+                            (destroy)="this.removeArtist($event)"
+                            (play)="this.guessSong.createGameFromArtists([artist.id])"
+                        ></app-artist-list-item>
+                        } @empty {
+                        <span
+                            class="absolute right-3 top-2 flex animate-bounce items-baseline gap-2"
+                        >
+                            {{ this.dict().chooseArtists }}
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                class="size-6"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="m11.99 7.5 3.75-3.75m0 0 3.75 3.75m-3.75-3.75v16.499H4.49"
+                                />
+                            </svg>
+                        </span>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div
+                class="absolute left-full top-0 w-full transition-all duration-300"
+                [ngClass]="{
                 '-translate-x-[100%]': this.selected().isLine,
                 'pointer-events-none opacity-0 invisible': !this.selected().isLine,
             }"
-            [ariaDisabled]="!this.selected().isLine"
-        >
-            <div class="flex flex-row items-baseline justify-between">
-                <h2 class="text-lg font-bold">{{ this.dict().fromTracks }}</h2>
-                <hlm-dialog #pickTrackDialog>
-                    <button
-                        brnDialogTrigger
-                        type="button"
-                        hlmBtn
-                        variant="ghost"
-                        size="icon"
-                    >
-                        <hlm-icon name="lucidePlus"></hlm-icon>
-                    </button>
-                    <hlm-dialog-content
-                        *brnDialogContent="let ctx"
-                        class="w-fit max-w-screen-sm"
-                    >
-                        <h1 class="text-md font-extrabold">Choose a track</h1>
-                        <input
-                            type="text"
-                            name="trackQuery"
-                            hlmInput
-                            [(ngModel)]="this.tracksQuery"
-                            class="w-full"
-                            (keydown)="this.keyDown($event)"
-                        />
-                        @if (this.filteredTrackOptions() === undefined) {
-                        <h1 class="h-96 w-[36rem]">Loading!</h1>
-                        } @else {
-                        <hlm-scroll-area
-                            track="vertical"
-                            class="h-96 w-[36rem] overflow-hidden"
-                            pf
-                        >
-                            @for (track of this.filteredTrackOptions(); track
-                            track.id) {
-                            <button
-                                (click)="this.tracksService.push(track)"
-                                type="button"
-                                class="m-2 flex w-[35rem] items-center gap-2 overflow-hidden text-ellipsis rounded p-2 hover:bg-muted"
-                            >
-                                <img
-                                    [src]="track.album.images[0].url"
-                                    class="h-20 w-20 rounded"
-                                    alt=""
-                                />
-                                <div
-                                    class="flex w-full flex-col items-start overflow-hidden text-ellipsis text-nowrap"
-                                >
-                                    <span class="block text-ellipsis">
-                                        {{ track.name }}
-                                    </span>
-                                    <span
-                                        class="block w-full text-ellipsis text-left text-sm"
-                                    >
-                                        By {{
-                                        this.dict().stringifyArtists(track.artists)
-                                        }}
-                                    </span>
-                                    <span
-                                        class="block w-full text-ellipsis text-left text-sm"
-                                    >
-                                        From {{ track.album.name }}
-                                    </span>
-                                </div>
-                            </button>
-                            }
-                        </hlm-scroll-area>
-                        }
-                    </hlm-dialog-content>
-                </hlm-dialog>
-            </div>
-            <hlm-scroll-area
-                [autoWidthDisabled]="true"
-                class="h-[26rem] w-full"
-                track="vertical"
-                visibility="hover"
+                [ariaDisabled]="!this.selected().isLine"
             >
-                <!-- TODO: Make scrollarea with predictable width. -->
-                <ul class="flex flex-col gap-2 rounded">
-                    @for (track of this.tracksService.tracks(); track track.id)
-                    {
-                    <app-track-list-item
-                        [track]="track"
-                        (destroy)="this.tracksService.remove($event.id)"
-                        (play)="this.guessLine.createGameFromTracks([track.id])"
-                    ></app-track-list-item>
-                    } @empty {
-                    <span
-                        class="absolute right-3 top-2 flex animate-bounce items-baseline gap-2"
-                    >
-                        {{ this.dict().chooseTracks }}
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
-                            class="size-6"
+                <div class="flex flex-row items-baseline justify-between">
+                    <h2 class="text-lg font-bold">
+                        {{ this.dict().fromTracks }}
+                    </h2>
+                    <hlm-dialog #pickTrackDialog>
+                        <button
+                            brnDialogTrigger
+                            type="button"
+                            hlmBtn
+                            variant="ghost"
+                            size="icon"
                         >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="m11.99 7.5 3.75-3.75m0 0 3.75 3.75m-3.75-3.75v16.499H4.49"
+                            <hlm-icon name="lucidePlus"></hlm-icon>
+                        </button>
+                        <hlm-dialog-content
+                            *brnDialogContent="let ctx"
+                            class="w-fit max-w-screen-sm"
+                        >
+                            <h1 class="text-md font-extrabold">
+                                {{ this.dict().chooseTracks }}
+                            </h1>
+                            <input
+                                type="text"
+                                name="trackQuery"
+                                hlmInput
+                                [(ngModel)]="this.tracksQuery"
+                                class="w-full"
+                                (keydown)="this.keyDown($event)"
                             />
-                        </svg>
-                    </span>
-                    }
-                </ul>
-            </hlm-scroll-area>
+                            <div
+                                class="h-96 w-full overflow-y-auto"
+                                pf
+                            >
+                                @for (track of this.filteredTrackOptions();
+                                track track.id) {
+                                <button
+                                    (click)="this.tracksService.push(track)"
+                                    type="button"
+                                    class="m-2 flex w-[35rem] items-center gap-2 overflow-hidden text-ellipsis rounded p-2 hover:bg-muted"
+                                >
+                                    <img
+                                        [src]="this.imagePicker.getImageUrl(track.album.images, 200 * 200)"
+                                        class="h-20 w-20 rounded"
+                                        alt=""
+                                    />
+                                    <div
+                                        class="flex w-full flex-col items-start overflow-hidden text-ellipsis text-nowrap"
+                                    >
+                                        <span class="block text-ellipsis">
+                                            {{ track.name }}
+                                        </span>
+                                        <span
+                                            class="block w-full text-ellipsis text-left text-sm"
+                                        >
+                                            By {{
+                                            this.dict().stringifyArtists(track.artists)
+                                            }}
+                                        </span>
+                                        <span
+                                            class="block w-full text-ellipsis text-left text-sm"
+                                        >
+                                            From {{ track.album.name }}
+                                        </span>
+                                    </div>
+                                </button>
+                                }
+                            </div>
+                        </hlm-dialog-content>
+                    </hlm-dialog>
+                </div>
+                <div
+                    class="h-[26rem] w-full overflow-y-auto"
+                    track="all"
+                    visibility="hover"
+                >
+                    <!-- TODO: Make scrollarea with predictable width. -->
+                    <ul class="flex flex-col gap-2 rounded">
+                        @for (track of this.tracksService.tracks(); track
+                        track.id) {
+                        <app-track-list-item
+                            [track]="track"
+                            (destroy)="this.tracksService.remove($event.id)"
+                            (play)="this.guessLine.createGameFromTracks([track.id])"
+                        ></app-track-list-item>
+                        } @empty {
+                        <span
+                            class="absolute right-3 top-2 flex animate-bounce items-baseline gap-2"
+                        >
+                            {{ this.dict().chooseTracks }}
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                class="size-6"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="m11.99 7.5 3.75-3.75m0 0 3.75 3.75m-3.75-3.75v16.499H4.49"
+                                />
+                            </svg>
+                        </span>
+                        }
+                    </ul>
+                </div>
+            </div>
         </div>
+        <button
+            type="button"
+            appCrFancyButtonStyles
+            [disabled]="(this.selected().isSong && this.artists().length === 0) || (this.selected().isLine && this.tracksService.tracks().length === 0)"
+            (click)="this.submit()"
+        >
+            {{ this.dict().play }}
+        </button>
     </div>
-    <button
-        type="button"
-        appCrFancyButtonStyles
-        [disabled]="(this.selected().isSong && this.artists().length === 0) || (this.selected().isLine && this.tracksService.tracks().length === 0)"
-        (click)="this.submit()"
-    >
-        {{ this.dict().play }}
-    </button>
 </div>
