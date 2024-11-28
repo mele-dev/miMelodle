@@ -1,13 +1,15 @@
 <dialog
     #tutorial
-    class="relative z-20 mx-auto w-full max-w-lg transform space-y-6 border-8 border-transparent bg-black bg-clip-padding p-8 text-center shadow-2xl shadow-fuchsia-500/50 transition-all backdrop:backdrop-blur-xl backdrop:backdrop-brightness-50"
+    class="relative z-20 mx-auto w-full max-w-lg scale-95 transform space-y-6 border-8 border-transparent bg-black bg-clip-padding p-8 text-center opacity-0 shadow-2xl ring-1 ring-gray-900/10 transition-all focus:outline-none sm:scale-100"
     style="
         border-image: linear-gradient(to right, #7e22ce, #d10082 30%, #f97316) 1;
     "
 >
-    <h1 class="text-2xl font-extrabold text-gray-200">
-        {{ this.dictT().title }}
-    </h1>
+    <div class="space-y-4">
+        <p class="text-2xl font-extrabold text-gray-200">
+            {{ this.dictT().title }}
+        </p>
+    </div>
 
     <div
         class="flex flex-col items-start space-y-3 text-left text-lg text-gray-100"
@@ -38,7 +40,12 @@
         {{ this.dictT().start }}
     </button>
 </dialog>
-@if (this.gameInfo()) {
+@if(this.blurOn){
+<div
+    #blur
+    class="fixed inset-0 z-10 bg-gray-800 bg-opacity-50 backdrop-blur-sm"
+></div>
+} @if (this.gameInfo()) {
 <div
     class="mx-auto my-5 mb-[25dvh] flex w-full flex-col items-center gap-8 px-4"
 >

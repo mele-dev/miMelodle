@@ -63,7 +63,7 @@ const tutorialsTranslations = {
     },
     lineLength: {
         en: "You will be given the number of characters in the line.",
-        es: "Se te dará la cantidad de caractéres de la línea."
+        es: "Se te dará la cantidad de caracteres de la línea."
     }
 } as const satisfies Translations;
 
