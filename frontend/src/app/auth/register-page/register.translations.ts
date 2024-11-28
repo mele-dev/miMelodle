@@ -32,7 +32,7 @@ export const registerDict = {
     },
     weNeedSomeDataToIdentifyYou: {
         en: "We need some data to identify you",
-        es: "Necesitamos algunos datos para identificarte",
+        es: "Te identificaremos con estos datos",
     },
     email: {
         en: "Email",
