@@ -1,4 +1,5 @@
 import {
+    AfterViewInit,
     Component,
     computed,
     ElementRef,
@@ -46,7 +47,7 @@ import { TutorialsTranslator } from "../tutorials-dialog.translations";
     ],
     templateUrl: "./guess-line.page.html",
 })
-export class GuessLinePage implements OnInit {
+export class GuessLinePage implements OnInit, AfterViewInit {
     readonly gameId = input.required<string>();
     private _self = inject(SelfService);
     sanitizer = inject(DomSanitizer);
@@ -178,6 +179,9 @@ export class GuessLinePage implements OnInit {
 
     async ngOnInit() {
         await this.load();
+    }
+
+    ngAfterViewInit(): void {
         this.dialog.nativeElement.showModal();
     }
 }

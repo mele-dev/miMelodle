@@ -1,34 +1,53 @@
-<dialog #tutorial class="relative mx-auto w-full max-w-lg space-y-6 bg-black p-8 text-center shadow-2xl ring-1 ring-gray-900/10 transition-all transform scale-95 sm:scale-100 opacity-0 hover:opacity-100 focus:outline-none z-20 border-8 border-transparent bg-clip-padding" style="border-image: linear-gradient(to right, #7e22ce, #d10082 30%, #f97316) 1;">
+<dialog
+    #tutorial
+    class="relative z-20 mx-auto w-full max-w-lg scale-95 transform space-y-6 border-8 border-transparent bg-black bg-clip-padding p-8 text-center shadow-2xl shadow-fuchsia-500/50 backdrop:backdrop-blur-2xl backdrop:backdrop-brightness-50"
+    style="
+        border-image: linear-gradient(to right, #7e22ce, #d10082 30%, #f97316) 1;
+    "
+>
     <div class="space-y-4">
         <p class="text-2xl font-extrabold text-gray-200">
             {{ this.dictT().title }}
         </p>
     </div>
 
-    <div class="flex flex-col items-start text-lg text-gray-100 space-y-3 text-left">
+    <div
+        class="flex flex-col items-start space-y-3 text-left text-lg text-gray-100"
+    >
         <p class="font-bold text-gray-50">{{ this.dictT().objetiveTitle }}</p>
         <p>{{ this.dictT().objetiveSong }}</p>
     </div>
-    
-    <div class="flex flex-col items-start text-lg text-gray-100 space-y-3 text-left">
+
+    <div
+        class="flex flex-col items-start space-y-3 text-left text-lg text-gray-100"
+    >
         <p class="font-bold text-gray-50">{{ this.dictT().howToPlayTitle }}</p>
         <p>{{ this.dictT().howToPlaySong }}</p>
     </div>
 
-    <div class="flex flex-col items-start text-lg text-gray-100 space-y-3 text-left">
+    <div
+        class="flex flex-col items-start space-y-3 text-left text-lg text-gray-100"
+    >
         <p class="font-bold text-gray-50">{{ this.dictT().feedback }}</p>
         <p>{{ this.dictT().feedbackDescription }}</p>
-        <div class="flex flex-col gap-2 ">
-            <p>{{ this.dictT().correctAlbum }}</p>
-            <hlm-icon name="lucideCheck" class='bg-green-500 rounded-full size-5'></hlm-icon>
-        </div>
-        <div class="flex items-center space-x-2">
-            <p>{{ this.dictT().incorrectAlbum }}</p>
-            <hlm-icon name="lucideX" class='bg-red-500 rounded-full size-5'></hlm-icon>
-        </div>
+        <p>
+            <span> {{ this.dictT().correctAlbum }} </span>
+            <hlm-icon
+                name="lucideCheck"
+                class="inline-block size-5 translate-y-1 self-baseline rounded-full bg-green-500"
+            ></hlm-icon>
+            <span>
+                {{ this.dictT().incorrectAlbum }}
+                <hlm-icon
+                    name="lucideX"
+                    class="size-5 translate-y-1 rounded-full bg-red-500"
+                ></hlm-icon>
+            </span>
+            .
+        </p>
         <p>{{ this.dictT().snippet }}</p>
     </div>
-    
+
     <button
         class="flex-1 rounded-lg bg-gray-300 px-6 py-3 font-semibold text-gray-800 transition hover:bg-gray-400 focus:outline-none focus:ring-4 focus:ring-gray-300 focus:ring-opacity-50"
         (click)="this.closeDialog()"
@@ -37,56 +56,53 @@
     </button>
 </dialog>
 
-@if(this.blurOn){
-    <div #blur class="fixed inset-0 bg-gray-800 bg-opacity-50 backdrop-blur-sm z-10"></div>
-}
 @if (this.gameInfo()) {
 <header
-    class="my-5 h-48 w-full overflow-hidden rounded-2xl border border-muted bg-cover bg-center"
-    style="background-image: url({{ this.gameInfo()!.album!.images?.[0]?.url }});"
+    class="my-5 h-fit w-full overflow-hidden rounded-lg border border-muted bg-cover bg-center sm:min-h-48 sm:rounded-2xl"
+    style="background-image: url({{ this.imagePicker.getImageUrl(this.gameInfo()!.album!.images ?? [], 300 * 300) }});"
 >
     <div
-        class="flex h-full w-full flex-row justify-between gap-6 p-6 backdrop-blur backdrop-brightness-50"
+        class="flex h-full w-full flex-row items-center justify-between gap-2 p-2 backdrop-blur backdrop-brightness-50 sm:h-48 sm:min-h-48 sm:gap-6 sm:p-6"
     >
         <a
             [href]="this.gameInfo()?.artists?.[0]?.external_urls?.spotify"
-            class="aspect-square h-full w-fit"
+            class="aspect-square h-20 w-fit sm:h-full"
         >
             <img
-                [src]="this.gameInfo()?.artists?.[0]?.images?.[0]?.url"
+                [src]="this.imagePicker.getImageUrl(this.gameInfo()?.artists?.[0]?.images ?? [], 1000 * 1000)"
                 alt=""
-                class="aspect-square h-full rounded-xl shadow transition-transform hover:scale-105"
+                class="aspect-square h-full rounded-lg shadow transition-transform hover:scale-105 sm:rounded-xl"
             />
         </a>
         <div class="flex w-full flex-col justify-center gap-4">
             <div
                 [ngClass]="{
-                    'w-full rounded bg-muted/80 text-5xl shadow grayscale backdrop-blur': true,
+                    'w-full rounded bg-muted/80 text-xl sm:text-5xl shadow grayscale backdrop-blur': true,
                     'bg-opacity-0': this.hasEnded(),
                 }"
             >
-                @if (!this.hasEnded()){ <span class="invisible"> Shh </span>}
-                @else {
-                <span class="text-5xl"
+                @if (!this.hasEnded()){
+                <span class="invisible"> &NonBreakingSpace; </span>} @else {
+                <span class="text-xl sm:text-5xl"
                     >{{ this.gameInfo()?.correctTrack?.name }}</span
                 >
                 }
             </div>
-            <span class="text-3xl drop-shadow"
+            <span class="drop-shadow sm:text-3xl"
                 >{{ this.dict().by(this.gameInfo()?.artists ?? []) }}</span
             >
         </div>
     </div>
 </header>
 <p>{{this.dict().albumHint}}</p>
-<section class="my-5 mb-20 grid grid-cols-1 gap-4 px-6">
+<section class="my-5 mb-20 grid grid-cols-1 gap-4 sm:px-6">
     @for (attempt of this.computedAttempts(); track $index) {
     <article
         class="w-full overflow-hidden rounded-2xl border border-muted bg-cover bg-center"
-        style="background-image: url({{ attempt.guessedTrack.album.images[0].url }});"
+        style="background-image: url({{ this.imagePicker.getImageUrl(attempt.guessedTrack.album.images, 200 * 200) }});"
     >
         <div
-            class="flex h-full w-full flex-row justify-between gap-6 p-6 backdrop-blur backdrop-brightness-50"
+            class="flex h-full w-full flex-row justify-between gap-2 p-2 backdrop-blur backdrop-brightness-50 sm:gap-6 sm:p-6"
         >
             <div class="flex h-full shrink-0 items-center">
                 <div class="relative">
@@ -95,9 +111,9 @@
                         [href]="attempt.guessedTrack.album.external_urls.spotify"
                     >
                         <img
-                            [src]="attempt.guessedTrack.album.images[0].url"
+                            [src]=" this.imagePicker.getImageUrl(attempt.guessedTrack.album.images, 500 * 500)"
                             alt=""
-                            class="my-auto aspect-square h-32 rounded-xl shadow transition-transform hover:scale-105"
+                            class="my-auto aspect-square h-20 rounded-xl shadow transition-transform hover:scale-105 sm:h-32"
                         />
                     </a>
                     <div
@@ -116,18 +132,15 @@
                     </div>
                 </div>
             </div>
-            <a
-                class="group flex w-full flex-col justify-center gap-4"
-            >
+            <a class="group flex w-full flex-col justify-center gap-4">
                 <app-wordle-text
-                    class="w-fit transition-all"
+                    class="w-fit transition-all sm:text-3xl"
                     [text]="attempt.guessedTrackNameHint"
                     [isPending]="false"
                 ></app-wordle-text>
-                <span class="text-3xl drop-shadow">
-                    {{ this.dict().from(attempt.guessedTrack.album.name)
-                    }}</span
-                >
+                <span class="drop-shadow sm:text-3xl">
+                    {{ this.dict().from(attempt.guessedTrack.album.name) }}
+                </span>
             </a>
         </div>
     </article>
@@ -137,8 +150,7 @@
     >
         <h2>{{ this.dict().snippet }}</h2>
         <p class="text-2xl">
-            {{ this.gameInfo()?.snippet ?? "We could not find lyrics for this
-            track." }}
+            {{ this.gameInfo()?.snippet ?? this.dict().noLyrics }}
         </p>
     </article>
     } } @if (!hasEnded()) {
@@ -149,7 +161,7 @@
         <div
             class="flex h-full w-full flex-row justify-between gap-6 p-6 backdrop-blur backdrop-brightness-50"
         >
-            <div class="flex w-full flex-col justify-center gap-4">
+            <div class="w-full gap-4 uppercase sm:text-3xl">
                 <app-wordle-text
                     [text]="this.shownValue()"
                     [isPending]="true"
@@ -181,16 +193,15 @@
         </h1>
         }
         <iframe
-            class="rounded-2xl"
+            class="w-full rounded-2xl"
             [src]="this.embedSrc() ?? '' | safe"
-            width="100%"
             height="352"
             frameborder="0"
             allowfullscreen=""
             allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
             loading="lazy"
         ></iframe>
-        <div class="mt-2 flex w-fit justify-between gap-20">
+        <div class="mt-2 flex w-fit justify-between gap-2 sm:gap-20">
             <a
                 [href]="this.router.createLink('/app/leaderboards')"
                 hlmBtn
@@ -216,22 +227,21 @@
         *brnDialogContent="let ctx"
         class="w-fit max-w-screen-sm"
     >
-        <h1 class="text-md font-extrabold">Which track did you mean?</h1>
+        <h1 class="text-md font-extrabold">
+            {{ this.dict().whichTrackDidYouMean }}
+        </h1>
         @if (this.trackOptions() === undefined) {
         <h1>Loading!</h1>
         } @else {
-        <hlm-scroll-area
-            track="vertical"
-            class="h-96 w-[36rem] overflow-hidden"
-        >
+        <div class="h-96 w-fit max-w-full overflow-auto">
             @for (track of this.trackOptions()?.items; track track.id) {
             <button
                 (click)="this.submitAttempt(track)"
                 type="button"
-                class="m-2 flex w-[35rem] items-center gap-2 overflow-hidden text-ellipsis rounded p-2 hover:bg-muted"
+                class="flex w-fit min-w-full items-center gap-2 overflow-hidden text-ellipsis rounded p-2 hover:bg-muted"
             >
                 <img
-                    [src]="track.album.images[0].url"
+                    [src]="this.imagePicker.getImageUrl(track.album.images, 200 * 200)"
                     class="h-20 w-20 rounded"
                     alt=""
                 />
@@ -240,15 +250,15 @@
                 >
                     <span class="block text-ellipsis"> {{ track.name }} </span>
                     <span class="block w-full text-ellipsis text-left text-sm">
-                        By {{ this.dict().stringifyArtists(track.artists) }}
+                        {{ this.dict().by(track.artists) }}
                     </span>
                     <span class="block w-full text-ellipsis text-left text-sm">
-                        From {{ track.album.name }}
+                        {{ this.dict().from(track.album.name) }}
                     </span>
                 </div>
             </button>
             }
-        </hlm-scroll-area>
+        </div>
         }
     </hlm-dialog-content>
 </hlm-dialog>

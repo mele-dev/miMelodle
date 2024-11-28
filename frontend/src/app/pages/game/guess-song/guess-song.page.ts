@@ -1,5 +1,6 @@
 import { CommonModule, JsonPipe } from "@angular/common";
 import {
+    AfterViewInit,
     Component,
     computed,
     ElementRef,
@@ -42,6 +43,7 @@ import { HlmButtonModule } from "@spartan-ng/ui-button-helm";
 import { DomSanitizer } from "@angular/platform-browser";
 import { SafePipe } from "../../../pipes/safe.pipe";
 import { TutorialsTranslator } from "../tutorials-dialog.translations";
+import { SpotifyImagePickerService } from "../../../services/spotify-image-picker.service";
 
 @Component({
     selector: "app-guess-song",
@@ -61,9 +63,10 @@ import { TutorialsTranslator } from "../tutorials-dialog.translations";
     providers: [provideIcons({ lucideCheck, lucideX })],
     templateUrl: "./guess-song.page.html",
 })
-export class GuessSongPage implements OnInit {
+export class GuessSongPage implements OnInit, AfterViewInit {
     readonly gameId = input.required<string>();
     private _self = inject(SelfService);
+    imagePicker = inject(SpotifyImagePickerService);
     sanitizer = inject(DomSanitizer);
     router = inject(SafeRoutingService);
     dict = inject(GuessSongTranslator).dict;
@@ -96,9 +99,10 @@ export class GuessSongPage implements OnInit {
 
     shownValue = computed(() => {
         let baseString = this.value();
+        const translation = this.dict().writeYourGuessHere;
 
         if (baseString.length === 0) {
-            baseString = "Write your guess here!";
+            baseString = translation;
         }
 
         return baseString
@@ -244,6 +248,9 @@ export class GuessSongPage implements OnInit {
 
     async ngOnInit() {
         await this.load();
+    }
+
+    ngAfterViewInit(): void {
         this.dialog.nativeElement.showModal();
     }
 }
