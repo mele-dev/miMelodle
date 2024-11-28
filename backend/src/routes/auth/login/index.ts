@@ -13,7 +13,7 @@ import {
     sendError,
     sendOk,
 } from "../../../utils/reply.js";
-import { MelodleTagName } from "../../../plugins/swagger.js";
+import { PopdleTagName } from "../../../plugins/swagger.js";
 import { decorators } from "../../../services/decorators.js";
 
 const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
@@ -34,7 +34,7 @@ const auth: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                     },
                 ]
             ),
-            tags: ["Auth"] satisfies MelodleTagName[],
+            tags: ["Auth"] satisfies PopdleTagName[],
             response: {
                 200: SafeType.Object({
                     ...jwtTokenSchema.properties,

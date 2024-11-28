@@ -8,7 +8,7 @@ import { sendError, sendOk } from "../../utils/reply.js";
 import { profilePictureSchema, svgSchema } from "../../types/public.js";
 import { runPreparedQuery } from "../../services/database.js";
 import { selectAllIcons } from "../../queries/dml.queries.js";
-import { MelodleTagName } from "../../plugins/swagger.js";
+import { PopdleTagName } from "../../plugins/swagger.js";
 import { decorators } from "../../services/decorators.js";
 
 const pub: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
@@ -23,7 +23,7 @@ const pub: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                     description: "Name of the svg to download.",
                 }),
             }),
-            tags: ["Static"] satisfies MelodleTagName[],
+            tags: ["Static"] satisfies PopdleTagName[],
             security: [],
             response: {
                 200: svgSchema,
@@ -49,7 +49,7 @@ const pub: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
         onRequest: [decorators.noSecurity],
         schema: {
             summary: "Get information about all user icons.",
-            tags: ["Static"] satisfies MelodleTagName[],
+            tags: ["Static"] satisfies PopdleTagName[],
             security: [],
             response: {
                 200: SafeType.WithExamples(

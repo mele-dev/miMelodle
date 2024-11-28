@@ -1,43 +1,48 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { SafeType } from "../../../../../../utils/typebox.js";
-import { MelodleTagName } from "../../../../../../plugins/swagger.js";
+import { PopdleTagName } from "../../../../../../plugins/swagger.js";
 import { decorators } from "../../../../../../services/decorators.js";
 import { ParamsSchema } from "../../../../../../types/params.js";
 import {
-    melodleGameConfig,
-    MelodleGameSchema,
-} from "../../../../../../types/melodle.js";
+    popdleGameConfig,
+    PopdleGameSchema,
+} from "../../../../../../types/popdle.js";
 import { faker } from "@faker-js/faker";
 import { getSeveralTracks } from "../../../../../../apiCodegen/spotify.js";
 import { sendError, sendOk } from "../../../../../../utils/reply.js";
 import { runPreparedQuery } from "../../../../../../services/database.js";
 import { insertGuessLineGame } from "../../../../../../queries/dml.queries.js";
 import { getTrackLine } from "../../../../../../services/game.js";
+import { hardCodedSettings } from "../../../../../../utils/settings.js";
+import {
+    getSeveralMaybeHardCodedTracks,
+    getShuffledHardCodedSongs,
+} from "../../../../../../hardcoded/hardCodedUtils.js";
 
 export default (async (fastify) => {
     fastify.post("", {
         onRequest: [decorators.authenticateSelf()],
         schema: {
             params: SafeType.Pick(ParamsSchema, ["selfId"]),
-            body: SafeType.Pick(melodleGameConfig, ["fromTracks"]),
+            body: SafeType.Pick(popdleGameConfig, ["fromTracks"]),
             response: {
-                201: SafeType.Pick(MelodleGameSchema, ["gameId"]),
+                201: SafeType.Pick(PopdleGameSchema, ["gameId"]),
                 ...SafeType.CreateErrors([
                     "unauthorized",
                     "notFound",
                     "tooEarly",
                 ]),
             },
-            summary: "Start a new melodle game.",
+            summary: "Start a new popdle game.",
             description: undefined,
-            tags: ["Melodle"] satisfies MelodleTagName[],
+            tags: ["Popdle"] satisfies PopdleTagName[],
         },
         async handler(request, reply) {
-            const tracks = await getSeveralTracks({
-                ids: request.body.fromTracks.join(","),
-            });
+            const tracks = await getSeveralMaybeHardCodedTracks(
+                request.body.fromTracks
+            );
 
-            const trackQueue = faker.helpers.shuffle(tracks.tracks);
+            const trackQueue = faker.helpers.shuffle(tracks);
 
             for (const track of trackQueue) {
                 const isrc = track?.external_ids?.isrc;

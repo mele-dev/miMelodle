@@ -1,12 +1,12 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { SafeType } from "../../../../../../utils/typebox.js";
-import { MelodleTagName } from "../../../../../../plugins/swagger.js";
+import { PopdleTagName } from "../../../../../../plugins/swagger.js";
 import { decorators } from "../../../../../../services/decorators.js";
 import { ParamsSchema } from "../../../../../../types/params.js";
 import {
-    melodleGameConfig,
-    MelodleGameSchema,
-} from "../../../../../../types/melodle.js";
+    popdleGameConfig,
+    PopdleGameSchema,
+} from "../../../../../../types/popdle.js";
 import { getRandomTrackFromArtists } from "../../../../../../spotify/helpers.js";
 import { sendError, sendOk } from "../../../../../../utils/reply.js";
 import { runPreparedQuery } from "../../../../../../services/database.js";
@@ -18,17 +18,17 @@ export default (async (fastify) => {
         onRequest: [decorators.authenticateSelf()],
         schema: {
             params: SafeType.Pick(ParamsSchema, ["selfId"]),
-            summary: "Start a new melodle game.",
-            body: SafeType.Pick(melodleGameConfig, ["fromArtists"]),
+            summary: "Start a new popdle game.",
+            body: SafeType.Pick(popdleGameConfig, ["fromArtists"]),
             response: {
-                201: SafeType.Pick(MelodleGameSchema, ["gameId"]),
+                201: SafeType.Pick(PopdleGameSchema, ["gameId"]),
                 ...SafeType.CreateErrors([
                     "unauthorized",
                     "tooEarly",
                     "notFound",
                 ]),
             },
-            tags: ["Melodle"] satisfies MelodleTagName[],
+            tags: ["Popdle"] satisfies PopdleTagName[],
         },
         async handler(request, reply) {
             const track = await getRandomTrackFromArtists({

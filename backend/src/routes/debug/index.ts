@@ -4,7 +4,7 @@ import {
 } from "@fastify/type-provider-typebox";
 import { typedEnv } from "../../types/env.js";
 import { SafeType } from "../../utils/typebox.js";
-import { MelodleTagName } from "../../plugins/swagger.js";
+import { PopdleTagName } from "../../plugins/swagger.js";
 import {
     executeTransaction,
     runPreparedQuery,
@@ -17,7 +17,7 @@ import {
 import { friendSchema, User, userSchema } from "../../types/user.js";
 import { sendOk } from "../../utils/reply.js";
 import { isAxiosError } from "axios";
-import { getGuessSongFromUser } from "../../queries/dml.queries.js";
+import { hardCodedSongs } from "../../hardcoded/hardCodedSongs.js";
 
 export default (async (fastify) => {
     if (typedEnv.NODE_ENV === "development") {
@@ -54,7 +54,7 @@ export default (async (fastify) => {
                 },
                 summary: "Get current state of application.",
                 description: undefined,
-                tags: ["TODO Schema", "Debug"] satisfies MelodleTagName[],
+                tags: ["TODO Schema", "Debug"] satisfies PopdleTagName[],
                 security: [],
             },
             async handler(_request, reply) {
@@ -87,7 +87,7 @@ export default (async (fastify) => {
                 },
                 summary: "Reset the application state to a certain snapshot.",
                 description: undefined,
-                tags: ["TODO Schema", "Debug"] satisfies MelodleTagName[],
+                tags: ["TODO Schema", "Debug"] satisfies PopdleTagName[],
                 security: [],
             },
             async handler(_request, reply) {
@@ -100,16 +100,11 @@ export default (async (fastify) => {
         onRequest: [decorators.noSecurity],
         schema: {
             security: [],
-            tags: ["Debug"] satisfies MelodleTagName[],
+            tags: ["Debug"] satisfies PopdleTagName[],
         },
         async handler(_request, reply) {
             try {
-                const result = await runPreparedQuery(getGuessSongFromUser, {
-                    "gameId": 4,
-                    "selfId": 1,
-                })
-
-                return result;
+                return hardCodedSongs[0]
             } catch (e) {
                 if (isAxiosError(e)) {
                     return reply.code(e.status ?? 269).send(e.response?.data);

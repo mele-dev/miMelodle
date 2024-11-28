@@ -9,7 +9,7 @@ export const loginDict = {
         en: "Welcome back to",
         es: "¡Bienvenido de nuevo a",
     },
-    afterBouncyMelodle: {
+    afterBouncyPopdle: {
         en: "!",
         es: "!",
     },

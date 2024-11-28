@@ -1,7 +1,7 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { SafeType } from "../../utils/typebox.js";
 import { ParamsSchema } from "../../types/params.js";
-import { MelodleTagName } from "../../plugins/swagger.js";
+import { PopdleTagName } from "../../plugins/swagger.js";
 import { decorators } from "../../services/decorators.js";
 import MusixmatchAPI from "../../musixmatch-api/musixmatch.js";
 import { sendError, sendOk } from "../../utils/reply.js";
@@ -21,7 +21,7 @@ const artist: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                     "unavailableForLegalReasons",
                 ]),
             },
-            tags: ["Artists"] satisfies MelodleTagName[],
+            tags: ["Artists"] satisfies PopdleTagName[],
         },
         async handler(request, reply) {
             const musixmatch = new MusixmatchAPI();
@@ -56,7 +56,7 @@ const artist: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
             summary: "Search for artists by name",
             description:
                 "Search for artists based on the query provided in the querystring.",
-            tags: ["Artists"] satisfies MelodleTagName[],
+            tags: ["Artists"] satisfies PopdleTagName[],
         },
         async handler(request, reply) {
             const musixmatch = new MusixmatchAPI();
