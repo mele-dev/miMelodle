@@ -3675,6 +3675,34 @@ export type GetUsersUserId200 = {
     username: string;
 };
 
+/**
+ * Information to identify and describe an icon.
+ */
+export type GetPublicIcons200Item = {
+    /** File name required to fetch the image from the route to get specific user icons. */
+    filename: string;
+    /** Identifier for the icon. */
+    id: number;
+};
+
+export type GetPublicIconsFilename404StatusCode =
+    (typeof GetPublicIconsFilename404StatusCode)[keyof typeof GetPublicIconsFilename404StatusCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetPublicIconsFilename404StatusCode = {
+    NUMBER_404: 404,
+} as const;
+
+/**
+ * notFound
+ */
+export type GetPublicIconsFilename404 = {
+    error: string;
+    message: string;
+    statusCode: GetPublicIconsFilename404StatusCode;
+    [key: string]: unknown;
+};
+
 export type GetLyricsTrackMusixMatchId421StatusCode =
     (typeof GetLyricsTrackMusixMatchId421StatusCode)[keyof typeof GetLyricsTrackMusixMatchId421StatusCode];
 
@@ -3724,34 +3752,6 @@ export type GetLyricsTrackMusixMatchId200 = {
     lyricsId: string;
     /** Identifier for the track associated with these lyrics on MusixMatch. */
     trackId: string;
-};
-
-/**
- * Information to identify and describe an icon.
- */
-export type GetPublicIcons200Item = {
-    /** File name required to fetch the image from the route to get specific user icons. */
-    filename: string;
-    /** Identifier for the icon. */
-    id: number;
-};
-
-export type GetPublicIconsFilename404StatusCode =
-    (typeof GetPublicIconsFilename404StatusCode)[keyof typeof GetPublicIconsFilename404StatusCode];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetPublicIconsFilename404StatusCode = {
-    NUMBER_404: 404,
-} as const;
-
-/**
- * notFound
- */
-export type GetPublicIconsFilename404 = {
-    error: string;
-    message: string;
-    statusCode: GetPublicIconsFilename404StatusCode;
-    [key: string]: unknown;
 };
 
 export type GetLeaderboardsGameMode200LeaderboardItem = {
@@ -4220,6 +4220,20 @@ export const getLeaderboardsGameMode = (
 };
 
 /**
+ * This endpoint retrieves the lyrics for a given track using its Musixmatch ID
+ * @summary Get lyrics for a specific track
+ */
+export const getLyricsTrackMusixMatchId = (
+    trackMusixMatchId: number,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<GetLyricsTrackMusixMatchId200>(
+        { url: `/lyrics/${trackMusixMatchId}`, method: "GET" },
+        options
+    );
+};
+
+/**
  * Get the svg for a certain user icon. The selection of user icons is fixed.
  * @summary Get a user icon.
  */
@@ -4245,20 +4259,6 @@ export const getPublicIcons = (
 ) => {
     return customInstance<GetPublicIcons200Item[]>(
         { url: `/public/icons`, method: "GET" },
-        options
-    );
-};
-
-/**
- * This endpoint retrieves the lyrics for a given track using its Musixmatch ID
- * @summary Get lyrics for a specific track
- */
-export const getLyricsTrackMusixMatchId = (
-    trackMusixMatchId: number,
-    options?: SecondParameter<typeof customInstance>
-) => {
-    return customInstance<GetLyricsTrackMusixMatchId200>(
-        { url: `/lyrics/${trackMusixMatchId}`, method: "GET" },
         options
     );
 };
@@ -4907,14 +4907,14 @@ export type PostDebugPlaygroundResult = NonNullable<
 export type GetLeaderboardsGameModeResult = NonNullable<
     Awaited<ReturnType<typeof getLeaderboardsGameMode>>
 >;
+export type GetLyricsTrackMusixMatchIdResult = NonNullable<
+    Awaited<ReturnType<typeof getLyricsTrackMusixMatchId>>
+>;
 export type GetPublicIconsFilenameResult = NonNullable<
     Awaited<ReturnType<typeof getPublicIconsFilename>>
 >;
 export type GetPublicIconsResult = NonNullable<
     Awaited<ReturnType<typeof getPublicIcons>>
->;
-export type GetLyricsTrackMusixMatchIdResult = NonNullable<
-    Awaited<ReturnType<typeof getLyricsTrackMusixMatchId>>
 >;
 export type GetUsersUserIdResult = NonNullable<
     Awaited<ReturnType<typeof getUsersUserId>>

@@ -354,6 +354,23 @@ export const getLeaderboardsGameModeResponse = zod.object({
 });
 
 /**
+ * This endpoint retrieves the lyrics for a given track using its Musixmatch ID
+ * @summary Get lyrics for a specific track
+ */
+export const getLyricsTrackMusixMatchIdParams = zod.object({
+    trackMusixMatchId: zod.number(),
+});
+
+export const getLyricsTrackMusixMatchIdResponse = zod.object({
+    lyricsId: zod.string(),
+    trackId: zod.string(),
+    lyricsBody: zod.string(),
+    explicit: zod.boolean(),
+    language: zod.string(),
+    copyright: zod.string().optional(),
+});
+
+/**
  * Get the svg for a certain user icon. The selection of user icons is fixed.
  * @summary Get a user icon.
  */
@@ -373,23 +390,6 @@ export const getPublicIconsResponseItem = zod.object({
     filename: zod.string(),
 });
 export const getPublicIconsResponse = zod.array(getPublicIconsResponseItem);
-
-/**
- * This endpoint retrieves the lyrics for a given track using its Musixmatch ID
- * @summary Get lyrics for a specific track
- */
-export const getLyricsTrackMusixMatchIdParams = zod.object({
-    trackMusixMatchId: zod.number(),
-});
-
-export const getLyricsTrackMusixMatchIdResponse = zod.object({
-    lyricsId: zod.string(),
-    trackId: zod.string(),
-    lyricsBody: zod.string(),
-    explicit: zod.boolean(),
-    language: zod.string(),
-    copyright: zod.string().optional(),
-});
 
 /**
  * Authentication is not needed to see public user information.

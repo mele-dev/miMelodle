@@ -1,7 +1,7 @@
 name: Melodle
 services:
   backend:
-    image: ${REGISTRY_URL}/${NOMBRE_GRUPO}/${NOMBRE_PROYECTO}/backend
+    image: backend
     container_name: backend
     build:
       context: ./backend
@@ -19,7 +19,7 @@ services:
     depends_on:
       - database
   frontend:
-    image: ${REGISTRY_URL}/${NOMBRE_GRUPO}/${NOMBRE_PROYECTO}/frontend
+    image: frontend
     container_name: frontend
     command: sh -c "npm install && npm start"
     volumes:
@@ -30,7 +30,7 @@ services:
     depends_on:
       - backend
   database:
-    image: ${REGISTRY_URL}/${NOMBRE_GRUPO}/${NOMBRE_PROYECTO}/database
+    image: database
     container_name: database
     build:
       context: ./database

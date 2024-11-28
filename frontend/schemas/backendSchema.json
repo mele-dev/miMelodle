@@ -845,112 +845,6 @@
                 }
             }
         },
-        "/public/icons/{filename}": {
-            "get": {
-                "summary": "Get a user icon.",
-                "tags": ["Static"],
-                "description": "Get the svg for a certain user icon. The selection of user icons is fixed.",
-                "parameters": [
-                    {
-                        "schema": {
-                            "type": "string",
-                            "pattern": "^(abstract-1\\.svg|abstract-10\\.svg|abstract-11\\.svg|abstract-2\\.svg|abstract-3\\.svg|abstract-4\\.svg|abstract-5\\.svg|abstract-6\\.svg|abstract-7\\.svg|abstract-8\\.svg|abstract-9\\.svg|default\\.svg)$"
-                        },
-                        "in": "path",
-                        "name": "filename",
-                        "required": true
-                    }
-                ],
-                "security": [],
-                "responses": {
-                    "200": {
-                        "description": "Default Response",
-                        "content": {
-                            "image/svg+xml": {
-                                "schema": {
-                                    "description": "An svg file.",
-                                    "type": "string",
-                                    "format": "binary"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "notFound",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "description": "notFound",
-                                    "additionalProperties": true,
-                                    "type": "object",
-                                    "properties": {
-                                        "statusCode": {
-                                            "type": "number",
-                                            "enum": [404]
-                                        },
-                                        "error": { "type": "string" },
-                                        "message": { "type": "string" }
-                                    },
-                                    "required": [
-                                        "statusCode",
-                                        "error",
-                                        "message"
-                                    ]
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/public/icons": {
-            "get": {
-                "summary": "Get information about all user icons.",
-                "tags": ["Static"],
-                "security": [],
-                "responses": {
-                    "200": {
-                        "description": "Default Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "description": "Information to identify and describe an icon.",
-                                        "type": "object",
-                                        "properties": {
-                                            "id": {
-                                                "description": "Identifier for the icon.",
-                                                "type": "integer"
-                                            },
-                                            "filename": {
-                                                "description": "File name required to fetch the image from the route to get specific user icons.",
-                                                "type": "string"
-                                            }
-                                        },
-                                        "required": ["id", "filename"]
-                                    }
-                                },
-                                "example": [
-                                    { "id": 1, "filename": "abstract-1.svg" },
-                                    { "id": 2, "filename": "abstract-10.svg" },
-                                    { "id": 3, "filename": "abstract-11.svg" },
-                                    { "id": 4, "filename": "abstract-2.svg" },
-                                    { "id": 5, "filename": "abstract-3.svg" },
-                                    { "id": 6, "filename": "abstract-4.svg" },
-                                    { "id": 7, "filename": "abstract-5.svg" },
-                                    { "id": 8, "filename": "abstract-6.svg" },
-                                    { "id": 9, "filename": "abstract-7.svg" },
-                                    { "id": 10, "filename": "abstract-8.svg" },
-                                    { "id": 11, "filename": "abstract-9.svg" },
-                                    { "id": 12, "filename": "default.svg" }
-                                ]
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/lyrics/{trackMusixMatchId}": {
             "get": {
                 "summary": "Get lyrics for a specific track",
@@ -1058,6 +952,112 @@
                                         "message"
                                     ]
                                 }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/public/icons/{filename}": {
+            "get": {
+                "summary": "Get a user icon.",
+                "tags": ["Static"],
+                "description": "Get the svg for a certain user icon. The selection of user icons is fixed.",
+                "parameters": [
+                    {
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^(abstract-1\\.svg|abstract-10\\.svg|abstract-11\\.svg|abstract-2\\.svg|abstract-3\\.svg|abstract-4\\.svg|abstract-5\\.svg|abstract-6\\.svg|abstract-7\\.svg|abstract-8\\.svg|abstract-9\\.svg|default\\.svg)$"
+                        },
+                        "in": "path",
+                        "name": "filename",
+                        "required": true
+                    }
+                ],
+                "security": [],
+                "responses": {
+                    "200": {
+                        "description": "Default Response",
+                        "content": {
+                            "image/svg+xml": {
+                                "schema": {
+                                    "description": "An svg file.",
+                                    "type": "string",
+                                    "format": "binary"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "notFound",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "notFound",
+                                    "additionalProperties": true,
+                                    "type": "object",
+                                    "properties": {
+                                        "statusCode": {
+                                            "type": "number",
+                                            "enum": [404]
+                                        },
+                                        "error": { "type": "string" },
+                                        "message": { "type": "string" }
+                                    },
+                                    "required": [
+                                        "statusCode",
+                                        "error",
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/public/icons": {
+            "get": {
+                "summary": "Get information about all user icons.",
+                "tags": ["Static"],
+                "security": [],
+                "responses": {
+                    "200": {
+                        "description": "Default Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "description": "Information to identify and describe an icon.",
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "description": "Identifier for the icon.",
+                                                "type": "integer"
+                                            },
+                                            "filename": {
+                                                "description": "File name required to fetch the image from the route to get specific user icons.",
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": ["id", "filename"]
+                                    }
+                                },
+                                "example": [
+                                    { "id": 1, "filename": "abstract-1.svg" },
+                                    { "id": 2, "filename": "abstract-10.svg" },
+                                    { "id": 3, "filename": "abstract-11.svg" },
+                                    { "id": 4, "filename": "abstract-2.svg" },
+                                    { "id": 5, "filename": "abstract-3.svg" },
+                                    { "id": 6, "filename": "abstract-4.svg" },
+                                    { "id": 7, "filename": "abstract-5.svg" },
+                                    { "id": 8, "filename": "abstract-6.svg" },
+                                    { "id": 9, "filename": "abstract-7.svg" },
+                                    { "id": 10, "filename": "abstract-8.svg" },
+                                    { "id": 11, "filename": "abstract-9.svg" },
+                                    { "id": 12, "filename": "default.svg" }
+                                ]
                             }
                         }
                     }
@@ -1525,11 +1525,11 @@
                                     ]
                                 },
                                 "example": {
-                                    "name": "Mrs. Stephanie Doyle III",
-                                    "username": "Stephanie.Doyle23",
+                                    "name": "Mrs. Roxanne Bednar PhD",
+                                    "username": "Roxanne_Bednar",
                                     "password": "Fake123!",
-                                    "email": "Stephanie.Doyle92@hotmail.com",
-                                    "profilePictureId": 8
+                                    "email": "Roxanne.Bednar92@yahoo.com",
+                                    "profilePictureId": 11
                                 }
                             }
                         }
@@ -1612,18 +1612,18 @@
                                 },
                                 "example": [
                                     {
-                                        "name": "Dr. Roland Sanford II",
-                                        "username": "Roland.Sanford",
+                                        "name": "Mr. Sidney Schmitt Sr.",
+                                        "username": "Sidney_Schmitt",
                                         "password": "Fake123!",
-                                        "email": "Roland_Sanford@yahoo.com",
-                                        "profilePictureId": 6
+                                        "email": "Sidney.Schmitt25@hotmail.com",
+                                        "profilePictureId": 2
                                     },
                                     {
-                                        "name": "Dr. Roland Wintheiser PhD",
-                                        "username": "Roland.Wintheiser43",
+                                        "name": "Mr. Drew Marks Jr.",
+                                        "username": "Drew_Marks",
                                         "password": "Fake123!",
-                                        "email": "Roland_Wintheiser70@hotmail.com",
-                                        "profilePictureId": 3
+                                        "email": "Drew_Marks98@hotmail.com",
+                                        "profilePictureId": 11
                                     }
                                 ]
                             }
@@ -8453,7 +8453,7 @@
     },
     "servers": [
         {
-            "url": "https://localhost/backend",
+            "url": "https://192.168.0.102/backend",
             "description": "Development server"
         }
     ],

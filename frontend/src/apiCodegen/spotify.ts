@@ -1080,6 +1080,7 @@ export interface ChapterBase {
     /**
    * A URL to a 30 second preview (MP3 format) of the chapter. `null` if not available.
 
+   * @deprecated
    * @nullable
    */
     audio_preview_url: string | null;
@@ -1468,6 +1469,7 @@ export interface EpisodeBase {
     /**
    * A URL to a 30 second preview (MP3 format) of the episode. `null` if not available.
 
+   * @deprecated
    * @nullable
    */
     audio_preview_url: string | null;
@@ -1613,6 +1615,7 @@ export interface TrackObject {
     /**
    * A link to a 30 second preview (MP3 format) of the track. Can be `null`
 
+   * @deprecated
    * @nullable
    */
     preview_url?: string | null;
@@ -1932,6 +1935,7 @@ export interface SimplifiedTrackObject {
     /**
    * A URL to a 30 second preview (MP3 format) of the track.
 
+   * @deprecated
    * @nullable
    */
     preview_url?: string | null;
@@ -2872,6 +2876,7 @@ export const getAnArtistsTopTracks = <
 /**
  * Get Spotify catalog information about artists similar to a given artist. Similarity is based on analysis of the Spotify community's listening history.
 
+ * @deprecated
  * @summary Get Artist's Related Artists
 
  */
@@ -3754,6 +3759,7 @@ export const unfollowPlaylist = <TData = AxiosResponse<void>>(
 /**
  * Get a list of Spotify featured playlists (shown, for example, on a Spotify player's 'Browse' tab).
 
+ * @deprecated
  * @summary Get Featured Playlists
 
  */
@@ -3808,6 +3814,7 @@ export const getACategory = <TData = AxiosResponse<OneCategoryResponse>>(
 /**
  * Get a list of Spotify playlists tagged with a particular category.
 
+ * @deprecated
  * @summary Get Category's Playlists
 
  */
@@ -3975,6 +3982,7 @@ export const checkIfUserFollowsPlaylist = <
 /**
  * Get audio features for multiple tracks based on their Spotify IDs.
 
+ * @deprecated
  * @summary Get Several Tracks' Audio Features
 
  */
@@ -3994,6 +4002,7 @@ export const getSeveralAudioFeatures = <
  * Get audio feature information for a single track identified by its unique
 Spotify ID.
 
+ * @deprecated
  * @summary Get Track's Audio Features
 
  */
@@ -4012,6 +4021,7 @@ export const getAudioFeatures = <
 /**
  * Get a low-level audio analysis for a track in the Spotify catalog. The audio analysis describes the track’s structure and musical content, including rhythm, pitch, and timbre.
 
+ * @deprecated
  * @summary Get Track's Audio Analysis
 
  */
@@ -4032,6 +4042,7 @@ export const getAudioAnalysis = <
 
 For artists and tracks that are very new or obscure there might not be enough data to generate a list of tracks.
 
+ * @deprecated
  * @summary Get Recommendations
 
  */

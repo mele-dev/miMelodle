@@ -1,4 +1,4 @@
-import { Component, inject } from "@angular/core";
+import { Component, inject, OnInit } from "@angular/core";
 import { LoginTranslator } from "./login.translations";
 import { LanguagePickerComponent } from "../../components/language-picker/language-picker.component";
 import { SpotifyRectangleComponent } from "../../icons/spotify-rectangle/spotify-rectangle.component";
@@ -16,6 +16,8 @@ import { toast } from "ngx-sonner";
 import axios from "axios";
 import { CrFancyButtonStylesDirective } from "../../directives/styling/cr-fancy-button-styles.directive";
 import { enviroment } from "../../../enviroments";
+import { HttpClient } from "@angular/common/http";
+import { firstValueFrom } from "rxjs";
 
 @Component({
     selector: "app-login",
@@ -32,11 +34,22 @@ import { enviroment } from "../../../enviroments";
     ],
     templateUrl: "./login.page.html",
 })
-export class LoginPage {
+export class LoginPage implements OnInit{
     private readonly translator = inject(LoginTranslator);
     private readonly localStorage = inject(LocalStorageService);
     safeRouter = inject(SafeRoutingService);
     private validator = inject(ClientValidationService);
+    private _http = inject(HttpClient);
+    
+    public async get(){
+        const result = await firstValueFrom(this._http.get("https://192.168.0.102/backend/debug/snapshot"))
+        console.log(result, 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
+    }
+
+    ngOnInit(): void {
+        this.get()
+    }
+
     dict = this.translator.dict;
     front_url = enviroment.front_url
     person = new FormBuilder().nonNullable.group(
