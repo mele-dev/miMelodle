@@ -1,12 +1,12 @@
 <div class="grid place-items-center">
-  <div
-    class="flex min-h-dvh w-dvw  container px-4 align-middle overflow-y-scroll py-10 md:gap-10 md:px-10"
-  >
     <div
-      class="rounded-2xl bg-gradient-to-r from-violet-500 to-fuchsia-500 md:flex-grow"
-    ></div>
-    <main class="m-auto md:w-auto md:min-w-fit overflow-x-hidden">
-      <router-outlet></router-outlet>
-    </main>
-  </div>
+        class="container flex min-h-dvh w-dvw overflow-y-auto px-4 py-10 align-middle md:gap-10 md:px-10"
+    >
+        <div
+            class="rounded-2xl bg-gradient-to-r from-violet-500 to-fuchsia-500 md:flex-grow"
+        ></div>
+        <main class="m-auto overflow-x-hidden md:w-auto md:min-w-fit">
+            <router-outlet></router-outlet>
+        </main>
+    </div>
 </div>
