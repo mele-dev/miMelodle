@@ -37,7 +37,7 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                         profilePictureSchema.properties.filename,
                     profilePictureId: profilePictureSchema.properties.id,
                 }),
-                ...SafeType.CreateErrors(["unauthorized"]),
+                ...SafeType.CreateErrors(["unauthorized", "notFound"]),
             },
             tags: ["User CRUD", "User"] satisfies PopdleTagName[],
             summary: "Get your user information.",
@@ -50,6 +50,11 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
                 getSelfuser,
                 request.params
             );
+
+            if (userProfile.length === 0) {
+                return sendError(reply, "notFound", "user does not exist.");
+            }
+
             return sendOk(reply, 200, {
                 ...userProfile[0],
                 spotifyId: userProfile[0].spotifyId ?? undefined,
