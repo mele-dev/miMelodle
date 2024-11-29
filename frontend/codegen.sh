@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-curl -k https://192.168.1.5/backend/docs/json > schemas/backendSchema.json
+curl -k https://localhost/backend/docs/json > schemas/backendSchema.json
 
 npx prettier ./schemas/backendSchema.json --write
 

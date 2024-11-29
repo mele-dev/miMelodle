@@ -4525,15 +4525,16 @@ export const postUsersSelfSelfIdConfigs = (
 /**
  * @summary Delete a configuration preset.
  */
-export const deleteUsersSelfSelfIdConfigsPopdleConfigId = <
-    TData = AxiosResponse<DeleteUsersSelfSelfIdConfigsPopdleConfigId200>,
->(
+export const deleteUsersSelfSelfIdConfigsPopdleConfigId = (
     selfId: number,
     popdleConfigId: number,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.delete(
-        `https://localhost/backend/users/self/${selfId}/configs/${popdleConfigId}`,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<DeleteUsersSelfSelfIdConfigsPopdleConfigId200>(
+        {
+            url: `/users/self/${selfId}/configs/${popdleConfigId}`,
+            method: "DELETE",
+        },
         options
     );
 };
@@ -4541,16 +4542,16 @@ export const deleteUsersSelfSelfIdConfigsPopdleConfigId = <
 /**
  * @summary Update a configuration preset.
  */
-export const putUsersSelfSelfIdConfigsPopdleConfigId = <
-    TData = AxiosResponse<PutUsersSelfSelfIdConfigsPopdleConfigId200>,
->(
+export const putUsersSelfSelfIdConfigsPopdleConfigId = (
     selfId: number,
     popdleConfigId: number,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.put(
-        `https://localhost/backend/users/self/${selfId}/configs/${popdleConfigId}`,
-        undefined,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<PutUsersSelfSelfIdConfigsPopdleConfigId200>(
+        {
+            url: `/users/self/${selfId}/configs/${popdleConfigId}`,
+            method: "PUT",
+        },
         options
     );
 };
@@ -4963,14 +4964,17 @@ export type GetUsersSelfSelfIdBlockingResult = NonNullable<
 export type GetUsersSelfSelfIdConfigsResult = NonNullable<
     Awaited<ReturnType<typeof getUsersSelfSelfIdConfigs>>
 >;
-export type PostUsersSelfSelfIdConfigsResult =
-    AxiosResponse<PostUsersSelfSelfIdConfigs200>;
-export type DeleteUsersSelfSelfIdConfigsPopdleConfigIdResult =
-    AxiosResponse<DeleteUsersSelfSelfIdConfigsPopdleConfigId200>;
-export type PutUsersSelfSelfIdConfigsPopdleConfigIdResult =
-    AxiosResponse<PutUsersSelfSelfIdConfigsPopdleConfigId200>;
-export type GetUsersSelfSelfIdConfigsSuggestResult = AxiosResponse<
-    GetUsersSelfSelfIdConfigsSuggest200Item[]
+export type PostUsersSelfSelfIdConfigsResult = NonNullable<
+    Awaited<ReturnType<typeof postUsersSelfSelfIdConfigs>>
+>;
+export type DeleteUsersSelfSelfIdConfigsPopdleConfigIdResult = NonNullable<
+    Awaited<ReturnType<typeof deleteUsersSelfSelfIdConfigsPopdleConfigId>>
+>;
+export type PutUsersSelfSelfIdConfigsPopdleConfigIdResult = NonNullable<
+    Awaited<ReturnType<typeof putUsersSelfSelfIdConfigsPopdleConfigId>>
+>;
+export type GetUsersSelfSelfIdConfigsSuggestResult = NonNullable<
+    Awaited<ReturnType<typeof getUsersSelfSelfIdConfigsSuggest>>
 >;
 export type GetUsersSelfSelfIdFriendsResult = NonNullable<
     Awaited<ReturnType<typeof getUsersSelfSelfIdFriends>>
