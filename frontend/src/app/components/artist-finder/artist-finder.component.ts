@@ -1,30 +1,24 @@
 import {
     Component,
-    effect,
-    EventEmitter,
     inject,
-    Output,
     signal,
 } from "@angular/core";
-import { TranslatorService } from "../../services/translator.service";
-import { getFollowed, GetFollowedType } from "../../../apiCodegen/spotify";
 import {
     getSpotifySearch,
     GetSpotifySearch200Artists,
     postUsersSelfSelfIdArtistsSpotifyArtistId,
 } from "../../../apiCodegen/backend";
-import { getSpotifySearchResponse } from "../../../apiCodegen/backend-zod";
 import { toast } from "ngx-sonner";
 import { HlmTableComponent } from "../../../../libs/ui/ui-table-helm/src/lib/hlm-table.component";
 import { HlmTrowComponent } from "../../../../libs/ui/ui-table-helm/src/lib/hlm-trow.component";
 import { HlmTdComponent } from "../../../../libs/ui/ui-table-helm/src/lib/hlm-td.component";
 import { FormsModule } from "@angular/forms";
-import { LocalStorageService } from "../../services/local-storage.service";
 import { SavedArtistsService } from "../../services/saved-artists.service";
 import { ArtistFinderTranslator } from "./artist-finder.translations";
 import { SelfService } from "../../services/self.service";
 import { HlmInputModule } from "@spartan-ng/ui-input-helm";
-import { debounceTime } from "rxjs";
+import { JsonPipe } from "@angular/common";
+import { SpotifyImagePickerService } from "../../services/spotify-image-picker.service";
 
 type SearchedArtist = GetSpotifySearch200Artists["items"][number];
 
@@ -32,6 +26,7 @@ type SearchedArtist = GetSpotifySearch200Artists["items"][number];
     selector: "app-artist-finder",
     standalone: true,
     imports: [
+        JsonPipe,
         HlmTableComponent,
         HlmTrowComponent,
         HlmTdComponent,
@@ -46,6 +41,7 @@ export class ArtistFinderComponent {
     matchedArtists = signal<SearchedArtist[]>([]);
     private _selfService = inject(SelfService);
     public homeArtistsService = inject(SavedArtistsService);
+    imagePicker = inject(SpotifyImagePickerService);
 
     async search() {
         try {
@@ -56,6 +52,8 @@ export class ArtistFinderComponent {
                 spotifyQueryType: "artist" as any, // TODO CRIS
             });
             this.matchedArtists.set(query.artists?.items ?? []);
+            this.matchedArtists.set(query.artists?.items ?? []);
+            console.log(this.matchedArtists());
         } catch (e) {
             toast(this.dict().artistsNotFound);
             return;

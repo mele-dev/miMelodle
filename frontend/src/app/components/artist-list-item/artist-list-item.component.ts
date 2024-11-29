@@ -5,6 +5,7 @@ import { HlmButtonModule } from "@spartan-ng/ui-button-helm";
 import { provideIcons } from "@ng-icons/core";
 import { lucidePlay, lucideTarget, lucideX, lucideXSquare } from "@ng-icons/lucide";
 import { HlmIconModule } from "@spartan-ng/ui-icon-helm";
+import { SpotifyImagePickerService } from "../../services/spotify-image-picker.service";
 
 export type ArtistListItem = NonNullable<
   GetSpotifySearch200["artists"]
@@ -19,6 +20,7 @@ export type ArtistListItem = NonNullable<
 })
 export class ArtistListItemComponent {
     artist = input.required<ArtistListItem>();
+    imagePicker = inject(SpotifyImagePickerService);
     dict = inject(ArtistListItemTranslator).dict;
     destroy = output<ArtistListItem>();
     play = output<ArtistListItem>();

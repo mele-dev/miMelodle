@@ -11,17 +11,19 @@
     name="query"
     [placeholder]="this.dict().indications"
     value=""
-    class="w-full"
+    class="mb-2 w-full"
     [(ngModel)]="this.usersFilter"
     (keydown.enter)="search()"
 />
 
-<hlm-table class="h-96 w-96 overflow-y-scroll scroll-auto">
+<hlm-table class="mx-2 h-96 w-full overflow-y-auto sm:w-96">
     @for (artist of matchedArtists(); track artist.id) {
         <hlm-trow class="flex py-2">
             <hlm-td>
                 <img
-                    src="{{ artist.images[0].url }}"
+                    [src]="
+                        this.imagePicker.getImageUrl(artist.images, 100 * 100)
+                    "
                     class="h-12 w-12 rounded-3xl"
                 />
             </hlm-td>

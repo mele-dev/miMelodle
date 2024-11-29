@@ -3,7 +3,7 @@
     class="flex flex-col justify-center"
     (ngSubmit)="this.onSubmit()"
 >
-    <h1 class="font-sans text-6xl">{{ dict().title }}</h1>
+    <h1 class="font-sans text-5xl sm:text-6xl mr-4">{{ dict().title }}</h1>
     <div class="flex items-baseline justify-between">
         <a
             class="mb-8 w-fit cursor-pointer hover:underline"
@@ -13,17 +13,17 @@
         <app-language-picker></app-language-picker>
     </div>
     <div class="flex justify-center">
-        <h2 class="text-xl font-bold">
+        <h2 class="text-lg sm:text-xl font-bold">
             {{ dict().howDoYouWantOthersToSeeYou }}
         </h2>
     </div>
     <!-- Profile data -->
     <div
         tabindex="0"
-        class="group relative z-10 mx-auto my-5 cursor-pointer rounded-full"
+        class="group relative z-10 max-w-full mx-auto my-5 cursor-pointer rounded-full"
     >
         <section
-            class="flex w-96 gap-2 rounded-full border bg-neutral-950 p-3 pe-10"
+            class="flex w-96 max-w-full gap-2 rounded-full border bg-neutral-950 p-3 pe-10"
         >
             <div
                 [innerHTML]="
@@ -142,7 +142,7 @@
     <!-- Login data -->
     <section class="mt-5">
         <div class="flex justify-center">
-            <h2 class="mb-2 text-xl font-bold">
+            <h2 class="mb-2 text-lg sm:text-xl font-bold">
                 {{ dict().weNeedSomeDataToIdentifyYou }}
             </h2>
         </div>
@@ -216,12 +216,6 @@
                 class="flex w-full justify-center rounded-lg border border-neutral-800"
             >
                 <app-spotify-rectangle></app-spotify-rectangle>
-            </a>
-            <a
-                class="flex w-full justify-center rounded-lg border border-neutral-800"
-                [routerLink]="this.safeRouter.createLink('/TODO')"
-            >
-                <app-google-rectangle></app-google-rectangle>
             </a>
         </div>
     </section>

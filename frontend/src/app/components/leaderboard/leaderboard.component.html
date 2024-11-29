@@ -1,5 +1,5 @@
-<div class="my-5 flex h-full flex-col gap-4">
-    <div class="mx-auto flex w-fit grow flex-col items-center px-2 pt-5">
+<div class="flex h-full flex-col gap-4">
+    <div class="mx-auto flex w-full sm:w-fit grow flex-col items-center px-2 pt-5">
         <!-- WARN: The "top" property on this container must be as high as the navbar.-->
         <div
             class="sticky top-20 -mt-4 flex w-full items-baseline justify-between bg-background py-4"
@@ -12,7 +12,7 @@
                 />
                 {{ this.dict().onlyFriends }}
             </label>
-            <h1 class="text-xl">{{ this.dict().title }}</h1>
+            <h1 class="hidden sm:block text-xl">{{ this.dict().title }}</h1>
             <brn-select
                 class="inline-block"
                 placeholder="Game mode"
@@ -35,7 +35,7 @@
         @if (this.leaderboard()) {
             <app-leaderboard-table
                 [leaderboard]="this.leaderboard()!.leaderboard"
-                class="mx-auto"
+                class="mx-auto w-full overflow-x-auto"
             ></app-leaderboard-table>
         }
     </div>
@@ -58,7 +58,7 @@
                             )
                         "
                     >
-                        <hlm-pagination-previous [text]="this.dict().previous" />
+                        <hlm-pagination-previous [text]="''" />
                     </button>
                 </li>
                 @for (page of this.navigationPages(); track page) {
@@ -83,7 +83,7 @@
                             )
                         "
                     >
-                        <hlm-pagination-next [text]="this.dict().next" />
+                        <hlm-pagination-next [text]="''" />
                     </button>
                 </li>
             </ul>

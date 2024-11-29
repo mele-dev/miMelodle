@@ -66,24 +66,24 @@
             <section
                 hlmPopoverContent
                 *brnPopoverContent="let ctx"
-                class="mt-3"
+                class="mt-3 w-96 max-w-[100dvw]"
             >
-                <hlm-tabs tab="account">
+                <hlm-tabs tab="friends">
                     <hlm-tabs-list
                         class="grid w-full grid-cols-2"
                         aria-label="tabs example"
                     >
-                        <button hlmTabsTrigger="account">
+                        <button hlmTabsTrigger="friends">
                             {{ this.dict().friendRequests }}
                         </button>
-                        <button hlmTabsTrigger="password">
+                        <button hlmTabsTrigger="blocked">
                             {{ this.dict().blocked }}
                         </button>
                     </hlm-tabs-list>
-                    <div hlmTabsContent="account">
+                    <div hlmTabsContent="friends">
                         <app-friendships></app-friendships>
                     </div>
-                    <div hlmTabsContent="password">
+                    <div hlmTabsContent="blocked">
                         <app-blocking></app-blocking>
                     </div>
                 </hlm-tabs>

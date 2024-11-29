@@ -30,8 +30,8 @@ const tutorialsTranslations = {
         es: "Escribe una línea de la canción y presiona 'enter'.",
     },
     howToPlaySong: {
-        en: "Write the name of a song by the artist and press 'enter'.",
-        es: "Escribe el nombre de una canción y presiona 'enter'.",
+        en: "Write the name of a song or album of that artist and hit Enter. Afterwards, choose which song you want.",
+        es: "Escribe el nombre de un album o una canción del artista indicado y presiona Enter. Luego, elige que canción crees es correcta.",
     },
     start: {
         en: "Start",
@@ -54,8 +54,8 @@ const tutorialsTranslations = {
         es: "Si adivinas una canción que pertenece al mismo álbum que la canción objetivo, la imagen del albúm tendrá",
     },
     incorrectAlbum : {
-        en: "otherwise, it will have",
-        es: "de lo contrario, verás"
+        en: ". Otherwise, it will have ",
+        es: ". De lo contrario, tendrá "
     },
     snippet: {
         en: "When you reach 5 attempts, we'll give you a line from the song.",
@@ -63,7 +63,7 @@ const tutorialsTranslations = {
     },
     lineLength: {
         en: "You will be given the number of characters in the line.",
-        es: "Se te dará la cantidad de caractéres de la línea."
+        es: "Se te dará la cantidad de caracteres de la línea."
     }
 } as const satisfies Translations;
 

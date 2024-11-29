@@ -1,11 +1,8 @@
 import {
     Component,
     computed,
-    ElementRef,
     inject,
     OnInit,
-    QueryList,
-    ViewChildren,
 } from "@angular/core";
 import { SavedArtistsService } from "../../services/saved-artists.service";
 import {
@@ -23,6 +20,7 @@ import { SafeRoutingService } from "../../services/safe-routing.service";
 import { RouterLink } from "@angular/router";
 import { HlmIconModule } from "@spartan-ng/ui-icon-helm";
 import { GuessSongService } from "../../services/games/guess-song.service";
+import { SpotifyImagePickerService } from "../../services/spotify-image-picker.service";
 
 @Component({
     selector: "app-collection-artist-card",
@@ -34,18 +32,17 @@ import { GuessSongService } from "../../services/games/guess-song.service";
     templateUrl: "./collection-artist-card.component.html",
 })
 export class CollectionArtistCardComponent implements OnInit {
+    imagePicker = inject(SpotifyImagePickerService);
     public homeArtistsService = inject(SavedArtistsService);
     public guessSong = inject(GuessSongService);
     dict = inject(CollectionArtistCardTranslator).dict;
-    @ViewChildren("dialog") dialogs!: QueryList<ElementRef>;
     safeRouter = inject(SafeRoutingService);
-    blurOn : boolean = false;
+
     public async ngOnInit() {
         await this.homeArtistsService.loadData();
     }
 
     public async delete(id: string) {
-        this.closeDialog(id);
         await this.homeArtistsService.deleteArtist(id);
     }
 
@@ -57,21 +54,4 @@ export class CollectionArtistCardComponent implements OnInit {
         return this.homeArtistsService.artists().filter((a) => a.isFavorite);
     });
 
-    public openDialog(artistId: string) {
-        const dialog = this.dialogs.find(
-            (dialog) =>
-                dialog.nativeElement.getAttribute("data-artist-id") === artistId
-        );
-        dialog?.nativeElement.showModal();
-        this.blurOn = true
-    }
-
-    public closeDialog(artistId: string) {
-        const dialog = this.dialogs.find(
-            (dialog) =>
-                dialog.nativeElement.getAttribute("data-artist-id") === artistId
-        );
-        dialog?.nativeElement.close();
-        this.blurOn = false
-    }
 }
