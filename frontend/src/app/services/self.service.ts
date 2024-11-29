@@ -68,7 +68,7 @@ export class SelfService {
             return;
         } catch (e) {
             console.error(e);
-            if (isAxiosError(e) && e.status === 401) {
+            if (isAxiosError(e) && (e.status === 401 || e.status === 404)) {
                 toast(this._authDict().lacksAuthError);
                 this._safeRouter.navigate("/auth");
                 toast("Not authorized to fetch your information.");

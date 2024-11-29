@@ -54,7 +54,7 @@ export class HomePage {
         const userId = (await this.selfService.waitForUserInfoSnapshot()).id;
         try {
             const result = await getUsersSelfSelfIdArtists(userId);
-            this.isEmpty = false;
+            this.isEmpty = result.length === 0;
         } catch (e) {
             if (isAxiosError(e)) {
                 if (e.status == 404) {

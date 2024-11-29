@@ -22,6 +22,8 @@ services:
     image: frontend
     container_name: frontend
     command: sh -c "npm install && npm start"
+    environment:
+      - APK_HOSTNAME=${APK_HOSTNAME}
     volumes:
       - ./frontend/:/frontend
     build:

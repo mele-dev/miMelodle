@@ -1,4 +1,4 @@
 export const enviroment = {
     production: false,
-    front_url: "192.168.0.102",
+    front_url: "10.4.200.142",
 };

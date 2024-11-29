@@ -33,11 +33,7 @@ export default (async (fastify, _opts) => {
             );
 
             if (queryResult.length === 0) {
-                return sendError(
-                    reply,
-                    "notFound",
-                    "There's no artists to get."
-                );
+                return sendOk(reply, 200, []);
             }
 
             const ids = queryResult.map((artist) => artist.spotifyArtistId);
