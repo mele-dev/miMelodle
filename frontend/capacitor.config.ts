@@ -7,10 +7,10 @@ const config: CapacitorConfig = {
     appId: "com.example.app",
     appName: "Popdle",
     webDir: "dist/frontend/browser",
-    //server: {
-    //    allowNavigation: [enviroment.front_url],
-    //    hostname: apkHostname,
-    //},
+    server: {
+        allowNavigation: [enviroment.front_url],
+        hostname: apkHostname,
+    },
     android: {
         allowMixedContent: true,
     },
