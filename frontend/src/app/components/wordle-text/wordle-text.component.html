@@ -1,17 +1,18 @@
-<code class="w-full gap-2 font-mono text-3xl">
+<code class="w-full gap-2 font-mono uppercase">
     @for (char of this.text(); track $index) {
         <span
-            class="px-2 font-mono py-2 bg-slate-500 border-r-2 border-transparent first-of-type:rounded-l last-of-type:rounded-r text-center leading-loose shadow"
+            class="inline-block border-r-2 border-transparent bg-slate-500 p-1 sm:p-2 text-center font-mono leading-loose shadow first-of-type:rounded-l last-of-type:rounded-r"
             [ngClass]="{
                 '[&]:bg-emerald-500': char.hint === 'Correct',
                 '[&]:bg-amber-500': char.hint === 'Wrong spot',
                 '[&&]:bg-fuchsia-500': isSelected($index),
-                '[&]:border-fuchsia-500': this.selection()?.start === ($index + 1)
+                '[&]:border-fuchsia-500':
+                    this.selection()?.start === $index + 1,
             }"
-            >{{ char.char }}</span
+            >{{ char.char === " " ? "&NonBreakingSpace;" : char.char }}</span
         >
-        @if ("\n ".includes(char.char)) {
-            <wbr />
-        }
+        <!--@if ("\n ".includes(char.char)) {-->
+        <!--    <wbr />-->
+        <!--}-->
     }
 </code>

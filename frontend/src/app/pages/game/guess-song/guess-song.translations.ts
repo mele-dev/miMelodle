@@ -49,6 +49,18 @@ const translations = {
     albumHint: {
         en: "The song belongs to the album in the background image!",
         es: "La canción pertenece al album de la imagen de fondo!"
+    },
+    noLyrics: {
+        en: "We could not find lyrics for this track.",
+        es: "No pudimos encontrar la letra de esta canción.",
+    },
+    whichTrackDidYouMean: {
+        en: "Which track did you mean?",
+        es: "¿A qué canción te referías?"
+    },
+    writeYourGuessHere: {
+        en: "Write your guess here!",
+        es: "¡Adivina acá!",
     }
 } as const satisfies Translations;
 

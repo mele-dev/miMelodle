@@ -15,7 +15,7 @@
     [(ngModel)]="this.userFilter"
 />
 
-<hlm-table class="h-96 w-96 overflow-y-scroll scroll-auto">
+<hlm-table class="h-96 w-96 max-w-[calc(100dvw-2.5rem)] overflow-y-auto">
     @for (user of matchedUsers(); track user.id) {
         <hlm-trow class="flex py-2">
             <hlm-td class="flex flex-grow gap-2">

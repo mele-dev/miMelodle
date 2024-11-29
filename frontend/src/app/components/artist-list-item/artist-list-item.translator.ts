@@ -3,13 +3,12 @@ import {
     Translations,
     TranslatorService,
 } from "../../services/translator.service";
-
 export const artistListItemTranslations = {
     followerCount: {
         en: (count: number) =>
-            `${new Intl.NumberFormat("en-US", { notation: "compact" }).format(count)} followers`,
+            `${new Intl.NumberFormat("en-US", { notation: "compact",  }).format(count)}`,
         es: (count: number) =>
-            `${new Intl.NumberFormat("es-EN", { notation: "compact" }).format(count)} seguidores`,
+            `${new Intl.NumberFormat("es-EN", { notation: "compact" }).format(count)}`,
     },
 } satisfies Translations;
 
