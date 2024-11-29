@@ -252,7 +252,8 @@ SELECT game.*, gsa.*, ranking.score
            INNER JOIN ranking ON ranking."userId" = :selfId! AND ranking.mode = 'guessSong';
 
 /* @name insertGuessSongAttempt */
-     WITH "scoreUpdate" AS ( UPDATE ranking SET score = score + :scoreDeviation! WHERE "userId" = :selfId!)
+     WITH "scoreUpdate"
+              AS ( UPDATE ranking r SET score = score + :scoreDeviation! WHERE "userId" = :selfId! AND mode = 'guessSong')
    INSERT
      INTO "guessSongAttempts" ("guessedAt", "guessedSpotifyTrackId", "gameId")
    VALUES (NOW(), :trackId!, :gameId!)
@@ -354,11 +355,14 @@ SELECT (SELECT "canCreate" FROM "canCreateGame"), "insertGame".id
                    WHERE glg."userId" = :selfId! AND glg.id = :gameId!
                    ORDER BY glg."createdAt"
                    LIMIT 6)
-SELECT *
+SELECT game.*, gla.*, ranking.score
   FROM "game"
-           LEFT JOIN public."guessLineAttempts" gla ON "game".id = gla."gameId";
+           LEFT JOIN public."guessLineAttempts" gla ON "game".id = gla."gameId"
+           INNER JOIN ranking ON ranking."userId" = :selfId! AND ranking.mode = 'guessLine';
 
 /* @name insertGuessLineAttempt */
+     WITH "scoreUpdate"
+              AS ( UPDATE ranking r SET score = score + :scoreDeviation! WHERE "userId" = :selfId! AND mode = 'guessLine')
    INSERT
      INTO "guessLineAttempts" ("guessedAt", "guessedSnippet", "gameId")
    VALUES (NOW(), :guessedSnippet!, :gameId!)

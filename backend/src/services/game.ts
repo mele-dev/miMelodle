@@ -1,4 +1,7 @@
 import {
+    getMultipleArtists,
+    getSeveralTracks,
+    getTrack,
     TrackObject,
 } from "../apiCodegen/spotify.js";
 import {
@@ -12,6 +15,7 @@ import {
 } from "../types/game.js";
 import { runPreparedQuery } from "./database.js";
 import MusixmatchAPI from "../musixmatch-api/musixmatch.js";
+import { RequireSpotify } from "../spotify/helpers.js";
 import { DeepRequired } from "ts-essentials";
 import { faker } from "@faker-js/faker";
 import {
@@ -206,7 +210,14 @@ type GuessLineResult =
     | { status: "RepeatedLine" }
     | { status: "AlreadyWon" }
     | { status: "WrongGuessLength" }
-    | { status: "Success"; hints: GuessLineGameInformation };
+    | {
+          status: "Success";
+          hints: GuessLineGameInformation & {
+              currentScore: number;
+              hasWon: boolean;
+              hasLost: boolean;
+          };
+      };
 
 export async function getGuessLineInformation(opts: {
     selfId: number;
@@ -283,6 +294,9 @@ export async function getGuessLineInformation(opts: {
             snippetLength: hiddenSnippet.length,
             track,
             snippet: hasEnded ? hiddenSnippet : undefined,
+            currentScore: gameInfo[0].score,
+            hasWon,
+            hasLost,
         },
     };
 }

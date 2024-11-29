@@ -10,6 +10,7 @@ import { sendError } from "../../../../../../../../utils/reply.js";
 import { UnreachableCaseError } from "ts-essentials";
 import { runPreparedQuery } from "../../../../../../../../services/database.js";
 import { insertGuessLineAttempt } from "../../../../../../../../queries/dml.queries.js";
+import { calculateScoreDecrement, calculateScoreIncrement } from "../../../../../../../../services/score.js";
 
 export default (async (fastify) => {
     fastify.post("", {
@@ -57,9 +58,25 @@ export default (async (fastify) => {
                     throw new UnreachableCaseError(result);
             }
 
+            let scoreDeviation = 0;
+
+            if (result.hints.hasWon) {
+                scoreDeviation = calculateScoreIncrement(
+                    result.hints.currentScore,
+                    result.hints.attempts.length
+                );
+            }
+
+            if (result.hints.hasLost) {
+                scoreDeviation = calculateScoreDecrement(
+                    result.hints.currentScore,
+                );
+            }
+
             const queryResult = await runPreparedQuery(insertGuessLineAttempt, {
                 ...request.params,
                 guessedSnippet: request.body.guessedLine,
+                scoreDeviation,
             });
 
             if (queryResult.length !== 1) {

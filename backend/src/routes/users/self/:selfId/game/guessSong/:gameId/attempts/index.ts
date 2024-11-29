@@ -66,7 +66,7 @@ export default (async (fastify) => {
             }
 
             const hasWon = result.hints.attempts.some((a) => a.isCorrectTrack);
-            const hasLost = !hasWon && result.hints.attempts.length === 6;
+            const hasLost = !hasWon && result.hints.attempts.length <= 6;
 
             let scoreDeviation = 0;
 

@@ -5,6 +5,7 @@ export default fp<FastifyCorsOptions>(async (fastify) => {
     fastify.register(cors, {
         origin: [
             "https://192.168.0.102",
+            "https://10.4.200.142",
             "https://192.168.1.5",
             "https://localhost",
             "capacitor://localhost",

@@ -36,5 +36,5 @@ export function calculateScoreIncrement(
  * @param currentScore - The player's current score.
  */
 export function calculateScoreDecrement(currentScore: number): number {
-    return -Math.max(Math.round(currentScore * 0.02));
+    return -Math.max(Math.round(currentScore * 0.02), 1);
 }
