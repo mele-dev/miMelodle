@@ -10,8 +10,8 @@ const homePageTranslations = {
         es: "¡Comienza a agregar tus artistas favoritos!",
     },
     welcome: {
-        en: (username: string) => `Welcome back ${username}!` as const,
-        es: (username:  string) => `¡Bienvenido de vuelta ${username}!` as const
+        en: (username: string) => `Welcome ${username}!` as const,
+        es: (username:  string) => `¡Bienvenido ${username}!` as const
     }
 } as const satisfies Translations;
 

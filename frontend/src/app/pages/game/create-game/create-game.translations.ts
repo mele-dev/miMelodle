@@ -6,6 +6,10 @@ import {
 import { SimplifiedArtistObject } from "../../../../apiCodegen/spotify";
 
 const translations = {
+    chooseATrack: {
+        en: "Choose a track",
+        es: "Elije una canción",
+    },
     letsGuess: {
         en: "Let's guess a ",
         es: "¡Adivinemos una ",

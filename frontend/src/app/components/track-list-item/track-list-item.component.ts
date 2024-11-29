@@ -10,6 +10,7 @@ import {
     lucideXSquare,
 } from "@ng-icons/lucide";
 import { provideIcons } from "@ng-icons/core";
+import { SpotifyImagePickerService } from "../../services/spotify-image-picker.service";
 
 export type TrackListItem = GetSpotifySearch200TracksItemsItem;
 
@@ -23,6 +24,7 @@ export type TrackListItem = GetSpotifySearch200TracksItemsItem;
     templateUrl: "./track-list-item.component.html",
 })
 export class TrackListItemComponent {
+    imagePicker = inject(SpotifyImagePickerService);
     track = input.required<TrackListItem>();
     dict = inject(TrackListItemTranslator).dict;
     destroy = output<TrackListItem>();

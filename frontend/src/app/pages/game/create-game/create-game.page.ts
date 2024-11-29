@@ -29,6 +29,7 @@ import { HlmInputModule } from "@spartan-ng/ui-input-helm";
 import { getSpotifySearch } from "../../../../apiCodegen/backend";
 import { getSpotifySearchQueryPageSizeMax } from "../../../../apiCodegen/backend-zod";
 import { FormsModule } from "@angular/forms";
+import { SpotifyImagePickerService } from "../../../services/spotify-image-picker.service";
 
 @Component({
     selector: "app-create-game",
@@ -59,6 +60,7 @@ export class CreateGamePage {
     guessLine = inject(GuessLineService);
     dict = inject(CreateGameTranslations).dict;
     dictT = inject(TutorialsTranslator).dict;
+    imagePicker = inject(SpotifyImagePickerService);
 
     trackOptions = signal<Track[] | undefined>([]);
 
