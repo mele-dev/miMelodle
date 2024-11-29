@@ -36,6 +36,7 @@ import { provideIcons } from "@ng-icons/core";
 import { lucideAlertCircle } from "@ng-icons/lucide";
 import { toast } from "ngx-sonner";
 import { CrFancyButtonStylesDirective } from "../../directives/styling/cr-fancy-button-styles.directive";
+import { enviroment } from "../../../enviroments";
 
 type RegisterFormFields = PostAuthRegisterBody & { repeatPassword: string };
 
@@ -72,6 +73,7 @@ export class RegisterPage implements OnInit {
     allIcons?: BackendIcon[];
     chosenIcon = signal<BackendIcon | undefined>(undefined);
     sanitizer = inject(DomSanitizer);
+    front_url = enviroment.front_url
 
     private schema = postAuthRegisterBody;
 
@@ -142,13 +144,13 @@ export class RegisterPage implements OnInit {
     }
 
     async ngOnInit(): Promise<void> {
-        const iconsInfo = (await getPublicIcons()).data;
+        const iconsInfo = await getPublicIcons();
 
         this.allIcons = await Promise.all(
             iconsInfo.map(async (icon) => ({
                 svg: await (
                     await getPublicIconsFilename(icon.filename)
-                ).data.text(),
+                ).text(),
                 ...icon,
             }))
         );
@@ -161,7 +163,7 @@ export class RegisterPage implements OnInit {
     async onSubmit() {
         try {
             const result = await postAuthRegister(this.person.getRawValue());
-            this._localStorage.setItem("userInfo", result.data);
+            this._localStorage.setItem("userInfo", result);
             this.safeRouter.navigate("/app");
         } catch (e) {
             console.error(e);

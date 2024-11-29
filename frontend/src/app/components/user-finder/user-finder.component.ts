@@ -89,7 +89,7 @@ export class UserFinderComponent {
                         pageSize: getUsersSearchQueryPageSizeMax,
                     });
 
-                    const processedResponse = response.data.matches
+                    const processedResponse = response.matches
                         // Remove self
                         .filter((match) => match.id !== self.id)
                         // Add icons

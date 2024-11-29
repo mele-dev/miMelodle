@@ -92,7 +92,7 @@ export class GuessSongPage implements OnInit, AfterViewInit {
     });
 
     gameInfo = signal<
-        GetUsersSelfSelfIdGameGuessSongGameIdResult["data"] | undefined
+        GetUsersSelfSelfIdGameGuessSongGameIdResult | undefined
     >(undefined);
 
     value = signal<string>("");
@@ -200,7 +200,7 @@ export class GuessSongPage implements OnInit, AfterViewInit {
             spotifyQueryType: "track" as any,
         });
 
-        this.trackOptions.set(result.data.tracks);
+        this.trackOptions.set(result.tracks);
     }
 
     async submitAttempt(track: GetSpotifySearch200TracksItemsItem) {
@@ -215,20 +215,7 @@ export class GuessSongPage implements OnInit, AfterViewInit {
             }
         );
 
-        this.gameInfo.set(result.data);
-        console.log("pepa")
-
-        this.scrollToBottom()
-
-        this.value.set("")
-
-    }
-
-    scrollToBottom(): void {
-        window.scrollTo({
-            top: document.documentElement.scrollHeight,
-            behavior: "smooth",
-        });
+        this.gameInfo.set(result);
     }
 
     async load() {
@@ -239,7 +226,7 @@ export class GuessSongPage implements OnInit, AfterViewInit {
                 this.ids().gameId
             );
 
-            this.gameInfo.set(result.data);
+            this.gameInfo.set(result);
         } catch (e) {
             toast(this.dict().gameInfoError);
             console.error(e);

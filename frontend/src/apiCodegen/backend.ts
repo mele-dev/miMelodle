@@ -22,8 +22,7 @@
 ```
  * OpenAPI spec version: 0.1.0
  */
-import axios from "axios";
-import type { AxiosRequestConfig, AxiosResponse } from "axios";
+import { customInstance } from "./backend-mutator";
 export type PostUsersSelfSelfIdGameGuessSongGameIdAttempts500StatusCode =
     (typeof PostUsersSelfSelfIdGameGuessSongGameIdAttempts500StatusCode)[keyof typeof PostUsersSelfSelfIdGameGuessSongGameIdAttempts500StatusCode];
 
@@ -4118,42 +4117,43 @@ export type Get200 = {
     root: boolean;
 };
 
-export const getAuthRegisterSpotify = <TData = AxiosResponse<void>>(
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(
-        `https://localhost/backend/auth/register/spotify`,
+type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1];
+
+export const getAuthRegisterSpotify = (
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<void>(
+        { url: `/auth/register/spotify`, method: "GET" },
         options
     );
 };
 
-export const getAuthLoginSpotify = <TData = AxiosResponse<void>>(
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://localhost/backend/auth/login/spotify`, options);
+export const getAuthLoginSpotify = (
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<void>(
+        { url: `/auth/login/spotify`, method: "GET" },
+        options
+    );
 };
 
 /**
  * Route to check whether the service is working.
  * @summary Ping!
  */
-export const get = <TData = AxiosResponse<Get200>>(
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://localhost/backend/`, options);
+export const get = (options?: SecondParameter<typeof customInstance>) => {
+    return customInstance<Get200>({ url: `/`, method: "GET" }, options);
 };
 
 /**
  * @summary Get information about an artist
  */
-export const getArtistsArtistMusixMatchId = <
-    TData = AxiosResponse<GetArtistsArtistMusixMatchId200>,
->(
+export const getArtistsArtistMusixMatchId = (
     artistMusixMatchId: number,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(
-        `https://localhost/backend/artists/${artistMusixMatchId}`,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<GetArtistsArtistMusixMatchId200>(
+        { url: `/artists/${artistMusixMatchId}`, method: "GET" },
         options
     );
 };
@@ -4162,46 +4162,45 @@ export const getArtistsArtistMusixMatchId = <
  * Search for artists based on the query provided in the querystring.
  * @summary Search for artists by name
  */
-export const getArtistsArtistName = <
-    TData = AxiosResponse<GetArtistsArtistName200Item[]>,
->(
+export const getArtistsArtistName = (
     params: GetArtistsArtistNameParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://localhost/backend/artists/artistName`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<GetArtistsArtistName200Item[]>(
+        { url: `/artists/artistName`, method: "GET", params },
+        options
+    );
 };
 
 /**
  * @summary Get current state of application.
  */
-export const getDebugSnapshot = <TData = AxiosResponse<GetDebugSnapshot200>>(
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://localhost/backend/debug/snapshot`, options);
+export const getDebugSnapshot = (
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<GetDebugSnapshot200>(
+        { url: `/debug/snapshot`, method: "GET" },
+        options
+    );
 };
 
 /**
  * @summary Reset the application state to a certain snapshot.
  */
-export const putDebugSnapshot = <TData = AxiosResponse<PutDebugSnapshot200>>(
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.put(
-        `https://localhost/backend/debug/snapshot`,
-        undefined,
+export const putDebugSnapshot = (
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<PutDebugSnapshot200>(
+        { url: `/debug/snapshot`, method: "PUT" },
         options
     );
 };
 
-export const postDebugPlayground = <TData = AxiosResponse<void>>(
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.post(
-        `https://localhost/backend/debug/playground`,
-        undefined,
+export const postDebugPlayground = (
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<void>(
+        { url: `/debug/playground`, method: "POST" },
         options
     );
 };
@@ -4209,31 +4208,27 @@ export const postDebugPlayground = <TData = AxiosResponse<void>>(
 /**
  * @summary Fetches global leaderboard information.
  */
-export const getLeaderboardsGameMode = <
-    TData = AxiosResponse<GetLeaderboardsGameMode200>,
->(
+export const getLeaderboardsGameMode = (
     gameMode: string,
     params: GetLeaderboardsGameModeParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://localhost/backend/leaderboards/${gameMode}`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<GetLeaderboardsGameMode200>(
+        { url: `/leaderboards/${gameMode}`, method: "GET", params },
+        options
+    );
 };
 
 /**
  * This endpoint retrieves the lyrics for a given track using its Musixmatch ID
  * @summary Get lyrics for a specific track
  */
-export const getLyricsTrackMusixMatchId = <
-    TData = AxiosResponse<GetLyricsTrackMusixMatchId200>,
->(
+export const getLyricsTrackMusixMatchId = (
     trackMusixMatchId: number,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(
-        `https://localhost/backend/lyrics/${trackMusixMatchId}`,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<GetLyricsTrackMusixMatchId200>(
+        { url: `/lyrics/${trackMusixMatchId}`, method: "GET" },
         options
     );
 };
@@ -4242,72 +4237,86 @@ export const getLyricsTrackMusixMatchId = <
  * Get the svg for a certain user icon. The selection of user icons is fixed.
  * @summary Get a user icon.
  */
-export const getPublicIconsFilename = <TData = AxiosResponse<Blob>>(
+export const getPublicIconsFilename = (
     filename: string,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://localhost/backend/public/icons/${filename}`, {
-        responseType: "blob",
-        ...options,
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<Blob>(
+        {
+            url: `/public/icons/${filename}`,
+            method: "GET",
+            responseType: "blob",
+        },
+        options
+    );
 };
 
 /**
  * @summary Get information about all user icons.
  */
-export const getPublicIcons = <TData = AxiosResponse<GetPublicIcons200Item[]>>(
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://localhost/backend/public/icons`, options);
+export const getPublicIcons = (
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<GetPublicIcons200Item[]>(
+        { url: `/public/icons`, method: "GET" },
+        options
+    );
 };
 
 /**
  * Authentication is not needed to see public user information.
  * @summary Get public information from some user.
  */
-export const getUsersUserId = <TData = AxiosResponse<GetUsersUserId200>>(
+export const getUsersUserId = (
     userId: number,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://localhost/backend/users/${userId}`, options);
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<GetUsersUserId200>(
+        { url: `/users/${userId}`, method: "GET" },
+        options
+    );
 };
 
 /**
  * @summary Search users through their public information.
  */
-export const getUsersSearch = <TData = AxiosResponse<GetUsersSearch200>>(
+export const getUsersSearch = (
     params: GetUsersSearchParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://localhost/backend/users/search`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<GetUsersSearch200>(
+        { url: `/users/search`, method: "GET", params },
+        options
+    );
 };
 
 /**
  * @summary Check if some user data already exists
  */
-export const getUsersCheck = <TData = AxiosResponse<GetUsersCheck200>>(
+export const getUsersCheck = (
     params?: GetUsersCheckParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://localhost/backend/users/check`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<GetUsersCheck200>(
+        { url: `/users/check`, method: "GET", params },
+        options
+    );
 };
 
 /**
  * @summary Fetch a user's jwt token.
  */
-export const postAuthLogin = <TData = AxiosResponse<PostAuthLogin200>>(
+export const postAuthLogin = (
     postAuthLoginBody: PostAuthLoginBody,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.post(
-        `https://localhost/backend/auth/login`,
-        postAuthLoginBody,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<PostAuthLogin200>(
+        {
+            url: `/auth/login`,
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            data: postAuthLoginBody,
+        },
         options
     );
 };
@@ -4316,13 +4325,17 @@ export const postAuthLogin = <TData = AxiosResponse<PostAuthLogin200>>(
  * Creates a new user with the given credentials if possible.
  * @summary Create a user.
  */
-export const postAuthRegister = <TData = AxiosResponse<PostAuthRegister200>>(
+export const postAuthRegister = (
     postAuthRegisterBody: PostAuthRegisterBody,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.post(
-        `https://localhost/backend/auth/register`,
-        postAuthRegisterBody,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<PostAuthRegister200>(
+        {
+            url: `/auth/register`,
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            data: postAuthRegisterBody,
+        },
         options
     );
 };
@@ -4331,25 +4344,30 @@ export const postAuthRegister = <TData = AxiosResponse<PostAuthRegister200>>(
  * All fake users have Fake123! as their password.
  * @summary Returns random, believable credentials for a user.
  */
-export const getDebugFakeUser = <TData = AxiosResponse<GetDebugFakeUser200>>(
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://localhost/backend/debug/fake/user`, options);
+export const getDebugFakeUser = (
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<GetDebugFakeUser200>(
+        { url: `/debug/fake/user`, method: "GET" },
+        options
+    );
 };
 
 /**
  * We do not check if the user already exists, so this route may error. On error, we roll back any changes.
  * @summary Create a certain number of fake users.
  */
-export const postDebugFakeUsers = <
-    TData = AxiosResponse<PostDebugFakeUsers201Item[]>,
->(
+export const postDebugFakeUsers = (
     postDebugFakeUsersBody: PostDebugFakeUsersBody,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.post(
-        `https://localhost/backend/debug/fake/users`,
-        postDebugFakeUsersBody,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<PostDebugFakeUsers201Item[]>(
+        {
+            url: `/debug/fake/users`,
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            data: postDebugFakeUsersBody,
+        },
         options
     );
 };
@@ -4357,24 +4375,24 @@ export const postDebugFakeUsers = <
 /**
  * @summary Query information from spotify.
  */
-export const getSpotifySearch = <TData = AxiosResponse<GetSpotifySearch200>>(
+export const getSpotifySearch = (
     params: GetSpotifySearchParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://localhost/backend/spotify/search`, {
-        ...options,
-        params: { ...params, ...options?.params },
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<GetSpotifySearch200>(
+        { url: `/spotify/search`, method: "GET", params },
+        options
+    );
 };
 
 /**
  * @summary Login through spotify.
  */
-export const getAuthLoginSpotifyCallback = <TData = AxiosResponse<unknown>>(
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(
-        `https://localhost/backend/auth/login/spotify/callback`,
+export const getAuthLoginSpotifyCallback = (
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<unknown>(
+        { url: `/auth/login/spotify/callback`, method: "GET" },
         options
     );
 };
@@ -4384,11 +4402,11 @@ export const getAuthLoginSpotifyCallback = <TData = AxiosResponse<unknown>>(
 > !) Eventually this schema will change.
  * @summary Register a user through a spotify callback.
  */
-export const getAuthRegisterSpotifyCallback = <TData = AxiosResponse<unknown>>(
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(
-        `https://localhost/backend/auth/register/spotify/callback`,
+export const getAuthRegisterSpotifyCallback = (
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<unknown>(
+        { url: `/auth/register/spotify/callback`, method: "GET" },
         options
     );
 };
@@ -4397,28 +4415,31 @@ export const getAuthRegisterSpotifyCallback = <TData = AxiosResponse<unknown>>(
  * This is the route that exposes the most information about a user.
  * @summary Get your user information.
  */
-export const getUsersSelfSelfId = <
-    TData = AxiosResponse<GetUsersSelfSelfId200>,
->(
+export const getUsersSelfSelfId = (
     selfId: number,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(`https://localhost/backend/users/self/${selfId}`, options);
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<GetUsersSelfSelfId200>(
+        { url: `/users/self/${selfId}`, method: "GET" },
+        options
+    );
 };
 
 /**
  * @summary Update your user information.
  */
-export const putUsersSelfSelfId = <
-    TData = AxiosResponse<PutUsersSelfSelfId200>,
->(
+export const putUsersSelfSelfId = (
     selfId: number,
     putUsersSelfSelfIdBody: PutUsersSelfSelfIdBody,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.put(
-        `https://localhost/backend/users/self/${selfId}`,
-        putUsersSelfSelfIdBody,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<PutUsersSelfSelfId200>(
+        {
+            url: `/users/self/${selfId}`,
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            data: putUsersSelfSelfIdBody,
+        },
         options
     );
 };
@@ -4427,30 +4448,31 @@ export const putUsersSelfSelfId = <
  * The cascading deletion will be more thoroughly implemented once other resources are implemented.
  * @summary Delete your own user and all their associated information.
  */
-export const deleteUsersSelfSelfId = <
-    TData = AxiosResponse<DeleteUsersSelfSelfId200>,
->(
+export const deleteUsersSelfSelfId = (
     selfId: number,
     deleteUsersSelfSelfIdBody: DeleteUsersSelfSelfIdBody,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.delete(`https://localhost/backend/users/self/${selfId}`, {
-        data: deleteUsersSelfSelfIdBody,
-        ...options,
-    });
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<DeleteUsersSelfSelfId200>(
+        {
+            url: `/users/self/${selfId}`,
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            data: deleteUsersSelfSelfIdBody,
+        },
+        options
+    );
 };
 
 /**
  * @summary Get all the artists in a user's home.
  */
-export const getUsersSelfSelfIdArtists = <
-    TData = AxiosResponse<GetUsersSelfSelfIdArtists200Item[]>,
->(
+export const getUsersSelfSelfIdArtists = (
     selfId: number,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(
-        `https://localhost/backend/users/self/${selfId}/artists`,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<GetUsersSelfSelfIdArtists200Item[]>(
+        { url: `/users/self/${selfId}/artists`, method: "GET" },
         options
     );
 };
@@ -4458,14 +4480,12 @@ export const getUsersSelfSelfIdArtists = <
 /**
  * @summary Get every user currently blocked by self.
  */
-export const getUsersSelfSelfIdBlocking = <
-    TData = AxiosResponse<GetUsersSelfSelfIdBlocking200Item[]>,
->(
+export const getUsersSelfSelfIdBlocking = (
     selfId: number,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(
-        `https://localhost/backend/users/self/${selfId}/blocking`,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<GetUsersSelfSelfIdBlocking200Item[]>(
+        { url: `/users/self/${selfId}/blocking`, method: "GET" },
         options
     );
 };
@@ -4473,14 +4493,12 @@ export const getUsersSelfSelfIdBlocking = <
 /**
  * @summary Get saved user configurations.
  */
-export const getUsersSelfSelfIdConfigs = <
-    TData = AxiosResponse<GetUsersSelfSelfIdConfigs200Item[]>,
->(
+export const getUsersSelfSelfIdConfigs = (
     selfId: number,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(
-        `https://localhost/backend/users/self/${selfId}/configs`,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<GetUsersSelfSelfIdConfigs200Item[]>(
+        { url: `/users/self/${selfId}/configs`, method: "GET" },
         options
     );
 };
@@ -4488,16 +4506,18 @@ export const getUsersSelfSelfIdConfigs = <
 /**
  * @summary Add a new configuration preset.
  */
-export const postUsersSelfSelfIdConfigs = <
-    TData = AxiosResponse<PostUsersSelfSelfIdConfigs200>,
->(
+export const postUsersSelfSelfIdConfigs = (
     selfId: number,
     postUsersSelfSelfIdConfigsBody: PostUsersSelfSelfIdConfigsBody,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.post(
-        `https://localhost/backend/users/self/${selfId}/configs`,
-        postUsersSelfSelfIdConfigsBody,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<PostUsersSelfSelfIdConfigs200>(
+        {
+            url: `/users/self/${selfId}/configs`,
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            data: postUsersSelfSelfIdConfigsBody,
+        },
         options
     );
 };
@@ -4505,15 +4525,16 @@ export const postUsersSelfSelfIdConfigs = <
 /**
  * @summary Delete a configuration preset.
  */
-export const deleteUsersSelfSelfIdConfigsPopdleConfigId = <
-    TData = AxiosResponse<DeleteUsersSelfSelfIdConfigsPopdleConfigId200>,
->(
+export const deleteUsersSelfSelfIdConfigsPopdleConfigId = (
     selfId: number,
     popdleConfigId: number,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.delete(
-        `https://localhost/backend/users/self/${selfId}/configs/${popdleConfigId}`,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<DeleteUsersSelfSelfIdConfigsPopdleConfigId200>(
+        {
+            url: `/users/self/${selfId}/configs/${popdleConfigId}`,
+            method: "DELETE",
+        },
         options
     );
 };
@@ -4521,16 +4542,16 @@ export const deleteUsersSelfSelfIdConfigsPopdleConfigId = <
 /**
  * @summary Update a configuration preset.
  */
-export const putUsersSelfSelfIdConfigsPopdleConfigId = <
-    TData = AxiosResponse<PutUsersSelfSelfIdConfigsPopdleConfigId200>,
->(
+export const putUsersSelfSelfIdConfigsPopdleConfigId = (
     selfId: number,
     popdleConfigId: number,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.put(
-        `https://localhost/backend/users/self/${selfId}/configs/${popdleConfigId}`,
-        undefined,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<PutUsersSelfSelfIdConfigsPopdleConfigId200>(
+        {
+            url: `/users/self/${selfId}/configs/${popdleConfigId}`,
+            method: "PUT",
+        },
         options
     );
 };
@@ -4539,33 +4560,26 @@ export const putUsersSelfSelfIdConfigsPopdleConfigId = <
  * TODO: Discuss whether we should ask for the id or make the frontend fetch the data and pass it to us.
  * @summary Ask for a configuration suggestion based off of the user's spotify information.
  */
-export const getUsersSelfSelfIdConfigsSuggest = <
-    TData = AxiosResponse<GetUsersSelfSelfIdConfigsSuggest200Item[]>,
->(
+export const getUsersSelfSelfIdConfigsSuggest = (
     selfId: number,
     params: GetUsersSelfSelfIdConfigsSuggestParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(
-        `https://localhost/backend/users/self/${selfId}/configs/suggest`,
-        {
-            ...options,
-            params: { ...params, ...options?.params },
-        }
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<GetUsersSelfSelfIdConfigsSuggest200Item[]>(
+        { url: `/users/self/${selfId}/configs/suggest`, method: "GET", params },
+        options
     );
 };
 
 /**
  * @summary Get all friends from a user.
  */
-export const getUsersSelfSelfIdFriends = <
-    TData = AxiosResponse<GetUsersSelfSelfIdFriends200Item[]>,
->(
+export const getUsersSelfSelfIdFriends = (
     selfId: number,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(
-        `https://localhost/backend/users/self/${selfId}/friends`,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<GetUsersSelfSelfIdFriends200Item[]>(
+        { url: `/users/self/${selfId}/friends`, method: "GET" },
         options
     );
 };
@@ -4573,14 +4587,12 @@ export const getUsersSelfSelfIdFriends = <
 /**
  * @summary Get a history of your own games.
  */
-export const getUsersSelfSelfIdGameHistory = <
-    TData = AxiosResponse<GetUsersSelfSelfIdGameHistory200Item[]>,
->(
+export const getUsersSelfSelfIdGameHistory = (
     selfId: number,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(
-        `https://localhost/backend/users/self/${selfId}/game/history`,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<GetUsersSelfSelfIdGameHistory200Item[]>(
+        { url: `/users/self/${selfId}/game/history`, method: "GET" },
         options
     );
 };
@@ -4588,17 +4600,19 @@ export const getUsersSelfSelfIdGameHistory = <
 /**
  * @summary Update whether a given artist is within you favorite ones.
  */
-export const putUsersSelfSelfIdArtistsSpotifyArtistIdFavorite = <
-    TData = AxiosResponse<PutUsersSelfSelfIdArtistsSpotifyArtistIdFavorite200>,
->(
+export const putUsersSelfSelfIdArtistsSpotifyArtistIdFavorite = (
     selfId: number,
     spotifyArtistId: string,
     putUsersSelfSelfIdArtistsSpotifyArtistIdFavoriteBody: PutUsersSelfSelfIdArtistsSpotifyArtistIdFavoriteBody,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.put(
-        `https://localhost/backend/users/self/${selfId}/artists/${spotifyArtistId}/favorite`,
-        putUsersSelfSelfIdArtistsSpotifyArtistIdFavoriteBody,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<PutUsersSelfSelfIdArtistsSpotifyArtistIdFavorite200>(
+        {
+            url: `/users/self/${selfId}/artists/${spotifyArtistId}/favorite`,
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            data: putUsersSelfSelfIdArtistsSpotifyArtistIdFavoriteBody,
+        },
         options
     );
 };
@@ -4606,16 +4620,16 @@ export const putUsersSelfSelfIdArtistsSpotifyArtistIdFavorite = <
 /**
  * @summary Add an artist to user's home page (for non-Spotify users mostly).
  */
-export const postUsersSelfSelfIdArtistsSpotifyArtistId = <
-    TData = AxiosResponse<PostUsersSelfSelfIdArtistsSpotifyArtistId200>,
->(
+export const postUsersSelfSelfIdArtistsSpotifyArtistId = (
     selfId: number,
     spotifyArtistId: string,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.post(
-        `https://localhost/backend/users/self/${selfId}/artists/${spotifyArtistId}`,
-        undefined,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<PostUsersSelfSelfIdArtistsSpotifyArtistId200>(
+        {
+            url: `/users/self/${selfId}/artists/${spotifyArtistId}`,
+            method: "POST",
+        },
         options
     );
 };
@@ -4623,15 +4637,16 @@ export const postUsersSelfSelfIdArtistsSpotifyArtistId = <
 /**
  * @summary Delete an artist from user's home.
  */
-export const deleteUsersSelfSelfIdArtistsSpotifyArtistId = <
-    TData = AxiosResponse<DeleteUsersSelfSelfIdArtistsSpotifyArtistId200>,
->(
+export const deleteUsersSelfSelfIdArtistsSpotifyArtistId = (
     selfId: number,
     spotifyArtistId: string,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.delete(
-        `https://localhost/backend/users/self/${selfId}/artists/${spotifyArtistId}`,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<DeleteUsersSelfSelfIdArtistsSpotifyArtistId200>(
+        {
+            url: `/users/self/${selfId}/artists/${spotifyArtistId}`,
+            method: "DELETE",
+        },
         options
     );
 };
@@ -4639,16 +4654,16 @@ export const deleteUsersSelfSelfIdArtistsSpotifyArtistId = <
 /**
  * @summary Block a user.
  */
-export const postUsersSelfSelfIdBlockingTargetUserId = <
-    TData = AxiosResponse<PostUsersSelfSelfIdBlockingTargetUserId201>,
->(
+export const postUsersSelfSelfIdBlockingTargetUserId = (
     selfId: number,
     targetUserId: number,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.post(
-        `https://localhost/backend/users/self/${selfId}/blocking/${targetUserId}`,
-        undefined,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<PostUsersSelfSelfIdBlockingTargetUserId201>(
+        {
+            url: `/users/self/${selfId}/blocking/${targetUserId}`,
+            method: "POST",
+        },
         options
     );
 };
@@ -4656,15 +4671,16 @@ export const postUsersSelfSelfIdBlockingTargetUserId = <
 /**
  * @summary Unblock a user.
  */
-export const deleteUsersSelfSelfIdBlockingTargetUserId = <
-    TData = AxiosResponse<DeleteUsersSelfSelfIdBlockingTargetUserId200>,
->(
+export const deleteUsersSelfSelfIdBlockingTargetUserId = (
     selfId: number,
     targetUserId: number,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.delete(
-        `https://localhost/backend/users/self/${selfId}/blocking/${targetUserId}`,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<DeleteUsersSelfSelfIdBlockingTargetUserId200>(
+        {
+            url: `/users/self/${selfId}/blocking/${targetUserId}`,
+            method: "DELETE",
+        },
         options
     );
 };
@@ -4673,15 +4689,16 @@ export const deleteUsersSelfSelfIdBlockingTargetUserId = <
  * It transforms the friend into a normal stranger.
  * @summary Removes a friend.
  */
-export const deleteUsersSelfSelfIdFriendsTargetUserId = <
-    TData = AxiosResponse<DeleteUsersSelfSelfIdFriendsTargetUserId200>,
->(
+export const deleteUsersSelfSelfIdFriendsTargetUserId = (
     selfId: number,
     targetUserId: number,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.delete(
-        `https://localhost/backend/users/self/${selfId}/friends/${targetUserId}`,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<DeleteUsersSelfSelfIdFriendsTargetUserId200>(
+        {
+            url: `/users/self/${selfId}/friends/${targetUserId}`,
+            method: "DELETE",
+        },
         options
     );
 };
@@ -4689,16 +4706,16 @@ export const deleteUsersSelfSelfIdFriendsTargetUserId = <
 /**
  * @summary Sends a friend request
  */
-export const postUsersSelfSelfIdFriendsTargetUserId = <
-    TData = AxiosResponse<PostUsersSelfSelfIdFriendsTargetUserId201>,
->(
+export const postUsersSelfSelfIdFriendsTargetUserId = (
     selfId: number,
     targetUserId: number,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.post(
-        `https://localhost/backend/users/self/${selfId}/friends/${targetUserId}`,
-        undefined,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<PostUsersSelfSelfIdFriendsTargetUserId201>(
+        {
+            url: `/users/self/${selfId}/friends/${targetUserId}`,
+            method: "POST",
+        },
         options
     );
 };
@@ -4706,16 +4723,13 @@ export const postUsersSelfSelfIdFriendsTargetUserId = <
 /**
  * @summary It accepts a friend request.
  */
-export const putUsersSelfSelfIdFriendsTargetUserId = <
-    TData = AxiosResponse<PutUsersSelfSelfIdFriendsTargetUserId200>,
->(
+export const putUsersSelfSelfIdFriendsTargetUserId = (
     selfId: number,
     targetUserId: number,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.put(
-        `https://localhost/backend/users/self/${selfId}/friends/${targetUserId}`,
-        undefined,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<PutUsersSelfSelfIdFriendsTargetUserId200>(
+        { url: `/users/self/${selfId}/friends/${targetUserId}`, method: "PUT" },
         options
     );
 };
@@ -4723,54 +4737,35 @@ export const putUsersSelfSelfIdFriendsTargetUserId = <
 /**
  * @summary Get friends leaderboard for a given game mode.
  */
-export const getUsersSelfSelfIdFriendsLeaderboards = <
-    TData = AxiosResponse<GetUsersSelfSelfIdFriendsLeaderboards200>,
->(
+export const getUsersSelfSelfIdFriendsLeaderboards = (
     selfId: number,
     params: GetUsersSelfSelfIdFriendsLeaderboardsParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(
-        `https://localhost/backend/users/self/${selfId}/friends/leaderboards/`,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<GetUsersSelfSelfIdFriendsLeaderboards200>(
         {
-            ...options,
-            params: { ...params, ...options?.params },
-        }
+            url: `/users/self/${selfId}/friends/leaderboards/`,
+            method: "GET",
+            params,
+        },
+        options
     );
 };
 
 /**
  * @summary Reset user's score.
  */
-export const deleteUsersSelfSelfIdFriendsLeaderboards = <
-    TData = AxiosResponse<DeleteUsersSelfSelfIdFriendsLeaderboards200>,
->(
+export const deleteUsersSelfSelfIdFriendsLeaderboards = (
     selfId: number,
     params: DeleteUsersSelfSelfIdFriendsLeaderboardsParams,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.delete(
-        `https://localhost/backend/users/self/${selfId}/friends/leaderboards`,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<DeleteUsersSelfSelfIdFriendsLeaderboards200>(
         {
-            ...options,
-            params: { ...params, ...options?.params },
-        }
-    );
-};
-
-/**
- * @summary Start a new popdle game.
- */
-export const postUsersSelfSelfIdGameGuessLine = <
-    TData = AxiosResponse<PostUsersSelfSelfIdGameGuessLine201>,
->(
-    selfId: number,
-    postUsersSelfSelfIdGameGuessLineBody: PostUsersSelfSelfIdGameGuessLineBody,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.post(
-        `https://localhost/backend/users/self/${selfId}/game/guessLine`,
-        postUsersSelfSelfIdGameGuessLineBody,
+            url: `/users/self/${selfId}/friends/leaderboards`,
+            method: "DELETE",
+            params,
+        },
         options
     );
 };
@@ -4778,16 +4773,37 @@ export const postUsersSelfSelfIdGameGuessLine = <
 /**
  * @summary Start a new popdle game.
  */
-export const postUsersSelfSelfIdGameGuessSong = <
-    TData = AxiosResponse<PostUsersSelfSelfIdGameGuessSong201>,
->(
+export const postUsersSelfSelfIdGameGuessLine = (
+    selfId: number,
+    postUsersSelfSelfIdGameGuessLineBody: PostUsersSelfSelfIdGameGuessLineBody,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<PostUsersSelfSelfIdGameGuessLine201>(
+        {
+            url: `/users/self/${selfId}/game/guessLine`,
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            data: postUsersSelfSelfIdGameGuessLineBody,
+        },
+        options
+    );
+};
+
+/**
+ * @summary Start a new popdle game.
+ */
+export const postUsersSelfSelfIdGameGuessSong = (
     selfId: number,
     postUsersSelfSelfIdGameGuessSongBody: PostUsersSelfSelfIdGameGuessSongBody,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.post(
-        `https://localhost/backend/users/self/${selfId}/game/guessSong`,
-        postUsersSelfSelfIdGameGuessSongBody,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<PostUsersSelfSelfIdGameGuessSong201>(
+        {
+            url: `/users/self/${selfId}/game/guessSong`,
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            data: postUsersSelfSelfIdGameGuessSongBody,
+        },
         options
     );
 };
@@ -4795,15 +4811,16 @@ export const postUsersSelfSelfIdGameGuessSong = <
 /**
  * @summary Get information about a guess line game.
  */
-export const getUsersSelfSelfIdGameGuessLineGameId = <
-    TData = AxiosResponse<GetUsersSelfSelfIdGameGuessLineGameId200>,
->(
+export const getUsersSelfSelfIdGameGuessLineGameId = (
     selfId: number,
     gameId: number,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(
-        `https://localhost/backend/users/self/${selfId}/game/guessLine/${gameId}`,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<GetUsersSelfSelfIdGameGuessLineGameId200>(
+        {
+            url: `/users/self/${selfId}/game/guessLine/${gameId}`,
+            method: "GET",
+        },
         options
     );
 };
@@ -4811,15 +4828,16 @@ export const getUsersSelfSelfIdGameGuessLineGameId = <
 /**
  * @summary Get information about a popdle game.
  */
-export const getUsersSelfSelfIdGameGuessSongGameId = <
-    TData = AxiosResponse<GetUsersSelfSelfIdGameGuessSongGameId200>,
->(
+export const getUsersSelfSelfIdGameGuessSongGameId = (
     selfId: number,
     gameId: number,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.get(
-        `https://localhost/backend/users/self/${selfId}/game/guessSong/${gameId}`,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<GetUsersSelfSelfIdGameGuessSongGameId200>(
+        {
+            url: `/users/self/${selfId}/game/guessSong/${gameId}`,
+            method: "GET",
+        },
         options
     );
 };
@@ -4827,17 +4845,19 @@ export const getUsersSelfSelfIdGameGuessSongGameId = <
 /**
  * @summary Submit a guess for a popdle game.
  */
-export const postUsersSelfSelfIdGameGuessLineGameIdAttempts = <
-    TData = AxiosResponse<PostUsersSelfSelfIdGameGuessLineGameIdAttempts201>,
->(
+export const postUsersSelfSelfIdGameGuessLineGameIdAttempts = (
     selfId: number,
     gameId: number,
     postUsersSelfSelfIdGameGuessLineGameIdAttemptsBody: PostUsersSelfSelfIdGameGuessLineGameIdAttemptsBody,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.post(
-        `https://localhost/backend/users/self/${selfId}/game/guessLine/${gameId}/attempts`,
-        postUsersSelfSelfIdGameGuessLineGameIdAttemptsBody,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<PostUsersSelfSelfIdGameGuessLineGameIdAttempts201>(
+        {
+            url: `/users/self/${selfId}/game/guessLine/${gameId}/attempts`,
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            data: postUsersSelfSelfIdGameGuessLineGameIdAttemptsBody,
+        },
         options
     );
 };
@@ -4845,107 +4865,171 @@ export const postUsersSelfSelfIdGameGuessLineGameIdAttempts = <
 /**
  * @summary Submit a guess for a popdle game.
  */
-export const postUsersSelfSelfIdGameGuessSongGameIdAttempts = <
-    TData = AxiosResponse<PostUsersSelfSelfIdGameGuessSongGameIdAttempts201>,
->(
+export const postUsersSelfSelfIdGameGuessSongGameIdAttempts = (
     selfId: number,
     gameId: number,
     postUsersSelfSelfIdGameGuessSongGameIdAttemptsBody: PostUsersSelfSelfIdGameGuessSongGameIdAttemptsBody,
-    options?: AxiosRequestConfig
-): Promise<TData> => {
-    return axios.post(
-        `https://localhost/backend/users/self/${selfId}/game/guessSong/${gameId}/attempts`,
-        postUsersSelfSelfIdGameGuessSongGameIdAttemptsBody,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<PostUsersSelfSelfIdGameGuessSongGameIdAttempts201>(
+        {
+            url: `/users/self/${selfId}/game/guessSong/${gameId}/attempts`,
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            data: postUsersSelfSelfIdGameGuessSongGameIdAttemptsBody,
+        },
         options
     );
 };
 
-export type GetAuthRegisterSpotifyResult = AxiosResponse<void>;
-export type GetAuthLoginSpotifyResult = AxiosResponse<void>;
-export type GetResult = AxiosResponse<Get200>;
-export type GetArtistsArtistMusixMatchIdResult =
-    AxiosResponse<GetArtistsArtistMusixMatchId200>;
-export type GetArtistsArtistNameResult = AxiosResponse<
-    GetArtistsArtistName200Item[]
+export type GetAuthRegisterSpotifyResult = NonNullable<
+    Awaited<ReturnType<typeof getAuthRegisterSpotify>>
 >;
-export type GetDebugSnapshotResult = AxiosResponse<GetDebugSnapshot200>;
-export type PutDebugSnapshotResult = AxiosResponse<PutDebugSnapshot200>;
-export type PostDebugPlaygroundResult = AxiosResponse<void>;
-export type GetLeaderboardsGameModeResult =
-    AxiosResponse<GetLeaderboardsGameMode200>;
-export type GetLyricsTrackMusixMatchIdResult =
-    AxiosResponse<GetLyricsTrackMusixMatchId200>;
-export type GetPublicIconsFilenameResult = AxiosResponse<Blob>;
-export type GetPublicIconsResult = AxiosResponse<GetPublicIcons200Item[]>;
-export type GetUsersUserIdResult = AxiosResponse<GetUsersUserId200>;
-export type GetUsersSearchResult = AxiosResponse<GetUsersSearch200>;
-export type GetUsersCheckResult = AxiosResponse<GetUsersCheck200>;
-export type PostAuthLoginResult = AxiosResponse<PostAuthLogin200>;
-export type PostAuthRegisterResult = AxiosResponse<PostAuthRegister200>;
-export type GetDebugFakeUserResult = AxiosResponse<GetDebugFakeUser200>;
-export type PostDebugFakeUsersResult = AxiosResponse<
-    PostDebugFakeUsers201Item[]
+export type GetAuthLoginSpotifyResult = NonNullable<
+    Awaited<ReturnType<typeof getAuthLoginSpotify>>
 >;
-export type GetSpotifySearchResult = AxiosResponse<GetSpotifySearch200>;
-export type GetAuthLoginSpotifyCallbackResult = AxiosResponse<unknown>;
-export type GetAuthRegisterSpotifyCallbackResult = AxiosResponse<unknown>;
-export type GetUsersSelfSelfIdResult = AxiosResponse<GetUsersSelfSelfId200>;
-export type PutUsersSelfSelfIdResult = AxiosResponse<PutUsersSelfSelfId200>;
-export type DeleteUsersSelfSelfIdResult =
-    AxiosResponse<DeleteUsersSelfSelfId200>;
-export type GetUsersSelfSelfIdArtistsResult = AxiosResponse<
-    GetUsersSelfSelfIdArtists200Item[]
+export type GetResult = NonNullable<Awaited<ReturnType<typeof get>>>;
+export type GetArtistsArtistMusixMatchIdResult = NonNullable<
+    Awaited<ReturnType<typeof getArtistsArtistMusixMatchId>>
 >;
-export type GetUsersSelfSelfIdBlockingResult = AxiosResponse<
-    GetUsersSelfSelfIdBlocking200Item[]
+export type GetArtistsArtistNameResult = NonNullable<
+    Awaited<ReturnType<typeof getArtistsArtistName>>
 >;
-export type GetUsersSelfSelfIdConfigsResult = AxiosResponse<
-    GetUsersSelfSelfIdConfigs200Item[]
+export type GetDebugSnapshotResult = NonNullable<
+    Awaited<ReturnType<typeof getDebugSnapshot>>
 >;
-export type PostUsersSelfSelfIdConfigsResult =
-    AxiosResponse<PostUsersSelfSelfIdConfigs200>;
-export type DeleteUsersSelfSelfIdConfigsPopdleConfigIdResult =
-    AxiosResponse<DeleteUsersSelfSelfIdConfigsPopdleConfigId200>;
-export type PutUsersSelfSelfIdConfigsPopdleConfigIdResult =
-    AxiosResponse<PutUsersSelfSelfIdConfigsPopdleConfigId200>;
-export type GetUsersSelfSelfIdConfigsSuggestResult = AxiosResponse<
-    GetUsersSelfSelfIdConfigsSuggest200Item[]
+export type PutDebugSnapshotResult = NonNullable<
+    Awaited<ReturnType<typeof putDebugSnapshot>>
 >;
-export type GetUsersSelfSelfIdFriendsResult = AxiosResponse<
-    GetUsersSelfSelfIdFriends200Item[]
+export type PostDebugPlaygroundResult = NonNullable<
+    Awaited<ReturnType<typeof postDebugPlayground>>
 >;
-export type GetUsersSelfSelfIdGameHistoryResult = AxiosResponse<
-    GetUsersSelfSelfIdGameHistory200Item[]
+export type GetLeaderboardsGameModeResult = NonNullable<
+    Awaited<ReturnType<typeof getLeaderboardsGameMode>>
+>;
+export type GetLyricsTrackMusixMatchIdResult = NonNullable<
+    Awaited<ReturnType<typeof getLyricsTrackMusixMatchId>>
+>;
+export type GetPublicIconsFilenameResult = NonNullable<
+    Awaited<ReturnType<typeof getPublicIconsFilename>>
+>;
+export type GetPublicIconsResult = NonNullable<
+    Awaited<ReturnType<typeof getPublicIcons>>
+>;
+export type GetUsersUserIdResult = NonNullable<
+    Awaited<ReturnType<typeof getUsersUserId>>
+>;
+export type GetUsersSearchResult = NonNullable<
+    Awaited<ReturnType<typeof getUsersSearch>>
+>;
+export type GetUsersCheckResult = NonNullable<
+    Awaited<ReturnType<typeof getUsersCheck>>
+>;
+export type PostAuthLoginResult = NonNullable<
+    Awaited<ReturnType<typeof postAuthLogin>>
+>;
+export type PostAuthRegisterResult = NonNullable<
+    Awaited<ReturnType<typeof postAuthRegister>>
+>;
+export type GetDebugFakeUserResult = NonNullable<
+    Awaited<ReturnType<typeof getDebugFakeUser>>
+>;
+export type PostDebugFakeUsersResult = NonNullable<
+    Awaited<ReturnType<typeof postDebugFakeUsers>>
+>;
+export type GetSpotifySearchResult = NonNullable<
+    Awaited<ReturnType<typeof getSpotifySearch>>
+>;
+export type GetAuthLoginSpotifyCallbackResult = NonNullable<
+    Awaited<ReturnType<typeof getAuthLoginSpotifyCallback>>
+>;
+export type GetAuthRegisterSpotifyCallbackResult = NonNullable<
+    Awaited<ReturnType<typeof getAuthRegisterSpotifyCallback>>
+>;
+export type GetUsersSelfSelfIdResult = NonNullable<
+    Awaited<ReturnType<typeof getUsersSelfSelfId>>
+>;
+export type PutUsersSelfSelfIdResult = NonNullable<
+    Awaited<ReturnType<typeof putUsersSelfSelfId>>
+>;
+export type DeleteUsersSelfSelfIdResult = NonNullable<
+    Awaited<ReturnType<typeof deleteUsersSelfSelfId>>
+>;
+export type GetUsersSelfSelfIdArtistsResult = NonNullable<
+    Awaited<ReturnType<typeof getUsersSelfSelfIdArtists>>
+>;
+export type GetUsersSelfSelfIdBlockingResult = NonNullable<
+    Awaited<ReturnType<typeof getUsersSelfSelfIdBlocking>>
+>;
+export type GetUsersSelfSelfIdConfigsResult = NonNullable<
+    Awaited<ReturnType<typeof getUsersSelfSelfIdConfigs>>
+>;
+export type PostUsersSelfSelfIdConfigsResult = NonNullable<
+    Awaited<ReturnType<typeof postUsersSelfSelfIdConfigs>>
+>;
+export type DeleteUsersSelfSelfIdConfigsPopdleConfigIdResult = NonNullable<
+    Awaited<ReturnType<typeof deleteUsersSelfSelfIdConfigsPopdleConfigId>>
+>;
+export type PutUsersSelfSelfIdConfigsPopdleConfigIdResult = NonNullable<
+    Awaited<ReturnType<typeof putUsersSelfSelfIdConfigsPopdleConfigId>>
+>;
+export type GetUsersSelfSelfIdConfigsSuggestResult = NonNullable<
+    Awaited<ReturnType<typeof getUsersSelfSelfIdConfigsSuggest>>
+>;
+export type GetUsersSelfSelfIdFriendsResult = NonNullable<
+    Awaited<ReturnType<typeof getUsersSelfSelfIdFriends>>
+>;
+export type GetUsersSelfSelfIdGameHistoryResult = NonNullable<
+    Awaited<ReturnType<typeof getUsersSelfSelfIdGameHistory>>
 >;
 export type PutUsersSelfSelfIdArtistsSpotifyArtistIdFavoriteResult =
-    AxiosResponse<PutUsersSelfSelfIdArtistsSpotifyArtistIdFavorite200>;
-export type PostUsersSelfSelfIdArtistsSpotifyArtistIdResult =
-    AxiosResponse<PostUsersSelfSelfIdArtistsSpotifyArtistId200>;
-export type DeleteUsersSelfSelfIdArtistsSpotifyArtistIdResult =
-    AxiosResponse<DeleteUsersSelfSelfIdArtistsSpotifyArtistId200>;
-export type PostUsersSelfSelfIdBlockingTargetUserIdResult =
-    AxiosResponse<PostUsersSelfSelfIdBlockingTargetUserId201>;
-export type DeleteUsersSelfSelfIdBlockingTargetUserIdResult =
-    AxiosResponse<DeleteUsersSelfSelfIdBlockingTargetUserId200>;
-export type DeleteUsersSelfSelfIdFriendsTargetUserIdResult =
-    AxiosResponse<DeleteUsersSelfSelfIdFriendsTargetUserId200>;
-export type PostUsersSelfSelfIdFriendsTargetUserIdResult =
-    AxiosResponse<PostUsersSelfSelfIdFriendsTargetUserId201>;
-export type PutUsersSelfSelfIdFriendsTargetUserIdResult =
-    AxiosResponse<PutUsersSelfSelfIdFriendsTargetUserId200>;
-export type GetUsersSelfSelfIdFriendsLeaderboardsResult =
-    AxiosResponse<GetUsersSelfSelfIdFriendsLeaderboards200>;
-export type DeleteUsersSelfSelfIdFriendsLeaderboardsResult =
-    AxiosResponse<DeleteUsersSelfSelfIdFriendsLeaderboards200>;
-export type PostUsersSelfSelfIdGameGuessLineResult =
-    AxiosResponse<PostUsersSelfSelfIdGameGuessLine201>;
-export type PostUsersSelfSelfIdGameGuessSongResult =
-    AxiosResponse<PostUsersSelfSelfIdGameGuessSong201>;
-export type GetUsersSelfSelfIdGameGuessLineGameIdResult =
-    AxiosResponse<GetUsersSelfSelfIdGameGuessLineGameId200>;
-export type GetUsersSelfSelfIdGameGuessSongGameIdResult =
-    AxiosResponse<GetUsersSelfSelfIdGameGuessSongGameId200>;
-export type PostUsersSelfSelfIdGameGuessLineGameIdAttemptsResult =
-    AxiosResponse<PostUsersSelfSelfIdGameGuessLineGameIdAttempts201>;
-export type PostUsersSelfSelfIdGameGuessSongGameIdAttemptsResult =
-    AxiosResponse<PostUsersSelfSelfIdGameGuessSongGameIdAttempts201>;
+    NonNullable<
+        Awaited<
+            ReturnType<typeof putUsersSelfSelfIdArtistsSpotifyArtistIdFavorite>
+        >
+    >;
+export type PostUsersSelfSelfIdArtistsSpotifyArtistIdResult = NonNullable<
+    Awaited<ReturnType<typeof postUsersSelfSelfIdArtistsSpotifyArtistId>>
+>;
+export type DeleteUsersSelfSelfIdArtistsSpotifyArtistIdResult = NonNullable<
+    Awaited<ReturnType<typeof deleteUsersSelfSelfIdArtistsSpotifyArtistId>>
+>;
+export type PostUsersSelfSelfIdBlockingTargetUserIdResult = NonNullable<
+    Awaited<ReturnType<typeof postUsersSelfSelfIdBlockingTargetUserId>>
+>;
+export type DeleteUsersSelfSelfIdBlockingTargetUserIdResult = NonNullable<
+    Awaited<ReturnType<typeof deleteUsersSelfSelfIdBlockingTargetUserId>>
+>;
+export type DeleteUsersSelfSelfIdFriendsTargetUserIdResult = NonNullable<
+    Awaited<ReturnType<typeof deleteUsersSelfSelfIdFriendsTargetUserId>>
+>;
+export type PostUsersSelfSelfIdFriendsTargetUserIdResult = NonNullable<
+    Awaited<ReturnType<typeof postUsersSelfSelfIdFriendsTargetUserId>>
+>;
+export type PutUsersSelfSelfIdFriendsTargetUserIdResult = NonNullable<
+    Awaited<ReturnType<typeof putUsersSelfSelfIdFriendsTargetUserId>>
+>;
+export type GetUsersSelfSelfIdFriendsLeaderboardsResult = NonNullable<
+    Awaited<ReturnType<typeof getUsersSelfSelfIdFriendsLeaderboards>>
+>;
+export type DeleteUsersSelfSelfIdFriendsLeaderboardsResult = NonNullable<
+    Awaited<ReturnType<typeof deleteUsersSelfSelfIdFriendsLeaderboards>>
+>;
+export type PostUsersSelfSelfIdGameGuessLineResult = NonNullable<
+    Awaited<ReturnType<typeof postUsersSelfSelfIdGameGuessLine>>
+>;
+export type PostUsersSelfSelfIdGameGuessSongResult = NonNullable<
+    Awaited<ReturnType<typeof postUsersSelfSelfIdGameGuessSong>>
+>;
+export type GetUsersSelfSelfIdGameGuessLineGameIdResult = NonNullable<
+    Awaited<ReturnType<typeof getUsersSelfSelfIdGameGuessLineGameId>>
+>;
+export type GetUsersSelfSelfIdGameGuessSongGameIdResult = NonNullable<
+    Awaited<ReturnType<typeof getUsersSelfSelfIdGameGuessSongGameId>>
+>;
+export type PostUsersSelfSelfIdGameGuessLineGameIdAttemptsResult = NonNullable<
+    Awaited<ReturnType<typeof postUsersSelfSelfIdGameGuessLineGameIdAttempts>>
+>;
+export type PostUsersSelfSelfIdGameGuessSongGameIdAttemptsResult = NonNullable<
+    Awaited<ReturnType<typeof postUsersSelfSelfIdGameGuessSongGameIdAttempts>>
+>;

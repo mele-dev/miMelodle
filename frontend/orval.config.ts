@@ -18,7 +18,12 @@ export default defineConfig({
         output: {
             target: "src/apiCodegen/backend.ts",
             prettier: true,
-            baseUrl: "https://localhost/backend",
+            override: {
+                mutator: {
+                    path: "./src/apiCodegen/backend-mutator.ts",
+                    name: "customInstance",
+                },
+            },
         },
     },
     backend_zod: {

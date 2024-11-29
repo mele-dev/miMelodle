@@ -8,12 +8,7 @@ import { LanguagePickerComponent } from "../language-picker/language-picker.comp
 import { AppNavbarTranslator } from "./app-navbar.translations";
 import { HlmIconModule } from "@spartan-ng/ui-icon-helm";
 import { provideIcons } from "@ng-icons/core";
-import {
-    lucideLogOut,
-    lucideBellPlus,
-    lucideCircleSlash,
-} from "@ng-icons/lucide";
-import { lucideBell, lucideSearch } from "@ng-icons/lucide";
+import { lucideAlignJustify, lucideBell, lucideHome, lucideSearch, lucideTrophy, lucideWarehouse } from "@ng-icons/lucide";
 import { LocalStorageService } from "../../services/local-storage.service";
 import { BrnPopoverModule } from "@spartan-ng/ui-popover-brain";
 import { HlmPopoverModule } from "@spartan-ng/ui-popover-helm";
@@ -48,36 +43,51 @@ import {
 import { HlmLabelDirective } from "@spartan-ng/ui-label-helm";
 import { HlmInputDirective } from "@spartan-ng/ui-input-helm";
 import { BrnDialogContentDirective, BrnDialogTriggerDirective } from "@spartan-ng/ui-dialog-brain";
+import { HlmSheetComponent } from "../../../../libs/ui/ui-sheet-helm/src/lib/hlm-sheet.component";
+import { HlmSheetContentComponent } from "../../../../libs/ui/ui-sheet-helm/src/lib/hlm-sheet-content.component";
+import { HlmSheetHeaderComponent } from "../../../../libs/ui/ui-sheet-helm/src/lib/hlm-sheet-header.component";
+import { HlmSheetImports, HlmSheetModule } from "@spartan-ng/ui-sheet-helm";
+import { BrnSheetCloseDirective, BrnSheetContentDirective, BrnSheetTriggerDirective } from "@spartan-ng/ui-sheet-brain";
 
 @Component({
     selector: "app-app-navbar",
     standalone: true,
     imports: [
-        RouterLink,
-        LanguagePickerComponent,
-        HlmIconModule,
-        HlmPopoverModule,
-        BrnPopoverModule,
-        HlmButtonModule,
-        FriendshipsComponent,
-        BlockingComponent,
-        LoadProfilePictureDirective,
-        HlmTabsModule,
-        CommonModule,
-        HlmMenuModule,
-        BrnMenuModule,
-        HlmDialogComponent,
-        HlmDialogContentComponent,
-        UserFinderComponent,
-        HlmButtonDirective,
-        BrnDialogContentDirective,
-        HlmDialogComponent,
-        HlmDialogContentComponent,
-    ],
+    RouterLink,
+    HlmIconModule,
+    HlmPopoverModule,
+    BrnPopoverModule,
+    HlmButtonModule,
+    FriendshipsComponent,
+    BlockingComponent,
+    LoadProfilePictureDirective,
+    HlmTabsModule,
+    CommonModule,
+    HlmMenuModule,
+    BrnMenuModule,
+    HlmDialogComponent,
+    HlmDialogContentComponent,
+    UserFinderComponent,
+    HlmButtonDirective,
+    BrnDialogContentDirective,
+    HlmDialogComponent,
+    HlmDialogContentComponent,
+    HlmSheetComponent,
+    HlmSheetContentComponent,
+    HlmSheetModule,
+    HlmSheetImports,
+    BrnSheetTriggerDirective,
+    BrnSheetContentDirective,
+
+],
     providers: [
         provideIcons({
             lucideBell,
             lucideSearch,
+            lucideWarehouse,
+            lucideTrophy,
+            lucideAlignJustify,
+            lucideHome
         }),
     ],
     templateUrl: "./app-navbar.component.html",

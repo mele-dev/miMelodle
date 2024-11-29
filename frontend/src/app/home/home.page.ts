@@ -15,6 +15,8 @@ import { SelfService } from "../services/self.service";
 import { getUsersSelfSelfIdArtists } from "../../apiCodegen/backend";
 import { isAxiosError } from "axios";
 import { GuessSongService } from "../services/games/guess-song.service";
+import { LocalStorageService } from "../services/local-storage.service";
+import { SafeRoutingService } from "../services/safe-routing.service";
 
 @Component({
     selector: "app-home",
@@ -35,9 +37,14 @@ export class HomePage {
     dict = inject(HomePageTranslator).dict;
     public selfService = inject(SelfService);
     public name: string | undefined;
-
+    private  _localStorage = inject(LocalStorageService)
+    safeRouter = inject(SafeRoutingService);
     isEmpty: boolean | undefined;
-
+    logOut() {
+        this._localStorage.removeItem("userInfo");
+        this._localStorage.removeItem("trackCache");
+        this.safeRouter.navigate("/auth");
+    }
     ngOnInit() {
         this.getUsername();
         this.isItEmpty();

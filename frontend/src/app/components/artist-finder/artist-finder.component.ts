@@ -44,7 +44,6 @@ export class ArtistFinderComponent {
     imagePicker = inject(SpotifyImagePickerService);
 
     async search() {
-        console.info(this.usersFilter());
         try {
             const query = await getSpotifySearch({
                 page: 0,
@@ -52,7 +51,8 @@ export class ArtistFinderComponent {
                 query: this.usersFilter(),
                 spotifyQueryType: "artist" as any, // TODO CRIS
             });
-            this.matchedArtists.set(query.data.artists?.items ?? []);
+            this.matchedArtists.set(query.artists?.items ?? []);
+            this.matchedArtists.set(query.artists?.items ?? []);
             console.log(this.matchedArtists());
         } catch (e) {
             toast(this.dict().artistsNotFound);

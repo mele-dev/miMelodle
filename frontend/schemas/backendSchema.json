@@ -1525,11 +1525,11 @@
                                     ]
                                 },
                                 "example": {
-                                    "name": "Dr. Max Kulas MD",
-                                    "username": "Max.Kulas21",
+                                    "name": "Miss Heidi Kohler DVM",
+                                    "username": "Heidi.Kohler31",
                                     "password": "Fake123!",
-                                    "email": "Max.Kulas3@yahoo.com",
-                                    "profilePictureId": 11
+                                    "email": "Heidi.Kohler@gmail.com",
+                                    "profilePictureId": 12
                                 }
                             }
                         }
@@ -1612,18 +1612,18 @@
                                 },
                                 "example": [
                                     {
-                                        "name": "Dr. Boyd Schneider DDS",
-                                        "username": "Boyd_Schneider",
+                                        "name": "Dr. Kimberly Bernhard IV",
+                                        "username": "Kimberly.Bernhard",
                                         "password": "Fake123!",
-                                        "email": "Boyd.Schneider75@gmail.com",
-                                        "profilePictureId": 12
+                                        "email": "Kimberly_Bernhard@yahoo.com",
+                                        "profilePictureId": 3
                                     },
                                     {
-                                        "name": "Mr. Francis Schmitt PhD",
-                                        "username": "Francis.Schmitt89",
+                                        "name": "Ms. Kellie Strosin II",
+                                        "username": "Kellie.Strosin",
                                         "password": "Fake123!",
-                                        "email": "Francis_Schmitt@gmail.com",
-                                        "profilePictureId": 2
+                                        "email": "Kellie_Strosin88@yahoo.com",
+                                        "profilePictureId": 9
                                     }
                                 ]
                             }
@@ -8453,7 +8453,7 @@
     },
     "servers": [
         {
-            "url": "https://localhost/backend",
+            "url": "https://192.168.1.5/backend",
             "description": "Development server"
         }
     ],

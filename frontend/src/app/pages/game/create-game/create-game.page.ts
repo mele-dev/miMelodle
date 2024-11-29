@@ -114,7 +114,7 @@ export class CreateGamePage {
             spotifyQueryType: "track" as any,
         });
 
-        this.trackOptions.set(tracks.data.tracks!.items);
+        this.trackOptions.set(tracks.tracks!.items);
     }
 
     keyDown(event: KeyboardEvent) {

@@ -27,7 +27,7 @@ export class GuessLineService {
             toast(this._dict().gameCreated);
 
             return this._router.navigate("/app/game/guess_line/:gameId", {
-                ids: result.data,
+                ids: result,
             });
         } catch (e) {
             if (isAxiosError(e)) {

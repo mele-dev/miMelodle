@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
 import { QueryStringHandlerService } from "./services/queryStringHandler/query-string-handler.service";
 import { HlmToasterComponent } from "@spartan-ng/ui-sonner-helm";
+import { HttpClient } from "@angular/common/http";
 
 @Component({
     selector: "app-root",
