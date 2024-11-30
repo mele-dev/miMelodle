@@ -204,12 +204,12 @@ export class UserConfigPage implements OnInit {
                 profilePictureId: this.chosenIcon()?.id ?? -1,
             });
 
-            const result = await putUsersSelfSelfId(userInfo.id, {
-                email: userInfo.email,
-                name: userInfo.name,
-                profilePictureId: userInfo.profilePictureId,
-                username: userInfo.username,
-            });
+            console.log(this.user.getRawValue());
+
+            const result = await putUsersSelfSelfId(
+                userInfo.id,
+                this.user.getRawValue()
+            );
 
             this.safeRouter.navigate("/app");
         } catch (e) {
@@ -219,14 +219,12 @@ export class UserConfigPage implements OnInit {
     }
 
     async ngOnInit(): Promise<void> {
-        const iconsInfo = (await getPublicIcons());
+        const iconsInfo = await getPublicIcons();
         const userInfo = await this.selfService.waitForUserInfoSnapshot();
 
         this.allIcons = await Promise.all(
             iconsInfo.map(async (icon) => ({
-                svg: await (
-                    await getPublicIconsFilename(icon.filename)
-                ).text(),
+                svg: await (await getPublicIconsFilename(icon.filename)).text(),
                 ...icon,
             }))
         );
