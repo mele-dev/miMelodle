@@ -115,7 +115,9 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
             summary: "Update your user information.",
         },
         handler: async function (request, reply) {
-            if (request.body.sensitive) {
+            fastify.log.info("por lo menos llego aca?");
+            if (request.body.sensitive !== undefined) {
+                fastify.log.info("entraaaaaaaaaaaaaa");
                 await runPreparedQuery(updateSensitiveUserData, {
                     ...request.body,
                     ...request.body.sensitive,
@@ -124,6 +126,7 @@ const profile: FastifyPluginAsyncTypebox = async (fastify, _opts) => {
 
                 return sendOk(reply, 200, request.body);
             }
+            fastify.log.info("request = ", JSON.stringify(request.body));
 
             await runPreparedQuery(updateNonSensitiveUserData, {
                 ...request.body,
