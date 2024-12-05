@@ -1,9 +1,10 @@
 import typography from "@tailwindcss/typography";
 import forms from "@tailwindcss/forms";
+import hlmTailwindPreset from "@spartan-ng/ui-core/hlm-tailwind-preset";
 
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-    presets: [require("@spartan-ng/ui-core/hlm-tailwind-preset")],
+export default {
+    presets: [hlmTailwindPreset],
     content: ["./src/**/*.{html,ts}", "./libs/ui/**/*.{html,ts}"],
     darkMode: "selector",
     theme: {
